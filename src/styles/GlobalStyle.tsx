@@ -30,7 +30,6 @@ body {
     line-height: 1.25;
     font-family: 'SpoqaHanSansNeo';
     font-weight: 400;
-    background-color: var(--gradient);
 }
 `;
 
