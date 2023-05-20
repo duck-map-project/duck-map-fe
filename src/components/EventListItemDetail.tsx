@@ -33,6 +33,10 @@ const GroupName = styled(StrongTxt)`
 
 const RegularTxt = styled.span`
   display: block;
+  font-size: 1.6rem;
+`;
+
+const MemberName = styled(RegularTxt)`
   font-size: 1.8rem;
 `;
 
@@ -48,7 +52,7 @@ const EventListItemDetail = () => {
       <div>
         <NameSection>
           <GroupName>그룹명</GroupName>
-          <RegularTxt>멤버 이름</RegularTxt>
+          <MemberName>멤버 이름</MemberName>
         </NameSection>
         <Tag marginB="32px" />
         <AdressTxt> 주소 </AdressTxt>
