@@ -21,6 +21,11 @@ const GlobalStyle = createGlobalStyle`
 
 ${reset}
 ${font}
+
+* {
+  box-sizing: border-box;
+}
+
 html {
     font-size: 62.5%;
 }
