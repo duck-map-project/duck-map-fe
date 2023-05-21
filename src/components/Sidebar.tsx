@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import logo from '../assets/logo.svg';
+
 const SidebarWrapper = styled.section`
   position: fixed;
   top: 0;
@@ -8,25 +10,28 @@ const SidebarWrapper = styled.section`
   flex-direction: column;
   width: 267px;
   height: 100vh;
-  background: var(--gradient);
+  background: var(--white);
   z-index: 999;
+  border: 5px solid var(--purple);
 `;
 
 const Logo = styled.img`
-  width: 200px;
-  height: 50px;
+  width: 150px;
   margin: 30px auto;
 `;
 
-const SidebarList = styled.ul`
-  padding-left: 27px;
-`;
+const SidebarList = styled.ul``;
 
 const SidebarItem = styled.li`
   font-size: 14px;
-  margin-bottom: 10px;
+  padding: 5px 0;
+  padding-left: 27px;
   &:nth-child(n + 4) {
-    padding-left: 10px;
+    padding-left: 37px;
+  }
+  &:hover {
+    background: var(--purple);
+    color: var(--white);
   }
 `;
 
@@ -41,8 +46,7 @@ const SignButton = styled.button`
 const Sidebar = () => {
   return (
     <SidebarWrapper>
-      {/* TODO: 로고 이미지 가져오기 */}
-      <Logo />
+      <Logo src={logo} />
       <SidebarList>
         <SidebarItem>이벤트</SidebarItem>
         <SidebarItem>리뷰</SidebarItem>
