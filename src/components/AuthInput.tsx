@@ -8,6 +8,9 @@ const Input = styled.input`
   width: 100%;
   border: 1px solid var(--purple);
   border-radius: 5px;
+  padding: 10px 5px;
+  font-size: 1.4rem;
+  margin-top: 9px;
 `;
 
 interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
