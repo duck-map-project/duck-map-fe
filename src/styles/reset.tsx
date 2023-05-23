@@ -143,6 +143,10 @@ const reset = css`
     border: initial;
   }
 
+  input:focus {
+    outline: none;
+  }
+
   a {
     text-decoration: none;
     color: initial;
