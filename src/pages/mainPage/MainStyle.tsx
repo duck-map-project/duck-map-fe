@@ -1,29 +1,8 @@
 import { styled } from 'styled-components';
 
-export const Header = styled.header`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 70px 53.8px 18px;
-`;
-
-export const Logo = styled.img`
-  width: 200px;
-`;
-
 export const TextButton = styled.button`
   font-size: 1.6rem;
   cursor: pointer;
-`;
-
-export const MenuButton = styled(TextButton)`
-  margin-right: 40px;
-`;
-
-export const RightSection = styled.section`
-  display: flex;
-  align-items: center;
 `;
 
 export const ProfileDropdown = styled.div`
