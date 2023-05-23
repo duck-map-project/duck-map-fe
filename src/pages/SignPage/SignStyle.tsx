@@ -16,10 +16,25 @@ export const Form = styled.form`
   width: 385px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
   margin-bottom: 29px;
+  & > input {
+    margin-bottom: 15px;
+  }
+  & > input:nth-child(4) {
+    margin-bottom: 0;
+  }
   & > button {
-    margin-top: 35px;
+    margin-top: 50px;
+  }
+`;
+
+export const LinkText = styled.a`
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  &:first-child::after {
+    content: '|';
+    margin: 0 4px;
   }
 `;
 
