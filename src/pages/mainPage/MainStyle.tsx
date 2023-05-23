@@ -5,7 +5,7 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 47px 53.8px 18px;
+  padding: 8px 70px 53.8px 18px;
 `;
 
 export const Logo = styled.img`
