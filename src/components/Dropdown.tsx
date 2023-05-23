@@ -7,8 +7,10 @@ const Wrapper = styled.ul`
   border: 1px solid var(--purple);
   position: absolute;
   top: 55px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: var(--white);
+  z-index: 999;
 `;
 
 const Item = styled.li`
