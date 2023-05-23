@@ -8,6 +8,7 @@ import Dropdown from './Dropdown';
 
 const Wrapper = styled.div`
   position: relative;
+  margin-right: 10px;
 `;
 
 const Select = styled.button<{ clicked: boolean }>`
