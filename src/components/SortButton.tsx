@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 
 import arrowDown from '../assets/dropdown-arrow-down.svg';
@@ -23,8 +23,17 @@ const Select = styled.button<{ clicked: boolean }>`
   background-position: right 30px center;
 `;
 
-const SortDropdown = () => {
-  const [clicked, setClicked] = useState(false);
+interface SortDropdownProps {
+  clicked: boolean;
+  setClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  sortButtonRef: React.RefObject<HTMLButtonElement>;
+}
+
+const SortDropdown: React.FC<SortDropdownProps> = ({
+  clicked,
+  setClicked,
+  sortButtonRef,
+}) => {
   const sortOption = ['인기순', '리뷰많은순'];
   const [SelectedText, setSelectedText] = useState(sortOption[0]);
 
@@ -37,7 +46,7 @@ const SortDropdown = () => {
   };
   return (
     <Wrapper>
-      <Select clicked={clicked} onClick={handleClick}>
+      <Select clicked={clicked} onClick={handleClick} ref={sortButtonRef}>
         {SelectedText}
       </Select>
       {clicked ? (

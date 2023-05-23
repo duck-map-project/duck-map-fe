@@ -24,6 +24,8 @@ const Main = () => {
   const [profileModal, setProfileModal] = useState(false);
   const DropdwonList: string[] = ['마이페이지', '로그아웃'];
   const profileRef = useRef<HTMLImageElement>(null);
+  const sortButtonRef = useRef<HTMLButtonElement>(null);
+  const [SortModal, setSortModal] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,6 +34,12 @@ const Main = () => {
         !profileRef.current.contains(event.target as Node)
       ) {
         setProfileModal(false);
+      }
+      if (
+        sortButtonRef.current &&
+        !sortButtonRef.current.contains(event.target as Node)
+      ) {
+        setSortModal(false);
       }
     };
 
@@ -68,7 +76,11 @@ const Main = () => {
         </RightSection>
       </Header>
       <MainSection>
-        <SortDropdown />
+        <SortDropdown
+          sortButtonRef={sortButtonRef}
+          clicked={SortModal}
+          setClicked={setSortModal}
+        />
         <MapSection />
       </MainSection>
       <ViewReviews>
