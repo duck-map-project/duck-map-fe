@@ -6,12 +6,12 @@ const PageWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #000;
 `;
 
 const MapSpace = styled.section`
   width: 100%;
   height: 554px;
+  background-color: #000;
 `;
 
 const MapSection = () => {
