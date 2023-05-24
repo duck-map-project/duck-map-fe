@@ -25,6 +25,8 @@ import {
   TabInfoImg,
   TabMapImg,
 } from './DetailInfoStyle';
+import MapSection from './MapSection';
+import ReviewSection from './ReviewSection';
 
 const DetailInfo = () => {
   type CurrentType = 'info' | 'map' | 'review';
@@ -124,6 +126,13 @@ const DetailInfo = () => {
           Review
         </TabButton>
       </TabSection>
+      {currentTab === 'info' ? (
+        <InfoSection />
+      ) : currentTab === 'map' ? (
+        <MapSection />
+      ) : currentTab === 'review' ? (
+        <ReviewSection />
+      ) : null}
     </PageWrapper>
   );
 };
