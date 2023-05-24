@@ -143,6 +143,8 @@ export const TabButton = styled.button<{
   justify-content: flex-end;
   color: ${(props) =>
     props.currentTab === props.tabType ? 'var(--purple)' : 'var(--disabled)'};
+  border-bottom: ${(props) =>
+    props.currentTab === props.tabType ? `5px solid var(--purple)` : ''};
   cursor: pointer;
 `;
 
