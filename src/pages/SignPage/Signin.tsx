@@ -17,6 +17,9 @@ import {
 
 const FormWithMargin = styled(Form)`
   margin-bottom: 16px;
+  & > input:nth-child(4) {
+    margin-bottom: 0;
+  }
 `;
 const SnsTextWithMargin = styled(SNSSignupText)`
   margin-top: 16px;

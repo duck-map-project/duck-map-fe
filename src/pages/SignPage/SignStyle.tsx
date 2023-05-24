@@ -20,9 +20,6 @@ export const Form = styled.form`
   & > input {
     margin-bottom: 15px;
   }
-  & > input:nth-child(4) {
-    margin-bottom: 0;
-  }
   & > button {
     margin-top: 50px;
   }
