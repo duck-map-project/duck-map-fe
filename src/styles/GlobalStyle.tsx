@@ -36,6 +36,10 @@ body {
     font-family: 'SpoqaHanSansNeo';
     font-weight: 400;
 }
+
+button {
+  cursor: pointer;
+}
 `;
 
 export default GlobalStyle;
