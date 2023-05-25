@@ -8,6 +8,7 @@ export const EventListItemBox = styled.li`
   width: 100%;
   border: 1px solid var(--blue-purple);
   padding: 14px 0 14px 15px;
+  background-color: var(--white);
 `;
 
 const EventImage = styled.img`
