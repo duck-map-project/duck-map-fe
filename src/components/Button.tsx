@@ -48,6 +48,7 @@ const ButtonStyle = styled.button<PropsTypes>`
   font-size: 1.6rem;
   border-radius: 5px;
   cursor: pointer;
+  word-break: keep-all;
   ${(props) => (props.color ? colors[props.color] : '')}
   ${(props) => (props.size ? sizes[props.size] : '')}
 `;

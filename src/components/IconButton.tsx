@@ -1,10 +1,11 @@
 import { styled } from 'styled-components';
 
-interface PropsTypes extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface PropsTypes extends React.LabelHTMLAttributes<HTMLLabelElement> {
   image: string;
 }
 
-const IconButtonStyle = styled.button<PropsTypes>`
+const IconButtonStyle = styled.label<PropsTypes>`
+  display: block;
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -13,6 +14,7 @@ const IconButtonStyle = styled.button<PropsTypes>`
   background-repeat: no-repeat;
   background-size: 50px 50px;
   background-position: center;
+  cursor: pointer;
 `;
 
 const IconButton: React.FC<PropsTypes> = ({ ...props }) => {
