@@ -143,7 +143,8 @@ const reset = css`
     border: initial;
   }
 
-  input:focus {
+  input:focus,
+  textarea:focus {
     outline: none;
   }
 
