@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from 'react';
 import { styled } from 'styled-components';
 
 import addImageIcon from '../../assets/icon-add-image.svg';
@@ -18,13 +19,33 @@ const ButtonWithMargin = styled(Button)`
 `;
 
 const EditReview = () => {
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  const handleImgFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setPreviewImage(e.target?.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <PageWrapper>
       <TopSection>
-        {/* TODO: 임이의 url 삭제 */}
-        <PreviewImg url="https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80">
+        <PreviewImg url={previewImage as string}>
           <IconButton image={addImageIcon} htmlFor="img-input" />
-          <ImgInput id="img-input" type="file" accept="image/*" />
+          <ImgInput
+            id="img-input"
+            type="file"
+            accept="image/*"
+            onChange={handleImgFileChange}
+          />
         </PreviewImg>
         <Rating />
         <div>
