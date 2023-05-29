@@ -13,7 +13,8 @@ export const PageTitle = styled.h1`
 `;
 
 export const Form = styled.form`
-  width: 385px;
+  width: 100%;
+  max-width: 385px;
   display: flex;
   flex-direction: column;
   margin-bottom: 29px;
