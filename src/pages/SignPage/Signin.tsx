@@ -4,6 +4,7 @@ import kakaotalk from '../../assets/kakaotalk.svg';
 import twitter from '../../assets/twitter-circle.svg';
 import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
+import { useRouter } from '../../hooks/useRouter';
 
 import {
   PageTitle,
@@ -26,6 +27,7 @@ const SnsTextWithMargin = styled(SNSSignupText)`
 `;
 
 const Signin = () => {
+  const { routeTo } = useRouter();
   return (
     <PageWrapper>
       <PageTitle>로그인</PageTitle>
@@ -37,7 +39,13 @@ const Signin = () => {
         </Button>
       </FormWithMargin>
       <div>
-        <LinkText>회원가입</LinkText>
+        <LinkText
+          onClick={() => {
+            routeTo('/signup');
+          }}
+        >
+          회원가입
+        </LinkText>
         <LinkText>비밀번호 찾기</LinkText>
       </div>
       <SnsTextWithMargin>간편 로그인</SnsTextWithMargin>
