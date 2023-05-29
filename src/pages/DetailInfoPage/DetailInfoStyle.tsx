@@ -9,6 +9,7 @@ export const PageWrapper = styled.main``;
 
 export const TopSection = styled.section`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 55px;
 `;
@@ -85,6 +86,7 @@ export const BookmarkButton = styled(HeartButton)`
 export const InfoSection = styled.section`
   width: 100%;
   max-width: 502px;
+  min-height: 400px;
   display: grid;
   grid-template-columns: 1fr 119px;
   grid-template-rows: repeat(6, 50px);

@@ -2,13 +2,14 @@ import { styled } from 'styled-components';
 
 import Button from '../../components/Button';
 import ReviewItem from '../../components/ReviewItem';
+import px2vw from '../../utils/px2vw';
 
 const TabWrapper = styled.section`
   width: 100%;
   padding-top: 39px;
   text-align: right;
   & > button {
-    margin-right: 48px;
+    margin-right: ${px2vw(48)};
   }
 `;
 
