@@ -53,9 +53,14 @@ const Header: React.FC<HeaderProps> = ({
   profileModal,
 }) => {
   const handleProfileClick = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      routeTo('/signin');
+      return;
+    }
     setProfileModal((prev) => !prev);
   };
-  const DropdwonList = ['마이페이지', '로그아웃'];
+  const DropdwonLoginList = ['마이페이지', '로그아웃'];
   const { routeTo } = useRouter();
   return (
     <HeaderStyle>
@@ -83,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({
             ref={profileRef}
           />
           {profileModal ? (
-            <Dropdown lists={DropdwonList} setClicked={setProfileModal} />
+            <Dropdown lists={DropdwonLoginList} setClicked={setProfileModal} />
           ) : null}
         </ProfileDropdown>
       </RightSection>
