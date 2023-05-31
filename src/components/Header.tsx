@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import logo from '../assets/logo.svg';
 import { TextButton } from '../pages/mainPage/MainStyle';
+import px2vw from '../utils/px2vw';
 
 import Dropdown from './Dropdown';
 
@@ -11,7 +12,7 @@ export const HeaderStyle = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 70px 53.8px 18px;
+  padding: ${px2vw(8)} ${px2vw(70)} ${px2vw(53.8)} ${px2vw(18)};
 `;
 
 export const Logo = styled.img`
@@ -19,7 +20,7 @@ export const Logo = styled.img`
 `;
 
 export const MenuButton = styled(TextButton)`
-  margin-right: 40px;
+  margin-right: ${px2vw(40)};
 `;
 
 export const RightSection = styled.section`

@@ -1,20 +1,24 @@
 import { styled } from 'styled-components';
 
+import px2vw from '../../utils/px2vw';
+
 export const PageWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 50px;
+  padding: 0 ${px2vw(50)};
 `;
 
 export const TopSection = styled.section`
   display: flex;
   width: 100%;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  margin-bottom: ${px2vw(20)};
   position: relative;
   & > fieldset {
     margin-top: 31px;
     flex-shrink: 0;
+    margin-left: ${px2vw(42)};
   }
   & > div:last-child {
     margin-left: auto;
@@ -31,7 +35,6 @@ export const PreviewImg = styled.div<{ url?: string }>`
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 5px;
-  margin-right: 42px;
   position: relative;
   & > label {
     position: absolute;
