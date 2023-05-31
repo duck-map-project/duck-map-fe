@@ -10,7 +10,7 @@ width: 100%;
 const SearchSection = styled.input`
 border: 1px solid #C8B6FF;
 border-radius: 0.5rem;
-padding: 0 30px 22px 30px;
+padding: 11px 20px 11px 45px;
 width: 500px;
 `;
 
