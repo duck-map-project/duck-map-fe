@@ -69,8 +69,8 @@ const ManageItem = ({
     <ManageItemBox>
       <ItemImageSection>
         <ItemConfig>
-          <Edit></Edit>
-          <Delete></Delete>
+          <Edit />
+          <Delete />
         </ItemConfig>
         <ItemImageBox>
           <ItemImage src={image} alt="image" />
