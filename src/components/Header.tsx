@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 
 import logo from '../assets/logo.svg';
+import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
 import px2vw from '../utils/px2vw';
 
@@ -17,6 +18,7 @@ export const HeaderStyle = styled.header`
 
 export const Logo = styled.img`
   width: 200px;
+  cursor: pointer;
 `;
 
 export const MenuButton = styled(TextButton)`
@@ -52,14 +54,32 @@ const Header: React.FC<HeaderProps> = ({
   profileModal,
 }) => {
   const handleProfileClick = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      routeTo('/signin');
+      return;
+    }
     setProfileModal((prev) => !prev);
   };
-  const DropdwonList = ['마이페이지', '로그아웃'];
+  const DropdwonLoginList = ['마이페이지', '로그아웃'];
+  const { routeTo } = useRouter();
   return (
     <HeaderStyle>
-      <Logo src={logo} alt="Logo" />
+      <Logo
+        src={logo}
+        alt="Logo"
+        onClick={() => {
+          routeTo('/');
+        }}
+      />
       <RightSection>
-        <MenuButton>이벤트</MenuButton>
+        <MenuButton
+          onClick={() => {
+            routeTo('/event');
+          }}
+        >
+          이벤트
+        </MenuButton>
         <MenuButton>리뷰</MenuButton>
         <ProfileDropdown>
           <ProfileImg
@@ -69,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({
             ref={profileRef}
           />
           {profileModal ? (
-            <Dropdown lists={DropdwonList} setClicked={setProfileModal} />
+            <Dropdown lists={DropdwonLoginList} setClicked={setProfileModal} />
           ) : null}
         </ProfileDropdown>
       </RightSection>
