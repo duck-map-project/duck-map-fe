@@ -1,12 +1,13 @@
+// import axios from 'axios';
 import { client } from './client';
 
 interface AuthRequest {
-  username: string;
+  email: string;
   password: string;
 }
 
 interface SignupRequest extends AuthRequest {
-  email: string;
+  username: string;
   userType?: string;
 }
 
@@ -26,14 +27,14 @@ export const signup = async ({ username, email, password }: SignupRequest) => {
   }
 };
 
-export const signin = async ({ username, password }: AuthRequest) => {
+export const signin = async ({ email, password }: AuthRequest) => {
   const requestData: AuthRequest = {
-    username,
+    email,
     password,
   };
 
   try {
-    const res = await client.post('auth/login', requestData);
+    const res = await client.post('/auth/login', requestData);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -42,7 +43,7 @@ export const signin = async ({ username, password }: AuthRequest) => {
 
 export const signout = async () => {
   try {
-    await client.get('auth/logout');
+    await client.get('/auth/logout');
   } catch (error) {
     console.error(error);
   }
