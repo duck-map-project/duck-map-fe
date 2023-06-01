@@ -20,7 +20,7 @@ export const signup = async ({ username, email, password }: SignupRequest) => {
 
   try {
     const res = await client.post('/users', requestData);
-    return res;
+    return res.data;
   } catch (error) {
     console.error(error);
   }
@@ -34,7 +34,7 @@ export const signin = async ({ username, password }: AuthRequest) => {
 
   try {
     const res = await client.post('auth/login', requestData);
-    return res;
+    return res.data;
   } catch (error) {
     console.error(error);
   }
