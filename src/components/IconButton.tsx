@@ -1,18 +1,29 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
-interface PropsTypes extends React.LabelHTMLAttributes<HTMLLabelElement> {
+export interface PropsTypes
+  extends React.LabelHTMLAttributes<HTMLLabelElement> {
   image: string;
+  size: 'mid' | 'big';
 }
+
+const mid = css`
+  width: 40px;
+  height: 40px;
+`;
+
+const big = css`
+  width: 80px;
+  height: 80px;
+`;
 
 const IconButtonStyle = styled.label<PropsTypes>`
   display: block;
-  width: 80px;
-  height: 80px;
+  ${({ size }) => (size === 'mid' ? mid : big)}
   border-radius: 50%;
   background-color: var(--blue-purple);
   background-image: ${(props) => (props.image ? `url(${props.image})` : '')};
   background-repeat: no-repeat;
-  background-size: 50px 50px;
+  background-size: 70%;
   background-position: center;
   cursor: pointer;
 `;
