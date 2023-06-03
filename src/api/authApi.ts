@@ -1,15 +1,6 @@
-// import axios from 'axios';
+import { AuthRequest, SignupRequest } from '../types/auth';
+
 import { client } from './client';
-
-export interface AuthRequest {
-  email: string;
-  password: string;
-}
-
-export interface SignupRequest extends AuthRequest {
-  username: string;
-  userType?: string;
-}
 
 export const signup = async ({ username, email, password }: SignupRequest) => {
   const requestData: SignupRequest = {
