@@ -1,9 +1,8 @@
 import { ChangeEvent, useState } from 'react';
 import { styled } from 'styled-components';
 
-import addImageIcon from '../../assets/icon-add-image.svg';
+import AddImageButton from '../../components/AddImageButton';
 import Button from '../../components/Button';
-import IconButton from '../../components/IconButton';
 import Rating from '../../components/Rating';
 
 import {
@@ -39,7 +38,7 @@ const EditReview = () => {
     <PageWrapper>
       <TopSection>
         <PreviewImg url={previewImage as string}>
-          <IconButton image={addImageIcon} htmlFor="img-input" />
+          <AddImageButton size="big" htmlFor="img-input" />
           <ImgInput
             id="img-input"
             type="file"

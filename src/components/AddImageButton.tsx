@@ -1,9 +1,12 @@
 import AddImageIcon from '../assets/icon-add-image.svg';
 
-import IconButton from './IconButton';
+import IconButton, { PropsTypes } from './IconButton';
 
-const AddImageButton = () => {
-  return <IconButton image={AddImageIcon} />;
+const AddImageButton: React.FC<Omit<PropsTypes, 'image'>> = ({
+  size,
+  ...props
+}) => {
+  return <IconButton size={size} image={AddImageIcon} {...props} />;
 };
 
 export default AddImageButton;
