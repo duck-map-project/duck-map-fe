@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 import kakaotalk from '../../assets/kakaotalk.svg';
 import twitter from '../../assets/twitter-circle.svg';
@@ -24,15 +24,32 @@ const Signup = () => {
   const passwordCheck = useInput('');
   const username = useInput('');
   const { routeTo } = useRouter();
+  const [passwordValid, setPasswordValid] = useState<boolean | null>(null);
+
+  const validatePassword = () => {
+    if (passwordCheck.value !== '') {
+      if (password.value === passwordCheck.value) {
+        setPasswordValid(true);
+      } else {
+        setPasswordValid(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    validatePassword();
+  }, [passwordCheck.value]);
 
   const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await auth?.signUp({
-      username: username.value,
-      email: email.value,
-      password: password.value,
-    });
-    routeTo('/siginin');
+    if (passwordValid) {
+      await auth?.signUp({
+        username: username.value,
+        email: email.value,
+        password: password.value,
+      });
+      routeTo('/siginin');
+    }
   };
 
   return (
@@ -59,6 +76,7 @@ const Signup = () => {
           type="password"
           value={passwordCheck.value}
           onChange={passwordCheck.onChange}
+          validate={passwordValid}
         />
         <AuthInput
           name="username"
