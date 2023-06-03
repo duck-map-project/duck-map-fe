@@ -4,6 +4,7 @@ import kakaotalk from '../../assets/kakaotalk.svg';
 import twitter from '../../assets/twitter-circle.svg';
 import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
+import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 
 import {
@@ -28,12 +29,27 @@ const SnsTextWithMargin = styled(SNSSignupText)`
 
 const Signin = () => {
   const { routeTo } = useRouter();
+  const email = useInput('');
+  const password = useInput('');
+
   return (
     <PageWrapper>
       <PageTitle>로그인</PageTitle>
       <FormWithMargin>
-        <AuthInput name="email" title="이메일" type="email" />
-        <AuthInput name="password" title="비밀번호" type="password" />
+        <AuthInput
+          name="email"
+          title="이메일"
+          type="email"
+          value={email.value}
+          onChange={email.onChange}
+        />
+        <AuthInput
+          name="password"
+          title="비밀번호"
+          type="password"
+          value={password.value}
+          onChange={password.onChange}
+        />
         <Button color="purple" size="wideBig">
           로그인
         </Button>
