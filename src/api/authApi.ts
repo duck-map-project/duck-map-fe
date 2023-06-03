@@ -1,12 +1,12 @@
 // import axios from 'axios';
 import { client } from './client';
 
-interface AuthRequest {
+export interface AuthRequest {
   email: string;
   password: string;
 }
 
-interface SignupRequest extends AuthRequest {
+export interface SignupRequest extends AuthRequest {
   username: string;
   userType?: string;
 }
@@ -43,7 +43,7 @@ export const signin = async ({ email, password }: AuthRequest) => {
 
 export const signout = async () => {
   try {
-    await client.get('/auth/logout');
+    client.get('/auth/logout');
   } catch (error) {
     console.error(error);
   }
