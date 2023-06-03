@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react';
 import { styled } from 'styled-components';
 
 import AddImageButton from '../../components/AddImageButton';
 import Button from '../../components/Button';
 import Rating from '../../components/Rating';
+import usePreviewImage from '../../hooks/usePreviewImage';
 
 import {
   ImgInput,
@@ -18,21 +18,7 @@ const ButtonWithMargin = styled(Button)`
 `;
 
 const EditReview = () => {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  const handleImgFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        setPreviewImage(e.target?.result as string);
-      };
-
-      reader.readAsDataURL(file);
-    }
-  };
+  const { previewImage, onChange } = usePreviewImage(null);
 
   return (
     <PageWrapper>
@@ -43,7 +29,7 @@ const EditReview = () => {
             id="img-input"
             type="file"
             accept="image/*"
-            onChange={handleImgFileChange}
+            onChange={onChange}
           />
         </PreviewImg>
         <Rating />
