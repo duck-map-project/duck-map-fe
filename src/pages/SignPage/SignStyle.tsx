@@ -74,3 +74,27 @@ export const SNSSignupButton = styled.button<{ url: string }>`
   cursor: pointer;
   background-image: url(${(props) => props.url});
 `;
+
+// siginup
+
+export const ProfileInput = styled.input`
+  display: none;
+`;
+
+export const ProfileImage = styled.div<{ image: string | null }>`
+  width: 100px;
+  height: 100px;
+  border: 1px solid var(--purple);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  position: relative;
+  & > label {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+  }
+  background-image: ${(props) => `url(${props.image})`};
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
