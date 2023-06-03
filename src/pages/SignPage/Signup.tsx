@@ -1,9 +1,12 @@
+import { FormEvent } from 'react';
+
 import kakaotalk from '../../assets/kakaotalk.svg';
 import twitter from '../../assets/twitter-circle.svg';
-import AddImageButton from '../../components/AddImageButton';
 import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
-import usePreviewImage from '../../hooks/usePreviewImage';
+import { useAuthContext } from '../../contexts/AuthContext';
+import useInput from '../../hooks/useInput';
+import { useRouter } from '../../hooks/useRouter';
 
 import {
   PageWrapper,
@@ -12,35 +15,58 @@ import {
   SNSSignupText,
   SNSButtonWrapper,
   SNSSignupButton,
-  ProfileImage,
-  ProfileInput,
 } from './SignStyle';
 
 const Signup = () => {
-  const { previewImage, onChange } = usePreviewImage(null);
-  console.log(previewImage);
+  const auth = useAuthContext();
+  const email = useInput('');
+  const password = useInput('');
+  const passwordCheck = useInput('');
+  const username = useInput('');
+  const { routeTo } = useRouter();
+
+  const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await auth?.signUp({
+      username: username.value,
+      email: email.value,
+      password: password.value,
+    });
+    routeTo('/siginin');
+  };
 
   return (
     <PageWrapper>
       <PageTitle>회원가입</PageTitle>
-      <Form>
-        <ProfileInput
-          id="profile-input"
-          type="file"
-          accept="image/*"
-          onChange={onChange}
+      <Form onSubmit={handleSignup}>
+        <AuthInput
+          name="email"
+          title="이메일"
+          type="email"
+          value={email.value}
+          onChange={email.onChange}
         />
-        <ProfileImage image={previewImage}>
-          <AddImageButton size="mid" htmlFor="profile-input" />
-        </ProfileImage>
-        <AuthInput name="email" title="이메일" type="email" />
-        <AuthInput name="password" title="비밀번호" type="password" />
+        <AuthInput
+          name="password"
+          title="비밀번호"
+          type="password"
+          value={password.value}
+          onChange={password.onChange}
+        />
         <AuthInput
           name="password-check"
           title="비밀번호 확인"
           type="password"
+          value={passwordCheck.value}
+          onChange={passwordCheck.onChange}
         />
-        <AuthInput name="nickname" title="닉네임" type="text" />
+        <AuthInput
+          name="username"
+          title="닉네임"
+          type="text"
+          value={username.value}
+          onChange={username.onChange}
+        />
         <Button color="purple" size="wideBig">
           가입하기
         </Button>

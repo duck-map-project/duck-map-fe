@@ -1,15 +1,6 @@
-// import axios from 'axios';
+import { AuthRequest, SignupRequest } from '../types/auth';
+
 import { client } from './client';
-
-interface AuthRequest {
-  email: string;
-  password: string;
-}
-
-interface SignupRequest extends AuthRequest {
-  username: string;
-  userType?: string;
-}
 
 export const signup = async ({ username, email, password }: SignupRequest) => {
   const requestData: SignupRequest = {
@@ -43,7 +34,7 @@ export const signin = async ({ email, password }: AuthRequest) => {
 
 export const signout = async () => {
   try {
-    await client.get('/auth/logout');
+    client.get('/auth/logout');
   } catch (error) {
     console.error(error);
   }

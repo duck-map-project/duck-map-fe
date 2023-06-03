@@ -1,9 +1,11 @@
+import { FormEvent } from 'react';
 import { styled } from 'styled-components';
 
 import kakaotalk from '../../assets/kakaotalk.svg';
 import twitter from '../../assets/twitter-circle.svg';
 import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
+import { useAuthContext } from '../../contexts/AuthContext';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 
@@ -28,14 +30,21 @@ const SnsTextWithMargin = styled(SNSSignupText)`
 `;
 
 const Signin = () => {
+  const auth = useAuthContext();
   const { routeTo } = useRouter();
   const email = useInput('');
   const password = useInput('');
 
+  const handleSignin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await auth?.signIn({ email: email.value, password: password.value });
+    routeTo('/');
+  };
+
   return (
     <PageWrapper>
       <PageTitle>로그인</PageTitle>
-      <FormWithMargin>
+      <FormWithMargin onSubmit={handleSignin}>
         <AuthInput
           name="email"
           title="이메일"

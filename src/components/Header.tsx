@@ -1,7 +1,9 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
+import defaultImage from '../assets/logo-icon.png';
 import logo from '../assets/logo.svg';
+import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
 import px2vw from '../utils/px2vw';
@@ -53,6 +55,7 @@ const Header: React.FC<HeaderProps> = ({
   profileRef,
   profileModal,
 }) => {
+  const auth = useAuthContext();
   const handleProfileClick = () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -83,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({
         <MenuButton>리뷰</MenuButton>
         <ProfileDropdown>
           <ProfileImg
-            src="https://i.pinimg.com/564x/f6/bb/3d/f6bb3d066a4b0066689e47cdec0cf3c0.jpg"
+            src={auth?.user?.image || defaultImage}
             alt="Profile"
             onClick={handleProfileClick}
             ref={profileRef}
