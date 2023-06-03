@@ -20,7 +20,7 @@ export const signup = async ({ username, email, password }: SignupRequest) => {
   };
 
   try {
-    const res = await client.post('/users', requestData);
+    const res = await client.post('/members/join', requestData);
     return res.data;
   } catch (error) {
     console.error(error);
