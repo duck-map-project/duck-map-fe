@@ -25,6 +25,9 @@ const Signup = () => {
   const username = useInput('');
   const { routeTo } = useRouter();
   const [passwordValid, setPasswordValid] = useState<boolean | null>(null);
+  const [formValid, setFormValid] = useState<boolean>(true);
+
+  console.log(formValid);
 
   const validatePassword = () => {
     if (passwordCheck.value !== '') {
@@ -52,6 +55,23 @@ const Signup = () => {
     }
   };
 
+  const handleFormValid = () => {
+    if (
+      passwordValid &&
+      email.value !== '' &&
+      password.value !== '' &&
+      username.value !== '' &&
+      passwordCheck.value !== ''
+    ) {
+      setFormValid(false);
+    } else {
+      setFormValid(true);
+    }
+  };
+
+  useEffect(() => {
+    handleFormValid();
+  }, [email.value, password.value, username.value, passwordCheck.value]);
   return (
     <PageWrapper>
       <PageTitle>회원가입</PageTitle>
@@ -85,7 +105,7 @@ const Signup = () => {
           value={username.value}
           onChange={username.onChange}
         />
-        <Button color="purple" size="wideBig">
+        <Button color="purple" size="wideBig" disabled={formValid}>
           가입하기
         </Button>
       </Form>
