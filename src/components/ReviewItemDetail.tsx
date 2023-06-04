@@ -31,7 +31,7 @@ const ImageBox = styled.div`
 
 const ProfileImage = styled.img`
   width: 100%;
-  margin-right: 11px;
+  margin-right: 10px;
 `;
 
 const InfoBox = styled.div``;
