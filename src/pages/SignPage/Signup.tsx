@@ -6,6 +6,7 @@ import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useInput from '../../hooks/useInput';
+import { useInputValidation } from '../../hooks/useInputValidation';
 import { useRouter } from '../../hooks/useRouter';
 
 import {
@@ -19,15 +20,14 @@ import {
 
 const Signup = () => {
   const auth = useAuthContext();
+  const { routeTo } = useRouter();
   const email = useInput('');
   const password = useInput('');
   const passwordCheck = useInput('');
   const username = useInput('');
-  const { routeTo } = useRouter();
   const [passwordValid, setPasswordValid] = useState<boolean | null>(null);
-  const [formValid, setFormValid] = useState<boolean>(true);
-
-  console.log(formValid);
+  const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
+  const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
   const validatePassword = () => {
     if (passwordCheck.value !== '') {
@@ -39,9 +39,48 @@ const Signup = () => {
     }
   };
 
+  const { isInputValid, handleInputValidation } = useInputValidation({
+    email: email.value,
+    password: password.value,
+    username: username.value,
+  });
+
   useEffect(() => {
     validatePassword();
-  }, [passwordCheck.value]);
+  }, [passwordCheck.value, password.value]);
+
+  useEffect(() => {
+    if (
+      email.value !== '' &&
+      password.value !== '' &&
+      username.value !== '' &&
+      passwordCheck.value !== ''
+    ) {
+      setIsFormFilled(true);
+    } else {
+      setIsFormFilled(false);
+    }
+  }, [email.value, password.value, username.value, passwordCheck.value]);
+
+  useEffect(() => {
+    if (
+      passwordValid &&
+      isFormFilled &&
+      isInputValid.email &&
+      isInputValid.password &&
+      isInputValid.username
+    ) {
+      setIsFormValid(false);
+    } else {
+      setIsFormValid(true);
+    }
+  }, [
+    passwordValid,
+    isFormFilled,
+    isInputValid.email,
+    isInputValid.password,
+    isInputValid.username,
+  ]);
 
   const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,23 +94,10 @@ const Signup = () => {
     }
   };
 
-  const handleFormValid = () => {
-    if (
-      passwordValid &&
-      email.value !== '' &&
-      password.value !== '' &&
-      username.value !== '' &&
-      passwordCheck.value !== ''
-    ) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  };
-
   useEffect(() => {
-    handleFormValid();
-  }, [email.value, password.value, username.value, passwordCheck.value]);
+    handleInputValidation();
+  }, [email.value, password.value, username.value]);
+
   return (
     <PageWrapper>
       <PageTitle>회원가입</PageTitle>
@@ -82,6 +108,7 @@ const Signup = () => {
           type="email"
           value={email.value}
           onChange={email.onChange}
+          isInputValid={isInputValid.email}
         />
         <AuthInput
           name="password"
@@ -89,6 +116,7 @@ const Signup = () => {
           type="password"
           value={password.value}
           onChange={password.onChange}
+          isInputValid={isInputValid.password}
         />
         <AuthInput
           name="password-check"
@@ -104,8 +132,9 @@ const Signup = () => {
           type="text"
           value={username.value}
           onChange={username.onChange}
+          isInputValid={isInputValid.username}
         />
-        <Button color="purple" size="wideBig" disabled={formValid}>
+        <Button color="purple" size="wideBig" disabled={isFormValid}>
           가입하기
         </Button>
       </Form>
