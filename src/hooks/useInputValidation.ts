@@ -14,8 +14,7 @@ interface Valid {
 
 export const useInputValidation = (props: InputValue) => {
   const emailRegEx = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-  const passwordRegEx =
-    /^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]{8,16}$/;
+  const passwordRegEx = /(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,16}/;
   const usernameRegEx = /^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}/;
   const [isInputValid, setIsValid] = useState<Valid>({
     email: null,
