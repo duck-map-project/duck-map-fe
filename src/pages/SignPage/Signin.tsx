@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 import kakaotalk from '../../assets/kakaotalk.svg';
@@ -7,6 +7,7 @@ import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useInput from '../../hooks/useInput';
+import { useInputValidation } from '../../hooks/useInputValidation';
 import { useRouter } from '../../hooks/useRouter';
 
 import {
@@ -34,6 +35,33 @@ const Signin = () => {
   const { routeTo } = useRouter();
   const email = useInput('');
   const password = useInput('');
+  const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
+  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+
+  const { isInputValid, handleInputValidation } = useInputValidation({
+    email: email.value,
+    password: password.value,
+  });
+
+  useEffect(() => {
+    if (email.value !== '' && password.value !== '') {
+      setIsFormFilled(true);
+    } else {
+      setIsFormFilled(false);
+    }
+  }, [email.value, password.value]);
+
+  useEffect(() => {
+    if (isFormFilled && isInputValid.email && isInputValid.password) {
+      setIsFormValid(false);
+    } else {
+      setIsFormValid(true);
+    }
+  }, [isFormFilled, isInputValid.email, isInputValid.password]);
+
+  useEffect(() => {
+    handleInputValidation();
+  }, [email.value, password.value]);
 
   const handleSignin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,6 +79,7 @@ const Signin = () => {
           type="email"
           value={email.value}
           onChange={email.onChange}
+          isInputValid={isInputValid.email}
         />
         <AuthInput
           name="password"
@@ -58,8 +87,9 @@ const Signin = () => {
           type="password"
           value={password.value}
           onChange={password.onChange}
+          isInputValid={isInputValid.password}
         />
-        <Button color="purple" size="wideBig">
+        <Button color="purple" size="wideBig" disabled={isFormValid}>
           로그인
         </Button>
       </FormWithMargin>
