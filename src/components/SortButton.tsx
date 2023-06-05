@@ -11,14 +11,14 @@ const Wrapper = styled.div`
   margin-right: 10px;
 `;
 
-const Select = styled.button<{ clicked: boolean }>`
+const Select = styled.button<{ $clicked: boolean }>`
   width: 180px;
   height: 50px;
   font-size: 1.6rem;
   border: 1px solid var(--purple);
   border-radius: 5px;
-  background-image: ${({ clicked }) =>
-    clicked ? `url(${arrowUp})` : `url(${arrowDown})`};
+  background-image: ${({ $clicked }) =>
+    $clicked ? `url(${arrowUp})` : `url(${arrowDown})`};
   background-repeat: no-repeat;
   background-position: right 30px center;
 `;
@@ -46,7 +46,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   };
   return (
     <Wrapper>
-      <Select clicked={clicked} onClick={handleClick} ref={sortButtonRef}>
+      <Select $clicked={clicked} onClick={handleClick} ref={sortButtonRef}>
         {SelectedText}
       </Select>
       {clicked ? (
