@@ -76,5 +76,7 @@ export const SNSSignupButton = styled.button<{ url: string }>`
 `;
 
 export const ErrorMessage = styled.p`
+  font-size: 12px;
   color: var(--red);
+  margin-bottom: 5px;
 `;
