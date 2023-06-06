@@ -37,7 +37,7 @@ const Signup = () => {
   return (
     <PageWrapper>
       <PageTitle>회원가입</PageTitle>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} noValidate>
         <AuthInput
           name="email"
           title="이메일"
