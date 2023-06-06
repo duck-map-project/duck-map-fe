@@ -7,7 +7,6 @@ export const signup = async ({ username, email, password }: SignupRequest) => {
     username,
     email,
     password,
-    userType: 'USER',
   };
 
   try {
