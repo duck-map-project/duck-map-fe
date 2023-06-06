@@ -53,6 +53,7 @@ const Signin = () => {
           type="email"
           value={inputs.email}
           onChange={handleChange}
+          autoComplete="email"
           isInputValid={!errors.email}
         />
         {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
@@ -63,6 +64,7 @@ const Signin = () => {
           type="password"
           value={inputs.password}
           onChange={handleChange}
+          autoComplete="current-password"
           isInputValid={!errors.password}
         />
         {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
