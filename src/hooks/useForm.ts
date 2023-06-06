@@ -1,6 +1,11 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 
-import { validateAll } from '../utils/validates';
+import {
+  validateAll,
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from '../utils/validates';
 
 interface Inputs {
   email: string;
@@ -26,32 +31,6 @@ interface FormProps {
   inputs: Inputs;
   errors: Errors;
 }
-
-const validateEmail = (email: string): string | undefined => {
-  if (email === '') {
-    return '필수 항목입니다.';
-  } else if (!/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/.test(email)) {
-    return '유효한 이메일 주소가 아닙니다.';
-  }
-};
-
-const validatePassword = (password: string): string | undefined => {
-  if (password === '') {
-    return '비밀번호는 필수 항목입니다.';
-  } else if (
-    !/(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,16}/.test(password)
-  ) {
-    return '유효하지 않은 비밀번호입니다.';
-  }
-};
-
-const validateUsername = (username: string): string | undefined => {
-  if (username === '') {
-    return '사용자 이름은 필수 항목입니다.';
-  } else if (!/^[ㄱ-ㅎ가-힣a-z0-9-_]{2,10}/.test(username)) {
-    return '유효하지 않은 사용자 이름입니다.';
-  }
-};
 
 const validatePasswordMatch = (
   password: string,
