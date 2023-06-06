@@ -74,3 +74,7 @@ export const SNSSignupButton = styled.button<{ url: string }>`
   cursor: pointer;
   background-image: url(${(props) => props.url});
 `;
+
+export const ErrorMessage = styled.p`
+  color: var(--red);
+`;
