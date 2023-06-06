@@ -44,7 +44,7 @@ export const validateUsername = (username: string): string | undefined => {
 export const validatePasswordMatch = (
   password: string,
   passwordCheck: string
-) => {
+): string | undefined => {
   if (passwordCheck === '') {
     return '필수 항목입니다.';
   } else if (passwordCheck && password !== passwordCheck) {
