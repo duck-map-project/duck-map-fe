@@ -78,7 +78,9 @@ const useForm = (initialValue: Inputs, callback: Callback): FormProps => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
     setErrors(validateAll(inputs));
-    setIsSubmitting(true);
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      setIsSubmitting(true);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
