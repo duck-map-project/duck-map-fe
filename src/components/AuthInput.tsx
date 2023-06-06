@@ -7,12 +7,12 @@ const Title = styled.label`
 const Input = styled.input<{
   id: string;
   validate?: boolean | null;
-  isInputValid?: boolean | null;
+  $isInputValid?: boolean | null;
 }>`
   width: 100%;
   ${(props) =>
     (props.id === 'password-check' && props.validate === false) ||
-    props.isInputValid === false
+    props.$isInputValid === false
       ? error
       : primary}
   border-radius: 5px;
@@ -49,7 +49,7 @@ const AuthInput: React.FC<PropsType> = ({
       <Input
         id={name}
         validate={validate}
-        isInputValid={isInputValid}
+        $isInputValid={isInputValid}
         {...props}
       />
     </>
