@@ -6,15 +6,10 @@ const Title = styled.label`
 
 const Input = styled.input<{
   id: string;
-  validate?: boolean | null;
-  $isInputValid?: boolean | null;
+  $isInputValid: boolean | null;
 }>`
   width: 100%;
-  ${(props) =>
-    (props.id === 'password-check' && props.validate === false) ||
-    props.$isInputValid === false
-      ? error
-      : primary}
+  ${(props) => (props.$isInputValid === false ? error : primary)}
   border-radius: 5px;
   padding: 10px 5px;
   font-size: 1.4rem;
@@ -32,26 +27,19 @@ const error = css`
 interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   title: string;
-  validate?: boolean | null;
-  isInputValid?: boolean | null;
+  isInputValid: boolean | null;
 }
 
 const AuthInput: React.FC<PropsType> = ({
   name,
   title,
-  validate,
   isInputValid,
   ...props
 }) => {
   return (
     <>
       <Title htmlFor={name}>{title}</Title>
-      <Input
-        id={name}
-        validate={validate}
-        $isInputValid={isInputValid}
-        {...props}
-      />
+      <Input id={name} $isInputValid={isInputValid} name={name} {...props} />
     </>
   );
 };

@@ -1,4 +1,3 @@
-import { FormEvent, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 import kakaotalk from '../../assets/kakaotalk.svg';
@@ -6,8 +5,7 @@ import twitter from '../../assets/twitter-circle.svg';
 import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
 import { useAuthContext } from '../../contexts/AuthContext';
-import useInput from '../../hooks/useInput';
-import { useInputValidation } from '../../hooks/useInputValidation';
+import useForm from '../../hooks/useForm';
 import { useRouter } from '../../hooks/useRouter';
 
 import {
@@ -18,6 +16,7 @@ import {
   SNSButtonWrapper,
   SNSSignupText,
   LinkText,
+  ErrorMessage,
 } from './SignStyle';
 
 const FormWithMargin = styled(Form)`
@@ -33,63 +32,44 @@ const SnsTextWithMargin = styled(SNSSignupText)`
 const Signin = () => {
   const auth = useAuthContext();
   const { routeTo } = useRouter();
-  const email = useInput('');
-  const password = useInput('');
-  const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
-  const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
-  const { isInputValid, handleInputValidation } = useInputValidation({
-    email: email.value,
-    password: password.value,
-  });
-
-  useEffect(() => {
-    if (email.value !== '' && password.value !== '') {
-      setIsFormFilled(true);
-    } else {
-      setIsFormFilled(false);
-    }
-  }, [email.value, password.value]);
-
-  useEffect(() => {
-    if (isFormFilled && isInputValid.email && isInputValid.password) {
-      setIsFormValid(false);
-    } else {
-      setIsFormValid(true);
-    }
-  }, [isFormFilled, isInputValid.email, isInputValid.password]);
-
-  useEffect(() => {
-    handleInputValidation();
-  }, [email.value, password.value]);
-
-  const handleSignin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await auth?.signIn({ email: email.value, password: password.value });
+  const handleSignin = async () => {
+    await auth?.signIn({ email: inputs.email, password: inputs.password });
     routeTo('/');
   };
+
+  const { handleChange, handleSubmit, inputs, errors } = useForm(
+    { email: '', password: '' },
+    handleSignin
+  );
 
   return (
     <PageWrapper>
       <PageTitle>로그인</PageTitle>
-      <FormWithMargin onSubmit={handleSignin}>
+      <FormWithMargin onSubmit={handleSubmit} noValidate>
         <AuthInput
           name="email"
           title="이메일"
           type="email"
-          value={email.value}
-          onChange={email.onChange}
-          isInputValid={isInputValid.email}
+          value={inputs.email}
+          onChange={handleChange}
+          autoComplete="email"
+          isInputValid={!errors.email}
         />
+        {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+
         <AuthInput
           name="password"
           title="비밀번호"
           type="password"
-          value={password.value}
-          onChange={password.onChange}
-          isInputValid={isInputValid.password}
+          value={inputs.password}
+          onChange={handleChange}
+          autoComplete="current-password"
+          isInputValid={!errors.password}
         />
-        <Button color="purple" size="wideBig" disabled={isFormValid}>
+        {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+
+        <Button color="purple" size="wideBig">
           로그인
         </Button>
       </FormWithMargin>

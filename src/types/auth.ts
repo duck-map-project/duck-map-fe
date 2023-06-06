@@ -5,5 +5,4 @@ export interface AuthRequest {
 
 export interface SignupRequest extends AuthRequest {
   username: string;
-  userType?: string;
 }
