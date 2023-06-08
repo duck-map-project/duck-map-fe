@@ -5,6 +5,7 @@ import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
+import NotFound from './pages/NotFoundPage/NotFound';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
 
@@ -13,6 +14,7 @@ interface RouterElement {
   path: string;
   element: React.ReactNode;
   withAuth: boolean;
+  wrapWithLayout: boolean;
 }
 
 const routerData: RouterElement[] = [
@@ -21,24 +23,28 @@ const routerData: RouterElement[] = [
     path: '/',
     element: <Main />,
     withAuth: false,
+    wrapWithLayout: true,
   },
   {
     id: 1,
     path: '/signin',
     element: <Signin />,
     withAuth: false,
+    wrapWithLayout: true,
   },
   {
     id: 2,
     path: '/signup',
     element: <Signup />,
     withAuth: false,
+    wrapWithLayout: true,
   },
   {
     id: 3,
     path: '/event',
     element: <EventList />,
     withAuth: false,
+    wrapWithLayout: true,
   },
   {
     id: 4,
@@ -46,12 +52,21 @@ const routerData: RouterElement[] = [
     path: '/event/detail',
     element: <DetailInfo />,
     withAuth: false,
+    wrapWithLayout: true,
   },
   {
     id: 5,
     path: '/review/edit',
     element: <EditReview />,
     withAuth: true,
+    wrapWithLayout: true,
+  },
+  {
+    id: 7,
+    path: '*',
+    element: <NotFound />,
+    withAuth: false,
+    wrapWithLayout: false,
   },
 ];
 
@@ -64,9 +79,15 @@ export const routers = createBrowserRouter(
         element: <Navigate to="/signin" />,
       };
     }
+    if (router.wrapWithLayout) {
+      return {
+        path: router.path,
+        element: <GeneralLayout>{router.element}</GeneralLayout>,
+      };
+    }
     return {
       path: router.path,
-      element: <GeneralLayout>{router.element}</GeneralLayout>,
+      element: router.element,
     };
   })
 );
