@@ -57,8 +57,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const auth = useAuthContext();
   const handleProfileClick = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    if (!auth?.isLogin) {
       routeTo('/signin');
       return;
     }
@@ -86,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({
         <MenuButton>리뷰</MenuButton>
         <ProfileDropdown>
           <ProfileImg
-            src={auth?.user?.image || defaultImage}
+            src={defaultImage}
             alt="Profile"
             onClick={handleProfileClick}
             ref={profileRef}

@@ -1,31 +1,24 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { signin, signout, signup } from '../api/authApi';
 import { SignupRequest, AuthRequest } from '../types/auth';
 
-interface User {
-  id: number;
-  username: string;
-  image: string;
-  lastSearchArtist: number;
-  token: string;
-}
-
 export interface Auth {
-  user: User | null;
+  isLogin: boolean;
+  setIsLogin: Dispatch<SetStateAction<boolean>>;
   signIn: (data: AuthRequest) => Promise<void>;
   signUp: (data: SignupRequest) => Promise<void>;
   signOut: () => void;
 }
 
 export const useAuth = (): Auth => {
-  const [user, setUser] = useState<User | null>(null);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  console.log(isLogin);
 
   const signIn = async (data: AuthRequest) => {
     try {
-      const signinResult = await signin(data);
-      setUser(signinResult);
-      localStorage.setItem('token', signinResult.token);
+      await signin(data);
+      setIsLogin(true);
     } catch (err) {
       console.error(err);
     }
@@ -39,10 +32,9 @@ export const useAuth = (): Auth => {
     }
   };
 
-  const signOut = () => {
-    signout();
-    localStorage.removeItem('token');
+  const signOut = async () => {
+    await signout();
   };
 
-  return { user, signIn, signUp, signOut };
+  return { isLogin, setIsLogin, signIn, signUp, signOut };
 };
