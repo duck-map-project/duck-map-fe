@@ -1,6 +1,6 @@
 import { AuthRequest, SignupRequest } from '../types/auth';
 
-import { client } from './client';
+import client from './client';
 
 export const signup = async ({ username, email, password }: SignupRequest) => {
   const requestData: SignupRequest = {
@@ -25,7 +25,8 @@ export const signin = async ({ email, password }: AuthRequest) => {
 
   try {
     const res = await client.post('/auth/login', requestData);
-    return res.data;
+    const accessToken = res.headers.authorization;
+    client.defaults.headers.common['Authorization'] = accessToken;
   } catch (error) {
     console.error(error);
   }
@@ -33,7 +34,7 @@ export const signin = async ({ email, password }: AuthRequest) => {
 
 export const signout = async () => {
   try {
-    client.get('/auth/logout');
+    await client.post('/auth/logout');
   } catch (error) {
     console.error(error);
   }
