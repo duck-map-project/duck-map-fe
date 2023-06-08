@@ -1,5 +1,10 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from 'react-router-dom';
 
+import { useAuthContext } from './contexts/AuthContext';
 import GeneralLayout from './layout/GeneralLayout';
 import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
@@ -70,24 +75,27 @@ const routerData: RouterElement[] = [
   },
 ];
 
-export const routers = createBrowserRouter(
-  routerData.map((router) => {
-    const token = localStorage.getItem('token');
-    if (!token && router.withAuth) {
+export const Router = () => {
+  const auth = useAuthContext();
+  const routers = createBrowserRouter(
+    routerData.map((router) => {
+      if (!auth?.isLogin && router.withAuth) {
+        return {
+          path: router.path,
+          element: <Navigate to="/signin" />,
+        };
+      }
+      if (router.wrapWithLayout) {
+        return {
+          path: router.path,
+          element: <GeneralLayout>{router.element}</GeneralLayout>,
+        };
+      }
       return {
         path: router.path,
-        element: <Navigate to="/signin" />,
+        element: router.element,
       };
-    }
-    if (router.wrapWithLayout) {
-      return {
-        path: router.path,
-        element: <GeneralLayout>{router.element}</GeneralLayout>,
-      };
-    }
-    return {
-      path: router.path,
-      element: router.element,
-    };
-  })
-);
+    })
+  );
+  return <RouterProvider router={routers} />;
+};
