@@ -16,6 +16,12 @@ const white = css`
   color: #000;
 `;
 
+const disabled = css`
+  border: 1px solid var(--disabled);
+  background-color: var(--disabled);
+  color: var(--white);
+`;
+
 const wideBig = css`
   width: 100%;
   height: 45px;
@@ -49,7 +55,8 @@ const ButtonStyle = styled.button<PropsTypes>`
   border-radius: 5px;
   cursor: pointer;
   word-break: keep-all;
-  ${(props) => (props.color ? colors[props.color] : '')}
+  ${(props) =>
+    !props.disabled && props.color ? colors[props.color] : disabled}
   ${(props) => (props.size ? sizes[props.size] : '')}
 `;
 

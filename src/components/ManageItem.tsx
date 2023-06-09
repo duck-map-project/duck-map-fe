@@ -66,8 +66,8 @@ const ManageItem = ({ image, membername }: ManageItemProps) => {
     <ManageItemBox>
       <ItemImageSection>
         <ItemConfig>
-          <Edit></Edit>
-          <Delete></Delete>
+          <Edit />
+          <Delete />
         </ItemConfig>
         <ItemImageBox>
           <ItemImage src={image} alt="image" />

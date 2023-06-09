@@ -51,6 +51,7 @@ const StarItem = styled.li`
   border-radius: 50%;
   background-color: var(--blue);
   margin-right: 10px;
+  flex-shrink: 0;
   &:last-child {
     margin-right: 0;
   }

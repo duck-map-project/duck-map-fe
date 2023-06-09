@@ -13,7 +13,8 @@ export const PageTitle = styled.h1`
 `;
 
 export const Form = styled.form`
-  width: 385px;
+  width: 100%;
+  max-width: 385px;
   display: flex;
   flex-direction: column;
   margin-bottom: 29px;
@@ -72,4 +73,10 @@ export const SNSSignupButton = styled.button<{ url: string }>`
   border-radius: 50%;
   cursor: pointer;
   background-image: url(${(props) => props.url});
+`;
+
+export const ErrorMessage = styled.p`
+  font-size: 12px;
+  color: var(--red);
+  margin-bottom: 5px;
 `;

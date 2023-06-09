@@ -1,5 +1,8 @@
 import { styled } from 'styled-components';
 
+import { useAuthContext } from '../contexts/AuthContext';
+import { useRouter } from '../hooks/useRouter';
+
 const Wrapper = styled.ul`
   width: 178px;
   padding: 12px 0;
@@ -33,14 +36,36 @@ const Dropdown: React.FC<DropdownProps> = ({
   setSelectedText,
   setClicked,
 }) => {
+  const auth = useAuthContext();
+  const { routeTo } = useRouter();
+
+  const handleListClick = async (list: string) => {
+    switch (list) {
+      case '로그아웃':
+        auth?.signOut();
+        routeTo('/signin');
+        setClicked(false);
+
+        break;
+
+      case '마이페이지':
+        routeTo('/mypage/bookmark');
+        setClicked(false);
+
+        break;
+      default:
+        setSelectedText && setSelectedText(list);
+        setClicked(false);
+        break;
+    }
+  };
   return (
     <Wrapper>
       {lists.map((list, i) => (
         <Item
           key={i}
           onClick={() => {
-            setSelectedText && setSelectedText(list);
-            setClicked(false);
+            handleListClick(list);
           }}
         >
           {list}

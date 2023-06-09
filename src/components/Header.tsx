@@ -1,8 +1,12 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
+import defaultImage from '../assets/logo-icon.png';
 import logo from '../assets/logo.svg';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
+import px2vw from '../utils/px2vw';
 
 import Dropdown from './Dropdown';
 
@@ -11,15 +15,16 @@ export const HeaderStyle = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 70px 53.8px 18px;
+  padding: ${px2vw(8)} ${px2vw(70)} ${px2vw(53.8)} ${px2vw(18)};
 `;
 
 export const Logo = styled.img`
   width: 200px;
+  cursor: pointer;
 `;
 
 export const MenuButton = styled(TextButton)`
-  margin-right: 40px;
+  margin-right: ${px2vw(40)};
 `;
 
 export const RightSection = styled.section`
@@ -50,25 +55,43 @@ const Header: React.FC<HeaderProps> = ({
   profileRef,
   profileModal,
 }) => {
+  const auth = useAuthContext();
   const handleProfileClick = () => {
+    if (!auth?.isLogin) {
+      routeTo('/signin');
+      return;
+    }
     setProfileModal((prev) => !prev);
   };
-  const DropdwonList = ['마이페이지', '로그아웃'];
+  const DropdwonLoginList = ['마이페이지', '로그아웃'];
+  const { routeTo } = useRouter();
   return (
     <HeaderStyle>
-      <Logo src={logo} alt="Logo" />
+      <Logo
+        src={logo}
+        alt="Logo"
+        onClick={() => {
+          routeTo('/');
+        }}
+      />
       <RightSection>
-        <MenuButton>이벤트</MenuButton>
+        <MenuButton
+          onClick={() => {
+            routeTo('/event');
+          }}
+        >
+          이벤트
+        </MenuButton>
         <MenuButton>리뷰</MenuButton>
         <ProfileDropdown>
           <ProfileImg
-            src="https://i.pinimg.com/564x/f6/bb/3d/f6bb3d066a4b0066689e47cdec0cf3c0.jpg"
+            src={defaultImage}
             alt="Profile"
             onClick={handleProfileClick}
             ref={profileRef}
           />
           {profileModal ? (
-            <Dropdown lists={DropdwonList} setClicked={setProfileModal} />
+            <Dropdown lists={DropdwonLoginList} setClicked={setProfileModal} />
           ) : null}
         </ProfileDropdown>
       </RightSection>

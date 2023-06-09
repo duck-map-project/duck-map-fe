@@ -1,8 +1,10 @@
 import { styled } from 'styled-components';
 
+import px2vw from '../../utils/px2vw';
+
 const PageWrapper = styled.section`
   width: 100%;
-  padding: 177px 146px 0;
+  padding: 177px ${px2vw(146)} 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +12,7 @@ const PageWrapper = styled.section`
 
 const MapSpace = styled.section`
   width: 100%;
-  height: 554px;
+  height: ${px2vw(554)};
   background-color: #000;
 `;
 
