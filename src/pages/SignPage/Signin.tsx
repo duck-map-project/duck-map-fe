@@ -4,6 +4,9 @@ import kakaotalk from '../../assets/kakaotalk.svg';
 import twitter from '../../assets/twitter-circle.svg';
 import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
+import { useAuthContext } from '../../contexts/AuthContext';
+import useForm from '../../hooks/useForm';
+import { useRouter } from '../../hooks/useRouter';
 
 import {
   PageTitle,
@@ -13,6 +16,7 @@ import {
   SNSButtonWrapper,
   SNSSignupText,
   LinkText,
+  ErrorMessage,
 } from './SignStyle';
 
 const FormWithMargin = styled(Form)`
@@ -26,18 +30,57 @@ const SnsTextWithMargin = styled(SNSSignupText)`
 `;
 
 const Signin = () => {
+  const auth = useAuthContext();
+  const { routeTo } = useRouter();
+
+  const handleSignin = async () => {
+    await auth?.signIn({ email: inputs.email, password: inputs.password });
+    routeTo('/');
+  };
+
+  const { handleChange, handleSubmit, inputs, errors } = useForm(
+    { email: '', password: '' },
+    handleSignin
+  );
+
   return (
     <PageWrapper>
       <PageTitle>로그인</PageTitle>
-      <FormWithMargin>
-        <AuthInput name="email" title="이메일" type="email" />
-        <AuthInput name="password" title="비밀번호" type="password" />
+      <FormWithMargin onSubmit={handleSubmit} noValidate>
+        <AuthInput
+          name="email"
+          title="이메일"
+          type="email"
+          value={inputs.email}
+          onChange={handleChange}
+          autoComplete="email"
+          isInputValid={!errors.email}
+        />
+        {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+
+        <AuthInput
+          name="password"
+          title="비밀번호"
+          type="password"
+          value={inputs.password}
+          onChange={handleChange}
+          autoComplete="current-password"
+          isInputValid={!errors.password}
+        />
+        {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+
         <Button color="purple" size="wideBig">
           로그인
         </Button>
       </FormWithMargin>
       <div>
-        <LinkText>회원가입</LinkText>
+        <LinkText
+          onClick={() => {
+            routeTo('/signup');
+          }}
+        >
+          회원가입
+        </LinkText>
         <LinkText>비밀번호 찾기</LinkText>
       </div>
       <SnsTextWithMargin>간편 로그인</SnsTextWithMargin>
