@@ -25,7 +25,7 @@ const ItemConfig = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 5;
+  z-index: 10;
 `;
 
 const Edit = styled.button`
