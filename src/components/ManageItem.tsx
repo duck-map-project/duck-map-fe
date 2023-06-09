@@ -71,14 +71,15 @@ const ManageItem = ({
         <ItemConfig>
           <Edit />
           <Delete />
-        </ItemConfig>
+        </ItemConfig >
         <ItemImageBox>
           <ItemImage src={image} alt="image" />
         </ItemImageBox>
-      </ItemImageSection>
+      </ItemImageSection >
       <ItemTitleSection>{membername}</ItemTitleSection>
-    </ManageItemBox>
+    </ManageItemBox >
   );
 };
 
 export default ManageItem;
+
