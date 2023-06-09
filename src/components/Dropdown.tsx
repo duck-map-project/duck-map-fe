@@ -49,7 +49,10 @@ const Dropdown: React.FC<DropdownProps> = ({
         break;
 
       case '마이페이지':
-      // TODO: mypage로 이동
+        routeTo('/mypage/bookmark');
+        setClicked(false);
+
+        break;
       default:
         setSelectedText && setSelectedText(list);
         setClicked(false);

@@ -2,10 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import SortDropdown from '../../components/SortButton';
 
-import {
-  InfoSection,
-  EditSection,
-} from './MyPageStyle';
+import { InfoSection, EditSection } from './MyPageStyle';
 
 const MyLike = () => {
   const sortButtonRef = useRef<HTMLButtonElement>(null);
@@ -37,8 +34,7 @@ const MyLike = () => {
           setClicked={setSortModal}
         />
       </InfoSection>
-      <EditSection>
-      </EditSection>
+      <EditSection></EditSection>
     </>
   );
 };

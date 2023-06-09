@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import SortDropdown from '../../components/SortButton';
 
-import {
-  InfoSection,
-  EditSection,
-} from './MyPageStyle';
+import SortDropdown from '../../components/SortButton';
+import { InfoSection, EditSection } from './MyPageStyle';
 
 const MyBookmark = () => {
   const sortButtonRef = useRef<HTMLButtonElement>(null);
@@ -36,8 +33,7 @@ const MyBookmark = () => {
           setClicked={setSortModal}
         />
       </InfoSection>
-      <EditSection>
-      </EditSection>
+      <EditSection></EditSection>
     </>
   );
 };
