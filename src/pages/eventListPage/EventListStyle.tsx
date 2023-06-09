@@ -1,12 +1,13 @@
 import { styled } from 'styled-components';
 
 import plusIcon from '../../assets/plus-white.svg';
+import px2vw from '../../utils/px2vw';
 
 export const PageWrapper = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 65px;
+  padding: 0 ${px2vw(65)};
 `;
 
 export const ListContentsSection = styled.section`

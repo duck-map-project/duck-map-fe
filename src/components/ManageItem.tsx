@@ -25,7 +25,7 @@ const ItemConfig = styled.div`
 position: absolute;
 top:0;
 right: 0;
-z-index: 10;
+z-index: 5;
 `;
 
 const Edit = styled.button`
@@ -69,15 +69,15 @@ const ManageItem = ({
     <ManageItemBox>
       <ItemImageSection>
         <ItemConfig>
-          <Edit></Edit>
-          <Delete></Delete>
-        </ItemConfig>
+          <Edit />
+          <Delete />
+        </ItemConfig >
         <ItemImageBox>
           <ItemImage src={image} alt="image" />
         </ItemImageBox>
-      </ItemImageSection>
+      </ItemImageSection >
       <ItemTitleSection>{membername}</ItemTitleSection>
-    </ManageItemBox>
+    </ManageItemBox >
   );
 };
 
