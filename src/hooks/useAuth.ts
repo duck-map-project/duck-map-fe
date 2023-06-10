@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { signin, signout, signup } from '../api/authApi';
 import { SignupRequest, AuthRequest } from '../types/auth';
@@ -22,9 +22,17 @@ interface ErrorMessage {
 }
 
 export const useAuth = (): Auth => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const isLoginStored = localStorage.getItem('isLogin') === 'true';
+  const [isLogin, setIsLogin] = useState<boolean>(isLoginStored);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage>({});
   const { routeTo } = useRouter();
+
+  useEffect(() => {
+    // isLogin 값 바뀔 때
+    localStorage.setItem('isLogin', String(isLogin));
+    console.log('isLogin 값 바뀔 때' + isLogin);
+    console.log(localStorage.getItem('isLogin'));
+  }, [isLogin]);
 
   const signIn = async (data: AuthRequest) => {
     try {
@@ -76,6 +84,8 @@ export const useAuth = (): Auth => {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
+        console.error(error);
+
         setErrorMessage({ signout: '로그아웃에 실패했습니다.' });
       }
     }
