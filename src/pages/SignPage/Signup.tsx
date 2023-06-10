@@ -13,13 +13,14 @@ import {
   SNSButtonWrapper,
   SNSSignupButton,
   ErrorMessage,
+  CenterErrorMessage,
 } from './SignStyle';
 
 const Signup = () => {
   const auth = useAuthContext();
 
-  const handleSignup = () => {
-    auth?.signUp({
+  const handleSignup = async () => {
+    await auth?.signUp({
       username: inputs.username as string,
       email: inputs.email,
       password: inputs.password,
@@ -82,7 +83,7 @@ const Signup = () => {
           가입하기
         </Button>
         {auth?.errorMessage.signup && (
-          <ErrorMessage>{auth?.errorMessage.signup}</ErrorMessage>
+          <CenterErrorMessage>{auth?.errorMessage.signup}</CenterErrorMessage>
         )}
       </Form>
       <SNSSignupText>간편 회원가입</SNSSignupText>
