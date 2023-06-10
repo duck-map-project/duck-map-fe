@@ -72,7 +72,7 @@ const routerData: RouterElement[] = [
     path: '/mypage',
     element: <MyPage />,
     withAuth: true,
-    wrapWithLayout: false,
+    wrapWithLayout: true,
   },
   {
     id: 7,
