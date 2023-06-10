@@ -11,9 +11,11 @@ export const signup = async ({ username, email, password }: SignupRequest) => {
 
   try {
     const res = await client.post('/members/join', requestData);
-    return res.data;
+    if (res.request.status === 200) {
+      return 'success';
+    }
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
@@ -26,16 +28,22 @@ export const signin = async ({ email, password }: AuthRequest) => {
   try {
     const res = await client.post('/auth/login', requestData);
     const accessToken = res.headers.authorization;
-    client.defaults.headers.common['Authorization'] = accessToken;
+    if (res.request.status === 200) {
+      client.defaults.headers.common['Authorization'] = accessToken;
+      return 'success';
+    }
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 
 export const signout = async () => {
   try {
-    await client.post('/auth/logout');
+    const res = await client.post('/auth/logout');
+    if (res.request.status === 200) {
+      return 'success';
+    }
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };

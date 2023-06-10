@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import SortDropdown from '../../components/SortButton';
+
 import { InfoSection, EditSection } from './MyPageStyle';
 
 const MyBookmark = () => {
