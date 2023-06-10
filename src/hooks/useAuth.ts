@@ -1,7 +1,8 @@
 import { AxiosError } from 'axios';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { signin, signout, signup } from '../api/authApi';
+import client from '../api/client';
 import { SignupRequest, AuthRequest } from '../types/auth';
 
 import { useRouter } from './useRouter';
@@ -21,10 +22,59 @@ interface ErrorMessage {
   signout?: string;
 }
 
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  image: string;
+  role: string;
+}
+
 export const useAuth = (): Auth => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const isLoginStored = localStorage.getItem('isLogin') === 'true';
+  const [isLogin, setIsLogin] = useState<boolean>(isLoginStored);
+  const storedUser = localStorage.getItem('user');
+  const initialUser: User | null = storedUser ? JSON.parse(storedUser) : null;
+
+  const [user, setUser] = useState<User | null>(initialUser);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage>({});
   const { routeTo } = useRouter();
+
+  useEffect(() => {
+    // isLogin 값 바뀔 때
+    localStorage.setItem('isLogin', String(isLogin));
+  }, [isLogin]);
+
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
+
+  const FetchUser = async () => {
+    try {
+      const res = await client.get('/members/me');
+
+      if (res.status === 200) {
+        setUser({
+          id: res.data.id,
+          username: res.data.username,
+          email: res.data.email,
+          // FIXME: 이미지 조회 구현되면 이미지 조회해서 불러오기
+          image: '',
+          role: res.data.role,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isLogin) {
+      FetchUser();
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [isLogin]);
 
   const signIn = async (data: AuthRequest) => {
     try {
@@ -76,6 +126,8 @@ export const useAuth = (): Auth => {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
+        console.error(error);
+
         setErrorMessage({ signout: '로그아웃에 실패했습니다.' });
       }
     }
