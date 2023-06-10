@@ -23,7 +23,7 @@ interface Errors {
 }
 
 interface Callback {
-  (): Promise<void>;
+  (): void;
 }
 
 interface FormProps {

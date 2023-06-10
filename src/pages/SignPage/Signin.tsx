@@ -33,9 +33,8 @@ const Signin = () => {
   const auth = useAuthContext();
   const { routeTo } = useRouter();
 
-  const handleSignin = async () => {
-    await auth?.signIn({ email: inputs.email, password: inputs.password });
-    routeTo('/');
+  const handleSignin = () => {
+    auth?.signIn({ email: inputs.email, password: inputs.password });
   };
 
   const { handleChange, handleSubmit, inputs, errors } = useForm(
@@ -73,6 +72,9 @@ const Signin = () => {
           로그인
         </Button>
       </FormWithMargin>
+      {auth?.errorMessage.signin && (
+        <ErrorMessage>{auth?.errorMessage.signin}</ErrorMessage>
+      )}
       <div>
         <LinkText
           onClick={() => {

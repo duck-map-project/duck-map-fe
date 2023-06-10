@@ -39,11 +39,10 @@ const Dropdown: React.FC<DropdownProps> = ({
   const auth = useAuthContext();
   const { routeTo } = useRouter();
 
-  const handleListClick = async (list: string) => {
+  const handleListClick = (list: string) => {
     switch (list) {
       case '로그아웃':
         auth?.signOut();
-        routeTo('/signin');
         setClicked(false);
 
         break;
