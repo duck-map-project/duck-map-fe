@@ -5,7 +5,7 @@ export const PageWrapper = styled.section`
 `;
 
 export const InfoSection = styled.section`
-  width: 500px; 
+  width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,9 +18,7 @@ export const ProfileImg = styled.img`
   border-radius: 50%;
 `;
 
-export const MyPageUl = styled.ul`
-  
-`;
+export const MyPageUl = styled.ul``;
 
 export const MyPageLi = styled.a`
   display: block;
@@ -32,5 +30,3 @@ export const EditSection = styled.section`
   flex-direction: column;
   align-items: center;
 `;
-
-
