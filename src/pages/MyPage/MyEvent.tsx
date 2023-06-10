@@ -13,11 +13,11 @@ import Tag from '../../components/Tag';
 const MyEvent = () => {
   return (
     <EventListItemBox>
-      <EventImage/>
+      <EventImage />
       <div>
         {/* <NameSection> */}
-          {/* <GroupName>그룹명</GroupName> */}
-          {/* <RegularTxt>멤버 이름</RegularTxt> */}
+        {/* <GroupName>그룹명</GroupName> */}
+        {/* <RegularTxt>멤버 이름</RegularTxt> */}
         {/* </NameSection> */}
         <Tag marginB="16px" />
         {/* <RegularTxt> 주소 </RegularTxt> */}
