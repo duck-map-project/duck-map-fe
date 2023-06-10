@@ -1,41 +1,25 @@
-import { useState, useEffect, useRef } from 'react';
-
-import SortDropdown from '../../components/SortButton';
-
-import { InfoSection, EditSection } from './MyPageStyle';
+import {
+  EventListItemBox,
+  // EventImage,
+  // NameSection,
+  // GroupName,
+  // RegularTxt,
+  // Tag
+} from '../../components/EventListItem';
 
 const MyEvent = () => {
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
-  const [SortModal, setSortModal] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sortButtonRef.current &&
-        !sortButtonRef.current.contains(event.target as Node)
-      ) {
-        setSortModal(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
   return (
-    <>
-      <InfoSection>
-        <SortDropdown
-          sortButtonRef={sortButtonRef}
-          clicked={SortModal}
-          setClicked={setSortModal}
-        />
-      </InfoSection>
-      <EditSection></EditSection>
-    </>
+    <EventListItemBox>
+      {/* <EventImage />
+      <div>
+        <NameSection>
+          <GroupName>그룹명</GroupName>
+          <RegularTxt>멤버 이름</RegularTxt>
+        </NameSection>
+        <Tag marginB="16px" />
+        <RegularTxt> 주소 </RegularTxt>
+      </div> */}
+    </EventListItemBox>
   );
 };
 

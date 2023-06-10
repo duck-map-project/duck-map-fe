@@ -49,7 +49,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         break;
 
       case '마이페이지':
-        routeTo('/mypage/bookmark');
+        routeTo('/mypage');
         setClicked(false);
 
         break;

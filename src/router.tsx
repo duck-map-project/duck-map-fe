@@ -13,7 +13,7 @@ import Main from './pages/mainPage/Main';
 import NotFound from './pages/NotFoundPage/NotFound';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
-import MyBookmark from './pages/MyPage/MyBookmark';
+import MyPage from './pages/MyPage/MyPage';
 
 interface RouterElement {
   id: number;
@@ -69,8 +69,8 @@ const routerData: RouterElement[] = [
   },
   {
     id: 6,
-    path: '/mypage/bookmark',
-    element: <MyBookmark />,
+    path: '/mypage',
+    element: <MyPage />,
     withAuth: true,
     wrapWithLayout: false,
   },
