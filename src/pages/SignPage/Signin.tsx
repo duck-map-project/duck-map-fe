@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 
 import kakaotalk from '../../assets/kakaotalk.svg';
 import twitter from '../../assets/twitter-circle.svg';
 import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
+import ResetPasswordModal from '../../components/ResetPasswordModal';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
 import { useRouter } from '../../hooks/useRouter';
@@ -32,6 +34,7 @@ const SnsTextWithMargin = styled(SNSSignupText)`
 const Signin = () => {
   const auth = useAuthContext();
   const { routeTo } = useRouter();
+  const [passwordModal, setPasswordModal] = useState<boolean>(false);
 
   const handleSignin = () => {
     auth?.signIn({ email: inputs.email, password: inputs.password });
@@ -44,6 +47,9 @@ const Signin = () => {
 
   return (
     <PageWrapper>
+      {passwordModal ? (
+        <ResetPasswordModal onClickButton={() => setPasswordModal(false)} />
+      ) : null}
       <PageTitle>로그인</PageTitle>
       <FormWithMargin onSubmit={handleSubmit} noValidate>
         <AuthInput
@@ -83,7 +89,9 @@ const Signin = () => {
         >
           회원가입
         </LinkText>
-        <LinkText>비밀번호 찾기</LinkText>
+        <LinkText onClick={() => setPasswordModal(true)}>
+          비밀번호 찾기
+        </LinkText>
       </div>
       <SnsTextWithMargin>간편 로그인</SnsTextWithMargin>
       <SNSButtonWrapper>
