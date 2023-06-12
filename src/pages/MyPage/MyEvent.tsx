@@ -1,29 +1,12 @@
-import {
-  EventListItemBox,
-  // EventImage,
-  // NameSection,
-  // GroupName,
-  // RegularTxt,
-  // Tag
-} from '../../components/EventListItem';
-import EventImage from '../../components/EventListItem';
-// import RegularTxt from '../../components/EventListItem';
-import Tag from '../../components/Tag';
+import EventListItem from '../../components/EventListItem';
+
+import feedData from './feedData.json';
 
 const MyEvent = () => {
   return (
-    <EventListItemBox>
-      <EventImage />
-      <div>
-        {/* <NameSection> */}
-        {/* <GroupName>그룹명</GroupName> */}
-        {/* <RegularTxt>멤버 이름</RegularTxt> */}
-        {/* </NameSection> */}
-        <Tag marginB="16px" />
-        {/* <RegularTxt> 주소 </RegularTxt> */}
-      </div>
-    </EventListItemBox>
-  );
-};
+    <>
+    {feedData.map( (feed, key) => (<EventListItem key={key} groupName={feed.groupName} member={feed.member} address={feed.address} eventImg={feed.eventImg} />))}
+    </>
+)};
 
 export default MyEvent;

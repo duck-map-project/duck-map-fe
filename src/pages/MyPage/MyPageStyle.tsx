@@ -2,7 +2,9 @@ import { styled } from 'styled-components';
 
 export const PageWrapper = styled.section`
   width: 100%;
+  max-width: 1024px;
   display: flex;
+  margin: 0 auto;
 `;
 
 export const InfoSection = styled.section`
@@ -28,6 +30,7 @@ export const MyPageLi = styled.a`
 
 export const EditSection = styled.section`
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
 `;
