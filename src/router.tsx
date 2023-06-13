@@ -65,10 +65,10 @@ const routerData: RouterElement[] = [
   },
   {
     id: 6,
-    path: '/mypage/bookmark',
-    element: <MyBookmark />,
+    path: '/mypage',
+    element: <MyPage />,
     withAuth: true,
-    wrapWithLayout: false,
+    wrapWithLayout: true,
   },
   {
     id: 7,

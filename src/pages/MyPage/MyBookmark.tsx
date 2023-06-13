@@ -25,18 +25,11 @@ const MyBookmark = () => {
     };
   }, []);
 
+const MyEvent = () => {
   return (
-    <>
-      <InfoSection>
-        <SortDropdown
-          sortButtonRef={sortButtonRef}
-          clicked={SortModal}
-          setClicked={setSortModal}
-        />
-      </InfoSection>
-      <EditSection></EditSection>
-    </>
+    // FIXME: 동적으로 데이터 받아오기
+    <EventListItemBox></EventListItemBox>
   );
 };
 
-export default MyBookmark;
+export default MyEvent;

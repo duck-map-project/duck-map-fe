@@ -1,40 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
+import EventListItem from '../../components/EventListItem';
 
-import SortDropdown from '../../components/SortButton';
-
-import { InfoSection, EditSection } from './MyPageStyle';
+import feedData from './feedData.json';
 
 const MyEvent = () => {
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
-  const [SortModal, setSortModal] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sortButtonRef.current &&
-        !sortButtonRef.current.contains(event.target as Node)
-      ) {
-        setSortModal(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
   return (
     <>
-      <InfoSection>
-        <SortDropdown
-          sortButtonRef={sortButtonRef}
-          clicked={SortModal}
-          setClicked={setSortModal}
+      {feedData.map((feed, key) => (
+        <EventListItem
+          key={key}
+          groupName={feed.groupName}
+          member={feed.member}
+          address={feed.address}
+          eventImg={feed.eventImg}
         />
-      </InfoSection>
-      <EditSection></EditSection>
+      ))}
     </>
   );
 };
