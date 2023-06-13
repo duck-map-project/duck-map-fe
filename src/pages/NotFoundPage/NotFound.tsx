@@ -1,6 +1,5 @@
 import Icon from '../../assets/logo-icon.png';
 import Button from '../../components/Button';
-
 import { useRouter } from '../../hooks/useRouter';
 
 import { PageWrapper, Image, Message } from './NotFoundStyle';

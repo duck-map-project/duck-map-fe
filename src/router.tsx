@@ -1,8 +1,4 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { useAuthContext } from './contexts/AuthContext';
 import GeneralLayout from './layout/GeneralLayout';
@@ -10,10 +6,10 @@ import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
+import MyBookmark from './pages/MyPage/MyBookmark';
 import NotFound from './pages/NotFoundPage/NotFound';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
-import MyPage from './pages/MyPage/MyPage';
 
 interface RouterElement {
   id: number;
@@ -85,25 +81,31 @@ const routerData: RouterElement[] = [
 
 export const Router = () => {
   const auth = useAuthContext();
-  const routers = createBrowserRouter(
-    routerData.map((router) => {
-      if (!auth?.isLogin && router.withAuth) {
-        return {
-          path: router.path,
-          element: <Navigate to="/signin" />,
-        };
-      }
-      if (router.wrapWithLayout) {
-        return {
-          path: router.path,
-          element: <GeneralLayout>{router.element}</GeneralLayout>,
-        };
-      }
-      return {
-        path: router.path,
-        element: router.element,
-      };
-    })
+  return (
+    <Routes>
+      {routerData.map((router) => {
+        if (!auth?.isLogin && router.withAuth) {
+          return (
+            <Route
+              key={router.id}
+              path={router.path}
+              element={<Navigate to="/signin" />}
+            />
+          );
+        }
+        if (router.wrapWithLayout) {
+          return (
+            <Route
+              key={router.id}
+              path={router.path}
+              element={<GeneralLayout>{router.element}</GeneralLayout>}
+            />
+          );
+        }
+        return (
+          <Route key={router.id} path={router.path} element={router.element} />
+        );
+      })}
+    </Routes>
   );
-  return <RouterProvider router={routers} />;
 };
