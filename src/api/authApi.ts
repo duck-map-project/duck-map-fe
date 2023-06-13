@@ -1,3 +1,5 @@
+import { AxiosError, AxiosResponse } from 'axios';
+
 import { AuthRequest, SignupRequest } from '../types/auth';
 
 import client from './client';
@@ -27,9 +29,8 @@ export const signin = async ({ email, password }: AuthRequest) => {
 
   try {
     const res = await client.post('/auth/login', requestData);
-    const accessToken = res.headers.authorization;
     if (res.request.status === 200) {
-      client.defaults.headers.common['Authorization'] = accessToken;
+      onSigninSuccess(res);
       return 'success';
     }
   } catch (error) {
@@ -46,4 +47,25 @@ export const signout = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+export const getNewToken = async () => {
+  try {
+    const res = await client.post('/auth/reissue', {});
+    if (res.status === 200) {
+      onSigninSuccess(res);
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.status === 401) {
+      }
+    }
+  }
+};
+
+export const onSigninSuccess = (res: AxiosResponse) => {
+  const JWT_EXPIRY_TIME = 30 * 60 * 1000;
+  const accessToken = res.headers.authorization;
+  client.defaults.headers.common['Authorization'] = accessToken;
+  setTimeout(getNewToken, JWT_EXPIRY_TIME - 60000);
 };

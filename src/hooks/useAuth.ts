@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { signin, signout, signup } from '../api/authApi';
+import { getNewToken, signin, signout, signup } from '../api/authApi';
 import client from '../api/client';
 import { SignupRequest, AuthRequest } from '../types/auth';
 
@@ -41,7 +41,6 @@ export const useAuth = (): Auth => {
   const { routeTo } = useRouter();
 
   useEffect(() => {
-    // isLogin 값 바뀔 때
     localStorage.setItem('isLogin', String(isLogin));
   }, [isLogin]);
 
@@ -69,11 +68,14 @@ export const useAuth = (): Auth => {
   };
 
   useEffect(() => {
-    if (isLogin) {
-      FetchUser();
-    } else {
-      localStorage.removeItem('user');
-    }
+    (async () => {
+      await getNewToken();
+      if (isLogin) {
+        FetchUser();
+      } else {
+        localStorage.removeItem('user');
+      }
+    })();
   }, [isLogin]);
 
   const signIn = async (data: AuthRequest) => {
