@@ -1,14 +1,21 @@
 import { AxiosError } from 'axios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { getNewToken, signin, signout, signup } from '../api/authApi';
-import client from '../api/client';
+import {
+  fetchUser,
+  getNewToken,
+  signin,
+  signout,
+  signup,
+} from '../api/authApi';
 import { SignupRequest, AuthRequest } from '../types/auth';
 
+import useLocalStorage from './useLocalStarage';
 import { useRouter } from './useRouter';
 
 export interface Auth {
   isLogin: boolean;
+  user: User;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
   signIn: (data: AuthRequest) => Promise<void>;
   signUp: (data: SignupRequest) => Promise<void>;
@@ -31,58 +38,25 @@ interface User {
 }
 
 export const useAuth = (): Auth => {
-  const isLoginStored = localStorage.getItem('isLogin') === 'true';
-  const [isLogin, setIsLogin] = useState<boolean>(isLoginStored);
-  const storedUser = localStorage.getItem('user');
-  const initialUser: User | null = storedUser ? JSON.parse(storedUser) : null;
-
-  const [user, setUser] = useState<User | null>(initialUser);
+  const [user, setUser] = useLocalStorage('user', null);
+  const [isLogin, setIsLogin] = useLocalStorage('isLogin', false);
   const [errorMessage, setErrorMessage] = useState<ErrorMessage>({});
   const { routeTo } = useRouter();
 
+  // FIXME: reissue 두 번 호출되는 것 고치기
   useEffect(() => {
-    localStorage.setItem('isLogin', String(isLogin));
-  }, [isLogin]);
-
-  useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(user));
-  }, [user]);
-
-  const FetchUser = async () => {
-    try {
-      const res = await client.get('/members/me');
-
-      if (res.status === 200) {
-        setUser({
-          id: res.data.id,
-          username: res.data.username,
-          email: res.data.email,
-          // FIXME: 이미지 조회 구현되면 이미지 조회해서 불러오기
-          image: '',
-          role: res.data.role,
-        });
-      }
-    } catch (error) {
-      console.error(error);
+    if (isLogin) {
+      getNewToken();
     }
-  };
-
-  useEffect(() => {
-    (async () => {
-      await getNewToken();
-      if (isLogin) {
-        FetchUser();
-      } else {
-        localStorage.removeItem('user');
-      }
-    })();
-  }, [isLogin]);
+  }, []);
 
   const signIn = async (data: AuthRequest) => {
     try {
       const res = await signin(data);
       if (res === 'success') {
         setIsLogin(true);
+        const userData = await fetchUser();
+        setUser(userData);
         routeTo('/');
       }
     } catch (error) {
@@ -124,16 +98,16 @@ export const useAuth = (): Auth => {
       const res = await signout();
       if (res === 'success') {
         setIsLogin(false);
+        setUser(null);
         routeTo('/signin');
       }
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error);
-
         setErrorMessage({ signout: '로그아웃에 실패했습니다.' });
       }
     }
   };
 
-  return { isLogin, setIsLogin, signIn, signUp, signOut, errorMessage };
+  return { isLogin, user, setIsLogin, signIn, signUp, signOut, errorMessage };
 };

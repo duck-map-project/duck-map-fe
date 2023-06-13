@@ -69,3 +69,15 @@ export const onSigninSuccess = (res: AxiosResponse) => {
   client.defaults.headers.common['Authorization'] = accessToken;
   setTimeout(getNewToken, JWT_EXPIRY_TIME - 60000);
 };
+
+export const fetchUser = async () => {
+  try {
+    const res = await client.get('/members/me');
+
+    if (res.status === 200) {
+      return res.data;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
