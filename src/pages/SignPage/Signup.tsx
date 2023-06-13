@@ -4,7 +4,6 @@ import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
-import { useRouter } from '../../hooks/useRouter';
 
 import {
   PageWrapper,
@@ -14,11 +13,11 @@ import {
   SNSButtonWrapper,
   SNSSignupButton,
   ErrorMessage,
+  CenterErrorMessage,
 } from './SignStyle';
 
 const Signup = () => {
   const auth = useAuthContext();
-  const { routeTo } = useRouter();
 
   const handleSignup = async () => {
     await auth?.signUp({
@@ -26,7 +25,6 @@ const Signup = () => {
       email: inputs.email,
       password: inputs.password,
     });
-    routeTo('/siginin');
   };
 
   const { handleChange, handleSubmit, inputs, errors } = useForm(
@@ -84,6 +82,9 @@ const Signup = () => {
         <Button color="purple" size="wideBig">
           가입하기
         </Button>
+        {auth?.errorMessage.signup && (
+          <CenterErrorMessage>{auth?.errorMessage.signup}</CenterErrorMessage>
+        )}
       </Form>
       <SNSSignupText>간편 회원가입</SNSSignupText>
       <SNSButtonWrapper>

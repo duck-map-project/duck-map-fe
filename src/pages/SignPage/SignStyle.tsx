@@ -80,3 +80,7 @@ export const ErrorMessage = styled.p`
   color: var(--red);
   margin-bottom: 5px;
 `;
+
+export const CenterErrorMessage = styled(ErrorMessage)`
+  text-align: center;
+`;
