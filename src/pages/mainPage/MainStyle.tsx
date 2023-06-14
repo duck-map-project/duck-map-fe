@@ -49,10 +49,12 @@ export const Reviews = styled.section`
   display: flex;
 `;
 
-export const ReviewsItem = styled.div`
+export const ReviewsItem = styled.div<{ image: string }>`
   width: 392px;
   height: 248px;
-  background-color: #d9d9d9;
+  background-image: url(${(props) => props.image});
+  background-size: cover;
+  background-repeat: no-repeat;
   flex-shrink: 0;
   margin-right: ${px2vw(8)};
   &:last-child {
