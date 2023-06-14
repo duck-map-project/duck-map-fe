@@ -1,6 +1,6 @@
 import client from './client';
 
-export const todayHashtag = async () => {
+export const todayHashtags = async () => {
   try {
     const res = await client.get('/events/hashtags/today');
     if (res.status === 200) {
