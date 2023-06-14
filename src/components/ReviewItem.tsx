@@ -55,6 +55,7 @@ interface MyReviewProps {
   reviewDate: string;
   ReviewContents: string;
   reviewPhoto: string;
+  withAuth: boolean;
 }
 
 const ReviewItem = (item: MyReviewProps) => {

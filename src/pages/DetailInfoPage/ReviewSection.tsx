@@ -35,8 +35,7 @@ const ReviewSection = () => {
           userName={''}
           reviewDate={''}
           ReviewContents={''}
-          reviewPhoto={''}
-        />
+          reviewPhoto={''} withAuth={false}        />
       </ReviewWrapper>
     </TabWrapper>
   );
