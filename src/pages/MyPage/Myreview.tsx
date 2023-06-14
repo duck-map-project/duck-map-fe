@@ -1,42 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
+import ReviewItem from '../../components/ReviewItem';
 
-import SortDropdown from '../../components/SortButton';
+import feedData from './feedData.json';
 
-import { InfoSection, EditSection } from './MyPageStyle';
-
-const Myreview = () => {
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
-  const [SortModal, setSortModal] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sortButtonRef.current &&
-        !sortButtonRef.current.contains(event.target as Node)
-      ) {
-        setSortModal(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
+const MyReview = () => {
   return (
     <>
-      <InfoSection>
-        <SortDropdown
-          sortButtonRef={sortButtonRef}
-          clicked={SortModal}
-          setClicked={setSortModal}
-        />
-      </InfoSection>
-      <EditSection></EditSection>
+      {feedData.map((feed, key) => (
+        <ReviewItem
+          key={key}
+          profileImage={feed.profileImage}
+          score={feed.score}
+          reviewDate={feed.reviewDate}
+          ReviewContents={feed.ReviewContents}
+          reviewPhoto={feed.reviewPhoto} userName={''}        />
+      ))}
     </>
   );
 };
 
-export default Myreview;
+export default MyReview;

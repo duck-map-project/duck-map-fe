@@ -6,7 +6,7 @@ import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
-import MyBookmark from './pages/MyPage/MyBookmark';
+import MyPage from './pages/MyPage/MyPage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';

@@ -48,42 +48,26 @@ const ReviewPhoto = styled.img`
   height: 200px;
 `;
 
-const ReviewItem = () => {
+interface MyReviewProps {
+  profileImage: string;
+  score: number;
+  userName: string;
+  reviewDate: string;
+  ReviewContents: string;
+  reviewPhoto: string;
+}
+
+const ReviewItem = (item: MyReviewProps) => {
   return (
     <ReviewWrapper>
-      <ProfileImg
-        alt="사용자 프로필"
-        src="https://i.pinimg.com/736x/07/67/a9/0767a97903445549adcb066bb9ee74e3.jpg"
-      />
+      <ProfileImg  alt="사용자 프로필" src={item.profileImage}/>
       <MiddleSection>
-        <FixedRating score={3.5} />
-        <ReviewInfoText>username</ReviewInfoText>
-        <ReviewInfoText>2023.05.25</ReviewInfoText>
-        <ReviewContents>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industrys standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum Lorem Ipsum is simply dummy text of
-          the printing and typesetting industry. Lorem Ipsum has been the
-          industrys standard dummy text ever since the 1500s, when an unknown
-          printer took a galley of type and scrambled it to make a type specimen
-          book. It has survived not only five centuries, but also the leap into
-          electronic typesetting, remaining essentially unchanged. It was
-          popularised in the 1960s with the release of Letraset sheets
-          containing Lorem Ipsum passages, and more recently with desktop
-          publishing software like Aldus PageMaker including versions of Lorem
-          Ipsum
-        </ReviewContents>
+        <FixedRating score={item.score} />
+        <ReviewInfoText>{item.userName}</ReviewInfoText>
+        <ReviewInfoText>{item.reviewDate}</ReviewInfoText>
+        <ReviewContents>{item.ReviewContents}</ReviewContents>
       </MiddleSection>
-      <ReviewPhoto
-        src="https://images.unsplash.com/photo-1481833761820-0509d3217039?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-        alt="카페 리뷰 사진"
-      />
+      <ReviewPhoto src={item.reviewPhoto} alt="카페 리뷰 사진"/>
     </ReviewWrapper>
   );
 };

@@ -1,35 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
+import EventListItem from '../../components/EventListItem';
 
-import SortDropdown from '../../components/SortButton';
-
-import { InfoSection, EditSection } from './MyPageStyle';
+import feedData from './feedData.json';
 
 const MyBookmark = () => {
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
-  const [SortModal, setSortModal] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        sortButtonRef.current &&
-        !sortButtonRef.current.contains(event.target as Node)
-      ) {
-        setSortModal(false);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
-const MyEvent = () => {
   return (
-    // FIXME: 동적으로 데이터 받아오기
-    <EventListItemBox></EventListItemBox>
+    <>
+      {feedData.map((feed, key) => (
+        <EventListItem
+          key={key}
+          groupName={feed.groupName}
+          member={feed.member}
+          address={feed.address}
+          eventImg={feed.eventImg}
+        />
+      ))}
+    </>
   );
 };
 
-export default MyEvent;
+export default MyBookmark;

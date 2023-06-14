@@ -22,21 +22,14 @@ const ReviewWrapper = styled.ul`
   text-align: start;
 `;
 
-const ReviewSection = () => {
+const ReviewSection = ( ) => {
   return (
     <TabWrapper>
       <Button size="mid" color="primary">
         리뷰 작성
       </Button>
       <ReviewWrapper>
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
-        <ReviewItem />
+        <ReviewItem profileImage={''} score={0} userName={''} reviewDate={''} ReviewContents={''} reviewPhoto={''}/>
       </ReviewWrapper>
     </TabWrapper>
   );
