@@ -12,7 +12,9 @@ const MyReview = () => {
           score={feed.score}
           reviewDate={feed.reviewDate}
           ReviewContents={feed.ReviewContents}
-          reviewPhoto={feed.reviewPhoto} userName={''}        />
+          reviewPhoto={feed.reviewPhoto}
+          userName={''}
+        />
       ))}
     </>
   );

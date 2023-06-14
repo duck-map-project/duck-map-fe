@@ -60,14 +60,14 @@ interface MyReviewProps {
 const ReviewItem = (item: MyReviewProps) => {
   return (
     <ReviewWrapper>
-      <ProfileImg  alt="사용자 프로필" src={item.profileImage}/>
+      <ProfileImg alt="사용자 프로필" src={item.profileImage} />
       <MiddleSection>
         <FixedRating score={item.score} />
         <ReviewInfoText>{item.userName}</ReviewInfoText>
         <ReviewInfoText>{item.reviewDate}</ReviewInfoText>
         <ReviewContents>{item.ReviewContents}</ReviewContents>
       </MiddleSection>
-      <ReviewPhoto src={item.reviewPhoto} alt="카페 리뷰 사진"/>
+      <ReviewPhoto src={item.reviewPhoto} alt="카페 리뷰 사진" />
     </ReviewWrapper>
   );
 };
