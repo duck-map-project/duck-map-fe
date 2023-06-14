@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { todayHashtags } from '../api/evnet';
+import { todayHashtags } from '../api/event';
 
 const SlideLeftAnimation = keyframes`
   from {
