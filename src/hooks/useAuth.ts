@@ -30,6 +30,7 @@ interface ErrorMessage {
 }
 
 interface User {
+  profileImage: string;
   id: number;
   username: string;
   email: string;

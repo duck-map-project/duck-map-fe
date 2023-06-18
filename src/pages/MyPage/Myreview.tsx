@@ -12,13 +12,11 @@ const MyReview = () => {
 
   return (
     <>
-      {feedData.map((router) => {
-        if (!auth?.isLogin && router.withAuth) {
           {
             feedData.map((feed, key) => (
               <ReviewItem
                 key={key}
-                profileImage={feed.profileImage}
+                profileImage={auth?.user.profileImage || "http://localhost:3000/static/media/logo-icon.b8fcaafc839de274869b.png"}
                 score={feed.score}
                 reviewDate={feed.reviewDate}
                 ReviewContents={feed.ReviewContents}
@@ -26,10 +24,8 @@ const MyReview = () => {
                 userName={''}
                 withAuth={false}
               />
-            ));
+            ))
           }
-        }
-      })}
     </>
   );
 };
