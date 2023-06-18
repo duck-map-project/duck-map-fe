@@ -12,20 +12,21 @@ const MyReview = () => {
 
   return (
     <>
-          {
-            feedData.map((feed, key) => (
-              <ReviewItem
-                key={key}
-                profileImage={auth?.user.profileImage || "http://localhost:3000/static/media/logo-icon.b8fcaafc839de274869b.png"}
-                score={feed.score}
-                reviewDate={feed.reviewDate}
-                ReviewContents={feed.ReviewContents}
-                reviewPhoto={feed.reviewPhoto}
-                userName={''}
-                withAuth={false}
-              />
-            ))
+      {feedData.map((feed, key) => (
+        <ReviewItem
+          key={key}
+          profileImage={
+            auth?.user.profileImage ||
+            'http://localhost:3000/static/media/logo-icon.b8fcaafc839de274869b.png'
           }
+          score={feed.score}
+          reviewDate={feed.reviewDate}
+          ReviewContents={feed.ReviewContents}
+          reviewPhoto={feed.reviewPhoto}
+          userName={''}
+          withAuth={false}
+        />
+      ))}
     </>
   );
 };
