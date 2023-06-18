@@ -1,4 +1,4 @@
-import EventListItem from '../../components/EventListItem';
+import BookmarkBox from '../../components/Bookmark';
 
 import feedData from './feedData.json';
 
@@ -6,12 +6,10 @@ const MyBookmark = () => {
   return (
     <>
       {feedData.map((feed, key) => (
-        <EventListItem
+        <BookmarkBox
           key={key}
-          groupName={feed.groupName}
-          member={feed.member}
-          address={feed.address}
-          eventImg={feed.eventImg}
+          forderImage={feed.forderImage}
+          forderName={feed.forderName}
         />
       ))}
     </>
