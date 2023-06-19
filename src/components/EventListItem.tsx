@@ -17,6 +17,7 @@ export const EventListItemBox = styled.li`
   padding: 14px 0 14px 15px;
   background-color: var(--white);
   margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 const EventInfoBox = styled.div`
@@ -54,12 +55,12 @@ const EditIcon = styled.img`
 
 interface EventListItemProps {
   event: EventData;
+  onEventListClick: (eventId: number) => void;
 }
 
-const EventListItem = ({ event }: EventListItemProps) => {
+const EventListItem = ({ event, onEventListClick }: EventListItemProps) => {
   return (
-    // FIXME: 동적으로 데이터 받아오기
-    <EventListItemBox>
+    <EventListItemBox onClick={() => onEventListClick(event.id)}>
       <EventInfoBox>
         <EventImage src={event.image.fileUrl} />
         <div>
