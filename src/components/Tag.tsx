@@ -9,9 +9,9 @@ interface PropsType {
   categories: Categories[];
 }
 
-const TagWrapper = styled.ul<{ marginB?: string }>`
+const TagWrapper = styled.ul<{ $marginB?: string }>`
   display: flex;
-  margin-bottom: ${(props) => (props.marginB ? props.marginB : '')};
+  margin-bottom: ${(props) => (props.$marginB ? props.$marginB : '')};
 `;
 
 const TagItem = styled.li`
@@ -26,7 +26,7 @@ const TagItem = styled.li`
 
 const Tag: React.FC<PropsType> = ({ marginB, categories }) => {
   return (
-    <TagWrapper marginB={marginB}>
+    <TagWrapper $marginB={marginB}>
       {categories.map((category) => (
         <TagItem key={category.id}>{category.category}</TagItem>
       ))}
