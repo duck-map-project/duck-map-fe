@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+
+import { todayHashtags } from '../api/event';
 
 const SlideLeftAnimation = keyframes`
   from {
@@ -41,33 +44,36 @@ const ListItem = styled.li`
   }
 `;
 
+interface HashTag {
+  eventId: number;
+  hashtag: string;
+}
+
 const Billboard = () => {
+  const [hashtags, setHashtags] = useState<HashTag[]>([]);
+
+  const fetchTodayHashtag = async () => {
+    try {
+      const res = await todayHashtags();
+      setHashtags(res);
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTodayHashtag();
+  }, []);
+
+  const listItems = hashtags.map((hashtag, index) => (
+    <ListItem key={index}>{hashtag.hashtag}</ListItem>
+  ));
   return (
     <Container>
       <Wrapper>
-        <HashtagList>
-          {/* FIXME: 나중에 동적으로 텍스트 받아오기. 현재는 테스트용 텍스트 */}
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그 Korea</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그 States</ListItem>
-          <ListItem>해시태그</ListItem>
-        </HashtagList>
-        <HashtagList>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그 Korea</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그</ListItem>
-          <ListItem>해시태그 States</ListItem>
-          <ListItem>해시태그</ListItem>
-        </HashtagList>
+        <HashtagList>{listItems}</HashtagList>
+        <HashtagList>{listItems}</HashtagList>
       </Wrapper>
     </Container>
   );

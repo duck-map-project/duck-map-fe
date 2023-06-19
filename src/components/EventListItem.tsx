@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 import editIcon from '../assets/icon-edit.svg';
+import { EventData } from '../types/eventService';
 
 import Tag from './Tag';
 
@@ -16,6 +17,7 @@ export const EventListItemBox = styled.li`
   padding: 14px 0 14px 15px;
   background-color: var(--white);
   margin-bottom: 10px;
+  cursor: pointer;
 `;
 
 const EventInfoBox = styled.div`
@@ -51,26 +53,23 @@ const EditIcon = styled.img`
   width: 20px;
 `;
 
-interface MyEventProps {
-  groupName: string;
-  member: string;
-  address: string;
-  eventImg: string;
+interface EventListItemProps {
+  event: EventData;
+  onEventListClick: (eventId: number) => void;
 }
 
-const EventListItem = (item: MyEventProps) => {
+const EventListItem = ({ event, onEventListClick }: EventListItemProps) => {
   return (
-    // FIXME: 동적으로 데이터 받아오기
-    <EventListItemBox>
+    <EventListItemBox onClick={() => onEventListClick(event.id)}>
       <EventInfoBox>
-        <EventImage src={item.eventImg} />
+        <EventImage src={event.image.fileUrl} />
         <div>
           <NameSection>
-            <GroupName>{item.groupName}</GroupName>
-            <RegularTxt>{item.member}</RegularTxt>
+            <GroupName>{event.artists[0].groupName}</GroupName>
+            <RegularTxt>{event.artists[0].name}</RegularTxt>
           </NameSection>
-          <Tag marginB="20px" />
-          <RegularTxt> {item.address} </RegularTxt>
+          <Tag marginB="20px" categories={event.categories} />
+          <RegularTxt> {event.address} </RegularTxt>
         </div>
       </EventInfoBox>
       <EditIcon src={editIcon} alt="edit" />

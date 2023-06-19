@@ -1,12 +1,17 @@
 import { styled } from 'styled-components';
 
+interface Categories {
+  id: number;
+  category: string;
+}
 interface PropsType {
   marginB?: string;
+  categories: Categories[];
 }
 
-const TagWrapper = styled.ul<PropsType>`
+const TagWrapper = styled.ul<{ $marginB?: string }>`
   display: flex;
-  margin-bottom: ${(props) => (props.marginB ? props.marginB : '')};
+  margin-bottom: ${(props) => (props.$marginB ? props.$marginB : '')};
 `;
 
 const TagItem = styled.li`
@@ -19,12 +24,12 @@ const TagItem = styled.li`
   }
 `;
 
-const Tag: React.FC<PropsType> = ({ marginB }) => {
+const Tag: React.FC<PropsType> = ({ marginB, categories }) => {
   return (
-    <TagWrapper marginB={marginB}>
-      {/* FIXME: 나중에 동적으로 TagItem 받아오기 */}
-      <TagItem>광고</TagItem>
-      <TagItem>전시</TagItem>
+    <TagWrapper $marginB={marginB}>
+      {categories.map((category) => (
+        <TagItem key={category.id}>{category.category}</TagItem>
+      ))}
     </TagWrapper>
   );
 };
