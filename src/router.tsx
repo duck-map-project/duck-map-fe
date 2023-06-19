@@ -6,7 +6,7 @@ import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
-import MyBookmark from './pages/MyPage/MyBookmark';
+// import MyBookmark from './pages/MyPage/MyBookmark';
 import NotFound from './pages/NotFoundPage/NotFound';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
@@ -62,13 +62,13 @@ const routerData: RouterElement[] = [
     withAuth: true,
     wrapWithLayout: true,
   },
-  {
-    id: 6,
-    path: '/mypage',
-    element: <MyPage />,
-    withAuth: true,
-    wrapWithLayout: true,
-  },
+  // {
+  //   id: 6,
+  //   path: '/mypage',
+  //   element: <MyPage />,
+  //   withAuth: true,
+  //   wrapWithLayout: true,
+  // },
   {
     id: 7,
     path: '*',
