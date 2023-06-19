@@ -50,8 +50,7 @@ const routerData: RouterElement[] = [
   },
   {
     id: 4,
-    // FIXME: 아마 동적세그먼트 포함시켜야 할 것
-    path: '/event/detail',
+    path: '/event/:id',
     element: <DetailInfo />,
     withAuth: false,
     wrapWithLayout: true,
