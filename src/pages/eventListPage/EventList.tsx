@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { eventsApi } from '../../api/event';
 import ChoiceStarBar from '../../components/ChoiceStarBar';
 import EventListItem from '../../components/EventListItem';
+import EventListItemDetail from '../../components/EventListItemDetail';
 import { EventData, getEventParams } from '../../types/eventService';
 
 import {
@@ -19,6 +20,7 @@ const EventList = () => {
   const [page, setPage] = useState<number>(0);
   const [isLast, setIsLast] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
 
   const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
@@ -59,6 +61,14 @@ const EventList = () => {
     }
   }, [page]);
 
+  const handleEventItemClick = (eventId: number) => {
+    if (selectedEventId === eventId) {
+      setSelectedEventId(null);
+    } else {
+      setSelectedEventId(eventId);
+    }
+  };
+
   return (
     <PageWrapper>
       <ChoiceStarBar />
@@ -70,9 +80,21 @@ const EventList = () => {
         <EventTitle>(이름) 이벤트</EventTitle>
         <Ul>
           {events &&
-            events.map((event) => (
-              <EventListItem event={event} key={event.id} />
-            ))}
+            events.map((event) =>
+              selectedEventId === event.id ? (
+                <EventListItemDetail
+                  event={event}
+                  key={event.id}
+                  onEventListClick={handleEventItemClick}
+                />
+              ) : (
+                <EventListItem
+                  event={event}
+                  key={event.id}
+                  onEventListClick={handleEventItemClick}
+                />
+              )
+            )}
         </Ul>
       </ListContentsSection>
     </PageWrapper>

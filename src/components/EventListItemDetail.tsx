@@ -1,5 +1,8 @@
 import { styled } from 'styled-components';
 
+import { useRouter } from '../hooks/useRouter';
+import { EventData } from '../types/eventService';
+
 import Button from './Button';
 import Tag from './Tag';
 
@@ -7,8 +10,11 @@ const EventListItemBox = styled.li`
   display: flex;
   align-items: center;
   width: 100%;
+  background-color: var(--white);
   border: 1px solid var(--blue-purple);
+  border-radius: 10px;
   padding: 17px 0 17px 25px;
+  cursor: pointer;
 `;
 
 const EventImage = styled.img`
@@ -44,19 +50,37 @@ const AdressTxt = styled(RegularTxt)`
   margin-bottom: 56px;
 `;
 
-const EventListItemDetail = () => {
+interface EventListItemDetailProps {
+  event: EventData;
+  onEventListClick: (eventId: number) => void;
+}
+
+const EventListItemDetail = ({
+  event,
+  onEventListClick,
+}: EventListItemDetailProps) => {
+  const { routeTo } = useRouter();
   return (
-    // FIXME: 동적으로 데이터 받아오기
-    <EventListItemBox>
-      <EventImage />
+    <EventListItemBox
+      onClick={() => {
+        onEventListClick(event.id);
+      }}
+    >
+      <EventImage src={event.image.fileUrl} />
       <div>
         <NameSection>
-          <GroupName>그룹명</GroupName>
-          <MemberName>멤버 이름</MemberName>
+          <GroupName>{event.artists[0].groupName}</GroupName>
+          <MemberName>{event.artists[0].name}</MemberName>
         </NameSection>
-        <Tag marginB="32px" />
-        <AdressTxt> 주소 </AdressTxt>
-        <Button size="big" color="primary">
+        <Tag marginB="32px" categories={event.categories} />
+        <AdressTxt> {event.address} </AdressTxt>
+        <Button
+          size="big"
+          color="primary"
+          onClick={() => {
+            routeTo(`/event/${event.id}`);
+          }}
+        >
           자세히 보기
         </Button>
       </div>
