@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 import editIcon from '../assets/icon-edit.svg';
+import { EventData } from '../types/eventService';
 
 import Tag from './Tag';
 
@@ -51,26 +52,23 @@ const EditIcon = styled.img`
   width: 20px;
 `;
 
-interface MyEventProps {
-  groupName: string;
-  member: string;
-  address: string;
-  eventImg: string;
+interface EventListItemProps {
+  event: EventData;
 }
 
-const EventListItem = (item: MyEventProps) => {
+const EventListItem = ({ event }: EventListItemProps) => {
   return (
     // FIXME: 동적으로 데이터 받아오기
     <EventListItemBox>
       <EventInfoBox>
-        <EventImage src={item.eventImg} />
+        <EventImage src={event.image.fileUrl} />
         <div>
           <NameSection>
-            <GroupName>{item.groupName}</GroupName>
-            <RegularTxt>{item.member}</RegularTxt>
+            <GroupName>{event.artists[0].groupName}</GroupName>
+            <RegularTxt>{event.artists[0].name}</RegularTxt>
           </NameSection>
-          <Tag marginB="20px" />
-          <RegularTxt> {item.address} </RegularTxt>
+          <Tag marginB="20px" categories={event.categories} />
+          <RegularTxt> {event.address} </RegularTxt>
         </div>
       </EventInfoBox>
       <EditIcon src={editIcon} alt="edit" />
