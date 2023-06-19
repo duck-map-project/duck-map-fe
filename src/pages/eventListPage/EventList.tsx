@@ -69,8 +69,6 @@ const EventList = () => {
     }
   };
 
-  console.log(selectedEventId);
-
   return (
     <PageWrapper>
       <ChoiceStarBar />
