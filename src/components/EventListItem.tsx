@@ -25,14 +25,18 @@ const EventInfoBox = styled.div`
 `;
 
 const EventImage = styled.img`
-  width: 150px;
-  height: auto;
+  width: 100px;
   margin-right: 10px;
+`;
+
+const EventTextSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
 const NameSection = styled.div`
   display: flex;
-  margin: 10px 0 20px 0;
 `;
 
 const StrongTxt = styled.p`
@@ -55,22 +59,27 @@ const EditIcon = styled.img`
 
 interface EventListItemProps {
   event: EventData;
-  onEventListClick: (eventId: number) => void;
+  onEventListClick?: (eventId: number) => void;
 }
 
 const EventListItem = ({ event, onEventListClick }: EventListItemProps) => {
+  const handleEventClick = () => {
+    if (onEventListClick) {
+      onEventListClick(event.id);
+    }
+  };
   return (
-    <EventListItemBox onClick={() => onEventListClick(event.id)}>
+    <EventListItemBox onClick={handleEventClick}>
       <EventInfoBox>
         <EventImage src={event.image.fileUrl} />
-        <div>
+        <EventTextSection>
           <NameSection>
             <GroupName>{event.artists[0].groupName}</GroupName>
             <RegularTxt>{event.artists[0].name}</RegularTxt>
           </NameSection>
-          <Tag marginB="20px" categories={event.categories} />
+          <Tag categories={event.categories} />
           <RegularTxt> {event.address} </RegularTxt>
-        </div>
+        </EventTextSection>
       </EventInfoBox>
       <EditIcon src={editIcon} alt="edit" />
     </EventListItemBox>
