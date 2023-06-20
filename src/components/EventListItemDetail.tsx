@@ -8,7 +8,6 @@ import Tag from './Tag';
 
 const EventListItemBox = styled.li`
   display: flex;
-  align-items: center;
   width: 100%;
   background-color: var(--white);
   border: 1px solid var(--blue-purple);
@@ -18,14 +17,18 @@ const EventListItemBox = styled.li`
 `;
 
 const EventImage = styled.img`
-  width: 212px;
-  height: 256px;
-  margin-right: 24px;
+  width: 190px;
+  margin: auto 24px auto 0;
+`;
+
+const EventTextSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
 const NameSection = styled.div`
   display: flex;
-  margin-bottom: 25px;
 `;
 
 const StrongTxt = styled.p`
@@ -46,10 +49,6 @@ const MemberName = styled(RegularTxt)`
   font-size: 1.8rem;
 `;
 
-const AdressTxt = styled(RegularTxt)`
-  margin-bottom: 56px;
-`;
-
 interface EventListItemDetailProps {
   event: EventData;
   onEventListClick: (eventId: number) => void;
@@ -67,13 +66,13 @@ const EventListItemDetail = ({
       }}
     >
       <EventImage src={event.image.fileUrl} />
-      <div>
+      <EventTextSection>
         <NameSection>
           <GroupName>{event.artists[0].groupName}</GroupName>
           <MemberName>{event.artists[0].name}</MemberName>
         </NameSection>
-        <Tag marginB="32px" categories={event.categories} />
-        <AdressTxt> {event.address} </AdressTxt>
+        <Tag categories={event.categories} />
+        <RegularTxt> {event.address} </RegularTxt>
         <Button
           size="big"
           color="primary"
@@ -83,7 +82,7 @@ const EventListItemDetail = ({
         >
           자세히 보기
         </Button>
-      </div>
+      </EventTextSection>
     </EventListItemBox>
   );
 };
