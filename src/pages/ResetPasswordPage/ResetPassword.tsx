@@ -10,7 +10,7 @@ import { ErrorMessage } from '../SignPage/SignStyle';
 
 const PageWrapper = styled.section`
   width: 100%;
-  padding-top: 351px;
+  padding-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
