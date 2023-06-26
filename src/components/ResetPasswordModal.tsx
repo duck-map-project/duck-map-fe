@@ -1,7 +1,10 @@
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { styled } from 'styled-components';
 
+import { sendRsetPassword } from '../api/authApi';
 import closeIcon from '../assets/close.svg';
+import useForm from '../hooks/useForm';
+import { ErrorMessage } from '../pages/SignPage/SignStyle';
 
 import { Input } from './AuthInput';
 import Button from './Button';
@@ -19,7 +22,7 @@ const PageWrapper = styled.section`
   z-index: 99;
 `;
 
-const Modal = styled.article`
+const Modal = styled.form`
   width: 575px;
   padding: 82px 72px 44px;
   text-align: center;
@@ -52,17 +55,46 @@ interface Props {
 }
 
 const ResetPasswordModal = ({ onClickButton }: Props) => {
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const onEmailSubmit = async () => {
+    try {
+      const res = await sendRsetPassword(inputs.email as string);
+      if (res === 'success') {
+        setIsSuccess(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const { handleChange, handleSubmit, inputs, errors } = useForm(
+    { email: '' },
+    onEmailSubmit
+  );
+
   return (
     <PageWrapper>
-      <Modal>
-        <Text>
-          가입했던 이메일을 입력해주세요. <br />
-          비밀번호 재설정 메일을 보내드립니다.
-        </Text>
-        <InputWithMargin id="reset-password" />
-        <Button size="wideBig" color="purple">
-          비밀번호 재설정하기
-        </Button>
+      <Modal onSubmit={handleSubmit}>
+        {!isSuccess ? (
+          <>
+            <Text>
+              가입했던 이메일을 입력해주세요. <br />
+              비밀번호 재설정 메일을 보내드립니다.
+            </Text>
+            <InputWithMargin
+              id="reset-password"
+              name="email"
+              onChange={handleChange}
+            />
+            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+            <Button size="wideBig" color="purple">
+              비밀번호 재설정하기
+            </Button>
+          </>
+        ) : (
+          <Text>이메일이 전송되었습니다.</Text>
+        )}
         <CloseButton onClick={onClickButton} />
       </Modal>
     </PageWrapper>
