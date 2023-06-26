@@ -22,8 +22,8 @@ const Signup = () => {
   const handleSignup = async () => {
     await auth?.signUp({
       username: inputs.username as string,
-      email: inputs.email,
-      password: inputs.password,
+      email: inputs.email as string,
+      password: inputs.password as string,
     });
   };
 

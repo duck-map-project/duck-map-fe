@@ -1,8 +1,8 @@
 interface Inputs {
   email: string;
   password: string;
-  passwordCheck?: string;
-  username?: string;
+  passwordCheck: string;
+  username: string;
 }
 
 interface Errors {
@@ -52,17 +52,25 @@ export const validatePasswordMatch = (
   }
 };
 
-export const validateAll = (inputs: Inputs): Errors => {
+export const validateAll = (inputs: Partial<Inputs>): Errors => {
   const errors: Errors = {};
   const { email, password, passwordCheck, username } = inputs;
-
-  errors.email = validateEmail(email);
-  errors.password = validatePassword(password);
-  errors.username = validateUsername(username as string);
-  errors.passwordCheck = validatePasswordMatch(
-    password,
-    passwordCheck as string
-  );
+  // TODO: as 말고 다른 방식 사용하기
+  if (inputs.email) {
+    errors.email = validateEmail(email as string);
+  }
+  if (inputs.password) {
+    errors.password = validatePassword(password as string);
+  }
+  if (inputs.username) {
+    errors.username = validateUsername(username as string);
+  }
+  if (inputs.passwordCheck) {
+    errors.passwordCheck = validatePasswordMatch(
+      password as string,
+      passwordCheck as string
+    );
+  }
 
   return errors;
 };
