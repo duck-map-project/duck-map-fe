@@ -81,3 +81,27 @@ export const fetchUser = async () => {
     console.error(error);
   }
 };
+
+export const sendRsetPassword = async (email: string) => {
+  try {
+    const res = await client.post('/auth/send-reset-password', { email });
+    if (res.status === 200) {
+      return 'success';
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const resetPassword = async (id: string, newPassword: string) => {
+  try {
+    const res = await client.patch(`/members/reset-password/${id}`, {
+      newPassword,
+    });
+    if (res.status === 200) {
+      return 'success';
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

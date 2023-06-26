@@ -37,7 +37,10 @@ const Signin = () => {
   const [passwordModal, setPasswordModal] = useState<boolean>(false);
 
   const handleSignin = () => {
-    auth?.signIn({ email: inputs.email, password: inputs.password });
+    auth?.signIn({
+      email: inputs.email as string,
+      password: inputs.password as string,
+    });
   };
 
   const { handleChange, handleSubmit, inputs, errors } = useForm(
