@@ -50,6 +50,10 @@ const CloseButton = styled.button`
   right: 26px;
 `;
 
+const ErrorMessageWithAlign = styled(ErrorMessage)`
+  text-align: left;
+`;
+
 interface Props {
   onClickButton: MouseEventHandler<HTMLButtonElement>;
 }
@@ -87,7 +91,9 @@ const ResetPasswordModal = ({ onClickButton }: Props) => {
               name="email"
               onChange={handleChange}
             />
-            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+            {errors.email && (
+              <ErrorMessageWithAlign>{errors.email}</ErrorMessageWithAlign>
+            )}
             <Button size="wideBig" color="purple">
               비밀번호 재설정하기
             </Button>
