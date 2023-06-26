@@ -1,6 +1,6 @@
 export interface getEventParams {
   artistId: number;
-  inProgress: boolean;
+  onlyInProgress: boolean;
   page: number;
   size: number;
   sort: ('empty' | 'unsorted' | 'sorted')[];
@@ -35,6 +35,6 @@ export interface EventData {
   image: {
     fileUrl: string;
   };
-  like: boolean;
-  bookmark: boolean;
+  likeId: boolean;
+  bookmarkId: boolean;
 }

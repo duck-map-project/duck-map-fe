@@ -39,11 +39,11 @@ const EventList = () => {
     try {
       setIsFetching(true);
       const eventParams: getEventParams = {
+        page: 0,
+        size: 1,
+        sort: ['sorted', 'unsorted'],
         artistId: 0,
-        inProgress: true,
-        page: page,
-        size: 2,
-        sort: ['sorted'],
+        onlyInProgress: false,
       };
       const res = await eventsApi.get(eventParams);
       setIsFetching(false);

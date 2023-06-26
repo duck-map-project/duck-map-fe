@@ -25,19 +25,21 @@ export const reveiws = async () => {
 };
 
 export const eventsApi = {
-  get: async ({ artistId, inProgress, page, size, sort }: getEventParams) => {
+  get: async ({
+    artistId,
+    onlyInProgress,
+    page,
+    size,
+    sort,
+  }: getEventParams) => {
     try {
       const res = await client.get('/events', {
         params: {
-          eventSearchParam: {
-            artistId: artistId,
-            inProgress: inProgress,
-          },
-          pageable: {
-            page: page,
-            size: size,
-            sort: sort,
-          },
+          page: page,
+          size: size,
+          sort: sort,
+          artistId: artistId,
+          inProgress: onlyInProgress,
         },
       });
       return res.data;
