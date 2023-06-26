@@ -11,8 +11,8 @@ import {
 interface Inputs {
   email: string;
   password: string;
-  passwordCheck?: string;
-  username?: string;
+  passwordCheck: string;
+  username: string;
 }
 
 interface Errors {
@@ -29,12 +29,15 @@ interface Callback {
 interface FormProps {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  inputs: Inputs;
+  inputs: Partial<Inputs>;
   errors: Errors;
 }
 
-const useForm = (initialValue: Inputs, callback: Callback): FormProps => {
-  const [inputs, setInputs] = useState<Inputs>(initialValue);
+const useForm = (
+  initialValue: Partial<Inputs>,
+  callback: Callback
+): FormProps => {
+  const [inputs, setInputs] = useState<Partial<Inputs>>(initialValue);
   const [errors, setErrors] = useState<Errors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -80,7 +83,9 @@ const useForm = (initialValue: Inputs, callback: Callback): FormProps => {
         error = validateUsername(value);
         break;
       case 'passwordCheck':
-        error = validatePasswordMatch(inputs.password, value);
+        if (inputs.password) {
+          error = validatePasswordMatch(inputs.password, value);
+        }
         break;
       default:
         break;
