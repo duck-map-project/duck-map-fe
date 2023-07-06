@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
 --yellow: #FFC700;
 --red: #FF0000;
 --white: #FFFFFF;
+--yellow: #FFFDC7;
 }
 
 ${reset}
