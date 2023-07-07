@@ -4,24 +4,67 @@ import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from '../hooks/useRouter';
 
 const Wrapper = styled.ul`
-  width: 178px;
-  padding: 12px 0;
-  border-radius: 5px;
-  border: 1px solid var(--purple);
+  width: 157px;
+  padding: 16px 0;
+  border-radius: 20px;
+  border: 2px solid #1e232c;
   position: absolute;
   top: 55px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--white);
+  background-color: var(--yellow);
   z-index: 999;
+  &::after {
+    content: '';
+    width: 129px;
+    height: 1px;
+    background-color: #000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+  }
 `;
 
 const Item = styled.li`
   width: 100%;
-  padding: 16px 0;
   text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.247777777777778;
+  padding-bottom: 10px;
+  position: relative;
+  cursor: pointer;
+  &:last-child {
+    padding-top: 16px;
+    padding-bottom: 0;
+    &:hover {
+      &::after {
+        content: '';
+        width: 44px;
+        height: 7px;
+        background-color: #d1cf78;
+        position: absolute;
+        top: 32px;
+        left: 65px;
+        z-index: -10;
+      }
+    }
+  }
   &:hover {
-    background-color: var(--purple);
+    &::after {
+      content: '';
+      width: 44px;
+      height: 7px;
+      background-color: #d1cf78;
+      position: absolute;
+      top: 16px;
+      left: 65px;
+      z-index: -10;
+      &:last-child {
+        top: 26px;
+      }
+    }
   }
 `;
 
