@@ -9,7 +9,7 @@ const Wrapper = styled.ul`
   border-radius: 20px;
   border: 2px solid #1e232c;
   position: absolute;
-  top: 55px;
+  top: 47px;
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--yellow);
