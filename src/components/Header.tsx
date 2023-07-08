@@ -93,6 +93,15 @@ const Header: React.FC<HeaderProps> = ({
   };
   const DropdwonLoginList = ['마이페이지', '로그아웃'];
   const { routeTo } = useRouter();
+
+  const handleAuthButton = () => {
+    if (auth?.isLogin) {
+      auth?.signOut();
+    } else {
+      routeTo('/signin');
+    }
+  };
+
   return (
     <HeaderStyle>
       <Logo
@@ -116,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({
           Review
         </MenuButton>
         <MenuButton>
-          <ReviewButtonIcon src={iconLogin} />
+          <ReviewButtonIcon src={iconLogin} onClick={handleAuthButton} />
           {auth?.isLogin ? 'Logout' : 'Login'}
         </MenuButton>
         <ProfileDropdown>
