@@ -3,20 +3,24 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { worker } from './mocks/worker';
-if (process.env.NODE_ENV === 'development') {
-  worker.start();
-}
+// import { worker } from './mocks/worker';
+// if (process.env.NODE_ENV === 'development') {
+//   worker.start();
+// }
 import reportWebVitals from './reportWebVitals';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 

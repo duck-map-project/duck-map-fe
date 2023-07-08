@@ -11,6 +11,7 @@ import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
+import ManagePage from './pages/ManagePage/ManagePage';
 
 interface RouterElement {
   id: number;
@@ -82,6 +83,13 @@ const routerData: RouterElement[] = [
     path: '/password-reset/:id',
     element: <ResetPassword />,
     withAuth: false,
+    wrapWithLayout: true,
+  },
+  {
+    id: 9,
+    path: '/managePage',
+    element: <ManagePage />,
+    withAuth: true,
     wrapWithLayout: true,
   },
 ];

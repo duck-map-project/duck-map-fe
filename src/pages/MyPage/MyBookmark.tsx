@@ -24,7 +24,7 @@ const MyBookmark = () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
-
+};
 const MyEvent = () => {
   return (
     // FIXME: 동적으로 데이터 받아오기
