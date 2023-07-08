@@ -82,45 +82,12 @@ export const CircleButton = styled.button`
   }
 `;
 
-// TODO: Signup 페이지 수정할 때 지우기
-export const SNSSignupText = styled.h2`
-  font-size: 1.4rem;
-  margin-bottom: 23px;
-  position: relative;
-  &::before {
-    width: 120px;
-    height: 1px;
-    content: '';
-    display: block;
-    background-color: var(--purple);
-    position: absolute;
-    left: -150px;
-    top: 50%;
-  }
-  &::after {
-    width: 120px;
-    height: 1px;
-    content: '';
-    display: block;
-    background-color: var(--purple);
-    position: absolute;
-    right: -150px;
-    top: 50%;
-  }
-`;
-
 export const SNSButtonWrapper = styled.section``;
 
-// TODO: Signup 페이지 작업 시 지우기
-export const SNSSignupButton = styled.button<{ url: string }>`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  background-image: url(${(props) => props.url});
-`;
-
 const SNSLoginButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   max-width: 568px;
   height: 64px;
@@ -147,6 +114,7 @@ const SNSLoginButton = styled.button`
 
 export const NaverLoginButton = styled(SNSLoginButton)`
   background-color: #03cf5d;
+  background-image: url();
   margin-bottom: 18px;
   &::after {
     background-color: #65a0c3;
@@ -158,6 +126,16 @@ export const KakaoLoginButton = styled(SNSLoginButton)`
   &::after {
     background-color: #cec35d;
   }
+`;
+
+export const NaverIcon = styled.img`
+  width: 24px;
+  margin-right: 10px;
+`;
+
+export const KakaoIcon = styled.img`
+  width: 32px;
+  margin-right: 10px;
 `;
 
 export const ErrorMessage = styled.p`

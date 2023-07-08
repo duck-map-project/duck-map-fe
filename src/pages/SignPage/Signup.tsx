@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import kakaoIcon from '../../assets/kakao-icon.svg';
+import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useForm, { Errors } from '../../hooks/useForm';
@@ -13,6 +15,8 @@ import {
   SubmitButton,
   NaverLoginButton,
   KakaoLoginButton,
+  NaverIcon,
+  KakaoIcon,
 } from './SignStyle';
 
 const SignupForm = styled(Form)<{ errors: Errors }>`
@@ -110,8 +114,14 @@ const Signup = () => {
           <CenterErrorMessage>{auth?.errorMessage.signup}</CenterErrorMessage>
         )}
       </SignupForm>
-      <NaverLoginButton>네이버로 간편로그인</NaverLoginButton>
-      <KakaoLoginButton>카카오톡으로 간편로그인</KakaoLoginButton>
+      <NaverLoginButton>
+        <NaverIcon src={naverIcon} />
+        네이버로 간편가입
+      </NaverLoginButton>
+      <KakaoLoginButton>
+        <KakaoIcon src={kakaoIcon} />
+        카카오톡으로 간편가입
+      </KakaoLoginButton>
     </PageWrapper>
   );
 };

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 
+import kakaoIcon from '../../assets/kakao-icon.svg';
+import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
 import ResetPasswordModal from '../../components/modals/ResetPasswordModal';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -16,6 +18,8 @@ import {
   CircleButton,
   ErrorMessage,
   SubmitButton,
+  NaverIcon,
+  KakaoIcon,
 } from './SignStyle';
 
 const FormWithMargin = styled(Form)<{ emailError: string | undefined }>`
@@ -94,8 +98,14 @@ const Signin = () => {
           비밀번호 찾기
         </CircleButton>
       </div>
-      <NaverLoginButton>네이버로 간편로그인</NaverLoginButton>
-      <KakaoLoginButton>카카오톡으로 간편로그인</KakaoLoginButton>
+      <NaverLoginButton>
+        <NaverIcon src={naverIcon} />
+        네이버로 간편로그인
+      </NaverLoginButton>
+      <KakaoLoginButton>
+        <KakaoIcon src={kakaoIcon} />
+        카카오톡으로 간편로그인
+      </KakaoLoginButton>
     </PageWrapper>
   );
 };
