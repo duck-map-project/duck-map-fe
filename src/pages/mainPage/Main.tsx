@@ -65,7 +65,7 @@ const Main = () => {
       <ViewReviews>
         <MoreButton>더보기</MoreButton>
         <Reviews>
-          {reviewImages.map((image, index) => (
+          {reviewImages?.map((image, index) => (
             <ReviewsItem key={index} image={image.imageFilenames[0]} />
           ))}
         </Reviews>
