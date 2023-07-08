@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { reveiws } from '../../api/event';
+// import { reveiws } from '../../api/event';
 import SortDropdown from '../../components/SortButton';
 
 import {
@@ -9,8 +9,11 @@ import {
   ViewReviews,
   MoreButton,
   Reviews,
-  ReviewsItem,
+  MapFrame,
+  MapTitle,
+  ViewReviewsTitle,
 } from './MainStyle';
+import ReviewItem from './ReviewItem';
 
 interface Reviews {
   eventId: number;
@@ -20,7 +23,8 @@ interface Reviews {
 const Main = () => {
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   const [SortModal, setSortModal] = useState(false);
-  const [reviewImages, setReviewImages] = useState<Reviews[]>([]);
+  // TODO: 추가된 API로 수정해서 리뷰 이미지 목록 불러오기
+  // const [reviewImages, setReviewImages] = useState<Reviews[]>([]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -39,37 +43,44 @@ const Main = () => {
     };
   }, []);
 
-  const FetchReview = async () => {
-    try {
-      const res = await reveiws();
-      setReviewImages(res);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const FetchReview = async () => {
+  //   try {
+  //     const res = await reveiws();
+  //     setReviewImages(res);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    FetchReview();
-  }, []);
+  // useEffect(() => {
+  //   FetchReview();
+  // }, []);
 
   return (
     <>
       <MainSection>
-        <SortDropdown
-          sortButtonRef={sortButtonRef}
-          clicked={SortModal}
-          setClicked={setSortModal}
-        />
-        <MapSection />
+        <MapFrame>
+          <SortDropdown
+            sortButtonRef={sortButtonRef}
+            clicked={SortModal}
+            setClicked={setSortModal}
+          />
+          <MapTitle>지도</MapTitle>
+          <MapSection />
+        </MapFrame>
+        <ViewReviews>
+          <ViewReviewsTitle>리뷰 미리보기</ViewReviewsTitle>
+          <MoreButton>더보기</MoreButton>
+          <Reviews>
+            <ReviewItem />
+            <ReviewItem />
+
+            {/* {reviewImages?.map((image, index) => (
+              <ReviewsItem key={index} image={image.imageFilenames[0]} />
+            ))} */}
+          </Reviews>
+        </ViewReviews>
       </MainSection>
-      <ViewReviews>
-        <MoreButton>더보기</MoreButton>
-        <Reviews>
-          {reviewImages?.map((image, index) => (
-            <ReviewsItem key={index} image={image.imageFilenames[0]} />
-          ))}
-        </Reviews>
-      </ViewReviews>
     </>
   );
 };
