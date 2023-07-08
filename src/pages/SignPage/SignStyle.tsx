@@ -32,9 +32,6 @@ export const Form = styled.form`
   margin-bottom: 24px;
   padding: 27px 91px 0;
   position: relative;
-  & > input:nth-child(3) {
-    margin-bottom: 16px;
-  }
   & > button {
     margin-top: 50px;
   }
@@ -166,8 +163,8 @@ export const KakaoLoginButton = styled(SNSLoginButton)`
 export const ErrorMessage = styled.p`
   font-size: 12px;
   color: var(--red);
-  margin-top: 2px;
-  margin-bottom: 5px;
+  margin-top: 1px;
+  margin-bottom: 1px;
 `;
 
 export const CenterErrorMessage = styled(ErrorMessage)`

@@ -15,7 +15,7 @@ interface Inputs {
   username: string;
 }
 
-interface Errors {
+export interface Errors {
   email?: string;
   password?: string;
   passwordCheck?: string;
