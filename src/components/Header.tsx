@@ -39,6 +39,9 @@ export const MenuButton = styled(TextButton)`
   background-color: var(--yellow);
   box-shadow: 3px 3px 0px 0px #00000040;
   text-align: left;
+  &:nth-child(3) {
+    margin-right: ${px2vw(24)};
+  }
 `;
 
 const MenuButtonIcon = styled.img`
@@ -65,7 +68,7 @@ export const ProfileImg = styled.img`
   border-radius: 50%;
   background: linear-gradient(0deg, #f8f8fa, #f8f8fa),
     linear-gradient(0deg, #1e232c, #1e232c);
-  border: ${(props) => (props.src === defaultImage ? '' : '2px solid #1e232c')};
+  border: 2px solid #1e232c;
   flex-shrink: 0;
 `;
 
