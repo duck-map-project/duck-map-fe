@@ -6,7 +6,6 @@ import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
-import MyPage from './pages/MyPage/MyPage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 import Signin from './pages/SignPage/Signin';
@@ -63,13 +62,7 @@ const routerData: RouterElement[] = [
     withAuth: true,
     wrapWithLayout: true,
   },
-  {
-    id: 6,
-    path: '/mypage',
-    element: <MyPage />,
-    withAuth: true,
-    wrapWithLayout: true,
-  },
+  //TODO: 만약 라우터 추가 시 6번 부터 추가해주세요!
   {
     id: 7,
     path: '*',

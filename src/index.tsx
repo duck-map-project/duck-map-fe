@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { worker } from './mocks/worker';
-if (process.env.NODE_ENV === 'development') {
-  worker.start();
-}
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(

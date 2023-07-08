@@ -66,7 +66,7 @@ const Billboard = () => {
     fetchTodayHashtag();
   }, []);
 
-  const listItems = hashtags.map((hashtag, index) => (
+  const listItems = hashtags?.map((hashtag, index) => (
     <ListItem key={index}>{hashtag.hashtag}</ListItem>
   ));
   return (
