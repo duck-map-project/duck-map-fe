@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 
+import ReviewPreviewIcon from '../../assets/review-preview-icon.svg';
 import px2vw from '../../utils/px2vw';
 
 export const TextButton = styled.button`
@@ -80,6 +81,10 @@ export const ViewReviews = styled.section`
   padding-top: 11.5px;
   border-radius: 20px;
   border: 2px solid #1e232c;
+  background-image: url(${ReviewPreviewIcon});
+  background-repeat: no-repeat;
+  background-position: 25px 14px;
+  background-size: 20px;
 `;
 
 export const ViewReviewsTitle = styled.h2`
