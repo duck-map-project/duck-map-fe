@@ -6,18 +6,35 @@ import reset from './reset';
 const GlobalStyle = createGlobalStyle`
 
 :root {
---gradient: linear-gradient(180deg, #C8B6FF 0%, #E7C6FF 50%, #FFD6FF 100%);
---pink: #E7C6FF;
---purple: #C8B6FF;
---light-purple: #E7DFFF;
---blue-purple: #B8C0FF;
---blue: #BBD0FF;
---disabled: #D9D9D9;
---background-disabled: rgba(224, 224, 224, 0.7);
+  --font-black: #1E232C;
+  --font-grey1: #8391A1;
+  --font-grey2: #8F9196;
+  --font-grey3: #999999;
+  --bg1: #F1F1F5;
+  --bg2: #F8F8FA;
+  --line-black: #1E232C;
+  --line-grey1: #DBDBDB;
+  --line-grey2: #EDEDED;
+  --theme1: #CBB8FF;
+  --theme2: #FDD5FF;
+  --error: #FF3120;
+  --complete: #92E5FF;
+  --white: #FFFFFF; 
+  --yellow: #FFFDC7;
+  
+  
+  /* --gradient: linear-gradient(180deg, #C8B6FF 0%, #E7C6FF 50%, #FFD6FF 100%);
+  --pink: #E7C6FF;
+  --purple: #C8B6FF;
+  --light-purple: #E7DFFF;
+  --blue-purple: #B8C0FF;
+  --blue: #BBD0FF;
+  --disabled: #D9D9D9;
+  --background-disabled: rgba(224, 224, 224, 0.7);
 --yellow: #FFC700;
 --red: #FF0000;
 --white: #FFFFFF;
---yellow: #FFFDC7;
+*/
 }
 
 ${reset}
@@ -34,7 +51,7 @@ html {
 body {
     font-size: 1.6rem;
     line-height: 1.25;
-    font-family: 'SpoqaHanSansNeo';
+    font-family: 'Suite';
     font-weight: 400;
 }
 
