@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { styled } from 'styled-components';
 
 import AuthInput from '../../components/AuthInput';
-import ResetPasswordModal from '../../components/ResetPasswordModal';
+import ResetPasswordModal from '../../components/modals/ResetPasswordModal';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
 import { useRouter } from '../../hooks/useRouter';

@@ -1,12 +1,13 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import { resetPassword } from '../../api/authApi';
 import AuthInput from '../../components/AuthInput';
-import Button from '../../components/Button';
+import SuccessResetModal from '../../components/modals/SuccessResetModal';
 import useForm from '../../hooks/useForm';
-import { useRouter } from '../../hooks/useRouter';
 import { ErrorMessage } from '../SignPage/SignStyle';
+import { PageTitle, Form, SubmitButton } from '../SignPage/SignStyle';
 
 const PageWrapper = styled.section`
   width: 100%;
@@ -16,32 +17,23 @@ const PageWrapper = styled.section`
   align-items: center;
 `;
 
-const Title = styled.h1`
-  font-size: 2.4rem;
-  margin-bottom: 75px;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  max-width: 385px;
-  & > input:nth-child(2) {
-    margin-bottom: 13px;
-  }
-  & > input:nth-child(4) {
-    margin-bottom: 30px;
+const ResetPasswordForm = styled(Form)`
+  margin-top: 159px;
+  & > input[name='password'] {
+    margin-bottom: 16px;
   }
 `;
 
 const ResetPassword = () => {
   const { id } = useParams();
-  const { routeTo } = useRouter();
+  const [successModal, setSuccessModal] = useState(false);
 
   const onResetPasswordSubmit = async () => {
     try {
       if (inputs.password === inputs.passwordCheck && id) {
         const res = await resetPassword(id, inputs.password as string);
         if (res === 'success') {
-          routeTo('/signin');
+          setSuccessModal(true);
         }
       }
     } catch (error) {
@@ -57,10 +49,14 @@ const ResetPassword = () => {
     onResetPasswordSubmit
   );
 
+  const onModalClsoeButton = () => {
+    setSuccessModal(false);
+  };
+
   return (
     <PageWrapper>
-      <Title>비밀번호 재설정</Title>
-      <Form onSubmit={handleSubmit}>
+      <ResetPasswordForm onSubmit={handleSubmit}>
+        <PageTitle>비밀번호 재설정</PageTitle>
         <AuthInput
           type="password"
           name="password"
@@ -77,10 +73,11 @@ const ResetPassword = () => {
         {errors.passwordCheck && (
           <ErrorMessage>{errors.passwordCheck}</ErrorMessage>
         )}
-        <Button size="wideBig" color="purple">
-          재설정
-        </Button>
-      </Form>
+        <SubmitButton>확인</SubmitButton>
+      </ResetPasswordForm>
+      {successModal ? (
+        <SuccessResetModal onClickButton={onModalClsoeButton} />
+      ) : null}
     </PageWrapper>
   );
 };
