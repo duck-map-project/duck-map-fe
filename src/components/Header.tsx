@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import iconPencil from '../assets/icon-pencil.svg';
 import iconPin from '../assets/icon-pin.svg';
+import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
 import defaultImage from '../assets/user-profile.svg';
 import { useAuthContext } from '../contexts/AuthContext';
@@ -28,7 +29,6 @@ export const Logo = styled.img`
 export const MenuButton = styled(TextButton)`
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 130px;
   height: 36px;
   font-weight: 700;
@@ -38,19 +38,16 @@ export const MenuButton = styled(TextButton)`
   border-radius: 3px;
   background-color: var(--yellow);
   box-shadow: 3px 3px 0px 0px #00000040;
-  &:nth-child(2) {
-    justify-content: flex-start;
-    padding-left: 11.5px;
-  }
+  text-align: left;
 `;
 
 const MenuButtonIcon = styled.img`
   height: 22px;
-  margin-right: 8px;
+  margin: 0 8px 0 19.5px;
 `;
 
 const ReviewButtonIcon = styled(MenuButtonIcon)`
-  margin-right: 6px;
+  margin: 0 8px 0 17.5px;
 `;
 
 export const RightSection = styled.section`
@@ -114,6 +111,10 @@ const Header: React.FC<HeaderProps> = ({
         <MenuButton>
           <ReviewButtonIcon src={iconPencil} />
           Review
+        </MenuButton>
+        <MenuButton>
+          <ReviewButtonIcon src={iconLogin} />
+          {auth?.isLogin ? 'Logout' : 'Login'}
         </MenuButton>
         <ProfileDropdown>
           <ProfileImg
