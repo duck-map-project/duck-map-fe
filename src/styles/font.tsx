@@ -1,35 +1,32 @@
 import { css } from 'styled-components';
 
-import SpoqaHanSansNeoBold from '../fonts/SpoqaHanSansNeo-Bold.woff';
-import SpoqaHanSansNeoLight from '../fonts/SpoqaHanSansNeo-Light.woff';
-import SpoqaHanSansNeoMedium from '../fonts/SpoqaHanSansNeo-Medium.woff';
-import SpoqaHanSansNeoRegular from '../fonts/SpoqaHanSansNeo-Regular.woff';
+import RobotoBold from '../fonts/Roboto-Bold-webfont.woff';
+import RobotoRegular from '../fonts/Roboto-Regular-webfont.woff';
+// import SuiteBold from '../fonts/SUITE-Bold.woff'
+// import SuiteRegular from '../fonts/SUITE-Regular.woff';
 
 const font = css`
   @font-face {
-    font-family: 'SpoqaHanSansNeo';
-    src: url(${SpoqaHanSansNeoBold}) format('woff');
+    font-family: 'Roboto';
+    src: url(${RobotoBold}) format('woff');
     font-style: normal;
     font-weight: 700;
   }
-
   @font-face {
-    font-family: 'SpoqaHanSansNeo';
-    src: url(${SpoqaHanSansNeoLight}) format('woff');
+    font-family: 'Roboto';
+    src: url(${RobotoRegular}) format('woff');
     font-style: normal;
-    font-weight: '300';
+    font-weight: 400;
   }
-
   @font-face {
-    font-family: 'SpoqaHanSansNeo';
-    src: url(${SpoqaHanSansNeoMedium}) format('woff');
+    font-family: 'Suite';
+    src: url(../fonts/SUITE-Bold.woff2) format('woff2');
     font-style: normal;
-    font-weight: '500';
+    font-weight: 700;
   }
-
   @font-face {
-    font-family: 'SpoqaHanSansNeo';
-    src: url(${SpoqaHanSansNeoRegular}) format('woff');
+    font-family: 'Suite';
+    src: url(../fonts/SUITE-Regular.woff2) format('woff2');
     font-style: normal;
     font-weight: 400;
   }
