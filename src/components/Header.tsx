@@ -11,8 +11,6 @@ import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
 import px2vw from '../utils/px2vw';
 
-import Dropdown from './Dropdown';
-
 export const HeaderStyle = styled.header`
   width: 100%;
   display: flex;
@@ -72,26 +70,13 @@ export const ProfileImg = styled.img`
   flex-shrink: 0;
 `;
 
-interface HeaderProps {
-  setProfileModal: React.Dispatch<React.SetStateAction<boolean>>;
-  profileRef: React.RefObject<HTMLImageElement>;
-  profileModal: boolean;
-}
-
-const Header: React.FC<HeaderProps> = ({
-  setProfileModal,
-  profileRef,
-  profileModal,
-}) => {
+const Header: React.FC = ({}) => {
   const auth = useAuthContext();
   const handleProfileClick = () => {
-    if (!auth?.isLogin) {
-      routeTo('/signin');
-      return;
+    if (auth?.isLogin) {
+      routeTo('/mypage');
     }
-    setProfileModal((prev) => !prev);
   };
-  const DropdwonLoginList = ['마이페이지', '로그아웃'];
   const { routeTo } = useRouter();
 
   const handleAuthButton = () => {
@@ -133,11 +118,7 @@ const Header: React.FC<HeaderProps> = ({
             src={defaultImage}
             alt="Profile"
             onClick={handleProfileClick}
-            ref={profileRef}
           />
-          {profileModal ? (
-            <Dropdown lists={DropdwonLoginList} setClicked={setProfileModal} />
-          ) : null}
         </ProfileDropdown>
       </RightSection>
     </HeaderStyle>
