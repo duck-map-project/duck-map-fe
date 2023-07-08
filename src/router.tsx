@@ -6,11 +6,11 @@ import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
+import ManagePage from './pages/ManagePage/ManagePage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
-import ManagePage from './pages/ManagePage/ManagePage';
 
 interface RouterElement {
   id: number;
@@ -82,7 +82,8 @@ const routerData: RouterElement[] = [
     id: 9,
     path: '/managePage',
     element: <ManagePage />,
-    withAuth: true,
+    //추후에 true로 변경
+    withAuth: false,
     wrapWithLayout: true,
   },
 ];

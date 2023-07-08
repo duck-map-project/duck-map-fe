@@ -13,6 +13,6 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ['ArtistType'],
+  tagTypes: ['ArtistType', 'Artists'],
   endpoints: () => ({}),
 });
