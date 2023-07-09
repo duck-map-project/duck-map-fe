@@ -1,20 +1,22 @@
+import { ArtistValue, ArtistsData } from '../types/artistsType';
+
 import { apiSlice } from './apiSlice';
-import { ArtistValue } from '../types/artistsType';
 
-import useLocalStorage from '../hooks/useLocalStarage';
-
-const [accessToken, _] = useLocalStorage('admin', null);
+const accessToken = window.localStorage.getItem('admin');
 
 export const artistsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getArtists: builder.query({
-      query: (params: {
-        artistTypeId?: string;
-        artistName?: string;
-        page?: string;
-        size?: string;
-        sort?: string;
-      }) => {
+    getArtists: builder.query<
+      ArtistsData,
+      {
+        artistTypeId?: string | undefined;
+        artistName?: string | undefined;
+        page?: string | undefined;
+        size?: string | undefined;
+        sort?: string | undefined;
+      }
+    >({
+      query: (params) => {
         const url = '/artists';
         const queryString = params
           ? new URLSearchParams(params).toString()

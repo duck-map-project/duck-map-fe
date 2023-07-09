@@ -6,7 +6,7 @@ import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
-import ManagePage from './pages/ManagePage/ManagePage';
+import ManagePage from './pages/ManagePage/Manage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 import Signin from './pages/SignPage/Signin';

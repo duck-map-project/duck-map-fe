@@ -4,6 +4,7 @@ export interface ArtistValue {
   name: string;
   image: string;
 }
+
 export interface ArtistsData {
   totalElements: number;
   totalPages: number;

@@ -1,8 +1,8 @@
-import { apiSlice } from './apiSlice';
-
 import useLocalStorage from '../hooks/useLocalStarage';
 
-const [accessToken, _] = useLocalStorage('admin', null);
+import { apiSlice } from './apiSlice';
+
+const [accessToken, ] = useLocalStorage('admin', null);
 
 export const artistsTypeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
