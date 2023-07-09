@@ -1,20 +1,45 @@
-import kakaotalk from '../../assets/kakaotalk.svg';
-import twitter from '../../assets/twitter-circle.svg';
+import { styled } from 'styled-components';
+
+import kakaoIcon from '../../assets/kakao-icon.svg';
+import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
-import Button from '../../components/Button';
 import { useAuthContext } from '../../contexts/AuthContext';
-import useForm from '../../hooks/useForm';
+import useForm, { Errors } from '../../hooks/useForm';
 
 import {
   PageWrapper,
   PageTitle,
   Form,
-  SNSSignupText,
-  SNSButtonWrapper,
-  SNSSignupButton,
   ErrorMessage,
   CenterErrorMessage,
+  SubmitButton,
+  NaverLoginButton,
+  KakaoLoginButton,
+  NaverIcon,
+  KakaoIcon,
 } from './SignStyle';
+
+const SignupForm = styled(Form)<{ errors: Errors }>`
+  height: 490px;
+  margin-bottom: 60px;
+  &::after {
+    height: 490px;
+  }
+  & > input {
+    &[name='email'] {
+      margin-bottom: ${(props) => (props.errors.email ? '0' : '16px')};
+    }
+    &[name='password'] {
+      margin-bottom: ${(props) => (props.errors.password ? '0' : '16px')};
+    }
+    &[name='passwordCheck'] {
+      margin-bottom: ${(props) => (props.errors.passwordCheck ? '0' : '16px')};
+    }
+    &[name='username'] {
+      margin-bottom: 0;
+    }
+  }
+`;
 
 const Signup = () => {
   const auth = useAuthContext();
@@ -31,11 +56,12 @@ const Signup = () => {
     { email: '', password: '', passwordCheck: '', username: '' },
     handleSignup
   );
+  console.log(errors);
 
   return (
     <PageWrapper>
-      <PageTitle>회원가입</PageTitle>
-      <Form onSubmit={handleSubmit} noValidate>
+      <SignupForm onSubmit={handleSubmit} noValidate errors={errors}>
+        <PageTitle>회원가입</PageTitle>
         <AuthInput
           name="email"
           title="이메일"
@@ -44,6 +70,7 @@ const Signup = () => {
           onChange={handleChange}
           autoComplete="email"
           isInputValid={!errors.email}
+          placeholder="이메일 입력"
         />
         {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
         <AuthInput
@@ -54,6 +81,7 @@ const Signup = () => {
           onChange={handleChange}
           autoComplete="current-password"
           isInputValid={!errors.password}
+          placeholder="비밀번호 입력"
         />
         {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
 
@@ -65,6 +93,7 @@ const Signup = () => {
           onChange={handleChange}
           autoComplete="new-password"
           isInputValid={!errors.passwordCheck}
+          placeholder="비밀번호 입력"
         />
         {errors.passwordCheck && (
           <ErrorMessage>{errors.passwordCheck}</ErrorMessage>
@@ -77,20 +106,22 @@ const Signup = () => {
           onChange={handleChange}
           autoComplete="nickname"
           isInputValid={!errors.username}
+          placeholder="닉네임 입력"
         />
         {errors.username && <ErrorMessage>{errors.username}</ErrorMessage>}
-        <Button color="purple" size="wideBig">
-          가입하기
-        </Button>
+        <SubmitButton>가입하기</SubmitButton>
         {auth?.errorMessage.signup && (
           <CenterErrorMessage>{auth?.errorMessage.signup}</CenterErrorMessage>
         )}
-      </Form>
-      <SNSSignupText>간편 회원가입</SNSSignupText>
-      <SNSButtonWrapper>
-        <SNSSignupButton url={twitter} />
-        <SNSSignupButton url={kakaotalk} />
-      </SNSButtonWrapper>
+      </SignupForm>
+      <NaverLoginButton>
+        <NaverIcon src={naverIcon} />
+        네이버로 간편가입
+      </NaverLoginButton>
+      <KakaoLoginButton>
+        <KakaoIcon src={kakaoIcon} />
+        카카오톡으로 간편가입
+      </KakaoLoginButton>
     </PageWrapper>
   );
 };

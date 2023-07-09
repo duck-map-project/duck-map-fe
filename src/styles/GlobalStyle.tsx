@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
   --error: #FF3120;
   --complete: #92E5FF;
   --white: #FFFFFF; 
+  --yellow: #FFFDC7;
   
   
   /* --gradient: linear-gradient(180deg, #C8B6FF 0%, #E7C6FF 50%, #FFD6FF 100%);
@@ -32,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
   --background-disabled: rgba(224, 224, 224, 0.7);
 --yellow: #FFC700;
 --red: #FF0000;
+--white: #FFFFFF;
 */
 }
 
