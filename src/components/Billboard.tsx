@@ -13,7 +13,7 @@ const SlideLeftAnimation = keyframes`
 `;
 
 const Container = styled.section`
-  background: var(--gradient);
+  background: #eed8ff;
   color: #000;
   overflow-x: hidden;
 `;
@@ -30,18 +30,16 @@ const HashtagList = styled.ul`
   flex-basis: 100%;
   flex-shrink: 0;
   flex-grow: 1;
-  height: 50px;
+  height: 64px;
   align-items: center;
   animation: ${SlideLeftAnimation} 20s linear infinite;
 `;
 
 const ListItem = styled.li`
   font-size: 1.4rem;
-  font-weight: 100;
+  font-weight: 500;
+  line-height: 1.247857142857143;
   margin-right: 10px;
-  &::before {
-    content: '#';
-  }
 `;
 
 interface HashTag {
@@ -56,7 +54,6 @@ const Billboard = () => {
     try {
       const res = await todayHashtags();
       setHashtags(res);
-      console.log(res);
     } catch (error) {
       console.error(error);
     }

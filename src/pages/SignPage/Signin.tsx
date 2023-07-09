@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 
-import kakaotalk from '../../assets/kakaotalk.svg';
-import twitter from '../../assets/twitter-circle.svg';
+import kakaoIcon from '../../assets/kakao-icon.svg';
+import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
-import Button from '../../components/Button';
-import ResetPasswordModal from '../../components/ResetPasswordModal';
+import ResetPasswordModal from '../../components/modals/ResetPasswordModal';
 import { useAuthContext } from '../../contexts/AuthContext';
 import useForm from '../../hooks/useForm';
 import { useRouter } from '../../hooks/useRouter';
@@ -14,21 +13,20 @@ import {
   PageTitle,
   PageWrapper,
   Form,
-  SNSSignupButton,
-  SNSButtonWrapper,
-  SNSSignupText,
-  LinkText,
+  NaverLoginButton,
+  KakaoLoginButton,
+  CircleButton,
   ErrorMessage,
+  SubmitButton,
+  NaverIcon,
+  KakaoIcon,
 } from './SignStyle';
 
-const FormWithMargin = styled(Form)`
-  margin-bottom: 16px;
-  & > input:nth-child(4) {
-    margin-bottom: 0;
+const FormWithMargin = styled(Form)<{ emailError: string | undefined }>`
+  margin-bottom: 55px;
+  & > input:nth-child(3) {
+    margin-bottom: ${(props) => (props.emailError ? '0' : '16px')};
   }
-`;
-const SnsTextWithMargin = styled(SNSSignupText)`
-  margin-top: 16px;
 `;
 
 const Signin = () => {
@@ -53,8 +51,12 @@ const Signin = () => {
       {passwordModal ? (
         <ResetPasswordModal onClickButton={() => setPasswordModal(false)} />
       ) : null}
-      <PageTitle>로그인</PageTitle>
-      <FormWithMargin onSubmit={handleSubmit} noValidate>
+      <FormWithMargin
+        onSubmit={handleSubmit}
+        noValidate
+        emailError={errors.email}
+      >
+        <PageTitle>로그인</PageTitle>
         <AuthInput
           name="email"
           title="이메일"
@@ -63,6 +65,7 @@ const Signin = () => {
           onChange={handleChange}
           autoComplete="email"
           isInputValid={!errors.email}
+          placeholder="이메일 입력"
         />
         {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
 
@@ -74,33 +77,35 @@ const Signin = () => {
           onChange={handleChange}
           autoComplete="current-password"
           isInputValid={!errors.password}
+          placeholder="비밀번호 입력"
         />
         {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
 
-        <Button color="purple" size="wideBig">
-          로그인
-        </Button>
+        <SubmitButton>로그인하기</SubmitButton>
       </FormWithMargin>
       {auth?.errorMessage.signin && (
         <ErrorMessage>{auth?.errorMessage.signin}</ErrorMessage>
       )}
       <div>
-        <LinkText
+        <CircleButton
           onClick={() => {
             routeTo('/signup');
           }}
         >
           회원가입
-        </LinkText>
-        <LinkText onClick={() => setPasswordModal(true)}>
+        </CircleButton>
+        <CircleButton onClick={() => setPasswordModal(true)}>
           비밀번호 찾기
-        </LinkText>
+        </CircleButton>
       </div>
-      <SnsTextWithMargin>간편 로그인</SnsTextWithMargin>
-      <SNSButtonWrapper>
-        <SNSSignupButton url={twitter} />
-        <SNSSignupButton url={kakaotalk} />
-      </SNSButtonWrapper>
+      <NaverLoginButton>
+        <NaverIcon src={naverIcon} />
+        네이버로 간편로그인
+      </NaverLoginButton>
+      <KakaoLoginButton>
+        <KakaoIcon src={kakaoIcon} />
+        카카오톡으로 간편로그인
+      </KakaoLoginButton>
     </PageWrapper>
   );
 };
