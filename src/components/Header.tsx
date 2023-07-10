@@ -91,6 +91,9 @@ const Header: React.FC = ({}) => {
   const handleReviewClick = () => {
     console.log('리뷰!');
   };
+  const handleGroupClick = () => {
+    console.log('그룹 등록!');
+  };
   const handleArtistClick = () => {
     console.log('아티스트 등록!');
   };
@@ -98,12 +101,18 @@ const Header: React.FC = ({}) => {
   const handleCategoryClick = () => {
     console.log('카테고리 등록!');
   };
-  
+
   const publicMenu = [
     { id: 1, title: 'Event', icon: iconPin, handler: handleEventClick },
     { id: 2, title: 'Review', icon: iconPencil, handler: handleReviewClick },
   ];
   const managePageMenu = [
+    {
+      id: 0,
+      title: '그룹 등록',
+      icon: settingIcon,
+      handler: handleGroupClick,
+    },
     {
       id: 1,
       title: '아티스트 등록',
