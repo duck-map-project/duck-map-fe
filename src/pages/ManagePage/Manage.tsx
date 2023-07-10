@@ -1,6 +1,9 @@
+import { useRef, useEffect, useState } from 'react';
+
 import manageImage from '../../assets/icons/manageImage.svg';
 import plusIcon from '../../assets/icons/plus.svg';
 import { useGetArtistsQuery } from '../../redux/artistsSlice';
+import { ArtistContent } from '../../types/artistsType';
 
 import ArtistListItem from './ArtistListItem';
 import {
@@ -15,16 +18,26 @@ import {
 } from './ManageStyle';
 
 const Manage = () => {
+  const [artistlistPage, setArtistListPage] = useState(0);
+  const [artistsArray, setArtistsArray] = useState<ArtistContent[]>([]);
   const {
     data: artistData,
     isLoading,
+    isFetching,
     isError,
     error,
-  } = useGetArtistsQuery({});
+  } = useGetArtistsQuery({ page: artistlistPage.toString() });
 
-  const artistsArray = artistData?.content;
+  useEffect(() => {
+    if (artistData) {
+      setArtistsArray((prev) => [...prev, ...artistData.content]);
+    }
+  }, [artistData]);
+
+  const isLast = artistData?.last ?? true;
 
   let content;
+
   if (artistsArray) {
     content = artistsArray.map((data) => (
       <ArtistListItem key={data.id} data={data} />
@@ -34,6 +47,29 @@ const Manage = () => {
   } else if (isError) {
     content = <div>{error.toString()}</div>;
   }
+
+  const artistListRef = useRef<HTMLDivElement>(null);
+  const sectionElement = artistListRef.current;
+
+  useEffect(() => {
+    if (sectionElement) {
+      const handleScroll = () => {
+        const { scrollTop, clientHeight, scrollHeight } = sectionElement;
+        const isScrolledToEnd = scrollTop + clientHeight >= scrollHeight;
+
+        if (isScrolledToEnd && !isFetching && !isLast) {
+          setArtistListPage((prev) => prev + 1);
+        }
+      };
+
+      sectionElement.addEventListener('scroll', handleScroll);
+
+      return () => {
+        sectionElement.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [artistlistPage, isFetching]);
+
   return (
     <>
       <ManageInfoSection>
@@ -53,7 +89,7 @@ const Manage = () => {
             <img src={plusIcon}></img>
           </ListTitleIcon>
         </ArtistListTitle>
-        <ArtistListSection>{content}</ArtistListSection>
+        <ArtistListSection ref={artistListRef}>{content}</ArtistListSection>
       </ArtistList>
     </>
   );

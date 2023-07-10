@@ -97,6 +97,7 @@ export const ListTitleIcon = styled.div`
 `;
 export const ArtistListSection = styled.section`
   display: grid;
+  position: relative;
   grid-template-columns: repeat(4, 214px);
   max-height: 100%;
   grid-column-gap: 18px;

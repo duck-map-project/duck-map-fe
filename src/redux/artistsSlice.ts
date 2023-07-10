@@ -11,7 +11,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
       {
         artistTypeId?: string | undefined;
         artistName?: string | undefined;
-        page?: string | undefined;
+        page: string;
         size?: string | undefined;
         sort?: string | undefined;
       }
@@ -23,7 +23,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
           : '';
 
         return {
-          url: url + queryString,
+          url: url + '?' + queryString,
           method: 'GET',
         };
       },
