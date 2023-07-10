@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import iconPencil from '../assets/icon-pencil.svg';
 import iconPin from '../assets/icon-pin.svg';
+import settingIcon from '../assets/icons/setting.svg';
 import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
 import defaultImage from '../assets/user-profile.svg';
@@ -27,7 +28,7 @@ export const Logo = styled.img`
 export const MenuButton = styled(TextButton)`
   display: flex;
   align-items: center;
-  width: 130px;
+  padding: 12px 10px;
   height: 36px;
   font-weight: 700;
   font-size: 18px;
@@ -36,7 +37,7 @@ export const MenuButton = styled(TextButton)`
   border-radius: 3px;
   background-color: var(--yellow);
   box-shadow: 3px 3px 0px 0px #00000040;
-  text-align: left;
+  text-align: center;
   &:nth-child(3) {
     margin-right: ${px2vw(24)};
   }
@@ -44,11 +45,7 @@ export const MenuButton = styled(TextButton)`
 
 const MenuButtonIcon = styled.img`
   height: 22px;
-  margin: 0 8px 0 19.5px;
-`;
-
-const ReviewButtonIcon = styled(MenuButtonIcon)`
-  margin: 0 8px 0 17.5px;
+  margin-right: 8px;
 `;
 
 export const RightSection = styled.section`
@@ -72,12 +69,13 @@ export const ProfileImg = styled.img`
 
 const Header: React.FC = ({}) => {
   const auth = useAuthContext();
+  const { currentPath, routeTo } = useRouter();
+
   const handleProfileClick = () => {
     if (auth?.isLogin) {
       routeTo('/mypage');
     }
   };
-  const { routeTo } = useRouter();
 
   const handleAuthButton = () => {
     if (auth?.isLogin) {
@@ -86,6 +84,57 @@ const Header: React.FC = ({}) => {
       routeTo('/signin');
     }
   };
+
+  const handleEventClick = () => {
+    routeTo('/event');
+  };
+  const handleReviewClick = () => {
+    console.log('리뷰!');
+  };
+  const handleArtistClick = () => {
+    console.log('아티스트 등록!');
+  };
+
+  const handleCategoryClick = () => {
+    console.log('카테고리 등록!');
+  };
+  
+  const publicMenu = [
+    { id: 1, title: 'Event', icon: iconPin, handler: handleEventClick },
+    { id: 2, title: 'Review', icon: iconPencil, handler: handleReviewClick },
+  ];
+  const managePageMenu = [
+    {
+      id: 1,
+      title: '아티스트 등록',
+      icon: settingIcon,
+      handler: handleArtistClick,
+    },
+    {
+      id: 2,
+      title: '카테고리 등록',
+      icon: settingIcon,
+      handler: handleCategoryClick,
+    },
+  ];
+
+  let content;
+
+  if (currentPath === '/managePage') {
+    content = managePageMenu.map((menu) => (
+      <MenuButton key={menu.id} onClick={menu.handler}>
+        <MenuButtonIcon src={menu.icon} />
+        {menu.title}
+      </MenuButton>
+    ));
+  } else {
+    content = publicMenu.map((menu) => (
+      <MenuButton key={menu.id} onClick={menu.handler}>
+        <MenuButtonIcon src={menu.icon} />
+        {menu.title}
+      </MenuButton>
+    ));
+  }
 
   return (
     <HeaderStyle>
@@ -97,20 +146,9 @@ const Header: React.FC = ({}) => {
         }}
       />
       <RightSection>
-        <MenuButton
-          onClick={() => {
-            routeTo('/event');
-          }}
-        >
-          <MenuButtonIcon src={iconPin} />
-          Event
-        </MenuButton>
+        {content}
         <MenuButton>
-          <ReviewButtonIcon src={iconPencil} />
-          Review
-        </MenuButton>
-        <MenuButton>
-          <ReviewButtonIcon src={iconLogin} onClick={handleAuthButton} />
+          <MenuButtonIcon src={iconLogin} onClick={handleAuthButton} />
           {auth?.isLogin ? 'Logout' : 'Login'}
         </MenuButton>
         <ProfileDropdown>

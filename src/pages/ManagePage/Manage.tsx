@@ -19,16 +19,23 @@ import {
 } from './ManageStyle';
 
 const Manage = () => {
-  const [artistlistPage, setArtistListPage] = useState(0);
   const [artistsArray, setArtistsArray] = useState<ArtistContent[]>([]);
-
+  const [artistlistPage, setArtistListPage] = useState(0);
+  const [artistType, setArtistType] = useState('');
+  useEffect(() => {
+    setArtistType('');
+  }, []);
+  //아티스트 목록 fetch
   const {
     data: artistData,
     isLoading,
     isFetching,
     isError,
     error,
-  } = useGetArtistsQuery({ page: artistlistPage.toString() });
+  } = useGetArtistsQuery({
+    artistTypeId: artistType,
+    page: artistlistPage.toString(),
+  });
 
   useEffect(() => {
     if (artistData) {
@@ -50,13 +57,14 @@ const Manage = () => {
     content = <div>{error.toString()}</div>;
   }
 
+  //무한 스크롤
   const artistListRef = useRef<HTMLDivElement>(null);
-  const sectionElement = artistListRef.current;
+  const listElement = artistListRef.current;
 
   useEffect(() => {
-    if (sectionElement) {
+    if (listElement) {
       const handleScroll = () => {
-        const { scrollTop, clientHeight, scrollHeight } = sectionElement;
+        const { scrollTop, clientHeight, scrollHeight } = listElement;
         const isScrolledToEnd = scrollTop + clientHeight >= scrollHeight;
 
         if (isScrolledToEnd && !isFetching && !isLast) {
@@ -64,10 +72,10 @@ const Manage = () => {
         }
       };
 
-      sectionElement.addEventListener('scroll', handleScroll);
+      listElement.addEventListener('scroll', handleScroll);
 
       return () => {
-        sectionElement.removeEventListener('scroll', handleScroll);
+        listElement.removeEventListener('scroll', handleScroll);
       };
     }
   }, [artistlistPage, isFetching]);
