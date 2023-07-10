@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import iconPencil from '../assets/icon-pencil.svg';
@@ -10,6 +11,7 @@ import defaultImage from '../assets/user-profile.svg';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
+import { toggleGroup } from '../redux/manageModalSlice';
 import px2vw from '../utils/px2vw';
 
 export const HeaderStyle = styled.header`
@@ -70,6 +72,7 @@ export const ProfileImg = styled.img`
 const Header: React.FC = ({}) => {
   const auth = useAuthContext();
   const { currentPath, routeTo } = useRouter();
+  const dispatch = useDispatch();
 
   const handleProfileClick = () => {
     if (auth?.isLogin) {
@@ -92,7 +95,7 @@ const Header: React.FC = ({}) => {
     console.log('리뷰!');
   };
   const handleGroupClick = () => {
-    console.log('그룹 등록!');
+    dispatch(toggleGroup());
   };
   const handleArtistClick = () => {
     console.log('아티스트 등록!');

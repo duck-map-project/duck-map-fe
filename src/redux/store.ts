@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { apiSlice } from './apiSlice';
+import manageModalReducer from './manageModalSlice';
 
 export const store = configureStore({
   reducer: {
+    manageModal: manageModalReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
