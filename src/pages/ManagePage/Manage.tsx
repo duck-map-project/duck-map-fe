@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 
 import manageImage from '../../assets/icons/manageImage.svg';
@@ -20,6 +21,7 @@ import {
 const Manage = () => {
   const [artistlistPage, setArtistListPage] = useState(0);
   const [artistsArray, setArtistsArray] = useState<ArtistContent[]>([]);
+
   const {
     data: artistData,
     isLoading,
@@ -95,4 +97,4 @@ const Manage = () => {
   );
 };
 
-export default Manage;
+export default React.memo(Manage);

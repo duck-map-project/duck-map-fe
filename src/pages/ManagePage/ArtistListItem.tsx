@@ -1,3 +1,5 @@
+import React from 'react';
+
 import deleteIcon from '../../assets/icons/delete.svg';
 import editIcon from '../../assets/icons/edit.svg';
 import { ArtistContent } from '../../types/artistsType';
@@ -33,4 +35,4 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
   );
 };
 
-export default ArtistListItem;
+export default React.memo(ArtistListItem);
