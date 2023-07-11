@@ -9,9 +9,9 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
     getArtists: builder.query<
       ArtistsData,
       {
-        artistTypeId?: string | undefined;
+        artistTypeId: string;
         artistName?: string | undefined;
-        page?: string | undefined;
+        page: string;
         size?: string | undefined;
         sort?: string | undefined;
       }
@@ -23,7 +23,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
           : '';
 
         return {
-          url: url + queryString,
+          url: url + '?' + queryString,
           method: 'GET',
         };
       },

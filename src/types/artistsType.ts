@@ -45,3 +45,8 @@ export interface ArtistsData {
   ];
   empty: boolean;
 }
+
+export type ArtistContent = Pick<
+  ArtistsData['content'][0],
+  'id' | 'groupId' | 'groupName' | 'name' | 'image' | 'artistType'
+>;

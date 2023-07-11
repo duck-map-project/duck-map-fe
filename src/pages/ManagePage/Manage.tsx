@@ -1,6 +1,10 @@
+import React from 'react';
+import { useRef, useEffect, useState } from 'react';
+
 import manageImage from '../../assets/icons/manageImage.svg';
 import plusIcon from '../../assets/icons/plus.svg';
 import { useGetArtistsQuery } from '../../redux/artistsSlice';
+import { ArtistContent } from '../../types/artistsType';
 
 import ArtistListItem from './ArtistListItem';
 import {
@@ -15,16 +19,34 @@ import {
 } from './ManageStyle';
 
 const Manage = () => {
+  const [artistsArray, setArtistsArray] = useState<ArtistContent[]>([]);
+  const [artistlistPage, setArtistListPage] = useState(0);
+  const [artistType, setArtistType] = useState('');
+  useEffect(() => {
+    setArtistType('');
+  }, []);
+  //아티스트 목록 fetch
   const {
     data: artistData,
     isLoading,
+    isFetching,
     isError,
     error,
-  } = useGetArtistsQuery({});
+  } = useGetArtistsQuery({
+    artistTypeId: artistType,
+    page: artistlistPage.toString(),
+  });
 
-  const artistsArray = artistData?.content;
+  useEffect(() => {
+    if (artistData) {
+      setArtistsArray((prev) => [...prev, ...artistData.content]);
+    }
+  }, [artistData]);
+
+  const isLast = artistData?.last ?? true;
 
   let content;
+
   if (artistsArray) {
     content = artistsArray.map((data) => (
       <ArtistListItem key={data.id} data={data} />
@@ -34,6 +56,30 @@ const Manage = () => {
   } else if (isError) {
     content = <div>{error.toString()}</div>;
   }
+
+  //무한 스크롤
+  const artistListRef = useRef<HTMLDivElement>(null);
+  const listElement = artistListRef.current;
+
+  useEffect(() => {
+    if (listElement) {
+      const handleScroll = () => {
+        const { scrollTop, clientHeight, scrollHeight } = listElement;
+        const isScrolledToEnd = scrollTop + clientHeight >= scrollHeight;
+
+        if (isScrolledToEnd && !isFetching && !isLast) {
+          setArtistListPage((prev) => prev + 1);
+        }
+      };
+
+      listElement.addEventListener('scroll', handleScroll);
+
+      return () => {
+        listElement.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [artistlistPage, isFetching]);
+
   return (
     <>
       <ManageInfoSection>
@@ -53,10 +99,10 @@ const Manage = () => {
             <img src={plusIcon}></img>
           </ListTitleIcon>
         </ArtistListTitle>
-        <ArtistListSection>{content}</ArtistListSection>
+        <ArtistListSection ref={artistListRef}>{content}</ArtistListSection>
       </ArtistList>
     </>
   );
 };
 
-export default Manage;
+export default React.memo(Manage);
