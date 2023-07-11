@@ -17,7 +17,7 @@
     "jsx": "react-jsx",
     "sourceMap": true,
     "declaration": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "incremental": true,
     "outDir": "dist"

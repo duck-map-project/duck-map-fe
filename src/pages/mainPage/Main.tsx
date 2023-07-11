@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 
 // import { reveiws } from '../../api/event';
+import KakaoMap from '../../components/KakaoMap';
 import SortDropdown from '../../components/SortButton';
 
 import {
   MainSection,
-  MapSection,
   ViewReviews,
   MoreButton,
   Reviews,
@@ -66,7 +66,7 @@ const Main = () => {
             setClicked={setSortModal}
           />
           <MapTitle>지도</MapTitle>
-          <MapSection />
+          <KakaoMap />
         </MapFrame>
         <ViewReviews>
           <ViewReviewsTitle>리뷰 미리보기</ViewReviewsTitle>
