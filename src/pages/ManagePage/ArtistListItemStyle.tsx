@@ -1,5 +1,9 @@
 import { styled } from 'styled-components';
 
+type imgType = {
+  image: string;
+};
+
 export const ListItem = styled.article`
   width: 214px;
   margin: 0 auto;
@@ -57,6 +61,7 @@ export const CommonButton = styled.button`
 `;
 
 export const ArtistImgContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 155px;
   overflow: hidden;
@@ -65,8 +70,9 @@ export const ArtistImgContainer = styled.div`
   border-bottom: 2px solid var(--line-black);
 `;
 
-export const ArtistImg = styled.img`
-  top: 50%;
-  bottom: 50%;
-  transform: translate(-50%, -50%);
+export const ArtistImg = styled.div<imgType>`
+  height: 100%;
+  background-image: url(${(props) => props.image});
+  background-position: center;
+  background-size: cover;
 `;

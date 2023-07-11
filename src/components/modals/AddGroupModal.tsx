@@ -1,42 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import closeIcon from '../../assets/icons/close.svg';
 import photoIcon from '../../assets/icons/photo.svg';
+import { useAddArtistsMutation } from '../../redux/artistsSlice';
+import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleGroup } from '../../redux/manageModalSlice';
 
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
 
-type typeFlag = {
-  flag: string;
-};
+// type groupType = {
+//   type: string;
+// };
 
 type imageType = {
-  image: string;
+  previewimage: string;
 };
 
 const AddGroupModal = () => {
-  const [groupType, setGroupType] = useState('group');
-  const [groupImage, setGroupImage] = useState('');
+  // const [groupType, setGroupType] = useState('group');
+  const [groupImage, setGroupImage] = useState<File>();
+  const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
-  const [typeFlag, setTypeFlag] = useState('group');
+  const [addNewImage] = useAddImageMutation({});
+  const [addNewGroup] = useAddArtistsMutation({});
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(groupType);
-  }, [groupType]);
 
   const onHideModal = () => {
     dispatch(toggleGroup());
   };
 
-  const onClickGroupType = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setGroupType(e.target.value);
-    setTypeFlag(e.target.value);
-  };
+  // const onClickGroupType = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setGroupType(e.target.value);
+  // };
 
   const onChangeGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGroupName(e.target.value);
@@ -45,9 +43,49 @@ const AddGroupModal = () => {
   const onChangeGroupImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      setGroupImage(URL.createObjectURL(imgFile));
-      const formData = new FormData();
-      formData.append('img', imgFile);
+      //파일 size 확인
+      if (imgFile.size > 1024 ** 2) {
+        alert('앗! 이미지가 너무 커요. 1MB 이하의 사진만 업로드 가능합니다.');
+        return;
+      }
+      setGroupImage(imgFile);
+      setPreviewImage(URL.createObjectURL(imgFile));
+    }
+  };
+
+  const onClickAddGroupBtn = async () => {
+    const formData = new FormData();
+    if (groupImage instanceof File) {
+      formData.append('file', groupImage);
+      try {
+        const response = await addNewImage({
+          imageFile: formData,
+        });
+        if ('error' in response) {
+          return;
+        }
+
+        sendGroupInfo(response.data.filename);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const sendGroupInfo = async (imageData: any) => {
+    console.log(imageData);
+    const groupData = {
+      artistTypeId: 1,
+      name: groupName,
+      image: imageData,
+    };
+    try {
+      const response = await addNewGroup(groupData);
+      console.log(response);
+      onHideModal();
+    } catch (error) {
+      console.error(error);
+      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
     }
   };
 
@@ -58,9 +96,9 @@ const AddGroupModal = () => {
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
         </ModalCloseButton>
-        <TypeTitle>아티스트 타입</TypeTitle>
+        {/* <TypeTitle>아티스트 타입</TypeTitle>
         <TypeWrapper>
-          <GroupTypeLabel htmlFor="group" flag={typeFlag}>
+          <GroupTypeLabel htmlFor="group" type={groupType}>
             그룹
           </GroupTypeLabel>
           <StyledInput
@@ -71,7 +109,7 @@ const AddGroupModal = () => {
             onChange={onClickGroupType}
             // defaultChecked
           />
-          <ArtistTypeLabel htmlFor="artist" flag={typeFlag}>
+          <ArtistTypeLabel htmlFor="artist" type={groupType}>
             아티스트
           </ArtistTypeLabel>
           <StyledInput
@@ -81,9 +119,9 @@ const AddGroupModal = () => {
             value="artist"
             onChange={onClickGroupType}
           />
-        </TypeWrapper>
+        </TypeWrapper> */}
         <ImageNameWrapper>
-          <ImagePreview htmlFor="artistImage" image={groupImage}>
+          <ImagePreview htmlFor="artistImage" previewimage={previewImage}>
             <img src={photoIcon} alt="그룹 이미지 선택" />
           </ImagePreview>
           <StyledInput
@@ -93,7 +131,9 @@ const AddGroupModal = () => {
             onChange={onChangeGroupImage}
           />
           <div>
-            <NameLabel htmlFor="artistName">그룹 이름</NameLabel>
+            <NameLabel htmlFor="artistName">
+              그룹 이름을 입력해 주세요.
+            </NameLabel>
             <NameInput
               type="text"
               id="artistName"
@@ -103,7 +143,9 @@ const AddGroupModal = () => {
             />
           </div>
         </ImageNameWrapper>
-        <SubmitButton type="button">완료</SubmitButton>
+        <SubmitButton type="button" onClick={onClickAddGroupBtn}>
+          완료
+        </SubmitButton>
       </CommonModal>
     </ModalPortal>
   );
@@ -114,7 +156,7 @@ export default AddGroupModal;
 const ModalTitle = styled.h4`
   width: 300px;
   padding: 13px 58px;
-  margin: 24px 0 22px;
+  margin: 24px 0 50px;
   background-color: #fcf9a4;
   border-radius: 73px;
   border: 2.937px solid var(--line-black);
@@ -129,54 +171,54 @@ const ModalCloseButton = styled.button`
   right: 17px;
 `;
 
-const TypeTitle = styled.span`
-  font-size: 24px;
-  font-weight: 700;
+// const TypeTitle = styled.span`
+//   font-size: 24px;
+//   font-weight: 700;
+// `;
+
+// const TypeWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   gap: 15px;
+//   margin: 10px 0 32px;
+// `;
+
+// const TypeLabel = styled.label`
+//   width: 130px;
+//   font-size: 20px;
+//   font-weight: 400;
+//   text-align: center;
+//   padding: 10px 20px;
+//   border-radius: 30px;
+//   border: 2px solid var(--line-black);
+//   background: #f8f8fa;
+//   box-shadow: 4.4px 4.4px 0px 0px rgba(0, 0, 0, 0.25);
+//   cursor: pointer;
 `;
 
-const TypeWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin: 10px 0 32px;
-`;
+// const ArtistTypeLabel = styled(TypeLabel)<groupType>`;
+//   ${(props) =>
+//     props.type === 'group'
+//       ? ``
+//       : `
+//         color: #8F9196;
+//         border-radius: 30px;
+//         border: 2.056px solid #8B8E97;
+//         background: #EDEDED;
+//         `}
+// `;
 
-const TypeLabel = styled.label`
-  width: 130px;
-  font-size: 20px;
-  font-weight: 400;
-  text-align: center;
-  padding: 10px 20px;
-  border-radius: 30px;
-  border: 2px solid var(--line-black);
-  background: #f8f8fa;
-  box-shadow: 4.4px 4.4px 0px 0px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-`;
-
-const ArtistTypeLabel = styled(TypeLabel)<typeFlag>`
-  ${(props) =>
-    props.flag === 'group'
-      ? ``
-      : ` 
-        color: #8F9196;
-        border-radius: 30px;
-        border: 2.056px solid #8B8E97;
-        background: #EDEDED;
-        `}
-`;
-
-const GroupTypeLabel = styled(TypeLabel)<typeFlag>`
-  ${(props) =>
-    props.flag === 'group'
-      ? ` 
-        color: #8F9196;
-        border-radius: 30px;
-        border: 2.056px solid var(--unnamed, #8B8E97);
-        background: var(--unnamed, #EDEDED);
-        `
-      : ``}
-`;
+// const GroupTypeLabel = styled(TypeLabel)<groupType>`
+//   ${(props) =>
+//     props.type === 'group'
+//       ? `
+//         color: #8F9196;
+//         border-radius: 30px;
+//         border: 2.056px solid var(--unnamed, #8B8E97);
+//         background: var(--unnamed, #EDEDED);
+//         `
+//       : ``}
+// `;
 
 const ImagePreview = styled.label<imageType>`
   display: block;
@@ -188,9 +230,9 @@ const ImagePreview = styled.label<imageType>`
   text-align: center;
   cursor: pointer;
   ${(props) =>
-    props.image
+    props.previewimage
       ? `
-        background-image: url(${props.image});
+        background-image: url(${props.previewimage});
         background-size: cover;
         background-position: center center;
         `

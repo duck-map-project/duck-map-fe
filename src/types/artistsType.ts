@@ -1,6 +1,6 @@
 export interface ArtistValue {
   artistTypeId: number;
-  groupId: number;
+  groupId?: number;
   name: string;
   image: string;
 }
