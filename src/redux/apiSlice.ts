@@ -7,13 +7,11 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     //cors 에러 처리 후 proxy 삭제 시 활성화
     // baseUrl,
-    prepareHeaders: (headers) => {
-      headers.set('Content-Type', 'application/json');
-      headers.set('Accept', 'application/json');
-
-      return headers;
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
     },
   }),
-  tagTypes: ['ArtistType', 'Artists'],
+  tagTypes: ['ArtistType', 'Artists', 'Images'],
   endpoints: () => ({}),
 });
