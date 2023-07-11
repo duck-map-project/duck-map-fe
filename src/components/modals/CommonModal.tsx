@@ -43,7 +43,7 @@ const ModalOverlay = styled.form`
   justify-content: center;
   width: 960px;
   top: 5vh;
-  padding: 50px 20px 50px;
+  padding: 50px 20px 36px;
   margin: 0 auto;
   border: 3px solid var(--line-black);
   border-radius: 29px;

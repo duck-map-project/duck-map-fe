@@ -5,6 +5,11 @@ export interface ArtistValue {
   image: string;
 }
 
+export type artistType = {
+  id: number;
+  type: string;
+};
+
 export interface ArtistsData {
   totalElements: number;
   totalPages: number;
