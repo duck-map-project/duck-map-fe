@@ -24,8 +24,12 @@ interface Reviews {
 const Main = () => {
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   const [SortModal, setSortModal] = useState(false);
-  const sortOption = ['인기순', '리뷰순'];
-  const [SelectedText, setSelectedText] = useState('Event List');
+  const sortOption = [
+    { id: 1, sort: '인기순' },
+    { id: 2, sort: '리뷰순' },
+  ];
+  const [SelectedText, setSelectedText] = useState<string | null>('Event List');
+  const [_, setSelectedId] = useState<number | null>(null);
   // TODO: 추가된 API로 수정해서 리뷰 이미지 목록 불러오기
   // const [reviewImages, setReviewImages] = useState<Reviews[]>([]);
 
@@ -68,9 +72,10 @@ const Main = () => {
             sortButtonRef={sortButtonRef}
             clicked={SortModal}
             setClicked={setSortModal}
-            sortOption={sortOption}
+            sortOptions={sortOption}
             selectedText={SelectedText}
             setSelectedText={setSelectedText}
+            setId={setSelectedId}
           />
           <MapTitle>지도</MapTitle>
           <MapSection />

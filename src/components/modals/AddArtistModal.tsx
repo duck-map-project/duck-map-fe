@@ -4,7 +4,10 @@ import { styled } from 'styled-components';
 
 import closeIcon from '../../assets/icons/close.svg';
 import photoIcon from '../../assets/icons/photo.svg';
-import { useAddArtistsMutation } from '../../redux/artistsSlice';
+import {
+  useAddArtistsMutation,
+  useGetArtistsQuery,
+} from '../../redux/artistsSlice';
 import { useGetArtistsTypeQuery } from '../../redux/artistsTypeSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleArtist } from '../../redux/manageModalSlice';
@@ -50,21 +53,54 @@ const ArtistTypeBtn = ({ data, onChange, selected }: propsType) => {
   );
 };
 
+export type sortOptionsType = {
+  sort: string;
+  id: number;
+};
+
 const AddArtistModal = () => {
   const dispatch = useDispatch();
-  const [groupType, setGroupType] = useState(2);
+  const sortButtonRef = useRef<HTMLButtonElement>(null);
+  //그룹드롭다운
+  const [dropdownText, setDropdownText] = useState<string | null>('그룹');
+  //그룹인 경우 선택될 아이디
+  const [groupId, setGroupId] = useState<number | null>(null);
+  //아티스트의 타입
+  const [artistType, setArtistType] = useState(2);
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
+  const [artistTypeArray, setArtistTypeArray] = useState<artistType[] | []>([]);
+  const [SortModal, setSortModal] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
+  const pageSize = '20';
   const [addNewImage] = useAddImageMutation({});
   const [addNewGroup] = useAddArtistsMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
-  const [artistTypeArray, setArtistTypeArray] = useState<artistType[] | []>([]);
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
-  const [SortModal, setSortModal] = useState(false);
-  //동적으로 받아오기
-  const sortOption = ['NCT', 'EXO', 'BTS'];
-  const [selectedText, setSelectedText] = useState('그룹');
+  const { data: groupArtist } = useGetArtistsQuery({
+    artistTypeId: '1',
+    pageNumber: pageNumber.toString(),
+    pageSize,
+  });
+
+  setPageNumber;
+  groupArtist;
+  groupId;
+  useEffect(() => {
+    console.log(groupId);
+  }, [groupId]);
+
+  useEffect(() => {
+    if (groupArtist) {
+      const groupData = groupArtist.content.map((group) => ({
+        sort: group.name,
+        id: group.id,
+      }));
+      setSortOption(groupData);
+    }
+  }, [groupArtist]);
+
   useEffect(() => {
     const filteredTypeData = artistTypeData
       ? artistTypeData.filter((data: artistType) => data.id !== 1)
@@ -77,7 +113,7 @@ const AddArtistModal = () => {
   };
 
   const onClickGroupType = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGroupType(parseInt(e.target.value));
+    setArtistType(parseInt(e.target.value));
   };
 
   const onChangeGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +176,7 @@ const AddArtistModal = () => {
         key={data.id}
         data={data}
         onChange={onClickGroupType}
-        selected={data.id === groupType}
+        selected={data.id === artistType}
       />
     ));
   }
@@ -170,9 +206,10 @@ const AddArtistModal = () => {
               sortButtonRef={sortButtonRef}
               clicked={SortModal}
               setClicked={setSortModal}
-              sortOption={sortOption}
-              selectedText={selectedText}
-              setSelectedText={setSelectedText}
+              sortOptions={sortOption}
+              selectedText={dropdownText}
+              setSelectedText={setDropdownText}
+              setId={setGroupId}
             />
             <NameLabel htmlFor="artistName">
               그룹 이름을 입력해 주세요.

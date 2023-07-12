@@ -5,6 +5,7 @@ import arrow from '../assets/sort-arrow.svg';
 import sortIcon from '../assets/sort-book.svg';
 
 import Dropdown from './Dropdown';
+import { sortOptionsType } from './modals/AddArtistModal';
 
 const Select = styled.button<{ $clicked: boolean }>`
   width: 157px;
@@ -39,9 +40,10 @@ export interface SortDropdownProps {
   clicked: boolean;
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;
   sortButtonRef: React.RefObject<HTMLButtonElement>;
-  sortOption: string[];
-  selectedText: string;
-  setSelectedText: React.Dispatch<React.SetStateAction<string>>;
+  sortOptions: sortOptionsType[];
+  selectedText: string | null;
+  setSelectedText: React.Dispatch<React.SetStateAction<string | null>>;
+  setId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const SortDropdown: React.FC<SortDropdownProps> = ({
@@ -49,9 +51,10 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   clicked,
   setClicked,
   sortButtonRef,
-  sortOption,
+  sortOptions,
   selectedText,
   setSelectedText,
+  setId,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -61,6 +64,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
       setClicked(true);
     }
   };
+
   return (
     <div className={className}>
       <Select $clicked={clicked} onClick={handleClick} ref={sortButtonRef}>
@@ -68,9 +72,10 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
       </Select>
       {clicked ? (
         <Dropdown
-          lists={sortOption}
+          lists={sortOptions}
           setSelectedText={setSelectedText}
           setClicked={setClicked}
+          setId={setId}
         />
       ) : null}
     </div>

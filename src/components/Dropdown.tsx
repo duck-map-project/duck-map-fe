@@ -3,14 +3,18 @@ import { styled } from 'styled-components';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from '../hooks/useRouter';
 
+import { sortOptionsType } from './modals/AddArtistModal';
+
 const Wrapper = styled.ul`
   position: absolute;
   top: 120%;
   width: 157px;
+  max-height: 180px;
   border-radius: 20px;
   border: 2px solid #1e232c;
   background-color: var(--yellow);
   z-index: 999;
+  overflow-y: scroll;
 `;
 
 const Item = styled.li`
@@ -50,20 +54,22 @@ const Item = styled.li`
 `;
 
 interface DropdownProps {
-  lists: string[];
-  setSelectedText?: React.Dispatch<React.SetStateAction<string>>;
+  lists: sortOptionsType[];
+  setSelectedText?: React.Dispatch<React.SetStateAction<string | null>>;
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
   lists,
   setSelectedText,
   setClicked,
+  setId,
 }) => {
   const auth = useAuthContext();
   const { routeTo } = useRouter();
 
-  const handleListClick = (list: string) => {
+  const handleListClick = (list: string, id: number) => {
     switch (list) {
       case '로그아웃':
         auth?.signOut();
@@ -79,19 +85,22 @@ const Dropdown: React.FC<DropdownProps> = ({
       default:
         setSelectedText && setSelectedText(list);
         setClicked(false);
+        setId(id);
         break;
     }
   };
+
   return (
     <Wrapper>
       {lists.map((list, i) => (
         <Item
           key={i}
+          value={list.id}
           onClick={() => {
-            handleListClick(list);
+            handleListClick(list.sort, list.id);
           }}
         >
-          {list}
+          {list.sort}
         </Item>
       ))}
     </Wrapper>
