@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 // import { reveiws } from '../../api/event';
-import SortDropdown from '../../components/SortButton';
+// import SortDropdown from '../../components/SortButton';
 
 import {
   MainSection,
@@ -9,6 +9,7 @@ import {
   ViewReviews,
   MoreButton,
   Reviews,
+  MapSortDrop,
   MapFrame,
   MapTitle,
   ViewReviewsTitle,
@@ -23,6 +24,8 @@ interface Reviews {
 const Main = () => {
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   const [SortModal, setSortModal] = useState(false);
+  const sortOption = ['인기순', '리뷰순'];
+  const [SelectedText, setSelectedText] = useState('Event List');
   // TODO: 추가된 API로 수정해서 리뷰 이미지 목록 불러오기
   // const [reviewImages, setReviewImages] = useState<Reviews[]>([]);
 
@@ -60,10 +63,14 @@ const Main = () => {
     <>
       <MainSection>
         <MapFrame>
-          <SortDropdown
+          <MapSortDrop
+            className="mainSortdrop"
             sortButtonRef={sortButtonRef}
             clicked={SortModal}
             setClicked={setSortModal}
+            sortOption={sortOption}
+            selectedText={SelectedText}
+            setSelectedText={setSelectedText}
           />
           <MapTitle>지도</MapTitle>
           <MapSection />

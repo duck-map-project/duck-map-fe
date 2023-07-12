@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
@@ -9,6 +9,7 @@ import { useGetArtistsTypeQuery } from '../../redux/artistsTypeSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleArtist } from '../../redux/manageModalSlice';
 import { artistType } from '../../types/artistsType';
+import SortDropdown from '../SortButton';
 
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
@@ -59,7 +60,11 @@ const AddArtistModal = () => {
   const [addNewGroup] = useAddArtistsMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
   const [artistTypeArray, setArtistTypeArray] = useState<artistType[] | []>([]);
-
+  const sortButtonRef = useRef<HTMLButtonElement>(null);
+  const [SortModal, setSortModal] = useState(false);
+  //동적으로 받아오기
+  const sortOption = ['NCT', 'EXO', 'BTS'];
+  const [selectedText, setSelectedText] = useState('그룹');
   useEffect(() => {
     const filteredTypeData = artistTypeData
       ? artistTypeData.filter((data: artistType) => data.id !== 1)
@@ -160,6 +165,15 @@ const AddArtistModal = () => {
             onChange={onChangeGroupImage}
           />
           <div>
+            <GroupSortDropdown
+              className="groupSortdrop"
+              sortButtonRef={sortButtonRef}
+              clicked={SortModal}
+              setClicked={setSortModal}
+              sortOption={sortOption}
+              selectedText={selectedText}
+              setSelectedText={setSelectedText}
+            />
             <NameLabel htmlFor="artistName">
               그룹 이름을 입력해 주세요.
             </NameLabel>
@@ -261,6 +275,10 @@ const ImagePreview = styled.label<imageType>`
   }
 `;
 
+const GroupSortDropdown = styled(SortDropdown)`
+  position: relative;
+  right: 0;
+`;
 const StyledInput = styled.input`
   position: absolute;
   clip: rect(0 0 0 0);
@@ -287,7 +305,6 @@ const NameInput = styled.input`
   width: 360px;
   height: 58px;
   padding: 20px;
-  /* color: #4e5761; */
   font-size: 20px;
   font-weight: 400;
   background-color: #f8f8fa;
