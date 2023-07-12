@@ -35,6 +35,7 @@ export const MapSortDrop = styled(SortDropdown)<SortDropdownProps>`
   position: absolute;
   right: 40px;
   top: 40px;
+  z-index: 9;
 `;
 
 export const MapFrame = styled.section`
