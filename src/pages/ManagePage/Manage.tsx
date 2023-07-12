@@ -21,7 +21,11 @@ import {
 const Manage = () => {
   const [artistsArray, setArtistsArray] = useState<ArtistContent[]>([]);
   const [artistlistPage, setArtistListPage] = useState(0);
+  //아티스트 타입별로 조회 시 사용
   const [artistType, setArtistType] = useState('');
+  //api에 디폴트값 생기면 삭제할 코드
+  const [pageSize] = useState(20);
+  //삭제 예정 코드
   useEffect(() => {
     setArtistType('');
   }, []);
@@ -34,7 +38,8 @@ const Manage = () => {
     error,
   } = useGetArtistsQuery({
     artistTypeId: artistType,
-    page: artistlistPage.toString(),
+    pageNumber: artistlistPage.toString(),
+    pageSize: pageSize.toString(),
   });
 
   useEffect(() => {
