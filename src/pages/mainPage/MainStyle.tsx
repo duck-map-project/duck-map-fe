@@ -1,6 +1,8 @@
 import { styled } from 'styled-components';
 
 import ReviewPreviewIcon from '../../assets/review-preview-icon.svg';
+import SortDropdown from '../../components/SortButton';
+import { SortDropdownProps } from '../../components/SortButton';
 import px2vw from '../../utils/px2vw';
 
 export const TextButton = styled.button`
@@ -29,7 +31,14 @@ export const MainSection = styled.main`
   position: relative;
 `;
 
+export const MapSortDrop = styled(SortDropdown)<SortDropdownProps>`
+  position: absolute;
+  right: 40px;
+  top: 40px;
+`;
+
 export const MapFrame = styled.section`
+  position: relative;
   width: 100%;
   padding: 27px 22px 15px 25px;
   border: 2px solid #000000;

@@ -1,13 +1,13 @@
-import useLocalStorage from '../hooks/useLocalStarage';
+import { artistType } from '../types/artistsType';
 
 import { apiSlice } from './apiSlice';
 
-const [accessToken] = useLocalStorage('admin', null);
+const accessToken = window.localStorage.getItem('admin');
 
 export const artistsTypeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getArtistsType: builder.query({
-      query: () => '/artists/type',
+    getArtistsType: builder.query<artistType[], void>({
+      query: () => '/artists/types',
       providesTags: ['ArtistType'],
     }),
     addArtistsType: builder.mutation({

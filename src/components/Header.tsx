@@ -12,6 +12,7 @@ import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
 import { toggleGroup } from '../redux/manageModalSlice';
+import { toggleArtist } from '../redux/manageModalSlice';
 import px2vw from '../utils/px2vw';
 
 export const HeaderStyle = styled.header`
@@ -98,7 +99,7 @@ const Header: React.FC = ({}) => {
     dispatch(toggleGroup());
   };
   const handleArtistClick = () => {
-    console.log('아티스트 등록!');
+    dispatch(toggleArtist());
   };
 
   const handleCategoryClick = () => {

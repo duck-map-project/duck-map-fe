@@ -1,9 +1,14 @@
 export interface ArtistValue {
   artistTypeId: number;
-  groupId: number;
+  groupId?: number | null;
   name: string;
   image: string;
 }
+
+export type artistType = {
+  id: number;
+  type: string;
+};
 
 export interface ArtistsData {
   totalElements: number;

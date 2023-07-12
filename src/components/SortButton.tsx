@@ -1,17 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 
 import arrow from '../assets/sort-arrow.svg';
 import sortIcon from '../assets/sort-book.svg';
 
 import Dropdown from './Dropdown';
-
-const Wrapper = styled.div`
-  position: absolute;
-  margin-right: 10px;
-  top: 42px;
-  right: 39px;
-`;
+import { sortOptionsType } from './modals/AddArtistModal';
 
 const Select = styled.button<{ $clicked: boolean }>`
   width: 157px;
@@ -41,40 +35,50 @@ const Select = styled.button<{ $clicked: boolean }>`
   }
 `;
 
-interface SortDropdownProps {
+export interface SortDropdownProps {
+  className: string;
   clicked: boolean;
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;
   sortButtonRef: React.RefObject<HTMLButtonElement>;
+  sortOptions: sortOptionsType[];
+  selectedText: string | null;
+  setSelectedText: React.Dispatch<React.SetStateAction<string | null>>;
+  setId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const SortDropdown: React.FC<SortDropdownProps> = ({
+  className,
   clicked,
   setClicked,
   sortButtonRef,
+  sortOptions,
+  selectedText,
+  setSelectedText,
+  setId,
 }) => {
-  const sortOption = ['인기순', '리뷰순'];
-  const [SelectedText, setSelectedText] = useState('Event List');
-
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (clicked) {
       setClicked(false);
     } else {
       setClicked(true);
     }
   };
+
   return (
-    <Wrapper>
+    <div className={className}>
       <Select $clicked={clicked} onClick={handleClick} ref={sortButtonRef}>
-        {SelectedText}
+        {selectedText}
       </Select>
       {clicked ? (
         <Dropdown
-          lists={sortOption}
+          lists={sortOptions}
           setSelectedText={setSelectedText}
           setClicked={setClicked}
+          setId={setId}
         />
       ) : null}
-    </Wrapper>
+    </div>
   );
 };
 
