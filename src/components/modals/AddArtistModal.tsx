@@ -67,29 +67,24 @@ const AddArtistModal = () => {
   const [groupId, setGroupId] = useState<number | null>(null);
   //아티스트의 타입
   const [artistType, setArtistType] = useState(2);
-  const [groupImage, setGroupImage] = useState<File>();
+  const [artistImage, setArtistImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
-  const [groupName, setGroupName] = useState('');
+  const [artistName, setArtistName] = useState('');
   const [artistTypeArray, setArtistTypeArray] = useState<artistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
-  const [pageNumber, setPageNumber] = useState(0);
+  const [groupPageNumber, setGroupPageNumber] = useState(0);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
   const pageSize = '20';
   const [addNewImage] = useAddImageMutation({});
-  const [addNewGroup] = useAddArtistsMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
   const { data: groupArtist } = useGetArtistsQuery({
     artistTypeId: '1',
-    pageNumber: pageNumber.toString(),
+    pageNumber: groupPageNumber.toString(),
     pageSize,
   });
+  const [addNewArtist] = useAddArtistsMutation({});
 
-  setPageNumber;
-  groupArtist;
-  groupId;
-  useEffect(() => {
-    console.log(groupId);
-  }, [groupId]);
+  setGroupPageNumber;
 
   useEffect(() => {
     if (groupArtist) {
@@ -116,11 +111,11 @@ const AddArtistModal = () => {
     setArtistType(parseInt(e.target.value));
   };
 
-  const onChangeGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGroupName(e.target.value);
+  const onChangeArtistName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setArtistName(e.target.value);
   };
 
-  const onChangeGroupImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeArtistImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
       //파일 size 확인
@@ -128,15 +123,15 @@ const AddArtistModal = () => {
         alert('앗! 이미지가 너무 커요. 1MB 이하의 사진만 업로드 가능합니다.');
         return;
       }
-      setGroupImage(imgFile);
+      setArtistImage(imgFile);
       setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
-  const onClickAddGroupBtn = async () => {
+  const onClickAddArtistBtn = async () => {
     const formData = new FormData();
-    if (groupImage instanceof File) {
-      formData.append('file', groupImage);
+    if (artistImage instanceof File) {
+      formData.append('file', artistImage);
       try {
         const response = await addNewImage({
           imageFile: formData,
@@ -144,7 +139,6 @@ const AddArtistModal = () => {
         if ('error' in response) {
           return;
         }
-
         sendGroupInfo(response.data.filename);
       } catch (error) {
         console.error(error);
@@ -152,15 +146,16 @@ const AddArtistModal = () => {
     }
   };
 
-  const sendGroupInfo = async (imageData: any) => {
+  const sendGroupInfo = async (imageData: string) => {
     console.log(imageData);
-    const groupData = {
-      artistTypeId: 1,
-      name: groupName,
+    const artistData = {
+      artistTypeId: artistType,
+      groupId,
+      name: artistName,
       image: imageData,
     };
     try {
-      const response = await addNewGroup(groupData);
+      const response = await addNewArtist(artistData);
       console.log(response);
       onHideModal();
     } catch (error) {
@@ -192,13 +187,13 @@ const AddArtistModal = () => {
         <TypeWrapper>{content}</TypeWrapper>
         <ImageNameWrapper>
           <ImagePreview htmlFor="artistImage" previewimage={previewImage}>
-            <img src={photoIcon} alt="그룹 이미지 선택" />
+            <img src={photoIcon} alt="아티스트 이미지 선택" />
           </ImagePreview>
           <StyledInput
             type="file"
             id="artistImage"
             accept="image/png, image/jpeg"
-            onChange={onChangeGroupImage}
+            onChange={onChangeArtistImage}
           />
           <div>
             <GroupSortDropdown
@@ -212,18 +207,18 @@ const AddArtistModal = () => {
               setId={setGroupId}
             />
             <NameLabel htmlFor="artistName">
-              그룹 이름을 입력해 주세요.
+              아티스트 이름을 입력해 주세요.
             </NameLabel>
             <NameInput
               type="text"
               id="artistName"
-              value={groupName}
-              onChange={onChangeGroupName}
-              placeholder="그룹 이름"
+              value={artistName}
+              onChange={onChangeArtistName}
+              placeholder="아티스트 이름"
             />
           </div>
         </ImageNameWrapper>
-        <SubmitButton type="button" onClick={onClickAddGroupBtn}>
+        <SubmitButton type="button" onClick={onClickAddArtistBtn}>
           완료
         </SubmitButton>
       </CommonModal>
