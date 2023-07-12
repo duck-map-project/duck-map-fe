@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 
 // import { reveiws } from '../../api/event';
 import KakaoMap from '../../components/KakaoMap';
-import SortDropdown from '../../components/SortButton';
 
 import {
   MainSection,
