@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { styled } from 'styled-components';
 
 import closeIcon from '../../assets/icons/close.svg';
 import photoIcon from '../../assets/icons/photo.svg';
@@ -8,12 +7,18 @@ import { useAddArtistsMutation } from '../../redux/artistsSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleGroup } from '../../redux/manageModalSlice';
 
+import {
+  ModalTitle,
+  ModalCloseButton,
+  ImageNameWrapper,
+  ImagePreview,
+  StyledInput,
+  NameInput,
+  NameLabel,
+  SubmitButton,
+} from './AddGroupModalStyle';
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
-
-type imageType = {
-  previewimage: string;
-};
 
 const AddGroupModal = () => {
   const [groupImage, setGroupImage] = useState<File>();
@@ -64,15 +69,13 @@ const AddGroupModal = () => {
   };
 
   const sendGroupInfo = async (imageData: any) => {
-    console.log(imageData);
     const groupData = {
       artistTypeId: 1,
       name: groupName,
       image: imageData,
     };
     try {
-      const response = await addNewGroup(groupData);
-      console.log(response);
+      await addNewGroup(groupData);
       onHideModal();
     } catch (error) {
       console.error(error);
@@ -119,94 +122,3 @@ const AddGroupModal = () => {
 };
 
 export default AddGroupModal;
-
-const ModalTitle = styled.h4`
-  width: 300px;
-  padding: 13px 58px;
-  margin: 24px 0 50px;
-  background-color: #fcf9a4;
-  border-radius: 73px;
-  border: 2.937px solid var(--line-black);
-  font-size: 28px;
-  font-weight: 700;
-  text-align: center;
-`;
-
-const ModalCloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 17px;
-`;
-
-const ImagePreview = styled.label<imageType>`
-  display: block;
-  position: relative;
-  width: 232px;
-  height: 232px;
-  border: 2px solid var(--line-black);
-  border-radius: 30px;
-  text-align: center;
-  cursor: pointer;
-  ${(props) =>
-    props.previewimage
-      ? `
-        background-image: url(${props.previewimage});
-        background-size: cover;
-        background-position: center center;
-        `
-      : `
-        background-color: var(--line-grey2);
-        `}
-  & > img {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`;
-
-const StyledInput = styled.input`
-  position: absolute;
-  clip: rect(0 0 0 0);
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-`;
-
-const ImageNameWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 26px;
-`;
-
-const NameLabel = styled.label`
-  display: block;
-  font-size: 24px;
-  font-weight: 700;
-  margin: 10px 20px;
-`;
-const NameInput = styled.input`
-  width: 360px;
-  height: 58px;
-  padding: 20px;
-  font-size: 20px;
-  font-weight: 400;
-  background-color: #f8f8fa;
-  border: 1.4px solid var(--font-black);
-  border-radius: 30px;
-  &::placeholder {
-    font-size: 20px;
-    color: 4e5761;
-  }
-`;
-
-const SubmitButton = styled.button`
-  width: 202px;
-  font-size: 35px;
-  font-weight: 700;
-  padding: 16px;
-  border: 3px solid var(--line-black);
-  border-radius: 73px;
-  background-color: #defcf9;
-`;

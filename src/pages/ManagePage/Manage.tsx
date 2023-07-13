@@ -18,6 +18,8 @@ import {
   ArtistListSection,
 } from './ManageStyle';
 
+const loadedData = new Map();
+
 const Manage = () => {
   const [artistsArray, setArtistsArray] = useState<ArtistContent[]>([]);
   const [artistlistPage, setArtistListPage] = useState(0);
@@ -44,11 +46,19 @@ const Manage = () => {
 
   useEffect(() => {
     if (artistData) {
-      setArtistsArray((prev) => [...prev, ...artistData.content]);
+      artistData.content.forEach((item) => {
+        const uniqueId = item.id;
+
+        if (!loadedData.has(uniqueId)) {
+          loadedData.set(uniqueId, item);
+        }
+      });
+      const filteredArtistData = Array.from(loadedData.values());
+      setArtistsArray(filteredArtistData);
     }
   }, [artistData]);
 
-  const isLast = artistData?.last ?? true;
+  const isLast = artistData?.isLast ?? true;
 
   let content;
 
