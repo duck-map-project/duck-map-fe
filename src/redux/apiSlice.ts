@@ -12,6 +12,6 @@ export const apiSlice = createApi({
       'Accept': 'application/json',
     },
   }),
-  tagTypes: ['ArtistType', 'Artists', 'Images'],
+  tagTypes: ['ArtistType', 'Artists', 'Images', 'EventCategory'],
   endpoints: () => ({}),
 });

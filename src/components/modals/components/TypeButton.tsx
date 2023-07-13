@@ -1,19 +1,18 @@
 import styled from 'styled-components';
 
-import { artistType } from '../../../types/artistsType';
-
 type propsType = {
-  data: artistType;
+  data: { id: number; type?: string; category?: string };
+  text: string;
   selected: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 type groupType = {
-  type: string;
+  type?: string;
   selected: boolean;
 };
 
-const TypeButton = ({ data, onChange, selected }: propsType) => {
+const TypeButton = ({ data, text, onChange, selected }: propsType) => {
   return (
     <>
       <TypeLabel
@@ -21,7 +20,7 @@ const TypeButton = ({ data, onChange, selected }: propsType) => {
         type={data.type}
         selected={selected}
       >
-        {data.type}
+        {text}
       </TypeLabel>
       <StyledInput
         type="radio"
@@ -43,13 +42,13 @@ const TypeLabel = styled.label<groupType>`
   text-align: center;
   padding: 10px 20px;
   border-radius: 30px;
-  box-shadow: 4.4px 4.4px 0px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   ${(props) =>
     props.selected
       ? `
-      background-color: #f8f8fa;
-      border: 2px solid var(--line-black);
+    background-color: #f8f8fa;
+    border: 2px solid var(--line-black);
+    box-shadow: 4.4px 4.4px 0px 0px rgba(0, 0, 0, 0.25);
      `
       : `
       color: #8F9196;

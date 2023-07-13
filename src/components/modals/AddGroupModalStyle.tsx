@@ -80,9 +80,10 @@ export const NameInput = styled.input`
   background-color: #f8f8fa;
   border: 1.4px solid var(--font-black);
   border-radius: 30px;
+  box-shadow: 7px 5px 0px 0px rgb(0, 0, 0, 0.3);
   &::placeholder {
     font-size: 20px;
-    color: 4e5761;
+    color: #8f9196;
   }
 `;
 
@@ -94,4 +95,5 @@ export const SubmitButton = styled.button`
   border: 3px solid var(--line-black);
   border-radius: 73px;
   background-color: #defcf9;
+  box-shadow: 6px 4px 0px 0px rgb(0, 0, 0, 0.3);
 `;

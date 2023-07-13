@@ -1,14 +1,8 @@
 import styled from 'styled-components';
 
-import SortDropdown from '../SortButton';
-
-type imageType = {
-  previewimage: string;
-};
-
 export const ModalTitle = styled.h4`
   padding: 13px 58px;
-  margin: 24px 0 22px;
+  margin: 24px 0 24.5px;
   background-color: #fcf9a4;
   border-radius: 73px;
   border: 2.937px solid var(--line-black);
@@ -23,49 +17,13 @@ export const ModalCloseButton = styled.button`
   right: 17px;
 `;
 
-export const TypeTitle = styled.span`
-  font-size: 24px;
-  font-weight: 700;
-`;
-
 export const TypeWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 15px;
   width: 70%;
-  margin: 10px 0 32px;
-`;
-
-export const ImagePreview = styled.label<imageType>`
-  display: block;
-  position: relative;
-  width: 232px;
-  height: 232px;
-  border: 2px solid var(--line-black);
-  border-radius: 30px;
-  text-align: center;
-  cursor: pointer;
-  ${(props) =>
-    props.previewimage
-      ? `
-      background-image: url(${props.previewimage});
-      background-size: cover;
-      background-position: center center;
-      `
-      : `
-      background-color: var(--line-grey2);
-      `}
-  & > img {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`;
-
-export const GroupSortDropdown = styled(SortDropdown)`
-  position: relative;
-  right: 0;
+  margin: 10px 0 14px;
 `;
 
 export const StyledInput = styled.input`
@@ -91,10 +49,11 @@ export const NameLabel = styled.label`
   margin: 10px 20px;
 `;
 
-export const NameInput = styled.input`
-  width: 360px;
+export const CategoryInput = styled.input`
+  width: 608px;
   height: 58px;
   padding: 20px;
+  margin-bottom: 31px;
   font-size: 20px;
   font-weight: 400;
   background-color: #f8f8fa;

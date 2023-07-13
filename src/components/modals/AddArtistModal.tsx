@@ -144,6 +144,7 @@ const AddArtistModal = () => {
       <TypeButton
         key={data.id}
         data={data}
+        text={data.type}
         onChange={onClickGroupType}
         selected={data.id === artistType}
       />
