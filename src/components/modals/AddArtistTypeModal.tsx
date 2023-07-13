@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import closeIcon from '../../assets/icons/close.svg';
-import {
-  useGetEventCategoryQuery,
-  useAddEventCategoryMutation,
-} from '../../redux/eventCategoryType';
-import { toggleCategory } from '../../redux/manageModalSlice';
+import { useGetArtistsTypeQuery } from '../../redux/artistsTypeSlice';
+import { useAddArtistsTypeMutation } from '../../redux/artistsTypeSlice';
+import { toggleArtistType } from '../../redux/manageModalSlice';
 
 import {
   ModalTitle,
@@ -20,27 +18,30 @@ import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
 import TypeButton from './components/TypeButton';
 
-type categoryType = {
+type artistType = {
   id: number;
-  category: string;
+  type: string;
 };
-const AddCategoryModal = () => {
-  const [categoryName, setCategoryName] = useState('');
-  const [categoryContents, setCategoryContents] = useState<categoryType[]>([]);
+const AddArtistTypeModal = () => {
+  const [typeName, setTypeName] = useState('');
+  const [artistTypeContents, setArtistTypeContents] = useState<artistType[]>(
+    []
+  );
   const dispatch = useDispatch();
-  const { data: eventCategories } = useGetEventCategoryQuery();
-  const [addNewCategory] = useAddEventCategoryMutation();
+  const { data: artistTypes } = useGetArtistsTypeQuery();
+  const [addNewArtistType] = useAddArtistsTypeMutation();
+
   const onHideModal = () => {
-    dispatch(toggleCategory());
+    dispatch(toggleArtistType());
   };
 
-  const onChangeCategoryName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryName(e.target.value);
+  const onChangeTypeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTypeName(e.target.value);
   };
 
-  const onClickAddCategoryBtn = async () => {
+  const onClickAddTypeBtn = async () => {
     try {
-      await addNewCategory(categoryName);
+      await addNewArtistType(typeName);
       onHideModal();
     } catch (error) {
       console.error(error);
@@ -49,16 +50,16 @@ const AddCategoryModal = () => {
   };
 
   useEffect(() => {
-    if (eventCategories) setCategoryContents(eventCategories);
-  }, [eventCategories]);
+    if (artistTypes) setArtistTypeContents(artistTypes);
+  }, [artistTypes]);
 
   let typeContents;
-  if (categoryContents.length > 0) {
-    typeContents = categoryContents.map((content) => (
+  if (artistTypeContents.length > 0) {
+    typeContents = artistTypeContents.map((content) => (
       <TypeButton
         key={content.id}
         data={content}
-        text={content.category}
+        text={content.type}
         selected={true}
       />
     ));
@@ -67,20 +68,22 @@ const AddCategoryModal = () => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
-        <ModalTitle>카테고리 등록하기</ModalTitle>
+        <ModalTitle>아티스트 타입 등록하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
         </ModalCloseButton>
-        <NameLabel htmlFor="artistName">이벤트 타입을 입력해 주세요.</NameLabel>
+        <NameLabel htmlFor="artistName">
+          아티스트 타입을 입력해 주세요.
+        </NameLabel>
         <TypeWrapper>{typeContents}</TypeWrapper>
         <CategoryInput
           type="text"
           id="artistName"
-          value={categoryName}
-          onChange={onChangeCategoryName}
+          value={typeName}
+          onChange={onChangeTypeName}
           placeholder="직접 입력"
         />
-        <SubmitButton type="button" onClick={onClickAddCategoryBtn}>
+        <SubmitButton type="button" onClick={onClickAddTypeBtn}>
           완료
         </SubmitButton>
       </CommonModal>
@@ -88,4 +91,4 @@ const AddCategoryModal = () => {
   );
 };
 
-export default AddCategoryModal;
+export default AddArtistTypeModal;

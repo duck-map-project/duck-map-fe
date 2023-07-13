@@ -14,6 +14,7 @@ import { TextButton } from '../pages/mainPage/MainStyle';
 import { toggleGroup } from '../redux/manageModalSlice';
 import { toggleArtist } from '../redux/manageModalSlice';
 import { toggleCategory } from '../redux/manageModalSlice';
+import { toggleArtistType } from '../redux/manageModalSlice';
 import px2vw from '../utils/px2vw';
 
 export const HeaderStyle = styled.header`
@@ -102,6 +103,9 @@ const Header: React.FC = ({}) => {
   const handleArtistClick = () => {
     dispatch(toggleArtist());
   };
+  const handleArtistTypeClick = () => {
+    dispatch(toggleArtistType());
+  };
   const handleCategoryClick = () => {
     dispatch(toggleCategory());
   };
@@ -125,6 +129,12 @@ const Header: React.FC = ({}) => {
     },
     {
       id: 2,
+      title: '아티스트 타입 등록',
+      icon: settingIcon,
+      handler: handleArtistTypeClick,
+    },
+    {
+      id: 3,
       title: '카테고리 등록',
       icon: settingIcon,
       handler: handleCategoryClick,
