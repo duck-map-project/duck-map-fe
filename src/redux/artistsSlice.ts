@@ -3,7 +3,8 @@ import { ArtistValue, ArtistsData } from '../types/artistsType';
 import { apiSlice } from './apiSlice';
 
 const accessToken = window.localStorage.getItem('admin');
-type transformedResponse = {
+
+export type transformedResponse = {
   isLast: boolean;
   content: [
     {
@@ -19,6 +20,7 @@ type transformedResponse = {
     }
   ];
 };
+
 export const artistsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getArtists: builder.query<
@@ -26,8 +28,8 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
       {
         artistTypeId?: string;
         artistName?: string | undefined;
-        pageNumber: string;
-        pageSize: string;
+        pageNumber?: string;
+        pageSize?: string;
       }
     >({
       query: (params) => {
@@ -92,6 +94,40 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
         },
       }),
       invalidatesTags: ['Artists'],
+      async onQueryStarted({ artistId }, { dispatch, queryFulfilled }) {
+        // for (const { endpointName } of apiSlice.util.selectInvalidatedBy(
+        //   getState(),
+        //   [{ type: 'Artists', id: artistId }]
+        // )) {
+        //   if (endpointName !== 'getArtists') continue;
+        //   dispatch(
+        //     artistsApiSlice.util.updateQueryData('getArtists', {}, (draft) => {
+        //       const deleteItemIndex = draft.content.findIndex(
+        //         (data) => data.id === artistId
+        //       );
+        //       draft.content.splice(deleteItemIndex, 1);
+        //     })
+        //   );
+        // }
+        const patchResult = dispatch(
+          artistsApiSlice.util.updateQueryData(
+            'getArtists',
+            { pageNumber: '2', pageSize: '20' },
+            (draft) => {
+              const deleteItemIndex = draft.content.findIndex(
+                (data) => data.id === artistId
+              );
+              draft.content.splice(deleteItemIndex, 1);
+            }
+          )
+        );
+        try {
+          const response = await queryFulfilled;
+          console.log(response);
+        } catch (error) {
+          patchResult.undo();
+        }
+      },
     }),
   }),
 });
