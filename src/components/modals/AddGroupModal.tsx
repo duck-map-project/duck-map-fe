@@ -64,15 +64,13 @@ const AddGroupModal = () => {
   };
 
   const sendGroupInfo = async (imageData: any) => {
-    console.log(imageData);
     const groupData = {
       artistTypeId: 1,
       name: groupName,
       image: imageData,
     };
     try {
-      const response = await addNewGroup(groupData);
-      console.log(response);
+      await addNewGroup(groupData);
       onHideModal();
     } catch (error) {
       console.error(error);

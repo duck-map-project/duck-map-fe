@@ -3,11 +3,26 @@ import { ArtistValue, ArtistsData } from '../types/artistsType';
 import { apiSlice } from './apiSlice';
 
 const accessToken = window.localStorage.getItem('admin');
-
+type transformedResponse = {
+  isLast: boolean;
+  content: [
+    {
+      id: number;
+      groupId: number | null;
+      groupName: string | null;
+      name: string;
+      image: string;
+      artistType: {
+        id: number;
+        type: string;
+      };
+    }
+  ];
+};
 export const artistsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getArtists: builder.query<
-      ArtistsData,
+      transformedResponse,
       {
         artistTypeId?: string;
         artistName?: string | undefined;
@@ -25,6 +40,14 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
           url: url + '?' + queryString,
           method: 'GET',
         };
+      },
+      transformResponse: (response: ArtistsData) => {
+        const content = response.content;
+        const isLast = response.last;
+        return { content, isLast };
+      },
+      serializeQueryArgs: ({ queryArgs, endpointName }) => {
+        return endpointName + queryArgs.artistTypeId + queryArgs.pageNumber;
       },
       providesTags: ['Artists'],
     }),

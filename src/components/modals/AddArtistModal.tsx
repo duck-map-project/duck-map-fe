@@ -139,15 +139,14 @@ const AddArtistModal = () => {
         if ('error' in response) {
           return;
         }
-        sendGroupInfo(response.data.filename);
+        sendArtistInfo(response.data.filename);
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  const sendGroupInfo = async (imageData: string) => {
-    console.log(imageData);
+  const sendArtistInfo = async (imageData: string) => {
     const artistData = {
       artistTypeId: artistType,
       groupId,
@@ -155,8 +154,7 @@ const AddArtistModal = () => {
       image: imageData,
     };
     try {
-      const response = await addNewArtist(artistData);
-      console.log(response);
+      await addNewArtist(artistData);
       onHideModal();
     } catch (error) {
       console.error(error);
