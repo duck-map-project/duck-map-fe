@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { eventsApi } from '../../api/event';
-import ChoiceStarBar from '../../components/ChoiceStarBar';
+import ChoiceArtistBar from '../../components/ChoiceArtistBar';
 import EventListItem from '../../components/EventListItem';
 import EventListItemDetail from '../../components/EventListItemDetail';
 import { EventData, getEventParams } from '../../types/eventService';
@@ -71,7 +71,7 @@ const EventList = () => {
 
   return (
     <PageWrapper>
-      <ChoiceStarBar />
+      <ChoiceArtistBar />
       <ListContentsSection>
         <MapSection>
           <EventAddButton type="button" />
