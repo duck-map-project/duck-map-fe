@@ -1,65 +1,245 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { eventsApi } from '../../api/event';
+// import { eventsApi } from '../../api/event';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
 import EventListItem from '../../components/EventListItem';
 import EventListItemDetail from '../../components/EventListItemDetail';
-import { EventData, getEventParams } from '../../types/eventService';
+import KakaoMap from '../../components/KakaoMap';
+// import { EventData, getEventParams } from '../../types/eventService';
 
 import {
   ListContentsSection,
   MapSection,
   PageWrapper,
   EventAddButton,
-  EventTitle,
+  ItemListSection,
+  MapSectionTitle,
+  DotWrapper,
   Ul,
+  SectionTitle,
 } from './EventListStyle';
 
 const EventList = () => {
-  const [events, setEvents] = useState<EventData[]>([]);
-  const [page, setPage] = useState<number>(0);
-  const [isLast, setIsLast] = useState<boolean>(false);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
+  // const [events, setEvents] = useState<EventData[]>([]);
+  // const [page, setPage] = useState<number>(0);
+  // const [isLast, setIsLast] = useState<boolean>(false);
+  // const [isFetching, setIsFetching] = useState<boolean>(false);
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
 
-  const handleScroll = () => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+  // TODO: 테스트용 배열 / 나중에 지우기
+  const testEvent = [
+    {
+      id: 0,
+      storeName: 'string',
+      inProgress: true,
+      address: 'string',
+      artists: [
+        {
+          id: 0,
+          groupId: 0,
+          groupName: 'string',
+          name: 'string',
+          image: 'string',
+          artistType: {
+            id: 0,
+            type: 'string',
+          },
+        },
+      ],
+      categories: [
+        {
+          id: 0,
+          category: 'string',
+        },
+      ],
+      image: 'string',
+      likeId: 0,
+      bookmarkId: 0,
+    },
+    {
+      id: 1,
+      storeName: 'string',
+      inProgress: true,
+      address: 'string',
+      artists: [
+        {
+          id: 0,
+          groupId: 0,
+          groupName: 'string',
+          name: 'string',
+          image: 'string',
+          artistType: {
+            id: 0,
+            type: 'string',
+          },
+        },
+      ],
+      categories: [
+        {
+          id: 0,
+          category: 'string',
+        },
+      ],
+      image: 'string',
+      likeId: 0,
+      bookmarkId: 0,
+    },
+    {
+      id: 2,
+      storeName: 'string',
+      inProgress: true,
+      address: 'string',
+      artists: [
+        {
+          id: 0,
+          groupId: 0,
+          groupName: 'string',
+          name: 'string',
+          image: 'string',
+          artistType: {
+            id: 0,
+            type: 'string',
+          },
+        },
+      ],
+      categories: [
+        {
+          id: 0,
+          category: 'string',
+        },
+        {
+          id: 1,
+          category: '식당',
+        },
+      ],
+      image: 'string',
+      likeId: 0,
+      bookmarkId: 0,
+    },
+    {
+      id: 3,
+      storeName: 'string',
+      inProgress: true,
+      address: 'string',
+      artists: [
+        {
+          id: 0,
+          groupId: 0,
+          groupName: 'string',
+          name: 'string',
+          image: 'string',
+          artistType: {
+            id: 0,
+            type: 'string',
+          },
+        },
+      ],
+      categories: [
+        {
+          id: 0,
+          category: 'string',
+        },
+      ],
+      image: 'string',
+      likeId: 0,
+      bookmarkId: 0,
+    },
+    {
+      id: 4,
+      storeName: 'string',
+      inProgress: true,
+      address: 'string',
+      artists: [
+        {
+          id: 0,
+          groupId: 0,
+          groupName: 'string',
+          name: 'string',
+          image: 'string',
+          artistType: {
+            id: 0,
+            type: 'string',
+          },
+        },
+      ],
+      categories: [
+        {
+          id: 0,
+          category: 'string',
+        },
+      ],
+      image: 'string',
+      likeId: 0,
+      bookmarkId: 0,
+    },
+    {
+      id: 5,
+      storeName: 'string',
+      inProgress: true,
+      address: 'string',
+      artists: [
+        {
+          id: 0,
+          groupId: 0,
+          groupName: 'string',
+          name: 'string',
+          image: 'string',
+          artistType: {
+            id: 0,
+            type: 'string',
+          },
+        },
+      ],
+      categories: [
+        {
+          id: 0,
+          category: 'string',
+        },
+      ],
+      image: 'string',
+      likeId: 0,
+      bookmarkId: 0,
+    },
+  ];
 
-    if (scrollHeight - scrollTop === clientHeight && !isFetching && !isLast) {
-      setPage((prevPage) => prevPage + 1);
-    }
-  };
+  // const handleScroll = () => {
+  //   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  //   if (scrollHeight - scrollTop === clientHeight && !isFetching && !isLast) {
+  //     setPage((prevPage) => prevPage + 1);
+  //   }
+  // };
 
-  const fetchEvents = async () => {
-    try {
-      setIsFetching(true);
-      const eventParams: getEventParams = {
-        page: 0,
-        size: 1,
-        sort: ['sorted', 'unsorted'],
-        artistId: 0,
-        onlyInProgress: false,
-      };
-      const res = await eventsApi.get(eventParams);
-      setIsFetching(false);
-      setIsLast(res.last);
-      setEvents((prevEvents) => [...prevEvents, ...res.content]);
-    } catch (error) {
-      console.error(error);
-      setIsFetching(false);
-    }
-  };
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, []);
 
-  useEffect(() => {
-    if (page >= 0 && !isLast) {
-      fetchEvents();
-    }
-  }, [page]);
+  // const fetchEvents = async () => {
+  //   try {
+  //     setIsFetching(true);
+  //     const eventParams: getEventParams = {
+  //       page: 0,
+  //       size: 1,
+  //       sort: ['sorted', 'unsorted'],
+  //       artistId: 0,
+  //       onlyInProgress: false,
+  //     };
+  //     const res = await eventsApi.get(eventParams);
+  //     setIsFetching(false);
+  //     setIsLast(res.last);
+  //     setEvents((prevEvents) => [...prevEvents, ...res.content]);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setIsFetching(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (page >= 0 && !isLast) {
+  //     fetchEvents();
+  //   }
+  // }, [page]);
 
   const handleEventItemClick = (eventId: number) => {
     if (selectedEventId === eventId) {
@@ -74,28 +254,33 @@ const EventList = () => {
       <ChoiceArtistBar />
       <ListContentsSection>
         <MapSection>
-          <EventAddButton type="button" />
+          <MapSectionTitle>지도</MapSectionTitle>
+          <EventAddButton type="button">이벤트 추가</EventAddButton>
+          <KakaoMap size="eventList" />
         </MapSection>
-        {/* TODO: 클릭한 연예인 이름 가져오기 */}
-        <EventTitle>(이름) 이벤트</EventTitle>
-        <Ul>
-          {events &&
-            events.map((event) =>
-              selectedEventId === event.id ? (
-                <EventListItemDetail
-                  event={event}
-                  key={event.id}
-                  onEventListClick={handleEventItemClick}
-                />
-              ) : (
-                <EventListItem
-                  event={event}
-                  key={event.id}
-                  onEventListClick={handleEventItemClick}
-                />
-              )
-            )}
-        </Ul>
+        <ItemListSection>
+          <DotWrapper>
+            <SectionTitle>지금 하고 있는 이벤트는?</SectionTitle>
+            <Ul>
+              {testEvent &&
+                testEvent.map((event) =>
+                  selectedEventId === event.id ? (
+                    <EventListItemDetail
+                      event={event}
+                      key={event.id}
+                      onEventListClick={handleEventItemClick}
+                    />
+                  ) : (
+                    <EventListItem
+                      event={event}
+                      key={event.id}
+                      onEventListClick={handleEventItemClick}
+                    />
+                  )
+                )}
+            </Ul>
+          </DotWrapper>
+        </ItemListSection>
       </ListContentsSection>
     </PageWrapper>
   );
