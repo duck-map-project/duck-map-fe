@@ -1,6 +1,6 @@
-import bookmarkIcon from '../../assets/icons/bookmark.svg';
-import bookmarkFolderIcon from '../../assets/icons/bookmarkFolder.svg';
-import pencilIcon from '../../assets/icons/pencil.svg';
+import bookmarkIcon from '../../../assets/icons/bookmark.svg';
+import bookmarkFolderIcon from '../../../assets/icons/bookmarkFolder.svg';
+import pencilIcon from '../../../assets/icons/pencil.svg';
 
 import {
   FloderWrapper,

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import Bookmark from './Bookmark';
+import Bookmark from './components/Bookmark';
+import Like from './components/Like';
 import {
   Main,
   SideSection,
@@ -20,6 +21,8 @@ const MyPage = () => {
   let content;
   if (selectedItem === 'bookmark') {
     content = <Bookmark />;
+  } else if (selectedItem === 'like') {
+    content = <Like />;
   }
   return (
     <Main>

@@ -41,7 +41,7 @@ export const ContentSection = styled.section`
   position: relative;
   width: 80%;
   min-width: 908px;
-  min-height: 695px;
+  height: 695px;
   padding: 24px 28px;
   background-color: #fffbe2;
   border: 2px solid var(--line-black);
@@ -80,7 +80,7 @@ export const ContentWrapper = styled.div`
   }
   &::-webkit-scrollbar-track {
     border-radius: 10px;
-    border: 4px solid transparent;
+    border: 5px solid transparent;
     background-clip: content-box;
     background-color: rgba(176, 180, 204, 0.5);
   }

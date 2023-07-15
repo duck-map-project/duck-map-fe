@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import bookmarkIcon from '../../assets/icons/bookmark.svg';
+import bookmarkIcon from '../../../assets/icons/bookmark.svg';
 
 type EventItemProps = {
   bookmarkIcon: string;
