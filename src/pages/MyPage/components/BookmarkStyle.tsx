@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import bookmarkIcon from '../../../assets/icons/bookmark.svg';
+import bookmarkicon from '../../../assets/icons/bookmark.svg';
 
 type EventItemProps = {
-  bookmarkIcon: string;
+  bookmarkicon: string;
 };
 
 export const FloderWrapper = styled.div`
@@ -69,7 +69,7 @@ export const ItemWrapper = styled.div<EventItemProps>`
   &::after {
     position: absolute;
     display: block;
-    content: url(${bookmarkIcon});
+    content: url(${bookmarkicon});
     width: 25px;
     height: 34px;
     top: -4px;

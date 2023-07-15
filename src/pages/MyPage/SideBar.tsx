@@ -1,4 +1,7 @@
-import heartIcon from '../../assets/icons/heart.svg';
+import { useEffect, useState } from 'react';
+
+import hearticon from '../../assets/icons/heart.svg';
+import { useRouter } from '../../hooks/useRouter';
 
 import {
   SideBarSection,
@@ -6,14 +9,8 @@ import {
   SpringWrapper,
   ListsWrapper,
   List,
-  ListLabel,
-  RadioInput,
+  ListLink,
 } from './SideBarStyle';
-
-type SideBarProps = {
-  state: string;
-  setState: React.Dispatch<React.SetStateAction<string>>;
-};
 
 const SideListArray = [
   {
@@ -21,42 +18,59 @@ const SideListArray = [
     value: 'bookmark',
     group: 'sidebar',
     text: '북마크',
+    to: '/mypage/bookmark',
   },
   {
     id: 2,
     value: 'like',
     group: 'sidebar',
     text: '좋아요',
+    to: '/mypage/like',
   },
-  { id: 3, value: 'myreview', group: 'sidebar', text: '나의 리뷰' },
+  {
+    id: 3,
+    value: 'myreview',
+    group: 'sidebar',
+    text: '나의 리뷰',
+    to: '/mypage/myreview',
+  },
   {
     id: 4,
     value: 'myevent',
     group: 'sidebar',
     text: '나의 이벤트',
+    to: '/mypage/myevent',
   },
   {
     id: 5,
-    value: 'editprofile',
+    value: 'edit_profile',
     group: 'sidebar',
     text: '회원정보 수정',
+    to: '/mypage/edit_profile',
   },
   {
     id: 6,
-    value: 'changepassword',
+    value: 'change_password',
     group: 'sidebar',
     text: '비밀번호 변경',
+    to: '/mypage/change_password',
   },
 ];
 
-const SideBar = ({ state, setState }: SideBarProps) => {
+const SideBar = () => {
   const springNumber = new Array(8).fill(0);
-  state;
-  setState;
 
-  const onChangeList = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState(e.target.value);
-  };
+  const [selectedItem, setSelectedItem] = useState('bookmark');
+  const { currentPath } = useRouter();
+  const params = currentPath.slice(8);
+
+  useEffect(() => {
+    if (params === '' || params === 'bookmark') {
+      setSelectedItem('bookmark');
+    } else {
+      setSelectedItem(params);
+    }
+  }, [params]);
 
   return (
     <SideBarSection>
@@ -68,20 +82,13 @@ const SideBar = ({ state, setState }: SideBarProps) => {
       <ListsWrapper>
         {SideListArray.map((content) => (
           <List key={content.id}>
-            <ListLabel
-              htmlFor={content.value}
-              selected={content.value === state}
-              heartIcon={heartIcon}
+            <ListLink
+              selected={content.value === selectedItem}
+              hearticon={hearticon}
+              to={content.to}
             >
               {content.text}
-            </ListLabel>
-            <RadioInput
-              type="radio"
-              id={content.value}
-              value={content.value}
-              name={content.group}
-              onChange={onChangeList}
-            />
+            </ListLink>
           </List>
         ))}
       </ListsWrapper>

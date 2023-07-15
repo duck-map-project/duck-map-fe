@@ -4,7 +4,7 @@ import px2vw from '../../utils/px2vw';
 
 export const Main = styled.main`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   gap: 32px;
   width: 90%;
   padding: 0 ${px2vw(142)};
@@ -39,11 +39,11 @@ export const Username = styled.span`
 
 export const ContentSection = styled.section`
   position: relative;
-  width: 80%;
+  /* width: 80%; */
   width: 908px;
   height: 695px;
   padding: 24px 28px;
-  background-color: #fffbe2;
+  background-color: #F6EDB2;
   border: 2px solid var(--line-black);
   border-radius: 20px;
   z-index: 0;

@@ -1,4 +1,4 @@
-import bookmarkIcon from '../../../assets/icons/bookmark.svg';
+import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import bookmarkFolderIcon from '../../../assets/icons/bookmarkFolder.svg';
 import pencilIcon from '../../../assets/icons/pencil.svg';
 
@@ -31,7 +31,7 @@ const BookmarkFolder = () => {
 
 const BookmarkItem = () => {
   return (
-    <ItemWrapper bookmarkIcon={bookmarkIcon}>
+    <ItemWrapper bookmarkicon={bookmarkicon}>
       <EventImg src={testImg} />
       <EventName>북마크된 이벤트 명</EventName>
     </ItemWrapper>

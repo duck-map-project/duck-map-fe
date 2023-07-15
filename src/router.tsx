@@ -89,7 +89,7 @@ const routerData: RouterElement[] = [
   },
   {
     id: 10,
-    path: '/mypage',
+    path: '/mypage/*',
     element: <MyPage />,
     //추후에 true로 변경
     withAuth: false,

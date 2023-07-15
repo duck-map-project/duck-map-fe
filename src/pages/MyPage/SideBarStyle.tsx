@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 type ListLabelProps = {
-  selected: boolean;
-  heartIcon: string;
+  selected?: boolean;
+  hearticon: string;
 };
 
 export const SideBarSection = styled.section`
@@ -67,7 +68,7 @@ export const List = styled.div`
   margin-bottom: 15px;
 `;
 
-export const ListLabel = styled.label<ListLabelProps>`
+export const ListLink = styled(Link)<ListLabelProps>`
   position: relative;
   font-size: 24px;
   font-weight: 700;
@@ -78,7 +79,7 @@ export const ListLabel = styled.label<ListLabelProps>`
     &::before {
       position: absolute;
       display: block;
-      content: url(${props.heartIcon});
+      content: url(${props.hearticon});
       width: 12px;
       height: 12px;
       top:  -3px;
@@ -97,13 +98,4 @@ export const ListLabel = styled.label<ListLabelProps>`
     left: 5px;
     border-radius: 5px;
   }
-`;
-
-export const RadioInput = styled.input`
-  position: absolute;
-  clip: rect(0 0 0 0);
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
 `;
