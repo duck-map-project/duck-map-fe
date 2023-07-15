@@ -3,8 +3,7 @@ import { css, styled } from 'styled-components';
 
 export const MapSection = styled.section<KakaoMapProps>`
   width: 100%;
-  ${(props) =>
-    props.size === 'main' ? main : props.size === 'eventList' ? eventList : ''};
+  ${(props) => (props.size ? sizes[props.size] : '')};
 `;
 
 const main = css`
@@ -16,6 +15,12 @@ const eventList = css`
   border-radius: 20px;
 `;
 
+const detail = css`
+  height: 450px;
+`;
+
+const sizes = { main, eventList, detail };
+
 declare global {
   interface Window {
     kakao: any;
@@ -23,7 +28,7 @@ declare global {
 }
 
 interface KakaoMapProps {
-  size: 'main' | 'eventList';
+  size: 'main' | 'eventList' | 'detail';
 }
 
 const KakaoMap = ({ size }: KakaoMapProps) => {

@@ -1,16 +1,13 @@
 import { useState } from 'react';
 
-import coffecupActive from '../../assets/coffee-cup-active.svg';
-import coffecup from '../../assets/coffee-cup-disabled.svg';
-import mapActive from '../../assets/map-active.svg';
-import map from '../../assets/map-disabled.svg';
-import Button from '../../components/Button';
 import FixedRating from '../../components/FixedRating';
+import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 
 import {
   ImgSection,
   EventImg,
   PageWrapper,
+  TopSectionWrapper,
   TopSection,
   InfoSection,
   ImgNumMarkWrapper,
@@ -21,9 +18,14 @@ import {
   LikeNum,
   BookmarkButton,
   TabSection,
-  TabButton,
-  TabInfoImg,
-  TabMapImg,
+  HeartContour,
+  SmallHeart,
+  CopyButton,
+  CopyTextBoxWrapper,
+  InfoButton,
+  MapButton,
+  ReviewButton,
+  DetailContents,
 } from './DetailInfoStyle';
 import MapSection from './MapSection';
 import ReviewSection from './ReviewSection';
@@ -49,90 +51,98 @@ const DetailInfo = () => {
 
   return (
     <PageWrapper>
-      <TopSection>
-        {/* TODO: 이미지 슬라이드 기능 추가 */}
-        <ImgSection>
-          <EventImg url={testImg[currentImg]} />
-          <ImgNumMarkWrapper>
-            {testImg.map((_, i) =>
-              i === currentImg ? (
-                <ImgNumMarkCirclePurple
-                  key={i}
-                  onClick={() => setCurrentImg(i)}
-                />
-              ) : (
-                <ImgNumMarkCircle key={i} onClick={() => setCurrentImg(i)} />
-              )
-            )}
-          </ImgNumMarkWrapper>
-          <HeartButtonWrapper onClick={() => setIsLike((prev) => !prev)}>
-            <HeartButton checked={isLike} />
-            {/* TODO: 좋아요값 서버에서 가져오기 */}
-            <LikeNum>123</LikeNum>
-          </HeartButtonWrapper>
-          <BookmarkButton
-            checked={isBookmark}
-            onClick={() => {
-              setIsBookmark((prev) => !prev);
-            }}
-          />
-        </ImgSection>
+      <TopSectionWrapper>
+        <TopSection>
+          {/* TODO: 이미지 슬라이드 기능 추가 */}
+          <ImgSection>
+            <EventImg url={testImg[currentImg]} />
+            <ImgNumMarkWrapper>
+              {testImg.map((_, i) =>
+                i === currentImg ? (
+                  <ImgNumMarkCirclePurple
+                    key={i}
+                    onClick={() => setCurrentImg(i)}
+                  />
+                ) : (
+                  <ImgNumMarkCircle key={i} onClick={() => setCurrentImg(i)} />
+                )
+              )}
+            </ImgNumMarkWrapper>
+            <HeartButtonWrapper onClick={() => setIsLike((prev) => !prev)}>
+              <HeartButton checked={isLike} />
+              {/* TODO: 좋아요값 서버에서 가져오기 */}
+              <LikeNum>123</LikeNum>
+            </HeartButtonWrapper>
+            <BookmarkButton
+              checked={isBookmark}
+              onClick={() => {
+                setIsBookmark((prev) => !prev);
+              }}
+            />
+          </ImgSection>
+          <InfoSection>
+            <TextBox>상호명</TextBox>
+            <div>
+              <HeartContour>
+                <SmallHeart />
+                <SmallHeart />
+                <SmallHeart />
+              </HeartContour>
+            </div>
+            <FixedRating score={4.5} marginB="10px" />
+            <TextBoxWithTitle title="이벤트 기간">날짜</TextBoxWithTitle>
+            <TextBoxWithTitle title="영업 시간">시간</TextBoxWithTitle>
+            <CopyTextBoxWrapper>
+              <TextBoxWithTitle title="해시태그">해시태그</TextBoxWithTitle>
+              <CopyButton>복사</CopyButton>
+            </CopyTextBoxWrapper>
+            <CopyTextBoxWrapper>
+              <TextBoxWithTitle title="주소">주소</TextBoxWithTitle>
+              <CopyButton>복사</CopyButton>
+            </CopyTextBoxWrapper>
 
-        <InfoSection>
-          {/* TODO: 세희님 텍스트 박스 컴포넌트 div 완성되면 바꾸기 */}
-          <div>상호명</div>
-          <div>이벤트 기간</div>
-          <div>주소</div>
-          <Button color="primary" size="mid">
-            복사
-          </Button>
-          <div>영업 시간</div>
-          <div>해시태그</div>
-          <Button color="primary" size="mid">
-            복사
-          </Button>
-          {/* TODO: 나중에 평균 별점값 받아오기 */}
-          <FixedRating score={4.5} />
-        </InfoSection>
-      </TopSection>
-      <TabSection>
-        <TabButton
-          onClick={() => {
-            handleTabClick('info');
-          }}
-          currentTab={currentTab}
-          tabType="info"
-        >
-          <TabInfoImg src={currentTab === 'info' ? coffecupActive : coffecup} />
-          Info
-        </TabButton>
-        <TabButton
-          onClick={() => {
-            handleTabClick('map');
-          }}
-          currentTab={currentTab}
-          tabType="map"
-        >
-          <TabMapImg src={currentTab === 'map' ? mapActive : map} />
-          Map
-        </TabButton>
-        <TabButton
-          onClick={() => {
-            handleTabClick('review');
-          }}
-          currentTab={currentTab}
-          tabType="review"
-        >
-          Review
-        </TabButton>
-      </TabSection>
-      {currentTab === 'info' ? (
-        <InfoSection />
-      ) : currentTab === 'map' ? (
-        <MapSection />
-      ) : currentTab === 'review' ? (
-        <ReviewSection />
-      ) : null}
+            {/* TODO: 나중에 평균 별점값 받아오기 */}
+          </InfoSection>
+          <TabSection>
+            <InfoButton
+              onClick={() => {
+                handleTabClick('info');
+              }}
+              currentTab={currentTab}
+              tabType="info"
+            >
+              Info
+            </InfoButton>
+            <MapButton
+              onClick={() => {
+                handleTabClick('map');
+              }}
+              currentTab={currentTab}
+              tabType="map"
+            >
+              Map
+            </MapButton>
+            <ReviewButton
+              onClick={() => {
+                handleTabClick('review');
+              }}
+              currentTab={currentTab}
+              tabType="review"
+            >
+              Review
+            </ReviewButton>
+          </TabSection>
+        </TopSection>
+      </TopSectionWrapper>
+      <DetailContents>
+        {currentTab === 'info' ? (
+          <InfoSection />
+        ) : currentTab === 'map' ? (
+          <MapSection />
+        ) : currentTab === 'review' ? (
+          <ReviewSection />
+        ) : null}
+      </DetailContents>
     </PageWrapper>
   );
 };

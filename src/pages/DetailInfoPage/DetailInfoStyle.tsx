@@ -4,14 +4,64 @@ import bookmark from '../../assets/bookmark-empty.svg';
 import bookmarkActive from '../../assets/bookmark-filled.svg';
 import heart from '../../assets/empty-heart.svg';
 import heartActive from '../../assets/filled-heart.svg';
+import mapIcon from '../../assets/map-icon.svg';
+import reviewIcon from '../../assets/review-icon.svg';
+import smallHeart from '../../assets/small-heart.svg';
+import infoIcon from '../../assets/twitter-icon.svg';
+import px2vw from '../../utils/px2vw';
 
-export const PageWrapper = styled.main``;
+export const PageWrapper = styled.main`
+  padding: 0 ${px2vw(141)} 0 ${px2vw(143)};
+`;
+
+export const TopSectionWrapper = styled.section`
+  width: 100%;
+  background-color: #ffebf5;
+  border-radius: 20px;
+  border: 2px solid #1e232c;
+  justify-content: center;
+  position: relative;
+  padding: 26px;
+  margin-bottom: 65px;
+  &::after {
+    content: '';
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background-color: #ffebf5;
+    border: 2px solid #1e232c;
+    border-radius: 20px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: -9;
+  }
+`;
 
 export const TopSection = styled.section`
+  width: 100%;
+  background-color: #ffd0ec;
+  border-radius: 20px;
+  border: 2px solid #1e232c;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  position: relative;
   gap: 55px;
+  padding: 28px 41px 15px 26px;
+  &::after {
+    content: '';
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background-color: #ffebf5;
+    border: 2px solid #1e232c;
+    border-radius: 20px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: -9;
+  }
 `;
 
 export const ImgSection = styled.section`
@@ -19,8 +69,9 @@ export const ImgSection = styled.section`
 `;
 
 export const EventImg = styled.section<{ url: string }>`
-  width: 460px;
-  height: 460px;
+  width: 416px;
+  height: 357px;
+  border: 2px solid #1e232c;
   background-image: url(${(props) => props.url});
 `;
 
@@ -55,28 +106,30 @@ export const HeartButtonWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   position: absolute;
-  right: 78px;
-  bottom: -17px;
+  right: 34px;
+  bottom: -7px;
 `;
 
 export const LikeNum = styled.span`
   font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.248125;
 `;
 
 export const HeartButton = styled.button<{ checked: boolean }>`
-  width: 30px;
-  height: 27px;
+  width: 24px;
+  height: 21px;
   background-image: url(${(props) => (props.checked ? heartActive : heart)});
   background-repeat: no-repeat;
   background-size: contain;
 `;
 
 export const BookmarkButton = styled(HeartButton)`
-  width: 35px;
-  height: 45px;
+  width: 17px;
+  height: 22px;
   position: absolute;
-  right: 16px;
-  bottom: -17px;
+  right: 3px;
+  bottom: 14px;
   ${(props) =>
     props.checked
       ? `background-image: url(${bookmarkActive})`
@@ -85,81 +138,121 @@ export const BookmarkButton = styled(HeartButton)`
 
 export const InfoSection = styled.section`
   width: 100%;
-  max-width: 502px;
-  min-height: 400px;
-  display: grid;
-  grid-template-columns: 1fr 119px;
-  grid-template-rows: repeat(6, 50px);
-  position: relative;
-  gap: 15px 23px;
-  /* TODO: 텍스트 박스 컴포넌트 추가하면 없애기 */
-  & > div {
-    width: 100%;
-    padding: 13px 0 18px;
-    text-align: center;
-    border-radius: 5px;
-    border: 1px solid var(--blue-purple);
-  }
-  & > div:first-child {
-    grid-column: 1 / 3;
-  }
-  & > div:nth-child(2) {
-    grid-column: 1 / 3;
-  }
-  & > div:nth-child(5) {
-    grid-column: 1 / 3;
-  }
-  & > div:last-child {
-    position: absolute;
-    bottom: 23.5px;
-    justify-content: center;
-    border: none;
+  max-width: 593px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  section {
+    &:nth-child(4),
+    &:nth-child(5),
+    &:nth-child(6) {
+      margin-bottom: 12px;
+    }
   }
 `;
 
-export const DetailSection = styled.section``;
+export const HeartContour = styled.section`
+  display: flex;
+  gap: 10px;
+  margin: 10px 0 14px;
+`;
+
+export const SmallHeart = styled.div`
+  width: 15px;
+  height: 12px;
+  background-image: url(${smallHeart});
+  background-size: 15px 12px;
+`;
+
+export const CopyTextBoxWrapper = styled.section`
+  width: 100%;
+  display: flex;
+  gap: 12px;
+`;
+
+export const CopyButton = styled.button`
+  width: 98px;
+  height: 46px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.247777777777778;
+  background-color: #d8caff;
+  border: 2px solid #1e232c;
+  border-radius: 30px;
+  box-shadow: 4px 4px 0px 0px #00000040;
+`;
 
 export const TabSection = styled.section`
   display: flex;
   justify-content: center;
-  margin-top: 60px;
-  padding-bottom: 31px;
   border-bottom: 3px solid var(--purple);
-  & > button {
-    margin-right: 62px;
-  }
-  & > button:last-child {
-    margin-right: 0;
-  }
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 16px;
 `;
 
 export const TabButton = styled.button<{
   currentTab?: string;
   tabType: string;
 }>`
-  width: 50px;
-  height: 56px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  color: ${(props) =>
-    props.currentTab === props.tabType ? 'var(--purple)' : 'var(--disabled)'};
-  border-bottom: ${(props) =>
-    props.currentTab === props.tabType ? `5px solid var(--purple)` : ''};
+  height: 53px;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.247916666666667;
+  background-color: #fff3ac;
+  border: 2px solid #1e232c;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 4px 4px 0px 0px #00000040;
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  text-align: right;
+  padding-right: 20px;
   cursor: pointer;
 `;
 
-export const TabInfoImg = styled.img`
-  width: 40px;
-  height: 40px;
-  margin-bottom: 4px;
+export const InfoButton = styled(TabButton)`
+  width: 127px;
+  height: ${(props) => (props.currentTab === 'info' ? '79px' : '')};
+  background-image: url(${infoIcon});
 `;
 
-export const TabMapImg = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-bottom: 7px;
+export const MapButton = styled(TabButton)`
+  width: 133px;
+  background-image: url(${mapIcon});
+  height: ${(props) => (props.currentTab === 'map' ? '79px' : '')};
+  background-image: url(${infoIcon});
 `;
 
-export const DetailContents = styled.section``;
+export const ReviewButton = styled(TabButton)`
+  width: 155px;
+  height: ${(props) => (props.currentTab === 'review' ? '79px' : '')};
+  background-image: url(${infoIcon});
+  background-image: url(${reviewIcon});
+`;
+
+export const DetailContents = styled.section`
+  width: 100%;
+  background-color: #fffbe2;
+  border: 2px solid #1e232c;
+  border-radius: 20px;
+  padding: 30px 25px 31px 26px;
+  position: relative;
+  &::after {
+    display: block;
+    box-sizing: border-box;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: #fffbe2;
+    border: 2px solid #1e232c;
+    border-radius: 20px;
+    position: absolute;
+    top: 11px;
+    left: 10px;
+    /* top: 0px;
+    left: 0px; */
+    z-index: -9;
+  }
+`;

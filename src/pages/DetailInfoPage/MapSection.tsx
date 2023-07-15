@@ -1,27 +1,19 @@
 import { styled } from 'styled-components';
 
-import px2vw from '../../utils/px2vw';
+import KakaoMap from '../../components/KakaoMap';
 
 const PageWrapper = styled.section`
   width: 100%;
-  padding: 177px ${px2vw(146)} 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const MapSpace = styled.section`
-  width: 100%;
-  height: ${px2vw(554)};
-  background-color: #000;
+  padding: 26px 28px 26px 25px;
+  background-color: #fcfefe;
+  border-radius: 20px;
+  border: 2px dashed #1e232c33;
 `;
 
 const MapSection = () => {
   return (
     <PageWrapper>
-      <MapSpace />
-      {/* TODO: TextBox 컴포넌트 추가되면 교체 */}
-      <div>주소</div>
+      <KakaoMap size="detail" />
     </PageWrapper>
   );
 };
