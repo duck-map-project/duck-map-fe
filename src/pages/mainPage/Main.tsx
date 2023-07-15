@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 // import { reveiws } from '../../api/event';
+import sortIcon from '../../assets/sort-book.svg';
 import KakaoMap from '../../components/KakaoMap';
 
 import {
@@ -75,6 +76,7 @@ const Main = () => {
             selectedText={SelectedText}
             setSelectedText={setSelectedText}
             setId={setSelectedId}
+            icon={sortIcon}
           />
           <MapTitle>지도</MapTitle>
           <KakaoMap size="main" />
