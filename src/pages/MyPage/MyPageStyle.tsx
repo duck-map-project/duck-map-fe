@@ -40,7 +40,7 @@ export const Username = styled.span`
 export const ContentSection = styled.section`
   position: relative;
   width: 80%;
-  min-width: 908px;
+  width: 908px;
   height: 695px;
   padding: 24px 28px;
   background-color: #fffbe2;

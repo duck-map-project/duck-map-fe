@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import Bookmark from './components/Bookmark';
 import Like from './components/Like';
+import Review from './components/Review';
 import {
   Main,
   SideSection,
@@ -23,6 +24,8 @@ const MyPage = () => {
     content = <Bookmark />;
   } else if (selectedItem === 'like') {
     content = <Like />;
+  } else if (selectedItem === 'myreview') {
+    content = <Review />;
   }
   return (
     <Main>
