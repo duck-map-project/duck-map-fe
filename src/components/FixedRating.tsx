@@ -1,39 +1,77 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
-import emptyStar from '../assets/all-empty-star.svg';
-import filledStar from '../assets/all-filled-star.svg';
+import emptyStar from '../assets/star-empty.svg';
+import filledStar from '../assets/star-filled.svg';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{
+  $marginB?: string;
+  $size?: 'primary' | 'reviewItem';
+}>`
   display: flex;
   align-items: center;
+  ${(props) =>
+    props.$size === 'reviewItem' ? reviewItemWrapper : primaryWrapper}
+  margin-bottom: ${(props) => (props.$marginB ? props.$marginB : '')};
 `;
 
-const FixedRatingStyle = styled.div<{ score: number }>`
-  width: 196px;
-  height: 36px;
+const primaryWrapper = css`
+  padding: 7.5px 27px;
+  background-color: #ffebf4;
+  border: 2px solid #1e232c;
+  border-radius: 30px;
+`;
+
+const reviewItemWrapper = css`
+  padding: 4px 11.5px;
+  background-color: #fffcedfa;
+  border: 1.4px solid #1e232c;
+  border-radius: 20px;
+`;
+
+const primaryRatingStyle = css`
+  width: 125px;
+  height: 23px;
+  background-size: 25px 23px;
+`;
+
+const reviewItemRatingStyle = css`
+  width: 110px;
+  height: 22px;
+  background-size: 22px 22px;
+`;
+
+const FixedRatingStyle = styled.div<{
+  score: number;
+  $size?: 'primary' | 'reviewItem';
+}>`
   background-image: url(${emptyStar});
-  background-repeat: no-repeat;
-  margin-right: 10px;
+  background-repeat: repeat-x;
+  position: relative;
+  ${(props) =>
+    props.$size === 'reviewItem' ? reviewItemRatingStyle : primaryRatingStyle}
+
   &::before {
     display: block;
     content: '';
     background-image: url(${filledStar});
-    background-repeat: no-repeat;
-
+    background-repeat: repeat-x;
+    ${(props) =>
+      props.$size === 'reviewItem' ? reviewItemRatingStyle : primaryRatingStyle}
     width: ${({ score }) => `${(score / 5) * 100}%`};
-    height: 36px;
+    position: absolute;
   }
 `;
 
-const RatingNum = styled.span`
-  font-size: 1.4rem;
-`;
+interface FixedRatingProps {
+  score: number;
+  marginB?: string;
+  size?: 'primary' | 'reviewItem';
+}
 
-const FixedRating = ({ score }: { score: number }) => {
+const FixedRating = ({ score, marginB, size }: FixedRatingProps) => {
   return (
-    <Wrapper>
-      <FixedRatingStyle score={score} />
-      <RatingNum>{score}</RatingNum>
+    <Wrapper $marginB={marginB} $size={size}>
+      <FixedRatingStyle score={score} $size={size} />
     </Wrapper>
   );
 };
