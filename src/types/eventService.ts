@@ -17,9 +17,7 @@ export interface EventData {
       groupId: number;
       groupName: string;
       name: string;
-      image: {
-        fileUrl: string;
-      };
+      image: string;
       artistType: {
         id: number;
         type: string;
@@ -32,9 +30,7 @@ export interface EventData {
       category: string;
     }
   ];
-  image: {
-    fileUrl: string;
-  };
-  likeId: boolean;
-  bookmarkId: boolean;
+  image: string;
+  likeId: number;
+  bookmarkId: number;
 }

@@ -77,7 +77,7 @@ const Main = () => {
             setId={setSelectedId}
           />
           <MapTitle>지도</MapTitle>
-          <KakaoMap />
+          <KakaoMap size="main" />
         </MapFrame>
         <ViewReviews>
           <ViewReviewsTitle>리뷰 미리보기</ViewReviewsTitle>
