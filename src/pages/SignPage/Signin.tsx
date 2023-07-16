@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { styled } from 'styled-components';
 
 import kakaoIcon from '../../assets/kakao-icon.svg';
@@ -6,7 +6,7 @@ import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
 import ResetPasswordModal from '../../components/modals/ResetPasswordModal';
 import { useAuthContext } from '../../contexts/AuthContext';
-import useForm from '../../hooks/useForm';
+import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 
 import {
@@ -33,53 +33,44 @@ const Signin = () => {
   const auth = useAuthContext();
   const { routeTo } = useRouter();
   const [passwordModal, setPasswordModal] = useState<boolean>(false);
+  const email = useInput('');
+  const password = useInput('');
 
-  const handleSignin = () => {
-    auth?.signIn({
-      email: inputs.email as string,
-      password: inputs.password as string,
-    });
+  const handleSignin = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (email.value && password.value)
+      auth?.signIn({
+        email: email.value,
+        password: password.value,
+      });
   };
-
-  const { handleChange, handleSubmit, inputs, errors } = useForm(
-    { email: '', password: '' },
-    handleSignin
-  );
 
   return (
     <PageWrapper>
       {passwordModal ? (
         <ResetPasswordModal onClickButton={() => setPasswordModal(false)} />
       ) : null}
-      <FormWithMargin
-        onSubmit={handleSubmit}
-        noValidate
-        emailError={errors.email}
-      >
+      <FormWithMargin onSubmit={handleSignin} noValidate emailError="">
         <PageTitle>로그인</PageTitle>
         <AuthInput
           name="email"
           title="이메일"
           type="email"
-          value={inputs.email}
-          onChange={handleChange}
+          value={email.value}
+          onChange={email.onChange}
           autoComplete="email"
-          isInputValid={!errors.email}
           placeholder="이메일 입력"
         />
-        {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
 
         <AuthInput
           name="password"
           title="비밀번호"
           type="password"
-          value={inputs.password}
-          onChange={handleChange}
+          value={password.value}
+          onChange={password.onChange}
           autoComplete="current-password"
-          isInputValid={!errors.password}
           placeholder="비밀번호 입력"
         />
-        {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
 
         <SubmitButton>로그인하기</SubmitButton>
       </FormWithMargin>
