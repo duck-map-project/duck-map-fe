@@ -1,5 +1,3 @@
-// import deleteicon from '../../../assets/icons/delete.svg';
-// import editicon from '../../../assets/icons/edit.svg';
 import usericon from '../../../assets/icons/mypage.svg';
 
 import {
