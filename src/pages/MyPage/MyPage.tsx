@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import Bookmark from './components/Bookmark';
+import ChangePassword from './components/ChangePassword';
 import EditProfile from './components/EditProfile';
 import Event from './components/Event';
 import Like from './components/Like';
@@ -37,6 +38,7 @@ const MyPage = () => {
             <Route path="myreview" element={<Review />} />
             <Route path="myevent" element={<Event />} />
             <Route path="edit_profile" element={<EditProfile />} />
+            <Route path="change_password" element={<ChangePassword />} />
           </Routes>
         </ContentWrapper>
       </ContentSection>
