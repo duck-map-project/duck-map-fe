@@ -170,8 +170,8 @@ const Header: React.FC = ({}) => {
       />
       <RightSection>
         {content}
-        <MenuButton>
-          <MenuButtonIcon src={iconLogin} onClick={handleAuthButton} />
+        <MenuButton onClick={handleAuthButton}>
+          <MenuButtonIcon src={iconLogin} />
           {auth?.isLogin ? 'Logout' : 'Login'}
         </MenuButton>
         <ProfileDropdown>
