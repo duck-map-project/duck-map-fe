@@ -7,6 +7,7 @@ import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
 import ManagePage from './pages/ManagePage/Manage';
+import MyPage from './pages/MyPage/MyPage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 import Signin from './pages/SignPage/Signin';
@@ -80,8 +81,16 @@ const routerData: RouterElement[] = [
   },
   {
     id: 9,
-    path: '/managePage',
+    path: '/managepage',
     element: <ManagePage />,
+    //추후에 true로 변경
+    withAuth: false,
+    wrapWithLayout: true,
+  },
+  {
+    id: 10,
+    path: '/mypage/*',
+    element: <MyPage />,
     //추후에 true로 변경
     withAuth: false,
     wrapWithLayout: true,
