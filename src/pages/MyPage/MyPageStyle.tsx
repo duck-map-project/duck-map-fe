@@ -43,7 +43,7 @@ export const ContentSection = styled.section`
   width: 908px;
   height: 695px;
   padding: 24px 28px;
-  background-color: #F6EDB2;
+  background-color: #f6edb2;
   border: 2px solid var(--line-black);
   border-radius: 20px;
   z-index: 0;
