@@ -1,6 +1,6 @@
+import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { useAuthContext } from './contexts/AuthContext';
 import GeneralLayout from './layout/GeneralLayout';
 import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
@@ -12,6 +12,7 @@ import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
+import { selectCurrentUser } from './redux/auth/authSlice';
 
 interface RouterElement {
   id: number;
@@ -98,11 +99,12 @@ const routerData: RouterElement[] = [
 ];
 
 export const Router = () => {
-  const auth = useAuthContext();
+  const user = useSelector(selectCurrentUser);
+
   return (
     <Routes>
       {routerData.map((router) => {
-        if (!auth?.isLogin && router.withAuth) {
+        if (user && router.withAuth) {
           return (
             <Route
               key={router.id}
