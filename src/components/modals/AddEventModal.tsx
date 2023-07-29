@@ -4,7 +4,10 @@ import { styled } from 'styled-components';
 
 import defalutImage from '../../assets/add-image-defalut.svg';
 import closeIcon from '../../assets/close.svg';
-import { toggleEventArtist } from '../../redux/manageModalSlice';
+import {
+  toggleEventArtist,
+  toggleEventCategory,
+} from '../../redux/manageModalSlice';
 import { Input } from '../AuthInput';
 import SelectedElement from '../SelectedElement';
 
@@ -165,6 +168,9 @@ const AddEventModal = ({ handleClose }: Props) => {
   const handdleSelectArtistButton = () => {
     dispatch(toggleEventArtist());
   };
+  const handleSelectCategoryButton = () => {
+    dispatch(toggleEventCategory());
+  };
   return (
     <EventModalPageWrapper>
       <Modal>
@@ -210,7 +216,9 @@ const AddEventModal = ({ handleClose }: Props) => {
             </RawWrapper>
             <InfoTitle>카테고리</InfoTitle>
             <RawWrapper>
-              <SelectButton type="button">카테고리 선택</SelectButton>
+              <SelectButton type="button" onClick={handleSelectCategoryButton}>
+                카테고리 선택
+              </SelectButton>
               <SelectedElement>선택 카테고리</SelectedElement>
             </RawWrapper>
             <InfoTitle>주소</InfoTitle>
