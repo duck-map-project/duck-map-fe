@@ -5,6 +5,7 @@ import Billboard from '../components/Billboard';
 import Header from '../components/Header';
 import AddArtistModal from '../components/modals/AddArtistModal';
 import AddArtistTypeModal from '../components/modals/AddArtistTypeModal';
+import AddBookmarkFolderModal from '../components/modals/AddBookmarkFolderModal';
 import AddCategoryModal from '../components/modals/AddEventCategoryModal';
 import AddGroupModal from '../components/modals/AddGroupModal';
 import {
@@ -12,6 +13,7 @@ import {
   selectGroupModalState,
   selectArtistTypeModalState,
   selectArtistModalState,
+  selectBookmarkFolderModalState,
 } from '../redux/manageModalSlice';
 
 interface GeneralLayoutProps {
@@ -28,6 +30,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const artistModalState = useSelector(selectArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
+  const bookmarkFolderModalState = useSelector(selectBookmarkFolderModalState);
 
   return (
     <PageWrapper>
@@ -36,6 +39,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {artistModalState && <AddArtistModal />}
       {artistTypeModalState && <AddArtistTypeModal />}
       {categoryModalState && <AddCategoryModal />}
+      {bookmarkFolderModalState && <AddBookmarkFolderModal />}
       <Header />
       {children}
     </PageWrapper>

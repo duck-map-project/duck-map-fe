@@ -143,7 +143,7 @@ const Header: React.FC = ({}) => {
 
   let content;
 
-  if (currentPath === '/managePage') {
+  if (currentPath === '/managepage' || currentPath === '/managePage') {
     content = managePageMenu.map((menu) => (
       <MenuButton key={menu.id} onClick={menu.handler}>
         <MenuButtonIcon src={menu.icon} />

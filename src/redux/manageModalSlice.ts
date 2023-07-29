@@ -9,6 +9,7 @@ export const manageModalSlice = createSlice({
     artist: false,
     artistType: false,
     category: false,
+    bookmarkFolder: false,
   },
   reducers: {
     toggleGroup: (state) => {
@@ -23,11 +24,19 @@ export const manageModalSlice = createSlice({
     toggleCategory: (state) => {
       state.category = !state.category;
     },
+    toggleBookmarkFolder: (state) => {
+      state.bookmarkFolder = !state.bookmarkFolder;
+    },
   },
 });
 
-export const { toggleArtist, toggleCategory, toggleArtistType, toggleGroup } =
-  manageModalSlice.actions;
+export const {
+  toggleArtist,
+  toggleCategory,
+  toggleArtistType,
+  toggleGroup,
+  toggleBookmarkFolder,
+} = manageModalSlice.actions;
 
 export default manageModalSlice.reducer;
 
@@ -42,3 +51,6 @@ export const selectArtistTypeModalState = (state: RootState) =>
 
 export const selectCategoryModalState = (state: RootState) =>
   state.manageModal.category;
+
+export const selectBookmarkFolderModalState = (state: RootState) =>
+  state.manageModal.bookmarkFolder;

@@ -6,15 +6,27 @@ type ModalProps = {
   className?: string;
   onClick?: () => void;
   children: ReactNode;
+  width?: string;
 };
 
-const CommonModal = ({ className, onClick, children }: ModalProps) => {
+type ModalWidth = {
+  width: string;
+};
+
+const CommonModal = ({
+  className,
+  onClick,
+  width = '960',
+  children,
+}: ModalProps) => {
   const preventBubbling = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
   return (
     <Backdrop className={className} onClick={onClick}>
-      <ModalOverlay onClick={preventBubbling}>{children}</ModalOverlay>
+      <ModalOverlay onClick={preventBubbling} width={width}>
+        {children}
+      </ModalOverlay>
     </Backdrop>
   );
 };
@@ -35,13 +47,13 @@ const Backdrop = styled.div`
   z-index: 500;
 `;
 
-const ModalOverlay = styled.form`
+const ModalOverlay = styled.form<ModalWidth>`
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 960px;
+  width: ${(props) => props.width}px;
   top: 5vh;
   padding: 50px 20px 36px;
   margin: 0 auto;
