@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import arrowicon from '../../../assets/icons/arrowright.svg';
 import { ReactComponent as Bookmarkfoldericon } from '../../../assets/icons/bookmark-folder.svg';
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import plusicon from '../../../assets/icons/cross.svg';
@@ -24,6 +25,10 @@ import {
   EventName,
   FoldersHeader,
   Path,
+  EventsHeader,
+  EventsContainer,
+  EventSettingIconsWrapper,
+  GoBookmarkFolders,
   SettingBtnWrapper,
   SettingBtn,
   GoEditBtn,
@@ -44,6 +49,11 @@ type FolderProps = {
   setFolderSelected: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
+type EventsProps = {
+  foldername: string;
+  setFolderSelected: React.Dispatch<React.SetStateAction<string | null>>;
+};
+
 const BookmarkFolderItem = ({
   foldername,
   isEditmode,
@@ -57,6 +67,15 @@ const BookmarkFolderItem = ({
   const onClickFolder = () => {
     setFolderSelected(foldername);
   };
+  const onClickEditBtn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert('폴더수정모달');
+  };
+
+  const onClickDeleteBtn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert('폴더삭제');
+  };
   return (
     <FolderWrapper onClick={onClickFolder}>
       {/* fill 속성에 pick 된 color 집어 넣기. => color를 나중에 props로 받아와야 한다.*/}
@@ -68,10 +87,10 @@ const BookmarkFolderItem = ({
       </EmojiPreview>
       {isEditmode && (
         <SettingIconsWrapper>
-          <SettingIcon>
+          <SettingIcon onClick={onClickEditBtn}>
             <img src={pencilicon} />
           </SettingIcon>
-          <SettingIcon>
+          <SettingIcon onClick={onClickDeleteBtn}>
             <img src={deleteicon} />
           </SettingIcon>
         </SettingIconsWrapper>
@@ -86,11 +105,34 @@ const BookmarkFolderItem = ({
   );
 };
 
-const BookmarkEventItem = () => {
+type EventItemProps = {
+  isEditmode: boolean;
+};
+const BookmarkEventItem = ({ isEditmode }: EventItemProps) => {
+  const onClickEditBtn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert('이벤트수정모달');
+  };
+
+  const onClickDeleteBtn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert('이벤트삭제');
+  };
+  
   return (
     <ItemWrapper bookmarkicon={bookmarkicon}>
       <EventImg src={testImg} />
       <EventName>북마크된 이벤트 명</EventName>
+      {isEditmode && (
+        <EventSettingIconsWrapper>
+          <SettingIcon onClick={onClickEditBtn}>
+            <img src={pencilicon} />
+          </SettingIcon>
+          <SettingIcon onClick={onClickDeleteBtn}>
+            <img src={deleteicon} />
+          </SettingIcon>
+        </EventSettingIconsWrapper>
+      )}
     </ItemWrapper>
   );
 };
@@ -154,15 +196,41 @@ const BookmarkFolders = ({ setFolderSelected }: FolderProps) => {
   );
 };
 
-const Events = () => {
+const Events = ({ foldername, setFolderSelected }: EventsProps) => {
   //여기서 event data 불러오기
+  const [isEditmode, setIsEditmode] = useState(false);
+  const onClickGoBookmarkFolders = () => {
+    setFolderSelected(null);
+  };
+  const onClickToggleEditmode = () => {
+    setIsEditmode((prev) => !prev);
+  };
+  const onClickNoEditmode = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditmode(false);
+  };
   return (
     <>
-      <BookmarkEventItem />
-      <BookmarkEventItem />
-      <BookmarkEventItem />
-      <BookmarkEventItem />
-      <BookmarkEventItem />
+      <EventsHeader>
+        <Path>
+          <img src={starticon} />
+          <GoBookmarkFolders onClick={onClickGoBookmarkFolders}>
+            북마크
+          </GoBookmarkFolders>
+          <img src={arrowicon} />
+          <span>{foldername}</span>
+        </Path>
+        <GoEditBtn onClick={onClickToggleEditmode} isEditmode={isEditmode}>
+          <img src={editicon} />
+          북마크 편집하기
+        </GoEditBtn>
+      </EventsHeader>
+      <EventsContainer onClick={onClickNoEditmode}>
+        <BookmarkEventItem isEditmode={isEditmode} />
+        <BookmarkEventItem isEditmode={isEditmode} />
+        <BookmarkEventItem isEditmode={isEditmode} />
+        <BookmarkEventItem isEditmode={isEditmode} />
+      </EventsContainer>
     </>
   );
 };
@@ -173,7 +241,10 @@ const Bookmark = () => {
   return (
     <BookmarkWrapper>
       {folderSelected ? (
-        <Events />
+        <Events
+          foldername={folderSelected}
+          setFolderSelected={setFolderSelected}
+        />
       ) : (
         <BookmarkFolders setFolderSelected={setFolderSelected} />
       )}

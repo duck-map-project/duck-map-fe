@@ -192,10 +192,15 @@ export const Path = styled.div`
     margin-right: 10px;
   }
   & > span {
+    margin-right: 10px;
     font-size: 20px;
     font-weight: 700;
     line-height: normal;
   }
+`;
+
+export const GoBookmarkFolders = styled.span`
+  cursor: pointer;
 `;
 
 export const SettingBtnWrapper = styled.div`
@@ -234,8 +239,15 @@ export const FoldersContainer = styled.div`
   gap: 20px;
 `;
 
+//Events styling
+export const EventsHeader = styled(FoldersHeader)``;
+export const EventsContainer = styled(FoldersContainer)``;
+export const EventSettingIconsWrapper = styled(SettingIconsWrapper)`
+  top: -6%;
+  right: -5%;
+`
 // Bookmark styling
 export const BookmarkWrapper = styled.section`
   width: 100%;
-  padding-right: 36px;
+  padding-right: 30px;
 `;
