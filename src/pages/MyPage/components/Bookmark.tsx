@@ -4,8 +4,9 @@ import { useDispatch } from 'react-redux';
 import { ReactComponent as Bookmarkfoldericon } from '../../../assets/icons/bookmark-folder.svg';
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import plusicon from '../../../assets/icons/cross.svg';
+import deleteicon from '../../../assets/icons/crosspink.svg';
 import editicon from '../../../assets/icons/editpencil.svg';
-import pencilicon from '../../../assets/icons/pencil.svg';
+import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import starticon from '../../../assets/icons/starIcon.svg';
 import { emojiArray } from '../../../components/modals/EmojiArray';
 import { toggleBookmarkFolder } from '../../../redux/manageModalSlice';
@@ -14,6 +15,8 @@ import {
   FolderWrapper,
   EmojiPreview,
   FolderNameWrapper,
+  SettingIconsWrapper,
+  SettingIcon,
   NameIcon,
   FolderName,
   ItemWrapper,
@@ -23,6 +26,7 @@ import {
   Path,
   SettingBtnWrapper,
   SettingBtn,
+  GoEditBtn,
   FoldersContainer,
   BookmarkWrapper,
 } from './BookmarkStyle';
@@ -32,6 +36,7 @@ const testImg =
 
 type FolderItemProps = {
   foldername: string;
+  isEditmode: boolean;
   setFolderSelected: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
@@ -41,6 +46,7 @@ type FolderProps = {
 
 const BookmarkFolderItem = ({
   foldername,
+  isEditmode,
   setFolderSelected,
 }: FolderItemProps) => {
   //color props로 받아오기
@@ -60,6 +66,16 @@ const BookmarkFolderItem = ({
           src={emojiArray.find((emoji) => emoji.value === selectEmoji)?.img}
         />
       </EmojiPreview>
+      {isEditmode && (
+        <SettingIconsWrapper>
+          <SettingIcon>
+            <img src={pencilicon} />
+          </SettingIcon>
+          <SettingIcon>
+            <img src={deleteicon} />
+          </SettingIcon>
+        </SettingIconsWrapper>
+      )}
       <FolderNameWrapper>
         <NameIcon>
           <img src={pencilicon} />
@@ -84,9 +100,21 @@ const BookmarkFolders = ({ setFolderSelected }: FolderProps) => {
   const dispatch = useDispatch();
 
   const [foldername, _] = useState('폴더이름예시');
-  const onClickBtn = () => {
+
+  const [isEditmode, setIsEditmode] = useState(false);
+
+  const onClickAddNewFolder = () => {
     dispatch(toggleBookmarkFolder());
   };
+
+  const onClickToggleEditmode = () => {
+    setIsEditmode((prev) => !prev);
+  };
+
+  const onClickNoEditmode = () => {
+    setIsEditmode(false);
+  };
+
   return (
     <>
       <FoldersHeader>
@@ -95,27 +123,30 @@ const BookmarkFolders = ({ setFolderSelected }: FolderProps) => {
           <span>북마크</span>
         </Path>
         <SettingBtnWrapper>
-          <SettingBtn onClick={onClickBtn}>
+          <SettingBtn onClick={onClickAddNewFolder}>
             <img src={plusicon} />
             북마크 폴더 추가하기
           </SettingBtn>
-          <SettingBtn onClick={onClickBtn}>
+          <GoEditBtn onClick={onClickToggleEditmode} isEditmode={isEditmode}>
             <img src={editicon} />
             북마크 편집하기
-          </SettingBtn>
+          </GoEditBtn>
         </SettingBtnWrapper>
       </FoldersHeader>
-      <FoldersContainer>
+      <FoldersContainer onClick={onClickNoEditmode}>
         <BookmarkFolderItem
           foldername={foldername}
+          isEditmode={isEditmode}
           setFolderSelected={setFolderSelected}
         />
         <BookmarkFolderItem
           foldername={foldername}
+          isEditmode={isEditmode}
           setFolderSelected={setFolderSelected}
         />
         <BookmarkFolderItem
           foldername={foldername}
+          isEditmode={isEditmode}
           setFolderSelected={setFolderSelected}
         />
       </FoldersContainer>

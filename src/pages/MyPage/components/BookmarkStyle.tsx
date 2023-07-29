@@ -1,7 +1,8 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 
+//types
 type EmojiPreviewType = {
   img: string;
 };
@@ -10,7 +11,20 @@ type EventItemProps = {
   bookmarkicon: string;
 };
 
+type EditBtnProps = {
+  isEditmode: boolean;
+};
+
 // BookmarkFolderItem styling
+
+const shaking = keyframes`
+  from {
+    transform: rotate(5deg);
+  }
+  to{
+    transform: rotate(-5deg);
+  }
+`;
 
 export const FolderWrapper = styled.div`
   position: relative;
@@ -49,6 +63,30 @@ export const FolderNameWrapper = styled.div`
   margin: 0 auto;
 `;
 
+export const SettingIconsWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  gap: 2px;
+  top: 3px;
+  right: 0;
+`;
+
+export const SettingIcon = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border: 2px solid var(--line-black);
+  border-radius: 40px;
+  background-color: #f8f8fa;
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.25);
+  animation: ${shaking} 0.15s infinite linear alternate;
+  will-change: transform;
+  cursor: pointer;
+`;
+
 export const NameIcon = styled.button`
   position: relative;
   display: inline-block;
@@ -84,7 +122,6 @@ export const FolderName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-
 
 // BookmarkEventItem styling
 export const ItemWrapper = styled.div<EventItemProps>`
@@ -126,7 +163,6 @@ export const EventName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-
 
 // BookmarkFolders styling
 export const FoldersHeader = styled.div`
@@ -171,6 +207,9 @@ export const SettingBtn = styled.button`
   display: flex;
   align-items: center;
   padding: 4px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
   border: 2px solid var(--line-black);
   border-radius: 20px;
   background-color: #defcf9;
@@ -179,6 +218,14 @@ export const SettingBtn = styled.button`
   & > img {
     margin-right: 10px;
   }
+`;
+
+export const GoEditBtn = styled(SettingBtn)<EditBtnProps>`
+  ${(props) =>
+    props.isEditmode &&
+    `
+  background-color: #B7EDE8;
+`}
 `;
 
 export const FoldersContainer = styled.div`
