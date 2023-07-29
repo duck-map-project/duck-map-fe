@@ -7,11 +7,13 @@ import AddArtistModal from '../components/modals/AddArtistModal';
 import AddArtistTypeModal from '../components/modals/AddArtistTypeModal';
 import AddCategoryModal from '../components/modals/AddEventCategoryModal';
 import AddGroupModal from '../components/modals/AddGroupModal';
+import ArtistSelectModal from '../components/modals/ArtistSelectModal';
 import {
   selectCategoryModalState,
   selectGroupModalState,
   selectArtistTypeModalState,
   selectArtistModalState,
+  selectEventArtistModalState,
 } from '../redux/manageModalSlice';
 
 interface GeneralLayoutProps {
@@ -28,6 +30,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const artistModalState = useSelector(selectArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
+  const eventArtistModalState = useSelector(selectEventArtistModalState);
 
   return (
     <PageWrapper>
@@ -36,6 +39,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {artistModalState && <AddArtistModal />}
       {artistTypeModalState && <AddArtistTypeModal />}
       {categoryModalState && <AddCategoryModal />}
+      {eventArtistModalState && <ArtistSelectModal />}
       <Header />
       {children}
     </PageWrapper>

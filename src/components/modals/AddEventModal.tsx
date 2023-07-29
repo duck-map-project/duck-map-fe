@@ -1,8 +1,10 @@
 import { MouseEventHandler } from 'react';
+import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import defalutImage from '../../assets/add-image-defalut.svg';
 import closeIcon from '../../assets/close.svg';
+import { toggleEventArtist } from '../../redux/manageModalSlice';
 import { Input } from '../AuthInput';
 import SelectedElement from '../SelectedElement';
 
@@ -94,7 +96,7 @@ const SelectButton = styled.button`
   box-shadow: 4px 4px 0px 0px #00000040;
 `;
 
-const ModalCloseButton = styled.button`
+export const ModalCloseButton = styled.button`
   width: 30px;
   height: 30px;
   background-image: url(${closeIcon});
@@ -159,6 +161,10 @@ interface Props {
 }
 
 const AddEventModal = ({ handleClose }: Props) => {
+  const dispatch = useDispatch();
+  const handdleSelectArtistButton = () => {
+    dispatch(toggleEventArtist());
+  };
   return (
     <EventModalPageWrapper>
       <Modal>
@@ -197,12 +203,14 @@ const AddEventModal = ({ handleClose }: Props) => {
           <InfoSection>
             <InfoTitle>아티스트</InfoTitle>
             <RawWrapper>
-              <SelectButton>아티스트 선택</SelectButton>
+              <SelectButton type="button" onClick={handdleSelectArtistButton}>
+                아티스트 선택
+              </SelectButton>
               <SelectedElement>선택 아티스트</SelectedElement>
             </RawWrapper>
             <InfoTitle>카테고리</InfoTitle>
             <RawWrapper>
-              <SelectButton>카테고리 선택</SelectButton>
+              <SelectButton type="button">카테고리 선택</SelectButton>
               <SelectedElement>선택 카테고리</SelectedElement>
             </RawWrapper>
             <InfoTitle>주소</InfoTitle>
