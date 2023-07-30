@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { toggleEventArtist } from '../../redux/manageModalSlice';
 
 import { ModalTitle } from './AddEventCategoryModalStyle';
-import { ModalCloseButton } from './AddEventModal';
+import { ModalCloseButton } from './AddEventModalStyle';
 import {
   AritstSelectSection,
   ArtistListItem,

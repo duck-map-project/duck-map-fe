@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { toggleEventCategory } from '../../redux/manageModalSlice';
 
 import { ModalTitle } from './AddArtistModalStyle';
-import { ModalCloseButton } from './AddEventModal';
+import { ModalCloseButton } from './AddEventModalStyle';
 import { DoneButton } from './ArtistSelectModalStyle';
 import {
   CategoryItem,
