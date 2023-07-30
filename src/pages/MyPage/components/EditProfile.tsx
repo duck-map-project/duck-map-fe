@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   useGetUserInfoQuery,
   useEditUserInfoMutation,
+  useUnregisterMutation,
 } from '../../../redux/auth/authApiSlice';
 import { useAddImageMutation } from '../../../redux/imageSlice';
 
@@ -29,6 +30,7 @@ const EditProfile = () => {
   const { data: userInfo } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
+  const [unregister] = useUnregisterMutation();
 
   useEffect(() => {
     if (userInfo) {
@@ -89,6 +91,17 @@ const EditProfile = () => {
     await editUserInfo(userInfo);
   };
 
+  const onClickUnregisterBtn = async () => {
+    if (!window.confirm('작성하신 글은 자동으로 삭제되지 않습니다.')) {
+      return;
+    }
+    const proptValue = window.prompt('비밀번호를 입력해주세요');
+    if (proptValue) {
+      const password = { password: proptValue };
+      await unregister(password);
+    }
+  };
+
   return (
     <UserProfileEditForm>
       <ImagePreview
@@ -123,7 +136,9 @@ const EditProfile = () => {
         />
       </UserInfoWrapper>
       <BtnWrapper>
-        <UnregisterBtn type="button">회원탈퇴</UnregisterBtn>
+        <UnregisterBtn type="button" onClick={onClickUnregisterBtn}>
+          회원탈퇴
+        </UnregisterBtn>
         <EditSubmitBtn type="button" onClick={onClickSubmitBtn}>
           완료
         </EditSubmitBtn>

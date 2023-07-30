@@ -62,6 +62,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    unregister: builder.mutation<any, { password: string }>({
+      query: (password) => ({
+        url: '/memners/me',
+        method: 'DELETE',
+        body: password,
+      }),
+    }),
   }),
 });
 
@@ -72,4 +79,5 @@ export const {
   useGetUserInfoQuery,
   useEditUserInfoMutation,
   useEditPasswordMutation,
+  useUnregisterMutation
 } = authApiSlice;
