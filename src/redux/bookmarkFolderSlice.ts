@@ -45,6 +45,20 @@ export const bookmarkFolderApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['BookmarkFolders'],
     }),
+    updateBookmarkFolder: builder.mutation<
+      any,
+      {
+        folderId: number;
+        folderValue: folderValueType;
+      }
+    >({
+      query: ({ folderId, folderValue }) => ({
+        url: `/bookmark-folders/${folderId}`,
+        method: 'PUT',
+        body: folderValue,
+      }),
+      invalidatesTags: ['BookmarkFolders'],
+    }),
     deleteBookmarkFolder: builder.mutation({
       query: (folderId) => ({
         url: `/bookmark-folders/${folderId}`,
@@ -58,5 +72,6 @@ export const bookmarkFolderApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetBookmarkFoldersQuery,
   useAddBookmarkFolderMutation,
+  useUpdateBookmarkFolderMutation,
   useDeleteBookmarkFolderMutation,
 } = bookmarkFolderApiSlice;

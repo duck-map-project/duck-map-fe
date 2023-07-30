@@ -9,7 +9,8 @@ export const manageModalSlice = createSlice({
     artist: false,
     artistType: false,
     category: false,
-    bookmarkFolder: false,
+    addBookmarkFolder: false,
+    editBookmarkFolder: false,
     eventArtist: false,
     eventCategory: false,
   },
@@ -26,8 +27,11 @@ export const manageModalSlice = createSlice({
     toggleCategory: (state) => {
       state.category = !state.category;
     },
-    toggleBookmarkFolder: (state) => {
-      state.bookmarkFolder = !state.bookmarkFolder;
+    toggleAddBookmarkFolder: (state) => {
+      state.addBookmarkFolder = !state.addBookmarkFolder;
+    },
+    toggleEditBookmarkFolder: (state) => {
+      state.editBookmarkFolder = !state.editBookmarkFolder;
     },
     toggleEventArtist: (state) => {
       state.eventArtist = !state.eventArtist;
@@ -43,7 +47,8 @@ export const {
   toggleCategory,
   toggleArtistType,
   toggleGroup,
-  toggleBookmarkFolder,
+  toggleAddBookmarkFolder,
+  toggleEditBookmarkFolder,
   toggleEventArtist,
   toggleEventCategory,
 } = manageModalSlice.actions;
@@ -62,8 +67,12 @@ export const selectArtistTypeModalState = (state: RootState) =>
 export const selectCategoryModalState = (state: RootState) =>
   state.manageModal.category;
 
-export const selectBookmarkFolderModalState = (state: RootState) =>
-  state.manageModal.bookmarkFolder;
+export const selectAddBookmarkFolderModalState = (state: RootState) =>
+  state.manageModal.addBookmarkFolder;
+
+export const selectEditBookmarkFolderModalState = (state: RootState) =>
+  state.manageModal.editBookmarkFolder;
+
 export const selectEventArtistModalState = (state: RootState) =>
   state.manageModal.eventArtist;
 

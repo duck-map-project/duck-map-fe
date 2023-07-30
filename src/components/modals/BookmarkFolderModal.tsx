@@ -1,13 +1,21 @@
-import { hsvaToHex } from '@uiw/color-convert';
+import { hsvaToHex, hexToHsva } from '@uiw/color-convert';
 import Wheel from '@uiw/react-color-wheel';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
 import { ReactComponent as BookmarkFolder } from '../../assets/icons/bookmark-folder.svg';
 import closesmallicon from '../../assets/icons/close-small.svg';
 import closeicon from '../../assets/icons/close.svg';
-import { useAddBookmarkFolderMutation } from '../../redux/bookmarkFolderSlice';
-import { toggleBookmarkFolder } from '../../redux/manageModalSlice';
+import {
+  useAddBookmarkFolderMutation,
+  useUpdateBookmarkFolderMutation,
+} from '../../redux/bookmarkFolderSlice';
+import { selectEditBookmarkFolder } from '../../redux/editBookmarkFolderSlice';
+import {
+  toggleAddBookmarkFolder,
+  toggleEditBookmarkFolder,
+} from '../../redux/manageModalSlice';
 
 import {
   EmojiBox,
@@ -42,6 +50,10 @@ type EmojiType = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
+type FolderModalType = {
+  type: 'add' | 'edit';
+};
+
 const Emoji = ({ value, img, name, isSelected, onChange }: EmojiType) => {
   return (
     <>
@@ -60,23 +72,40 @@ const Emoji = ({ value, img, name, isSelected, onChange }: EmojiType) => {
   );
 };
 
-const BookmarkFolderModal = () => {
+const BookmarkFolderModal = ({ type }: FolderModalType) => {
+  const [folderId, setFolderId] = useState<number>(0);
   const [foldername, setFoldername] = useState('');
   const [selectEmoji, setSelectEmoji] = useState('heartred');
-  const dispatch = useDispatch();
 
   //color-picker
   const [hsva, setHsva] = useState({ h: 214, s: 43, v: 90, a: 1 });
-  const [selectColor, setSelectColor] = useState('#83aee6');
+  const [selectColor, setSelectColor] = useState('');
+
+  const dispatch = useDispatch();
+  const editData = useSelector(selectEditBookmarkFolder);
+
+  useEffect(() => {
+    if (type === 'edit') {
+      setFolderId(editData.folderId);
+      setFoldername(editData.name);
+      setSelectEmoji(editData.image.slice(8));
+      setHsva(hexToHsva(editData.color));
+    }
+  }, [editData]);
 
   const [addNewBookmarkFolder] = useAddBookmarkFolderMutation();
+  const [editBookmarkFolder] = useUpdateBookmarkFolderMutation();
 
   useEffect(() => {
     setSelectColor(hsvaToHex(hsva));
   }, [hsva]);
 
   const onHideModal = () => {
-    dispatch(toggleBookmarkFolder());
+    if (type === 'add') {
+      dispatch(toggleAddBookmarkFolder());
+    } else if (type === 'edit') {
+      dispatch(toggleEditBookmarkFolder());
+    }
   };
 
   const onChangeFoldername = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,19 +127,35 @@ const BookmarkFolderModal = () => {
       color: selectColor,
     });
   };
+
+  const onClickEditFolder = async () => {
+    const data = {
+      name: foldername,
+      image: selectEmoji,
+      color: selectColor,
+    };
+    await editBookmarkFolder({ folderId, folderValue: data });
+  };
+
   return (
     <ModalPortal>
       <CommonModal onClick={onHideModal} width="860">
         <ModalContent>
-          <ModalTitle>북마크 폴더 추가하기</ModalTitle>
+          <ModalTitle>
+            북마크 폴더 {type === 'add' ? '추가' : '수정'}하기
+          </ModalTitle>
           <ModalCloseButton type="button" onClick={onHideModal}>
             <img src={closeicon} />
           </ModalCloseButton>
           <FoldernameSection>
-            <label>북마크 폴더 이름을 입력해 주세요.</label>
+            <label>
+              북마크 폴더 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
+            </label>
             <input
               type="text"
-              placeholder="북마크 폴더 이름"
+              placeholder={
+                type === 'add' ? '북마크 폴더 이름' : '선택한 북마크 폴더 이름'
+              }
               value={foldername}
               onChange={onChangeFoldername}
             />
@@ -164,7 +209,11 @@ const BookmarkFolderModal = () => {
               </ColorPreviewFolderWrapper>
             </ColorSelectSection>
           </FolderColorSection>
-          <AddNewFolderBtn onClick={onClickAddNewFolder}>완료</AddNewFolderBtn>
+          <AddNewFolderBtn
+            onClick={type === 'add' ? onClickAddNewFolder : onClickEditFolder}
+          >
+            완료
+          </AddNewFolderBtn>
         </ModalContent>
       </CommonModal>
     </ModalPortal>

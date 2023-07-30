@@ -15,7 +15,11 @@ import {
   useGetBookmarkFoldersQuery,
   useDeleteBookmarkFolderMutation,
 } from '../../../redux/bookmarkFolderSlice';
-import { toggleBookmarkFolder } from '../../../redux/manageModalSlice';
+import { editFolderInfo } from '../../../redux/editBookmarkFolderSlice';
+import {
+  toggleAddBookmarkFolder,
+  toggleEditBookmarkFolder,
+} from '../../../redux/manageModalSlice';
 import { BookmarkEventType } from '../../../types/bookmarkEventType';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 
@@ -81,6 +85,7 @@ const BookmarkFolderItem = ({
   setSelectedFoldername,
   setSelectedFolderId,
 }: FolderItemProps) => {
+  const dispatch = useDispatch();
   const folderEmoji = image.slice(8);
   const [deleteFolder] = useDeleteBookmarkFolderMutation();
 
@@ -90,7 +95,9 @@ const BookmarkFolderItem = ({
   };
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
-    alert('폴더수정모달');
+    // alert('폴더수정모달');
+    dispatch(editFolderInfo({ folderId, name: foldername, image, color }));
+    dispatch(toggleEditBookmarkFolder());
   };
 
   const onClickDeleteBtn = async (e: React.MouseEvent) => {
@@ -151,7 +158,7 @@ const BookmarkEventItem = ({
   isEditmode,
 }: EventItemProps) => {
   const onClickEvent = () => {
-    eventId
+    eventId;
     alert('이벤트 상세페이지로 이동');
   };
   const onClickEditBtn = (e: React.MouseEvent) => {
@@ -207,7 +214,7 @@ const BookmarkFolders = ({
   }, [bookmarkFoldersData]);
 
   const onClickAddNewFolder = () => {
-    dispatch(toggleBookmarkFolder());
+    dispatch(toggleAddBookmarkFolder());
   };
 
   const onClickToggleEditmode = () => {
@@ -272,7 +279,7 @@ const Events = ({
   const [isEditmode, setIsEditmode] = useState(false);
   const [eventsArray, setEventsArray] = useState<BookmarkEventType[]>([]);
   const [hasEvents, setHasEvents] = useState(false);
-  
+
   const {
     data: EventsData,
     isLoading,
