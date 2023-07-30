@@ -3,6 +3,8 @@ import {
   transformedMylike,
   myreviewsType,
   transformedMyreview,
+  myeventsType,
+  transformedMyevents,
 } from '../types/mypageType';
 
 import { apiSlice } from './apiSlice';
@@ -60,7 +62,33 @@ export const mypageApiSlice = apiSlice.injectEndpoints({
         return { numberOfElements, isLast, content };
       },
     }),
+    getMyevent: builder.query<
+      transformedMyevents,
+      {
+        pageNumber?: string;
+        pageSize?: string;
+      }
+    >({
+      query: (params) => {
+        const url = '/events/myevent';
+        const queryString = params
+          ? new URLSearchParams(params).toString()
+          : '';
+
+        return {
+          url: url + '?' + queryString,
+          method: 'GET',
+        };
+      },
+      transformResponse: (response: myeventsType) => {
+        const numberOfElements = response.numberOfElements;
+        const isLast = response.last;
+        const content = response.content;
+        return { numberOfElements, isLast, content };
+      },
+    }),
   }),
 });
 
-export const { useGetMylikeQuery, useGetMyreviewQuery } = mypageApiSlice;
+export const { useGetMylikeQuery, useGetMyreviewQuery, useGetMyeventQuery } =
+  mypageApiSlice;

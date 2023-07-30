@@ -1,4 +1,8 @@
+import { useState, useEffect } from 'react';
+
 import usericon from '../../../assets/icons/mypage.svg';
+import { useGetMyeventQuery } from '../../../redux/mypageSlice';
+import { myevetType } from '../../../types/mypageType';
 
 import {
   TypeInfoBtn,
@@ -13,32 +17,64 @@ import {
   DeleteEventBtn,
 } from './EventStyle';
 
-const testImg =
-  'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
+type LikeItemProps = {
+  artists: [
+    {
+      id: number;
+      groupId: number;
+      groupName: string;
+      name: string;
+      image: string;
+      artistType: {
+        id: number;
+        type: string;
+      };
+    }
+  ];
+  categories: [
+    {
+      id: number;
+      category: string;
+    }
+  ];
+  address: string;
+  storeName: string;
+  image: string;
+  eventId: number;
+};
 
 const TypeInfo = ({ text }: { text: string }) => {
   return <TypeInfoBtn>{text}</TypeInfoBtn>;
 };
 
-const EventItem = () => {
-  //Event로부터 넘겨줄 값
-  const eventInfoArray = ['카페', '식당', '전시', '광고'];
+const EventItem = ({
+  artists,
+  categories,
+  address,
+  storeName,
+  image,
+  eventId,
+}: LikeItemProps) => {
+  const onClickEventItem = () => {
+    eventId;
+    alert('이벤트 상세 페이지 이동');
+  };
 
   return (
-    <EventWrapper icon={usericon}>
-      <EventImg src={testImg} />
+    <EventWrapper icon={usericon} onClick={onClickEventItem}>
+      <EventImg src={image} />
       <section>
         <ArtistInfo>
-          <span>그룹명(그룹명이 있을 경우)</span>
-          <span>멤버 이름</span>
+          <span>{artists.map((artist) => artist.groupName)}</span>
+          <span>{artists.map((artist) => artist.name)}</span>
         </ArtistInfo>
         <EventTypeWrapper>
-          {eventInfoArray.map((type, index) => (
-            <TypeInfo key={index} text={type} />
+          {categories.map((type, index) => (
+            <TypeInfo key={index} text={type.category} />
           ))}
         </EventTypeWrapper>
-        <StoreName>카페이름</StoreName>
-        <Adress>서울 동교동</Adress>
+        <StoreName>{storeName}</StoreName>
+        <Adress>{address}</Adress>
         <EventControlsWrapper>
           <EditEventBtn type="button">수정하기</EditEventBtn>
           <DeleteEventBtn type="button">삭제하기</DeleteEventBtn>
@@ -49,15 +85,51 @@ const EventItem = () => {
 };
 
 const Event = () => {
-  // 여기서 event data 불러오기
+  const [numberOfMyevent, setNumberOfMyevent] = useState(0);
+  const [myeventArray, setMyeventArray] = useState<myevetType[]>([]);
+  const [isLast, setIsLast] = useState(true);
+
+  //무한스크롤 상태
+  isLast;
+  const {
+    data: myeventData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetMyeventQuery({});
+
+  useEffect(() => {
+    if (myeventData) {
+      const contentArray = myeventData.content;
+      const numberofdata = myeventData.numberOfElements;
+      const isLast = myeventData.isLast;
+      setMyeventArray(contentArray);
+      setNumberOfMyevent(numberofdata);
+      setIsLast(isLast);
+    }
+  }, [myeventData]);
+
+  let content;
+  if (isLoading) {
+    content = <div>나의 좋아요 이벤트를 불러오는 중입니다.</div>;
+  } else if (isSuccess) {
+    content = myeventArray.map((event) => (
+      <EventItem
+        key={event.id}
+        eventId={event.id}
+        artists={event.artists}
+        categories={event.categories}
+        address={event.address}
+        storeName={event.storeName}
+        image={event.image}
+      />
+    ));
+  } else if (isError) {
+    content = <div>{error.toString()}</div>;
+  }
   return (
-    <>
-      <EventItem />
-      <EventItem />
-      <EventItem />
-      <EventItem />
-      <EventItem />
-    </>
+    <>{numberOfMyevent ? content : <div>내가 작성한 이벤트가 없습니다.</div>}</>
   );
 };
 
