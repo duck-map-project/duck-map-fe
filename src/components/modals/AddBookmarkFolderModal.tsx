@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { ReactComponent as BookmarkFolder } from '../../assets/icons/bookmark-folder.svg';
 import closesmallicon from '../../assets/icons/close-small.svg';
 import closeicon from '../../assets/icons/close.svg';
-import { useAddBookmarkFolderMutation } from '../../redux/bookmarkFolder';
+import { useAddBookmarkFolderMutation } from '../../redux/bookmarkFolderSlice';
 import { toggleBookmarkFolder } from '../../redux/manageModalSlice';
 
 import {
@@ -65,11 +65,11 @@ const BookmarkFolderModal = () => {
   const [selectEmoji, setSelectEmoji] = useState('heartred');
   const dispatch = useDispatch();
 
-  const [addNewBookmarkFolder] = useAddBookmarkFolderMutation();
-
   //color-picker
   const [hsva, setHsva] = useState({ h: 214, s: 43, v: 90, a: 1 });
   const [selectColor, setSelectColor] = useState('#83aee6');
+
+  const [addNewBookmarkFolder] = useAddBookmarkFolderMutation();
 
   useEffect(() => {
     setSelectColor(hsvaToHex(hsva));
@@ -92,7 +92,7 @@ const BookmarkFolderModal = () => {
   };
 
   const onClickAddNewFolder = async () => {
-    const res = await addNewBookmarkFolder({
+    await addNewBookmarkFolder({
       name: foldername,
       image: selectEmoji,
       color: selectColor,

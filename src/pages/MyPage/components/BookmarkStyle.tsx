@@ -12,7 +12,7 @@ type EventItemProps = {
 };
 
 type EditBtnProps = {
-  editmode: string;
+  editmode: string | undefined;
 };
 
 // BookmarkFolderItem styling
@@ -245,7 +245,7 @@ export const EventsContainer = styled(FoldersContainer)``;
 export const EventSettingIconsWrapper = styled(SettingIconsWrapper)`
   top: -6%;
   right: -5%;
-`
+`;
 // Bookmark styling
 export const BookmarkWrapper = styled.section`
   width: 100%;
