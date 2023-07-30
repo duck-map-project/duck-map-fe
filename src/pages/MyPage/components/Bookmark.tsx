@@ -95,7 +95,6 @@ const BookmarkFolderItem = ({
   };
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // alert('폴더수정모달');
     dispatch(editFolderInfo({ folderId, name: foldername, image, color }));
     dispatch(toggleEditBookmarkFolder());
   };
@@ -111,7 +110,6 @@ const BookmarkFolderItem = ({
     }
 
     const res = await deleteFolder(folderId);
-    console.log(res);
     if ('error' in res) {
       const errorData = res;
       const error = errorData.error;
@@ -123,6 +121,7 @@ const BookmarkFolderItem = ({
       alert('성공적으로 삭제되었습니다.');
     }
   };
+
   return (
     <FolderWrapper onClick={onClickFolder}>
       <Bookmarkfoldericon fill={color} />
@@ -161,10 +160,6 @@ const BookmarkEventItem = ({
     eventId;
     alert('이벤트 상세페이지로 이동');
   };
-  const onClickEditBtn = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    alert('이벤트수정모달');
-  };
 
   const onClickDeleteBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -177,9 +172,6 @@ const BookmarkEventItem = ({
       <EventName>{storeName}</EventName>
       {isEditmode && (
         <EventSettingIconsWrapper>
-          <SettingIcon onClick={onClickEditBtn}>
-            <img src={pencilicon} />
-          </SettingIcon>
           <SettingIcon onClick={onClickDeleteBtn}>
             <img src={deleteicon} />
           </SettingIcon>
