@@ -7,7 +7,7 @@ type EmojiPreviewType = {
 };
 
 type EmojiLabelType = {
-  isSelected: boolean;
+  selected: boolean;
 };
 
 export const ModalContent = styled.div`
@@ -200,7 +200,7 @@ export const EmojiLabel = styled.label<EmojiLabelType>`
   &::after {
     position: absolute;
     ${(props) =>
-      props.isSelected
+      props.selected
         ? `
     display: block;
     `
