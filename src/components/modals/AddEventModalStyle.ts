@@ -48,18 +48,28 @@ export const EventImageSection = styled.ul`
 export const EventImage = styled.li`
   width: 240px;
   height: 214px;
-  background-color: #ededed;
-  background-image: url(${defalutImage});
-  background-repeat: no-repeat;
-  background-position: center;
   border-radius: 29px;
   border: 2.06px solid #1e232c;
+  overflow: hidden;
 `;
 
-export const FileInputLabel = styled.label`
+export const FileInputLabel = styled.label<{
+  preview: { preview1: string; preview2: string; preview3: string };
+}>`
   display: block;
-  width: 240px;
-  height: 214px;
+  width: 100%;
+  height: 100%;
+  background-color: #ededed;
+  background-image: ${(props) =>
+    props.preview && props.preview[props.htmlFor as keyof typeof props.preview]
+      ? `url(${props.preview[props.htmlFor as keyof typeof props.preview]})`
+      : `url(${defalutImage})`};
+  background-size: ${(props) =>
+    props.preview && props.preview[props.htmlFor as keyof typeof props.preview]
+      ? 'cover'
+      : ''};
+  background-repeat: no-repeat;
+  background-position: center;
   cursor: pointer;
 `;
 

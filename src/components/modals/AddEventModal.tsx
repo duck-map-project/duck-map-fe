@@ -1,4 +1,4 @@
-import { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -42,6 +42,22 @@ const AddEventModal = ({ handleClose }: Props) => {
   const handleSelectCategoryButton = () => {
     dispatch(toggleEventCategory());
   };
+  const [imagePreview, setImagePreview] = useState({
+    preview1: '',
+    preview2: '',
+    preview3: '',
+  });
+
+  const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setImagePreview((prev) => ({
+        ...prev,
+        [e.target.name]: URL.createObjectURL(file),
+      }));
+    }
+  };
+
   return (
     <EventModalPageWrapper>
       <Modal>
@@ -50,30 +66,33 @@ const AddEventModal = ({ handleClose }: Props) => {
           <ModalTitle>이벤트 등록하기</ModalTitle>
           <EventImageSection>
             <EventImage>
-              <FileInputLabel htmlFor="event-image1" />
+              <FileInputLabel htmlFor="preview1" preview={imagePreview} />
               <FileInput
-                id="event-image1"
-                name="event-image1"
+                id="preview1"
+                name="preview1"
                 type="file"
                 accept="image/*"
+                onChange={handleImagePreview}
               />
             </EventImage>
             <EventImage>
-              <FileInputLabel htmlFor="event-image2" />
+              <FileInputLabel htmlFor="preview2" preview={imagePreview} />
               <FileInput
-                id="event-image2"
-                name="event-image2"
+                id="preview2"
+                name="preview2"
                 type="file"
                 accept="image/*"
+                onChange={handleImagePreview}
               />
             </EventImage>
             <EventImage>
-              <FileInputLabel htmlFor="event-image3" />
+              <FileInputLabel htmlFor="preview3" preview={imagePreview} />
               <FileInput
-                id="event-image3"
-                name="event-image3"
+                id="preview3"
+                name="preview3"
                 type="file"
                 accept="image/*"
+                onChange={handleImagePreview}
               />
             </EventImage>
           </EventImageSection>
