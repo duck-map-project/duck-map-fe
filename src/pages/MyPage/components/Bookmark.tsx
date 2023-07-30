@@ -10,7 +10,10 @@ import editicon from '../../../assets/icons/editpencil.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import starticon from '../../../assets/icons/starIcon.svg';
 import { emojiArray } from '../../../components/modals/EmojiArray';
-import { useGetBookmarkFoldersQuery } from '../../../redux/bookmarkFolderSlice';
+import {
+  useGetBookmarkFoldersQuery,
+  useDeleteBookmarkFolderMutation,
+} from '../../../redux/bookmarkFolderSlice';
 import { toggleBookmarkFolder } from '../../../redux/manageModalSlice';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 
@@ -42,6 +45,7 @@ const testImg =
   'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
 
 type FolderItemProps = {
+  folderId: number;
   foldername: string;
   isEditmode: boolean;
   image: string;
@@ -59,6 +63,7 @@ type EventsProps = {
 };
 
 const BookmarkFolderItem = ({
+  folderId,
   foldername,
   image,
   color,
@@ -66,6 +71,7 @@ const BookmarkFolderItem = ({
   setFolderSelected,
 }: FolderItemProps) => {
   const folderEmoji = image.slice(8);
+  const [deleteFolder] = useDeleteBookmarkFolderMutation();
 
   const onClickFolder = () => {
     setFolderSelected(foldername);
@@ -75,9 +81,28 @@ const BookmarkFolderItem = ({
     alert('폴더수정모달');
   };
 
-  const onClickDeleteBtn = (e: React.MouseEvent) => {
+  const onClickDeleteBtn = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    alert('폴더삭제');
+    if (
+      !window.confirm(
+        '폴더 삭제 시, 저장된 이벤트도 함께 사라지게 됩니다. 그래도 삭제하시겠습니까? '
+      )
+    ) {
+      return;
+    }
+
+    const res = await deleteFolder(folderId);
+    console.log(res);
+    if ('error' in res) {
+      const errorData = res;
+      const error = errorData.error;
+      if ('data' in error) {
+        const { status } = error;
+        alert(`에러가 발생하였습니다. Error Code: ${status}`);
+      }
+    } else {
+      alert('성공적으로 삭제되었습니다.');
+    }
   };
   return (
     <FolderWrapper onClick={onClickFolder}>
@@ -182,6 +207,7 @@ const BookmarkFolders = ({ setFolderSelected }: FolderProps) => {
     content = bookmarkFoldersArray.map((folder) => (
       <BookmarkFolderItem
         key={folder.id}
+        folderId={folder.id}
         foldername={folder.name}
         image={folder.image}
         color={folder.color}
@@ -211,9 +237,7 @@ const BookmarkFolders = ({ setFolderSelected }: FolderProps) => {
           </GoEditBtn>
         </SettingBtnWrapper>
       </FoldersHeader>
-      <FoldersContainer onClick={onClickNoEditmode}>
-        {content}
-      </FoldersContainer>
+      <FoldersContainer onClick={onClickNoEditmode}>{content}</FoldersContainer>
     </>
   );
 };

@@ -1,4 +1,7 @@
-import { BookmarkFoldersData,transformedFoldersData } from '../types/bookmarkFolderType';
+import {
+  BookmarkFoldersData,
+  transformedFoldersData,
+} from '../types/bookmarkFolderType';
 
 import { apiSlice } from './apiSlice';
 
@@ -42,8 +45,18 @@ export const bookmarkFolderApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['BookmarkFolders'],
     }),
+    deleteBookmarkFolder: builder.mutation({
+      query: (folderId) => ({
+        url: `/bookmark-folders/${folderId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['BookmarkFolders'],
+    }),
   }),
 });
 
-export const { useGetBookmarkFoldersQuery, useAddBookmarkFolderMutation } =
-  bookmarkFolderApiSlice;
+export const {
+  useGetBookmarkFoldersQuery,
+  useAddBookmarkFolderMutation,
+  useDeleteBookmarkFolderMutation,
+} = bookmarkFolderApiSlice;
