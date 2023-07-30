@@ -9,6 +9,8 @@ export const manageModalSlice = createSlice({
     artist: false,
     artistType: false,
     category: false,
+    eventArtist: false,
+    eventCategory: false,
   },
   reducers: {
     toggleGroup: (state) => {
@@ -23,11 +25,23 @@ export const manageModalSlice = createSlice({
     toggleCategory: (state) => {
       state.category = !state.category;
     },
+    toggleEventArtist: (state) => {
+      state.eventArtist = !state.eventArtist;
+    },
+    toggleEventCategory: (state) => {
+      state.eventCategory = !state.eventCategory;
+    },
   },
 });
 
-export const { toggleArtist, toggleCategory, toggleArtistType, toggleGroup } =
-  manageModalSlice.actions;
+export const {
+  toggleArtist,
+  toggleCategory,
+  toggleArtistType,
+  toggleGroup,
+  toggleEventArtist,
+  toggleEventCategory,
+} = manageModalSlice.actions;
 
 export default manageModalSlice.reducer;
 
@@ -42,3 +56,9 @@ export const selectArtistTypeModalState = (state: RootState) =>
 
 export const selectCategoryModalState = (state: RootState) =>
   state.manageModal.category;
+
+export const selectEventArtistModalState = (state: RootState) =>
+  state.manageModal.eventArtist;
+
+export const selectEventCategoryModalState = (state: RootState) =>
+  state.manageModal.eventCategory;
