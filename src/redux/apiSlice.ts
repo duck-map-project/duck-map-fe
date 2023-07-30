@@ -49,6 +49,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
   tagTypes: [
+    'User',
     'ArtistType',
     'Artists',
     'Images',
