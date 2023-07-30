@@ -21,7 +21,7 @@ const ArtistSelectModal = () => {
   };
   return (
     <ModalPortal>
-      <CommonModal modalWidth="1046px" onClick={onHideModal}>
+      <CommonModal width="1046px" onClick={onHideModal}>
         <ModalCloseButton onClick={onHideModal} />
         <ModalTitle>아티스트 선택하기</ModalTitle>
         <AritstSelectSection>

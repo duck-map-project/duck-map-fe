@@ -19,7 +19,7 @@ const CategorySelectModal = () => {
   };
   return (
     <ModalPortal>
-      <CommonModal modalWidth="1046px" onClick={onHideModal}>
+      <CommonModal width="1046px" onClick={onHideModal}>
         <ModalCloseButton onClick={onHideModal} />
         <ModalTitle>카테고리 선택하기</ModalTitle>
         <CategorySelectSection>

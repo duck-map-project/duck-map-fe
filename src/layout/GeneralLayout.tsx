@@ -5,6 +5,7 @@ import Billboard from '../components/Billboard';
 import Header from '../components/Header';
 import AddArtistModal from '../components/modals/AddArtistModal';
 import AddArtistTypeModal from '../components/modals/AddArtistTypeModal';
+import AddBookmarkFolderModal from '../components/modals/AddBookmarkFolderModal';
 import AddCategoryModal from '../components/modals/AddEventCategoryModal';
 import AddGroupModal from '../components/modals/AddGroupModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
@@ -14,6 +15,7 @@ import {
   selectGroupModalState,
   selectArtistTypeModalState,
   selectArtistModalState,
+  selectBookmarkFolderModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
 } from '../redux/manageModalSlice';
@@ -32,6 +34,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const artistModalState = useSelector(selectArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
+  const bookmarkFolderModalState = useSelector(selectBookmarkFolderModalState);
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
 
@@ -42,6 +45,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {artistModalState && <AddArtistModal />}
       {artistTypeModalState && <AddArtistTypeModal />}
       {categoryModalState && <AddCategoryModal />}
+      {bookmarkFolderModalState && <AddBookmarkFolderModal />}
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
       <Header />
