@@ -186,6 +186,8 @@ const BookmarkFolders = ({
   setSelectedFolderId,
 }: FolderProps) => {
   const dispatch = useDispatch();
+  const [numberOfFolders, setNumberOfFolders] = useState(0);
+  const [isLast, setIsLast] = useState(true);
   const [isEditmode, setIsEditmode] = useState(false);
   const [bookmarkFoldersArray, setBookmarkFoldersArray] = useState<
     BookmarkFolderType[]
@@ -199,9 +201,14 @@ const BookmarkFolders = ({
     error,
   } = useGetBookmarkFoldersQuery({});
 
+  //무한스크롤 상태
+  isLast;
+
   useEffect(() => {
     if (bookmarkFoldersData) {
-      setBookmarkFoldersArray(bookmarkFoldersData?.content);
+      setBookmarkFoldersArray(bookmarkFoldersData.content);
+      setNumberOfFolders(bookmarkFoldersData.numberOfElements);
+      setIsLast(bookmarkFoldersData.isLast);
     }
   }, [bookmarkFoldersData]);
 
@@ -257,7 +264,13 @@ const BookmarkFolders = ({
           </GoEditBtn>
         </SettingBtnWrapper>
       </FoldersHeader>
-      <FoldersContainer onClick={onClickNoEditmode}>{content}</FoldersContainer>
+      <FoldersContainer onClick={onClickNoEditmode}>
+        {numberOfFolders ? (
+          content
+        ) : (
+          <div> 북마크 폴더가 존재하지 않습니다.</div>
+        )}
+      </FoldersContainer>
     </>
   );
 };

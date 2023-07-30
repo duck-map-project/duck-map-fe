@@ -32,9 +32,10 @@ export const bookmarkFolderApiSlice = apiSlice.injectEndpoints({
         };
       },
       transformResponse: (response: BookmarkFoldersData) => {
+        const numberOfElements = response.numberOfElements
         const content = response.content;
         const isLast = response.last;
-        return { content, isLast };
+        return { numberOfElements, content, isLast };
       },
     }),
     addBookmarkFolder: builder.mutation({

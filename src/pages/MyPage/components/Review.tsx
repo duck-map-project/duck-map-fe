@@ -26,7 +26,6 @@ const ReviewItem = ({
   reviewImage,
   content,
 }: ReviewItemProps) => {
-  
   const onClickReviewItem = () => {
     id;
     alert('상세리뷰로 이동!');
