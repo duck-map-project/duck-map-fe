@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
 import iconPencil from '../assets/icon-pencil.svg';
@@ -8,9 +8,10 @@ import settingIcon from '../assets/icons/setting.svg';
 import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
 import defaultImage from '../assets/user-profile.svg';
-import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
+import { useLogoutMutation } from '../redux/auth/authApiSlice';
+import { logOut, selectCurrentUser } from '../redux/auth/authSlice';
 import { toggleGroup } from '../redux/manageModalSlice';
 import { toggleArtist } from '../redux/manageModalSlice';
 import { toggleCategory } from '../redux/manageModalSlice';
@@ -73,19 +74,21 @@ export const ProfileImg = styled.img`
 `;
 
 const Header: React.FC = ({}) => {
-  const auth = useAuthContext();
   const { currentPath, routeTo } = useRouter();
   const dispatch = useDispatch();
-
+  const user = useSelector(selectCurrentUser);
+  const [logout] = useLogoutMutation();
   const handleProfileClick = () => {
-    if (auth?.isLogin) {
+    if (user) {
       routeTo('/mypage');
     }
   };
 
   const handleAuthButton = () => {
-    if (auth?.isLogin) {
-      auth?.signOut();
+    if (user) {
+      logout({});
+
+      dispatch(logOut({}));
     } else {
       routeTo('/signin');
     }
@@ -172,7 +175,7 @@ const Header: React.FC = ({}) => {
         {content}
         <MenuButton onClick={handleAuthButton}>
           <MenuButtonIcon src={iconLogin} />
-          {auth?.isLogin ? 'Logout' : 'Login'}
+          {user ? 'Logout' : 'Login'}
         </MenuButton>
         <ProfileDropdown>
           <ProfileImg

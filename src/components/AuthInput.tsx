@@ -8,7 +8,7 @@ const Title = styled.label`
 `;
 
 export const Input = styled.input<{
-  id: string;
+  id?: string;
   $isInputValid?: boolean | null;
 }>`
   width: 100%;

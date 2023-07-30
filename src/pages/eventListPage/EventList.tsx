@@ -5,6 +5,7 @@ import ChoiceArtistBar from '../../components/ChoiceArtistBar';
 import EventListItem from '../../components/EventListItem';
 import EventListItemDetail from '../../components/EventListItemDetail';
 import KakaoMap from '../../components/KakaoMap';
+import AddEventModal from '../../components/modals/AddEventModal';
 // import { EventData, getEventParams } from '../../types/eventService';
 
 import {
@@ -25,6 +26,7 @@ const EventList = () => {
   // const [isLast, setIsLast] = useState<boolean>(false);
   // const [isFetching, setIsFetching] = useState<boolean>(false);
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+  const [addEventModal, setAddEventModal] = useState(false);
 
   // TODO: 테스트용 배열 / 나중에 지우기
   const testEvent = [
@@ -249,13 +251,23 @@ const EventList = () => {
     }
   };
 
+  const handleAddEventButton = () => {
+    setAddEventModal(true);
+  };
+
+  const handleModalCloseButton = () => {
+    setAddEventModal(false);
+  };
+
   return (
     <PageWrapper>
       <ChoiceArtistBar />
       <ListContentsSection>
         <MapSection>
           <MapSectionTitle>지도</MapSectionTitle>
-          <EventAddButton type="button">이벤트 추가</EventAddButton>
+          <EventAddButton type="button" onClick={handleAddEventButton}>
+            이벤트 추가
+          </EventAddButton>
           <KakaoMap size="eventList" />
         </MapSection>
         <ItemListSection>
@@ -282,6 +294,7 @@ const EventList = () => {
           </DotWrapper>
         </ItemListSection>
       </ListContentsSection>
+      {addEventModal && <AddEventModal handleClose={handleModalCloseButton} />}
     </PageWrapper>
   );
 };

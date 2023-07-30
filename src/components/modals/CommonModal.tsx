@@ -16,8 +16,8 @@ type ModalWidth = {
 const CommonModal = ({
   className,
   onClick,
-  width = '960',
   children,
+  width = '960',
 }: ModalProps) => {
   const preventBubbling = (event: React.MouseEvent) => {
     event.stopPropagation();
