@@ -43,5 +43,5 @@ export interface BookmarkFoldersData {
 
 export type transformedFoldersData = {
   isLast: boolean;
-  content: [{ id: number; name: string; image: string; color: string }];
+  content: { id: number; name: string; image: string; color: string }[];
 };
