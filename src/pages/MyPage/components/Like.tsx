@@ -1,4 +1,8 @@
+import { useEffect, useState } from 'react';
+
 import hearticon from '../../../assets/icons/heart-big.svg';
+import { useGetMylikeQuery } from '../../../redux/mypageSlice';
+import { mylikeType } from '../../../types/mypageType';
 
 import {
   TypeInfoBtn,
@@ -10,46 +14,119 @@ import {
   Adress,
 } from './LikeStyle';
 
-const testImg =
-  'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
+type LikeItemProps = {
+  artists: [
+    {
+      id: number;
+      groupId: number;
+      groupName: string;
+      name: string;
+      image: string;
+      artistType: {
+        id: number;
+        type: string;
+      };
+    }
+  ];
+  category: [
+    {
+      id: number;
+      category: string;
+    }
+  ];
+  address: number;
+  storeName: string;
+  image: string;
+  eventId: number;
+};
 
 const TypeInfo = ({ text }: { text: string }) => {
   return <TypeInfoBtn>{text}</TypeInfoBtn>;
 };
 
-const LikeItem = () => {
-  //Like로부터 넘겨줄 값
-  const eventInfoArray = ['카페', '식당', '전시', '광고'];
-
+const LikeItem = ({
+  category,
+  artists,
+  address,
+  storeName,
+  image,
+  eventId,
+}: LikeItemProps) => {
+  const onClickMyLike = () => {
+    eventId;
+    //이벤트 상세 페이지로 이동
+  };
   return (
-    <LikeWrapper icon={hearticon}>
-      <EventImg src={testImg} />
+    <LikeWrapper icon={hearticon} onClick={onClickMyLike}>
+      <EventImg src={image} />
       <section>
         <ArtistInfo>
-          <span>그룹명(그룹명이 있을 경우)</span>
-          <span>멤버 이름</span>
+          <span>{artists.map((artist) => artist.groupName)}</span>
+          <span>{artists.map((artist) => artist.name)}</span>
         </ArtistInfo>
         <EventTypeWrapper>
-          {eventInfoArray.map((type, index) => (
-            <TypeInfo key={index} text={type} />
+          {category.map((type) => (
+            <TypeInfo key={type.id} text={type.category} />
           ))}
         </EventTypeWrapper>
-        <StoreName>카페이름</StoreName>
-        <Adress>서울 동교동</Adress>
+        <StoreName>{storeName}</StoreName>
+        <Adress>{address}</Adress>
       </section>
     </LikeWrapper>
   );
 };
 
 const Like = () => {
-  // 여기서 좋아요 data 불러오기
+  const [numberOfMylike, setNumberOfMylike] = useState(0);
+  const [mylikeArray, setMylikeArray] = useState<mylikeType[]>([]);
+  const [isLast, setIsLast] = useState(true);
+  //무한스크롤 상태
+  isLast;
+
+  const {
+    data: mylikeData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetMylikeQuery({});
+
+  useEffect(() => {
+    if (mylikeData) {
+      const contentArray = mylikeData.content;
+      const numberofdata = mylikeData.numberOfElements;
+      const isLast = mylikeData.isLast;
+      setMylikeArray(contentArray);
+      setNumberOfMylike(numberofdata);
+      setIsLast(isLast);
+    }
+  }, [mylikeData]);
+
+  let content;
+  if (isLoading) {
+    content = <div>나의 좋아요 이벤트를 불러오는 중입니다.</div>;
+  } else if (isSuccess) {
+    content = mylikeArray.map((event) => (
+      <LikeItem
+        key={event.id}
+        eventId={event.id}
+        artists={event.artists}
+        category={event.categories}
+        address={event.address}
+        storeName={event.storeName}
+        image={event.image}
+      />
+    ));
+  } else if (isError) {
+    content = <div>{error.toString()}</div>;
+  }
   return (
     <>
-      <LikeItem />
-      <LikeItem />
-      <LikeItem />
-      <LikeItem />
-      <LikeItem />
+      {numberOfMylike ? (
+        <div>{content}</div>
+      ) : (
+        <div>좋아요 이벤트가 없습니다.</div>
+      )}
     </>
   );
 };
