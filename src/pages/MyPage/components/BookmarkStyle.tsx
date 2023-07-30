@@ -12,7 +12,7 @@ type EventItemProps = {
 };
 
 type EditBtnProps = {
-  isEditmode: boolean;
+  editmode: string;
 };
 
 // BookmarkFolderItem styling
@@ -227,7 +227,7 @@ export const SettingBtn = styled.button`
 
 export const GoEditBtn = styled(SettingBtn)<EditBtnProps>`
   ${(props) =>
-    props.isEditmode &&
+    props.editmode &&
     `
   background-color: #B7EDE8;
 `}

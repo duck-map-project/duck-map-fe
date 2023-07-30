@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { ReactComponent as BookmarkFolder } from '../../assets/icons/bookmark-folder.svg';
 import closesmallicon from '../../assets/icons/close-small.svg';
 import closeicon from '../../assets/icons/close.svg';
+import { useAddBookmarkFolderMutation } from '../../redux/bookmarkFolder';
 import { toggleBookmarkFolder } from '../../redux/manageModalSlice';
 
 import {
@@ -44,7 +45,7 @@ type EmojiType = {
 const Emoji = ({ value, img, name, isSelected, onChange }: EmojiType) => {
   return (
     <>
-      <EmojiLabel htmlFor={value} isSelected={isSelected}>
+      <EmojiLabel htmlFor={value} selected={isSelected}>
         <img src={img} />
       </EmojiLabel>
       <input
@@ -64,9 +65,12 @@ const BookmarkFolderModal = () => {
   const [selectEmoji, setSelectEmoji] = useState('heartred');
   const dispatch = useDispatch();
 
+  const [addNewBookmarkFolder] = useAddBookmarkFolderMutation();
+
   //color-picker
   const [hsva, setHsva] = useState({ h: 214, s: 43, v: 90, a: 1 });
-  const [selectColor, setSelectColor] = useState('');
+  const [selectColor, setSelectColor] = useState('#83aee6');
+
   useEffect(() => {
     setSelectColor(hsvaToHex(hsva));
   }, [hsva]);
@@ -87,6 +91,13 @@ const BookmarkFolderModal = () => {
     setSelectEmoji(e.target.value);
   };
 
+  const onClickAddNewFolder = async () => {
+    const res = await addNewBookmarkFolder({
+      name: foldername,
+      image: selectEmoji,
+      color: selectColor,
+    });
+  };
   return (
     <ModalPortal>
       <CommonModal onClick={onHideModal} width="860">
@@ -153,7 +164,7 @@ const BookmarkFolderModal = () => {
               </ColorPreviewFolderWrapper>
             </ColorSelectSection>
           </FolderColorSection>
-          <AddNewFolderBtn>완료</AddNewFolderBtn>
+          <AddNewFolderBtn onClick={onClickAddNewFolder}>완료</AddNewFolderBtn>
         </ModalContent>
       </CommonModal>
     </ModalPortal>

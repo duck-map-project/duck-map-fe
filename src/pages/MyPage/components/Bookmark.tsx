@@ -118,7 +118,7 @@ const BookmarkEventItem = ({ isEditmode }: EventItemProps) => {
     e.stopPropagation();
     alert('이벤트삭제');
   };
-  
+
   return (
     <ItemWrapper bookmarkicon={bookmarkicon}>
       <EventImg src={testImg} />
@@ -169,7 +169,10 @@ const BookmarkFolders = ({ setFolderSelected }: FolderProps) => {
             <img src={plusicon} />
             북마크 폴더 추가하기
           </SettingBtn>
-          <GoEditBtn onClick={onClickToggleEditmode} isEditmode={isEditmode}>
+          <GoEditBtn
+            onClick={onClickToggleEditmode}
+            editmode={isEditmode.toString()}
+          >
             <img src={editicon} />
             북마크 편집하기
           </GoEditBtn>
@@ -220,7 +223,10 @@ const Events = ({ foldername, setFolderSelected }: EventsProps) => {
           <img src={arrowicon} />
           <span>{foldername}</span>
         </Path>
-        <GoEditBtn onClick={onClickToggleEditmode} isEditmode={isEditmode}>
+        <GoEditBtn
+          onClick={onClickToggleEditmode}
+          editmode={isEditmode.toString()}
+        >
           <img src={editicon} />
           북마크 편집하기
         </GoEditBtn>
