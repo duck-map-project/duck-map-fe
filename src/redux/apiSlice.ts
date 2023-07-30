@@ -8,10 +8,10 @@ import {
 import { logOut, setCredentials } from './auth/authSlice';
 import { RootState } from './store';
 
-// const baseUrl = process.env.REACT_APP_BASE_URL;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: baseUrl,
+  baseUrl: baseUrl,
   credentials: 'include',
   mode: 'cors',
   prepareHeaders: (headers, { getState }) => {
