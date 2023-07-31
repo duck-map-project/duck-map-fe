@@ -24,6 +24,13 @@ export const eventCategoryApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['EventCategory'],
     }),
+    editEventCategory: builder.mutation<any, { id: number; category: string }>({
+      query: ({ id, category }) => ({
+        url: `/events/categories/${id}`,
+        method: 'PUT',
+        body: { category },
+      }),
+    }),
     deleteEventCategory: builder.mutation<any, { id: number }>({
       query: ({ id }) => ({
         url: `/events/categories/${id}`,
@@ -36,5 +43,6 @@ export const eventCategoryApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetEventCategoryQuery,
   useAddEventCategoryMutation,
+  useEditEventCategoryMutation,
   useDeleteEventCategoryMutation,
 } = eventCategoryApiSlice;

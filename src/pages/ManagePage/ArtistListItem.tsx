@@ -26,7 +26,6 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
   const [deleteArtist] = useDeleteArtistsMutation();
   const artistImage = data.image !== '/images/null' ? data.image : testImg;
 
-  // console.log(data);
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
     const artistData = {
@@ -42,7 +41,6 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
       dispatch(toggleEditGroup());
       return;
     }
-    // dispatch(editArtistInfo(artistData));
     dispatch(toggleEditArtist());
   };
 

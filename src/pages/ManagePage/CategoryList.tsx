@@ -1,4 +1,4 @@
-import { useGetEventCategoryQuery } from '../../redux/eventCategoryType';
+import { useGetEventCategoryQuery } from '../../redux/eventCategorySlice';
 
 import CategoryListItem from './CategoryListItem';
 import { CategoryListSection } from './CategoryListStyle';

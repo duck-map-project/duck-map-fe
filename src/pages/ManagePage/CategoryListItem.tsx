@@ -1,6 +1,10 @@
+import { useDispatch } from 'react-redux';
+
 import deleteIcon from '../../assets/icons/delete.svg';
 import editIcon from '../../assets/icons/edit.svg';
-import { useDeleteEventCategoryMutation } from '../../redux/eventCategoryType';
+import { editCategoryInfo } from '../../redux/editCategorySlice';
+import { useDeleteEventCategoryMutation } from '../../redux/eventCategorySlice';
+import { toggleEditCategory } from '../../redux/manageModalSlice';
 
 import {
   ListItem,
@@ -15,7 +19,14 @@ type listItemProps = {
 };
 
 const CategoryListItem = ({ id, text }: listItemProps) => {
+  const dispatch = useDispatch();
   const [deleteCategory] = useDeleteEventCategoryMutation();
+
+  const onClickEditBtn = () => {
+    dispatch(editCategoryInfo({ id, category: text }));
+    dispatch(toggleEditCategory());
+  };
+
   const onClickDeleteBtn = async () => {
     if (window.confirm(`카테고리 "${text}"를 삭제하시겠습니까?`)) {
       try {
@@ -34,7 +45,7 @@ const CategoryListItem = ({ id, text }: listItemProps) => {
     <ListItem>
       <ItemText>{text}</ItemText>
       <ButtonWrapper>
-        <CommonButton type="button">
+        <CommonButton type="button" onClick={onClickEditBtn}>
           <img src={editIcon} />
         </CommonButton>
         <CommonButton type="button" onClick={onClickDeleteBtn}>
