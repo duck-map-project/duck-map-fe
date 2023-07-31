@@ -74,7 +74,7 @@ const ArtistList = () => {
         listElement.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [artistlistPage, isFetching]);
+  }, [artistlistPage, isFetching, listElement, artistListRef]);
 
   const isLast = artistData?.isLast ?? true;
 
