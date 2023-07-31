@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import { useRouter } from '../../../hooks/useRouter';
 import {
   useGetUserInfoQuery,
   useEditUserInfoMutation,
   useUnregisterMutation,
 } from '../../../redux/auth/authApiSlice';
+import { useLogoutMutation } from '../../../redux/auth/authApiSlice';
 import { useAddImageMutation } from '../../../redux/imageSlice';
 
 import {
@@ -21,6 +23,7 @@ import {
 } from './EditProfileStyle';
 
 const EditProfile = () => {
+  const { routeTo } = useRouter();
   const [userImage, setUserImage] = useState<File>(); //File 자체
   const [previewImage, setPreviewImage] = useState<string>(''); //프리뷰 이미지용 blob
   const [savedImagefile, setSavedImagefile] = useState<string | null>(''); // 저장된 이미지의 filename
@@ -30,6 +33,7 @@ const EditProfile = () => {
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
   const [unregister] = useUnregisterMutation();
+  const [logout] = useLogoutMutation();
 
   useEffect(() => {
     if (userInfo) {
@@ -108,7 +112,14 @@ const EditProfile = () => {
     const proptValue = window.prompt('비밀번호를 입력해주세요');
     if (proptValue) {
       const password = { password: proptValue };
-      await unregister(password);
+      const res = await unregister(password);
+      if ('data' in res) {
+        alert('탈퇴되었습니다.');
+        await logout({});
+        routeTo('/');
+      } else if ('error' in res) {
+        alert('잠시 후 다시 시도해주세요.');
+      }
     }
   };
 
