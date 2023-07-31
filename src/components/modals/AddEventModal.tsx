@@ -1,10 +1,12 @@
 import React, { MouseEventHandler, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
 import {
   toggleEventArtist,
   toggleEventCategory,
 } from '../../redux/manageModalSlice';
+import { selectSelectedArtist } from '../../redux/setEventElemetsSlice';
 import SelectedElement from '../SelectedElement';
 
 import {
@@ -47,6 +49,7 @@ const AddEventModal = ({ handleClose }: Props) => {
     preview2: '',
     preview3: '',
   });
+  const selectedArtistIds = useSelector(selectSelectedArtist);
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -102,14 +105,19 @@ const AddEventModal = ({ handleClose }: Props) => {
               <SelectButton type="button" onClick={handdleSelectArtistButton}>
                 아티스트 선택
               </SelectButton>
-              <SelectedElement>선택 아티스트</SelectedElement>
+              {selectedArtistIds &&
+                selectedArtistIds.map((artists) => (
+                  <SelectedElement key={artists.id} artistId={artists.id}>
+                    {artists.name}
+                  </SelectedElement>
+                ))}
             </RawWrapper>
             <InfoTitle>카테고리</InfoTitle>
             <RawWrapper>
               <SelectButton type="button" onClick={handleSelectCategoryButton}>
                 카테고리 선택
               </SelectButton>
-              <SelectedElement>선택 카테고리</SelectedElement>
+              {/* <SelectedElement>선택 카테고리</SelectedElement> */}
             </RawWrapper>
             <InfoTitle>주소</InfoTitle>
             <EventInput placeholder="주소 입력" />
