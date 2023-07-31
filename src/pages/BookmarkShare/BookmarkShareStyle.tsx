@@ -107,13 +107,13 @@ export const UserProfile = styled.div`
   gap: 12px;
 `;
 
-export const ProfileImg = styled.img`
-  width: 70px;
-  height: 70px;
-  border: 2px solid var(--line-black);
-  border-radius: 50%;
-  object-fit: cover;
-`;
+// export const ProfileImg = styled.img`
+//   width: 70px;
+//   height: 70px;
+//   border: 2px solid var(--line-black);
+//   border-radius: 50%;
+//   object-fit: cover;
+// `;
 
 export const Username = styled.span`
   font-size: 20px;
@@ -140,6 +140,16 @@ export const EventWrapper = styled.article`
   padding: 16px;
   border-top: 2px solid var(--line-black);
   overflow-y: scroll;
+`;
+
+export const NoticeNoEvents = styled.section`
+  width: 474px;
+  min-height: 380px;
+  padding: 16px;
+  border-top: 2px solid var(--line-black);
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
 `;
 
 export const MainPageBtn = styled.button`
