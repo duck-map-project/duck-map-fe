@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import closeIcon from '../assets/close.svg';
-import { removeArtist } from '../redux/setEventElemetsSlice';
+import { removeArtist, removeCategory } from '../redux/setEventElemetsSlice';
 
 const Selected = styled.div`
   font-size: 1.6rem;
@@ -33,16 +33,22 @@ interface SelectedElementProps
     React.HTMLAttributes<HTMLSpanElement>,
     HTMLSpanElement
   > {
-  artistId: number;
+  currentId: number;
+  isCategory?: boolean;
 }
 
 const SelectedElement: React.FC<SelectedElementProps> = ({
   children,
-  artistId,
+  currentId,
+  isCategory,
 }) => {
   const dispatch = useDispatch();
   const handleRemoveArtist = () => {
-    dispatch(removeArtist(artistId));
+    if (isCategory) {
+      dispatch(removeCategory(currentId));
+    } else {
+      dispatch(removeArtist(currentId));
+    }
   };
   return (
     <Selected>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -6,6 +7,11 @@ import {
   useGetEventCategoryQuery,
 } from '../../redux/eventCategorySlice';
 import { toggleEventCategory } from '../../redux/manageModalSlice';
+import {
+  Category,
+  selectSelectedCategory,
+  setCategory,
+} from '../../redux/setEventElemetsSlice';
 
 import { ModalTitle } from './AddArtistModalStyle';
 import { ModalCloseButton } from './AddEventModalStyle';
@@ -23,8 +29,32 @@ const CategorySelectModal = () => {
     dispatch(toggleEventCategory());
   };
   const [categories, setCategories] = useState<categoryType[]>([]);
-
+  const selectedCategories = useSelector(selectSelectedCategory);
+  const [categoriesIds, setCategoriesIds] =
+    useState<Category[]>(selectedCategories);
   const { data: categoryData } = useGetEventCategoryQuery();
+
+  const onCategoryClick = (categoriesId: number, category: string) => {
+    const existingCategory = categoriesIds.find(
+      (category) => category.id === categoriesId
+    );
+
+    if (existingCategory) {
+      const updatedCategoryIds = categoriesIds.filter(
+        (category) => category.id !== categoriesId
+      );
+      setCategoriesIds(updatedCategoryIds);
+    } else {
+      setCategoriesIds((prev) => [...prev, { id: categoriesId, category }]);
+    }
+  };
+
+  const handleSaveCategoryIds = () => {
+    if (categoriesIds.length !== 0) {
+      dispatch(setCategory(categoriesIds));
+      onHideModal();
+    }
+  };
 
   useEffect(() => {
     if (categoryData) {
@@ -42,13 +72,22 @@ const CategorySelectModal = () => {
           <CategoryListSection>
             {categories &&
               categories.map((category) => (
-                <CategoryItem key={category.id}>
+                <CategoryItem
+                  key={category.id}
+                  onClick={() => {
+                    onCategoryClick(category.id, category.category);
+                  }}
+                  currentId={category.id}
+                  selectedIds={categoriesIds.map((category) => category.id)}
+                >
                   {category.category}
                 </CategoryItem>
               ))}
           </CategoryListSection>
         </CategorySelectSection>
-        <DoneButton>완료</DoneButton>
+        <DoneButton type="button" onClick={handleSaveCategoryIds}>
+          완료
+        </DoneButton>
       </CommonModal>
     </ModalPortal>
   );

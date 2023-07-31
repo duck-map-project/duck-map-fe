@@ -6,7 +6,10 @@ import {
   toggleEventArtist,
   toggleEventCategory,
 } from '../../redux/manageModalSlice';
-import { selectSelectedArtist } from '../../redux/setEventElemetsSlice';
+import {
+  selectSelectedArtist,
+  selectSelectedCategory,
+} from '../../redux/setEventElemetsSlice';
 import SelectedElement from '../SelectedElement';
 
 import {
@@ -50,6 +53,7 @@ const AddEventModal = ({ handleClose }: Props) => {
     preview3: '',
   });
   const selectedArtistIds = useSelector(selectSelectedArtist);
+  const selectedCategoryIds = useSelector(selectSelectedCategory);
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -107,7 +111,7 @@ const AddEventModal = ({ handleClose }: Props) => {
               </SelectButton>
               {selectedArtistIds &&
                 selectedArtistIds.map((artists) => (
-                  <SelectedElement key={artists.id} artistId={artists.id}>
+                  <SelectedElement key={artists.id} currentId={artists.id}>
                     {artists.name}
                   </SelectedElement>
                 ))}
@@ -117,7 +121,16 @@ const AddEventModal = ({ handleClose }: Props) => {
               <SelectButton type="button" onClick={handleSelectCategoryButton}>
                 카테고리 선택
               </SelectButton>
-              {/* <SelectedElement>선택 카테고리</SelectedElement> */}
+              {selectedCategoryIds &&
+                selectedCategoryIds.map((category) => (
+                  <SelectedElement
+                    key={category.id}
+                    currentId={category.id}
+                    isCategory={true}
+                  >
+                    {category.category}
+                  </SelectedElement>
+                ))}
             </RawWrapper>
             <InfoTitle>주소</InfoTitle>
             <EventInput placeholder="주소 입력" />

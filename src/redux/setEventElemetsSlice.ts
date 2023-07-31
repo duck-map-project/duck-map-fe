@@ -30,8 +30,7 @@ const setEventElemetsSlice = createSlice({
       state.selectedArtists = action.payload;
     },
     setCategory: (state, action) => {
-      const { id, category } = action.payload;
-      state.selectedCategorys.push({ id, category });
+      state.selectedCategorys = action.payload;
     },
     removeArtist: (state, action) => {
       const artistIdToRemove = action.payload;
@@ -39,10 +38,16 @@ const setEventElemetsSlice = createSlice({
         (artist) => artist.id !== artistIdToRemove
       );
     },
+    removeCategory: (state, action) => {
+      const categoryIdToRemove = action.payload;
+      state.selectedCategorys = state.selectedCategorys.filter(
+        (category) => category.id !== categoryIdToRemove
+      );
+    },
   },
 });
 
-export const { setArtist, setCategory, removeArtist } =
+export const { setArtist, setCategory, removeArtist, removeCategory } =
   setEventElemetsSlice.actions;
 
 export default setEventElemetsSlice.reducer;
