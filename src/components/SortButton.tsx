@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import arrow from '../assets/sort-arrow.svg';
 
 import Dropdown from './Dropdown';
-import { sortOptionsType } from './modals/AddArtistModal';
+import { sortOptionsType } from './modals/ArtistModal';
 
 const Select = styled.button<{ $clicked: boolean; icon?: string }>`
   position: relative;
