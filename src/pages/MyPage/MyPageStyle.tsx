@@ -29,6 +29,7 @@ export const ProfileImg = styled.img`
   margin-bottom: 10px;
   border: 2px solid var(--line-black);
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const Username = styled.span`

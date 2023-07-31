@@ -1,4 +1,8 @@
+import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+
+import defaultImage from '../../assets/user-profile.svg';
+import { useGetUserInfoQuery } from '../../redux/auth/authApiSlice';
 
 import Bookmark from './components/Bookmark';
 import ChangePassword from './components/ChangePassword';
@@ -18,14 +22,29 @@ import {
 import SideBar from './SideBar';
 
 const MyPage = () => {
-  const testImg =
-    'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
+  const { data: userData } = useGetUserInfoQuery();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const username = userData?.username;
+
+  const [userProfile, setUserProfile] = useState('');
+
+  useEffect(() => {
+    if (userData?.userProfile) {
+      if (userData.userProfile === '/images/null') {
+        setUserProfile(defaultImage);
+        return;
+      }
+      const url = baseUrl + userData.userProfile;
+      setUserProfile(url);
+    }
+  }, [userData]);
+
   return (
     <Main>
       <SideSection>
         <ProfileWrapper>
-          <ProfileImg src={testImg} />
-          <Username>닉네임</Username>
+          <ProfileImg src={userProfile} />
+          <Username>{username}</Username>
         </ProfileWrapper>
         <SideBar />
       </SideSection>
