@@ -1,99 +1,76 @@
 import React from 'react';
-import { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
 
+import { ReactComponent as Bookicon } from '../../assets/icons/book.svg';
 import manageImage from '../../assets/icons/manageImage.svg';
-import plusIcon from '../../assets/icons/plus.svg';
-import { useGetArtistsQuery } from '../../redux/artistsSlice';
-import { ArtistContent } from '../../types/artistsType';
 
-import ArtistListItem from './ArtistListItem';
+import ArtistList from './ArtistList';
 import {
   ManageInfoSection,
   ManageTitle,
   ManageInfoImage,
-  ArtistList,
-  ArtistListTitle,
+  List,
+  TabWrapper,
+  Tab,
   ListTitleText,
-  ListTitleIcon,
-  ArtistListSection,
 } from './ManageStyle';
 
-const loadedData = new Map();
+const tabArray = [
+  {
+    id: 1,
+    value: 'artist',
+    group: 'tab',
+    text: '아티스트 목록',
+    iconcolor: '#B2E3FF',
+  },
+  {
+    id: 2,
+    value: 'category',
+    group: 'tab',
+    text: '카테고리 목록',
+    iconcolor: '#DDFFB2',
+  },
+  {
+    id: 3,
+    value: 'artisttype',
+    group: 'tab',
+    text: '카테고리 타입 목록',
+    iconcolor: '#FFDCB2',
+  },
+];
 
 const Manage = () => {
-  const [artistsArray, setArtistsArray] = useState<ArtistContent[]>([]);
-  const [artistlistPage, setArtistListPage] = useState(0);
-  //아티스트 타입별로 조회 시 사용
-  const [artistType, setArtistType] = useState('');
-  //api에 디폴트값 생기면 삭제할 코드
-  const [pageSize] = useState(20);
-  //삭제 예정 코드
-  useEffect(() => {
-    setArtistType('');
-  }, []);
-  //아티스트 목록 fetch
-  const {
-    data: artistData,
-    isLoading,
-    isFetching,
-    isError,
-    error,
-  } = useGetArtistsQuery({
-    artistTypeId: artistType,
-    pageNumber: artistlistPage.toString(),
-    pageSize: pageSize.toString(),
-  });
-
-  useEffect(() => {
-    if (artistData) {
-      artistData.content.forEach((item) => {
-        const uniqueId = item.id;
-
-        if (!loadedData.has(uniqueId)) {
-          loadedData.set(uniqueId, item);
-        }
-      });
-      const filteredArtistData = Array.from(loadedData.values());
-      setArtistsArray(filteredArtistData);
-    }
-  }, [artistData]);
-
-  const isLast = artistData?.isLast ?? true;
+  const [selectedTab, setSelectedTab] = useState('artist');
 
   let content;
-
-  if (artistsArray) {
-    content = artistsArray.map((data) => (
-      <ArtistListItem key={data.id} data={data} />
-    ));
-  } else if (isLoading) {
-    content = <div>아티스트 목록을 불러오는 중입니다</div>;
-  } else if (isError) {
-    content = <div>{error.toString()}</div>;
+  if (selectedTab === 'artist') {
+    content = <ArtistList />;
+  } else if (selectedTab === 'category') {
+    content = <div>카테고리</div>;
+  } else if (selectedTab === 'artisttype') {
+    content = <div>아티스트타입</div>;
   }
 
-  //무한 스크롤
-  const artistListRef = useRef<HTMLDivElement>(null);
-  const listElement = artistListRef.current;
+  const onClickTab = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedTab(e.target.value);
+  };
 
-  useEffect(() => {
-    if (listElement) {
-      const handleScroll = () => {
-        const { scrollTop, clientHeight, scrollHeight } = listElement;
-        const isScrolledToEnd = scrollTop + clientHeight >= scrollHeight;
-
-        if (isScrolledToEnd && !isFetching && !isLast) {
-          setArtistListPage((prev) => prev + 1);
-        }
-      };
-
-      listElement.addEventListener('scroll', handleScroll);
-
-      return () => {
-        listElement.removeEventListener('scroll', handleScroll);
-      };
-    }
-  }, [artistlistPage, isFetching]);
+  const tabContent = tabArray.map((data) => (
+    <div key={data.id}>
+      <Tab htmlFor={data.value} selected={data.value === selectedTab}>
+        <Bookicon fill={data.iconcolor} />
+        {data.text}
+      </Tab>
+      <input
+        type="radio"
+        id={data.value}
+        value={data.value}
+        name={data.group}
+        onChange={onClickTab}
+        className="sr-only"
+      ></input>
+    </div>
+  ));
 
   return (
     <>
@@ -107,15 +84,15 @@ const Manage = () => {
         </ManageTitle>
         <ManageInfoImage src={manageImage} />
       </ManageInfoSection>
-      <ArtistList>
-        <ArtistListTitle>
-          <ListTitleText>아티스트 목록</ListTitleText>
-          <ListTitleIcon>
-            <img src={plusIcon}></img>
-          </ListTitleIcon>
-        </ArtistListTitle>
-        <ArtistListSection ref={artistListRef}>{content}</ArtistListSection>
-      </ArtistList>
+      {/* 여기에 탭 */}
+      <List>
+        <TabWrapper>{tabContent}</TabWrapper>
+        <ListTitleText>아티스트 목록</ListTitleText>
+        {/* 여기서 state에 따라 분기 content를 분기두면 되겠다.  */}
+        {/* content 자체를 하나의 section으로 하고, 이거를 저기로 그냥 다 옮기자 */}
+        {content}
+        {/* <ArtistListSection ref={artistListRef}>{content}</ArtistListSection> */}
+      </List>
     </>
   );
 };

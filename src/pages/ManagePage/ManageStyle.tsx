@@ -1,5 +1,9 @@
 import { styled } from 'styled-components';
 
+type tabProps = {
+  selected: boolean;
+};
+
 export const ManageInfoSection = styled.section`
   display: flex;
   justify-content: space-around;
@@ -29,52 +33,79 @@ export const ManageInfoImage = styled.img`
   width: 520px;
 `;
 
-export const ArtistList = styled.main`
+export const List = styled.main`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   width: 1156px;
   height: 900px;
   margin: 0 auto 170px;
-  padding: 120px 30px 88px;
+  padding: 28px 30px 88px;
   background-color: #fffbe2;
   border: 2px solid var(--line-black);
   border-radius: 17.7px;
+  &::before {
+    display: block;
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 14px;
+    right: -18px;
+    border: 2px solid var(--line-black);
+    border-radius: 17.7px;
+    background-color: #fffbe2;
+    z-index: -100;
+  }
 `;
 
-export const ArtistListTitle = styled.h3`
+export const TabWrapper = styled.article`
   display: flex;
   align-items: center;
+  gap: 9.2px;
   position: absolute;
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
+  top: -67px;
+  right: -55%;
+  transform: translateX(-100%);
+  /* z-index: -9; */
+`;
+
+export const Tab = styled.label<tabProps>`
+  top: 0;
+  display: flex;
+  align-items: center;
+  padding: 10px 14px 10px;
+  background-color: #fff3ac;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 20px 20px 0 0;
+  border: 2px solid var(--line-black);
+  cursor: pointer;
+  ${(props) =>
+    props.selected
+      ? `
+  position:relative;
+  padding-bottom: 34px;
+  top: -12px;
+  `
+      : ``}
 `;
 
 export const ListTitleText = styled.span`
   display: block;
+  width: 253px;
   position: relative;
   padding: 13px 17px;
+  margin-bottom: 26px;
   font-size: 3.2rem;
   font-weight: 700;
   text-align: center;
   border: 2px solid var(--line-black);
   border-radius: 50px;
   background-color: #defcf9;
-  &::before {
-    display: block;
-    position: absolute;
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transform: translate(3%, 12%);
-    padding: 13px 17px;
-    border: 2px solid var(--line-black);
-    border-radius: 50px;
-    background-color: #defcf9;
-    z-index: -100;
-  }
 `;
 
 export const ListTitleIcon = styled.div`
