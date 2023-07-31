@@ -10,6 +10,7 @@ import {
   selectSelectedArtist,
   selectSelectedCategory,
 } from '../../redux/setEventElemetsSlice';
+import AdressInput from '../AdressInput';
 import SelectedElement from '../SelectedElement';
 
 import {
@@ -54,6 +55,7 @@ const AddEventModal = ({ handleClose }: Props) => {
   });
   const selectedArtistIds = useSelector(selectSelectedArtist);
   const selectedCategoryIds = useSelector(selectSelectedCategory);
+  const [address, setAddress] = useState<string>('');
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -63,6 +65,10 @@ const AddEventModal = ({ handleClose }: Props) => {
         [e.target.name]: URL.createObjectURL(file),
       }));
     }
+  };
+
+  const handleAddressChange = (address: string) => {
+    setAddress(address);
   };
 
   return (
@@ -132,8 +138,12 @@ const AddEventModal = ({ handleClose }: Props) => {
                   </SelectedElement>
                 ))}
             </RawWrapper>
+            {/* TODO: 디자인 요청하기 */}
             <InfoTitle>주소</InfoTitle>
-            <EventInput placeholder="주소 입력" />
+            <RawWrapper>
+              <AdressInput onAddressChange={handleAddressChange} />
+              <div>{address}</div>
+            </RawWrapper>
             <InfoTitle>영업 시간</InfoTitle>
             <RawWrapperWithGap>
               <EventInput type="time" />
