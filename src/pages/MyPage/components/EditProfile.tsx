@@ -26,7 +26,6 @@ const EditProfile = () => {
   const [savedImagefile, setSavedImagefile] = useState<string | null>(''); // 저장된 이미지의 filename
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-
   const { data: userInfo } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
@@ -66,6 +65,9 @@ const EditProfile = () => {
           const response = await addNewImage({
             imageFile: formData,
           });
+          if ('data' in response) {
+            alert('정상적으로 변경되었습니다.');
+          }
           if ('error' in response) {
             return;
           }
@@ -87,8 +89,17 @@ const EditProfile = () => {
       username,
       image: filename,
     };
-
-    await editUserInfo(userInfo);
+    try {
+      const res = await editUserInfo(userInfo);
+      console.log(res);
+      if ('data' in res) {
+        alert('정상적으로 수정되었습니다.');
+      } else if ('error' in res) {
+        alert('잠시 후 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onClickUnregisterBtn = async () => {
