@@ -78,13 +78,16 @@ const GroupModal = ({ type }: ModalType) => {
     }
   };
 
+  //** 리팩토링 필수 */
   const onClickAddGroupBtn = async () => {
     const formData = new FormData();
 
     if (groupImage === undefined) {
-      alert('사진은 필수입니다.');
-      return;
+      if (previewImage === undefined) {
+        alert('사진은 필수입니다.');
+      }
     }
+
     if (groupImage instanceof File) {
       formData.append('file', groupImage);
       try {
@@ -102,6 +105,12 @@ const GroupModal = ({ type }: ModalType) => {
         }
       } catch (error) {
         console.error(error);
+      }
+      return;
+    }
+    if (type === 'edit') {
+      if (previewImage) {
+        EditGroupInfo(previewImage.slice(8));
       }
     }
   };

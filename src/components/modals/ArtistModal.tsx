@@ -135,10 +135,10 @@ const ArtistModal = ({ type }: ModalProps) => {
     }
   };
 
-  //** 리팩토링 필수 ** //
+  //** 리팩토링 필수 * /
   const onClickAddArtistBtn = async () => {
     const formData = new FormData();
-    // 파일도, 프리뷰이미지도(string) 없으면 사진 입력 
+    // 파일도, 프리뷰이미지도(string) 없으면 사진 입력
     if (artistImage === undefined) {
       if (previewImage === undefined) {
         alert('사진은 필수값입니다.');
