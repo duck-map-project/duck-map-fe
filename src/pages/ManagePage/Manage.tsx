@@ -5,6 +5,7 @@ import { ReactComponent as Bookicon } from '../../assets/icons/book.svg';
 import manageImage from '../../assets/icons/manageImage.svg';
 
 import ArtistList from './ArtistList';
+import ArtistTypeList from './ArtistTypeList';
 import CategoryList from './CategoryList';
 import {
   ManageInfoSection,
@@ -52,7 +53,7 @@ const Manage = () => {
     content = <CategoryList />;
     title = '카테고리 목록';
   } else if (selectedTab === 'artisttype') {
-    content = <div>아티스트타입</div>;
+    content = <ArtistTypeList />;
     title = '아티스트 타입 목록';
   }
 

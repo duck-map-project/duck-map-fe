@@ -96,9 +96,8 @@ export const Tab = styled.label<tabProps>`
 
 export const ListTitleText = styled.span`
   display: block;
-  width: 253px;
   position: relative;
-  padding: 13px 17px;
+  padding: 13px 40px;
   margin-bottom: 26px;
   font-size: 3.2rem;
   font-weight: 700;
