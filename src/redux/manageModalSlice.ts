@@ -10,6 +10,7 @@ export const manageModalSlice = createSlice({
     artist: false,
     editArtist: false,
     artistType: false,
+    editArtistType: false,
     category: false,
     editCategory: false,
     addBookmarkFolder: false,
@@ -32,6 +33,9 @@ export const manageModalSlice = createSlice({
     },
     toggleArtistType: (state) => {
       state.artistType = !state.artistType;
+    },
+    toggleEditArtistType: (state) => {
+      state.editArtistType = !state.editArtistType;
     },
     toggleCategory: (state) => {
       state.category = !state.category;
@@ -60,6 +64,7 @@ export const {
   toggleCategory,
   toggleEditCategory,
   toggleArtistType,
+  toggleEditArtistType,
   toggleGroup,
   toggleEditGroup,
   toggleAddBookmarkFolder,
@@ -84,6 +89,9 @@ export const selectEditArtistModalState = (state: RootState) =>
 
 export const selectArtistTypeModalState = (state: RootState) =>
   state.manageModal.artistType;
+
+export const selectEditArtistTypeModalState = (state: RootState) =>
+  state.manageModal.editArtistType;
 
 export const selectCategoryModalState = (state: RootState) =>
   state.manageModal.category;

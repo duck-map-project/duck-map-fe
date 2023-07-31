@@ -21,14 +21,14 @@ export const artistsTypeApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['ArtistType'],
     }),
-    editArtistsType: builder.mutation({
-      query: (arg: { typeId: number; type: string }) => ({
-        url: `/artists/types/${arg.typeId}`,
+    editArtistsType: builder.mutation<any, { id: number; type: string }>({
+      query: ({ id, type }) => ({
+        url: `/artists/types/${id}`,
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        body: { type: arg.type },
+        body: { type },
       }),
       invalidatesTags: ['ArtistType'],
     }),

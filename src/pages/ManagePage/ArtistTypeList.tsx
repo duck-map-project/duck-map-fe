@@ -15,7 +15,7 @@ const ArtistTypeList = () => {
 
   if (categoryData) {
     content = categoryData.map((data) => (
-      <ArtistTypeListItem key={data.id} text={data.type} />
+      <ArtistTypeListItem key={data.id} id={data.id} text={data.type} />
     ));
   } else if (isLoading) {
     content = <div>아티스트 타입 목록을 불러오는 중입니다</div>;
