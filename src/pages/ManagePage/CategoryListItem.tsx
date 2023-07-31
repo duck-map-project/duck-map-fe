@@ -28,7 +28,7 @@ const CategoryListItem = ({ id, text }: listItemProps) => {
   };
 
   const onClickDeleteBtn = async () => {
-    if (window.confirm(`카테고리 "${text}"를 삭제하시겠습니까?`)) {
+    if (window.confirm(`카테고리 "${text}"(을)를 삭제하시겠습니까?`)) {
       try {
         const res = await deleteCategory({ id });
         if ('data' in res) {

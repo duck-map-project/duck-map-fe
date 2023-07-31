@@ -30,12 +30,14 @@ export const eventCategoryApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { category },
       }),
+      invalidatesTags: ['EventCategory'],
     }),
     deleteEventCategory: builder.mutation<any, { id: number }>({
       query: ({ id }) => ({
         url: `/events/categories/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['EventCategory'],
     }),
   }),
 });
