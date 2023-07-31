@@ -77,7 +77,7 @@ const ArtistList = () => {
   }, [artistlistPage, isFetching]);
 
   const isLast = artistData?.isLast ?? true;
-  
+
   return <ArtistListSection ref={artistListRef}>{content}</ArtistListSection>;
 };
 

@@ -5,6 +5,7 @@ import { ReactComponent as Bookicon } from '../../assets/icons/book.svg';
 import manageImage from '../../assets/icons/manageImage.svg';
 
 import ArtistList from './ArtistList';
+import CategoryList from './CategoryList';
 import {
   ManageInfoSection,
   ManageTitle,
@@ -34,7 +35,7 @@ const tabArray = [
     id: 3,
     value: 'artisttype',
     group: 'tab',
-    text: '카테고리 타입 목록',
+    text: '아티스트 타입 목록',
     iconcolor: '#FFDCB2',
   },
 ];
@@ -43,12 +44,16 @@ const Manage = () => {
   const [selectedTab, setSelectedTab] = useState('artist');
 
   let content;
+  let title;
   if (selectedTab === 'artist') {
     content = <ArtistList />;
+    title = '아티스트 목록';
   } else if (selectedTab === 'category') {
-    content = <div>카테고리</div>;
+    content = <CategoryList />;
+    title = '카테고리 목록';
   } else if (selectedTab === 'artisttype') {
     content = <div>아티스트타입</div>;
+    title = '아티스트 타입 목록';
   }
 
   const onClickTab = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +92,7 @@ const Manage = () => {
       {/* 여기에 탭 */}
       <List>
         <TabWrapper>{tabContent}</TabWrapper>
-        <ListTitleText>아티스트 목록</ListTitleText>
+        <ListTitleText>{title}</ListTitleText>
         {/* 여기서 state에 따라 분기 content를 분기두면 되겠다.  */}
         {/* content 자체를 하나의 section으로 하고, 이거를 저기로 그냥 다 옮기자 */}
         {content}

@@ -1,6 +1,6 @@
 import { apiSlice } from './apiSlice';
 
-type categoryType = {
+export type categoryType = {
   id: number;
   category: string;
 };
