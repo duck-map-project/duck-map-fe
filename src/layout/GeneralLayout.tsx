@@ -3,9 +3,9 @@ import { styled } from 'styled-components';
 
 import Billboard from '../components/Billboard';
 import Header from '../components/Header';
-import AddArtistModal from '../components/modals/AddArtistModal';
 import AddArtistTypeModal from '../components/modals/AddArtistTypeModal';
 import AddCategoryModal from '../components/modals/AddEventCategoryModal';
+import ArtistModal from '../components/modals/ArtistModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
 import BookmarkFolderModal from '../components/modals/BookmarkFolderModal';
 import CategorySelectModal from '../components/modals/CategorySelectModal';
@@ -15,6 +15,7 @@ import {
   selectGroupModalState,
   selectArtistTypeModalState,
   selectArtistModalState,
+  selectEditArtistModalState,
   selectAddBookmarkFolderModalState,
   selectEditBookmarkFolderModalState,
   selectEventArtistModalState,
@@ -35,6 +36,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const groupModalState = useSelector(selectGroupModalState);
   const groupEditModalState = useSelector(selectEditGroupModalState);
   const artistModalState = useSelector(selectArtistModalState);
+  const artistEditModalState = useSelector(selectEditArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
   const bookmarkAddFolderModalState = useSelector(
@@ -51,7 +53,8 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       <Billboard />
       {groupModalState && <GroupModal type="add" />}
       {groupEditModalState && <GroupModal type="edit" />}
-      {artistModalState && <AddArtistModal />}
+      {artistModalState && <ArtistModal type="add" />}
+      {artistEditModalState && <ArtistModal type="edit" />}
       {artistTypeModalState && <AddArtistTypeModal />}
       {categoryModalState && <AddCategoryModal />}
       {bookmarkAddFolderModalState && <BookmarkFolderModal type="add" />}

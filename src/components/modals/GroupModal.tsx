@@ -83,8 +83,8 @@ const GroupModal = ({ type }: ModalType) => {
 
     if (groupImage === undefined) {
       alert('사진은 필수입니다.');
+      return;
     }
-
     if (groupImage instanceof File) {
       formData.append('file', groupImage);
       try {

@@ -5,6 +5,7 @@ import deleteIcon from '../../assets/icons/delete.svg';
 import editIcon from '../../assets/icons/edit.svg';
 import { useDeleteArtistsMutation } from '../../redux/artistsSlice';
 import { editArtistInfo } from '../../redux/editArtistSlice';
+import { toggleEditArtist } from '../../redux/manageModalSlice';
 import { toggleEditGroup } from '../../redux/manageModalSlice';
 import { ArtistContent } from '../../types/artistsType';
 
@@ -36,12 +37,13 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
       image: data.image,
       artistTypeId: data.artistType.id,
     };
+    dispatch(editArtistInfo(artistData));
     if (data.artistType.type === '그룹' && data.groupName === null) {
-      dispatch(editArtistInfo(artistData));
       dispatch(toggleEditGroup());
       return;
     }
-    console.log('아티스트 수정 모달');
+    // dispatch(editArtistInfo(artistData));
+    dispatch(toggleEditArtist());
   };
 
   const onClickDeleteBtn = async () => {
