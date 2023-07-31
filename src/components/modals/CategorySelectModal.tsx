@@ -1,5 +1,10 @@
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import {
+  categoryType,
+  useGetEventCategoryQuery,
+} from '../../redux/eventCategorySlice';
 import { toggleEventCategory } from '../../redux/manageModalSlice';
 
 import { ModalTitle } from './AddArtistModalStyle';
@@ -17,6 +22,17 @@ const CategorySelectModal = () => {
   const onHideModal = () => {
     dispatch(toggleEventCategory());
   };
+  const [categories, setCategories] = useState<categoryType[]>([]);
+
+  const { data: categoryData } = useGetEventCategoryQuery();
+
+  useEffect(() => {
+    if (categoryData) {
+      setCategories(categoryData);
+    }
+  }, [categoryData]);
+  console.log(categories);
+
   return (
     <ModalPortal>
       <CommonModal width="1046px" onClick={onHideModal}>
@@ -24,22 +40,12 @@ const CategorySelectModal = () => {
         <ModalTitle>카테고리 선택하기</ModalTitle>
         <CategorySelectSection>
           <CategoryListSection>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
-            <CategoryItem>카테고리</CategoryItem>
+            {categories &&
+              categories.map((category) => (
+                <CategoryItem key={category.id}>
+                  {category.category}
+                </CategoryItem>
+              ))}
           </CategoryListSection>
         </CategorySelectSection>
         <DoneButton>완료</DoneButton>
