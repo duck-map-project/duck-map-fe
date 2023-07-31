@@ -4,11 +4,13 @@ import storage from 'redux-persist/lib/storage';
 
 import { apiSlice } from './apiSlice';
 import authReducer, { AuthState } from './auth/authSlice';
+import editArtistReducer from './editArtistSlice';
 import editBookmarkFolderReducer from './editBookmarkFolderSlice';
 import manageModalReducer from './manageModalSlice';
 
 const reducers = combineReducers({
   manageModal: manageModalReducer,
+  editArtist: editArtistReducer,
   editBookmarkFolder: editBookmarkFolderReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authReducer,

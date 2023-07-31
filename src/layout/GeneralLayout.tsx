@@ -6,10 +6,10 @@ import Header from '../components/Header';
 import AddArtistModal from '../components/modals/AddArtistModal';
 import AddArtistTypeModal from '../components/modals/AddArtistTypeModal';
 import AddCategoryModal from '../components/modals/AddEventCategoryModal';
-import AddGroupModal from '../components/modals/AddGroupModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
 import BookmarkFolderModal from '../components/modals/BookmarkFolderModal';
 import CategorySelectModal from '../components/modals/CategorySelectModal';
+import GroupModal from '../components/modals/GroupModal';
 import {
   selectCategoryModalState,
   selectGroupModalState,
@@ -19,6 +19,7 @@ import {
   selectEditBookmarkFolderModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
+  selectEditGroupModalState,
 } from '../redux/manageModalSlice';
 
 interface GeneralLayoutProps {
@@ -32,6 +33,7 @@ const PageWrapper = styled.section`
 
 const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const groupModalState = useSelector(selectGroupModalState);
+  const groupEditModalState = useSelector(selectEditGroupModalState);
   const artistModalState = useSelector(selectArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
@@ -47,7 +49,8 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   return (
     <PageWrapper>
       <Billboard />
-      {groupModalState && <AddGroupModal />}
+      {groupModalState && <GroupModal type="add" />}
+      {groupEditModalState && <GroupModal type="edit" />}
       {artistModalState && <AddArtistModal />}
       {artistTypeModalState && <AddArtistTypeModal />}
       {categoryModalState && <AddCategoryModal />}

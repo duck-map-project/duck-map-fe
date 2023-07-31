@@ -6,7 +6,9 @@ export const manageModalSlice = createSlice({
   name: 'manageModal',
   initialState: {
     group: false,
+    editGrop: false,
     artist: false,
+    editArtist: false,
     artistType: false,
     category: false,
     addBookmarkFolder: false,
@@ -18,8 +20,14 @@ export const manageModalSlice = createSlice({
     toggleGroup: (state) => {
       state.group = !state.group;
     },
+    toggleEditGroup: (state) => {
+      state.editGrop = !state.editGrop;
+    },
     toggleArtist: (state) => {
       state.artist = !state.artist;
+    },
+    toggleEditArtist: (state) => {
+      state.editArtist = !state.editArtist;
     },
     toggleArtistType: (state) => {
       state.artistType = !state.artistType;
@@ -44,9 +52,11 @@ export const manageModalSlice = createSlice({
 
 export const {
   toggleArtist,
+  toggleEditArtist,
   toggleCategory,
   toggleArtistType,
   toggleGroup,
+  toggleEditGroup,
   toggleAddBookmarkFolder,
   toggleEditBookmarkFolder,
   toggleEventArtist,
@@ -58,8 +68,14 @@ export default manageModalSlice.reducer;
 export const selectGroupModalState = (state: RootState) =>
   state.manageModal.group;
 
+export const selectEditGroupModalState = (state: RootState) =>
+  state.manageModal.editGrop;
+
 export const selectArtistModalState = (state: RootState) =>
   state.manageModal.artist;
+
+export const selectEditArtistModalState = (state: RootState) =>
+  state.manageModal.editArtist;
 
 export const selectArtistTypeModalState = (state: RootState) =>
   state.manageModal.artistType;

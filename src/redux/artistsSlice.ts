@@ -81,7 +81,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        body: { artistValue },
+        body: artistValue,
       }),
       invalidatesTags: ['Artists'],
     }),

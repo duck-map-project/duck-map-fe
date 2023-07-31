@@ -1,11 +1,16 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import closeIcon from '../../assets/icons/close.svg';
 import photoIcon from '../../assets/icons/photo.svg';
-import { useAddArtistsMutation } from '../../redux/artistsSlice';
+import {
+  useAddArtistsMutation,
+  useEditArtistsMutation,
+} from '../../redux/artistsSlice';
+import { selectEditArtistSlice } from '../../redux/editArtistSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleGroup } from '../../redux/manageModalSlice';
+import { toggleEditGroup } from '../../redux/manageModalSlice';
 
 import {
   ModalTitle,
@@ -20,16 +25,40 @@ import {
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
 
-const AddGroupModal = () => {
+type ModalType = {
+  type: 'add' | 'edit';
+};
+
+const testImg =
+  'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
+
+const GroupModal = ({ type }: ModalType) => {
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
   const [addNewImage] = useAddImageMutation({});
-  const [addNewGroup] = useAddArtistsMutation({});
+  const [addNewGroup] = useAddArtistsMutation();
+  const [editGroup] = useEditArtistsMutation();
+  const editData = useSelector(selectEditArtistSlice);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (type === 'edit') {
+      setGroupName(editData.name);
+      if (editData.image === '/images/null') {
+        setPreviewImage(testImg);
+        return;
+      }
+      setPreviewImage(editData.image);
+    }
+  }, [editData]);
+
   const onHideModal = () => {
-    dispatch(toggleGroup());
+    if (type === 'add') {
+      dispatch(toggleGroup());
+      return;
+    }
+    dispatch(toggleEditGroup());
   };
 
   const onChangeGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +80,11 @@ const AddGroupModal = () => {
 
   const onClickAddGroupBtn = async () => {
     const formData = new FormData();
+
+    if (groupImage === undefined) {
+      alert('사진은 필수입니다.');
+    }
+
     if (groupImage instanceof File) {
       formData.append('file', groupImage);
       try {
@@ -60,15 +94,19 @@ const AddGroupModal = () => {
         if ('error' in response) {
           return;
         }
-
-        sendGroupInfo(response.data.filename);
+        if (type === 'add') {
+          sendGroupInfo(response.data.filename);
+          return;
+        } else if (type === 'edit') {
+          EditGroupInfo(response.data.filename);
+        }
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  const sendGroupInfo = async (imageData: any) => {
+  const sendGroupInfo = async (imageData: string) => {
     const groupData = {
       artistTypeId: 1,
       name: groupName,
@@ -79,14 +117,29 @@ const AddGroupModal = () => {
       onHideModal();
     } catch (error) {
       console.error(error);
-      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
+      alert('앗, 제대로 저장되지 않았어요. 다시 시도해주세요');
+    }
+  };
+
+  const EditGroupInfo = async (imageData: string) => {
+    const groupData = {
+      artistTypeId: 1,
+      name: groupName,
+      image: imageData,
+    };
+    try {
+      await editGroup({ artistId: editData.id, artistValue: groupData });
+      onHideModal();
+    } catch (error) {
+      console.error(error);
+      alert('앗, 제대로 저장되지 않았어요. 다시 시도해주세요.');
     }
   };
 
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
-        <ModalTitle>그룹 등록하기</ModalTitle>
+        <ModalTitle>그룹 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
         </ModalCloseButton>
@@ -102,7 +155,7 @@ const AddGroupModal = () => {
           />
           <div>
             <NameLabel htmlFor="artistName">
-              그룹 이름을 입력해 주세요.
+              그룹 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
             </NameLabel>
             <NameInput
               type="text"
@@ -121,4 +174,4 @@ const AddGroupModal = () => {
   );
 };
 
-export default AddGroupModal;
+export default GroupModal;
