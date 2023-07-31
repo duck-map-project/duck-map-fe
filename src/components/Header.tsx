@@ -11,7 +11,11 @@ import defaultImage from '../assets/user-profile.svg';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
 import { useLogoutMutation } from '../redux/auth/authApiSlice';
-import { logOut, selectCurrentUser } from '../redux/auth/authSlice';
+import {
+  logOut,
+  selectCurrentUser,
+  selectCurrentRole,
+} from '../redux/auth/authSlice';
 import { toggleGroup } from '../redux/manageModalSlice';
 import { toggleArtist } from '../redux/manageModalSlice';
 import { toggleCategory } from '../redux/manageModalSlice';
@@ -77,11 +81,15 @@ const Header: React.FC = ({}) => {
   const { currentPath, routeTo } = useRouter();
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
+  const userRole = useSelector(selectCurrentRole);
   const [logout] = useLogoutMutation();
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const handleProfileClick = () => {
-    if (user) {
+    if (user && userRole === 'ADMIN') {
+      routeTo('/managepage');
+    }
+    if (user && userRole === 'USER') {
       routeTo('/mypage');
     }
   };

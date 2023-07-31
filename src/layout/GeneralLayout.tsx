@@ -3,22 +3,26 @@ import { styled } from 'styled-components';
 
 import Billboard from '../components/Billboard';
 import Header from '../components/Header';
-import AddArtistModal from '../components/modals/AddArtistModal';
-import AddArtistTypeModal from '../components/modals/AddArtistTypeModal';
-import AddCategoryModal from '../components/modals/AddEventCategoryModal';
-import AddGroupModal from '../components/modals/AddGroupModal';
+import ArtistModal from '../components/modals/ArtistModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
+import ArtistTypeModal from '../components/modals/ArtistTypeModal';
 import BookmarkFolderModal from '../components/modals/BookmarkFolderModal';
+import CategoryModal from '../components/modals/CategoryModal';
 import CategorySelectModal from '../components/modals/CategorySelectModal';
+import GroupModal from '../components/modals/GroupModal';
 import {
   selectCategoryModalState,
+  selectEditCategoryModalState,
   selectGroupModalState,
   selectArtistTypeModalState,
+  selectEditArtistTypeModalState,
   selectArtistModalState,
+  selectEditArtistModalState,
   selectAddBookmarkFolderModalState,
   selectEditBookmarkFolderModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
+  selectEditGroupModalState,
 } from '../redux/manageModalSlice';
 
 interface GeneralLayoutProps {
@@ -32,9 +36,13 @@ const PageWrapper = styled.section`
 
 const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const groupModalState = useSelector(selectGroupModalState);
+  const groupEditModalState = useSelector(selectEditGroupModalState);
   const artistModalState = useSelector(selectArtistModalState);
+  const artistEditModalState = useSelector(selectEditArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
+  const artistTypeEditModalState = useSelector(selectEditArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
+  const categroyEditModalState = useSelector(selectEditCategoryModalState);
   const bookmarkAddFolderModalState = useSelector(
     selectAddBookmarkFolderModalState
   );
@@ -47,10 +55,14 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   return (
     <PageWrapper>
       <Billboard />
-      {groupModalState && <AddGroupModal />}
-      {artistModalState && <AddArtistModal />}
-      {artistTypeModalState && <AddArtistTypeModal />}
-      {categoryModalState && <AddCategoryModal />}
+      {groupModalState && <GroupModal type="add" />}
+      {groupEditModalState && <GroupModal type="edit" />}
+      {artistModalState && <ArtistModal type="add" />}
+      {artistEditModalState && <ArtistModal type="edit" />}
+      {artistTypeModalState && <ArtistTypeModal type="add" />}
+      {artistTypeEditModalState && <ArtistTypeModal type="edit" />}
+      {categoryModalState && <CategoryModal type="add" />}
+      {categroyEditModalState && <CategoryModal type="edit" />}
       {bookmarkAddFolderModalState && <BookmarkFolderModal type="add" />}
       {bookmarkEditFolderModalState && <BookmarkFolderModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}

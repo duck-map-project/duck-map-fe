@@ -79,5 +79,5 @@ export const {
   useGetUserInfoQuery,
   useEditUserInfoMutation,
   useEditPasswordMutation,
-  useUnregisterMutation
+  useUnregisterMutation,
 } = authApiSlice;

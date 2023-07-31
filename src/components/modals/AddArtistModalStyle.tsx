@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SortDropdown from '../SortButton';
 
 type imageType = {
-  previewimage: string;
+  previewimage: string | undefined;
 };
 
 export const ModalTitle = styled.h4`

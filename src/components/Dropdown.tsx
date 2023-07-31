@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from '../hooks/useRouter';
 
-import { sortOptionsType } from './modals/AddArtistModal';
+import { sortOptionsType } from './modals/ArtistModal';
 
 type dropdowonProps = {
   icon?: string | undefined;
