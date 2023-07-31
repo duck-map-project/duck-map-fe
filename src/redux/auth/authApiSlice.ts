@@ -1,3 +1,4 @@
+import { UserInfoType } from '../../types/auth';
 import { apiSlice } from '../apiSlice';
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -25,9 +26,58 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: '/members/me',
         method: 'GET',
       }),
+      invalidatesTags: ['User'],
+    }),
+    getUserInfo: builder.query<UserInfoType, void>({
+      query: () => ({
+        url: '/members/me',
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
+    editUserInfo: builder.mutation<
+      any,
+      {
+        username: string;
+        image: string;
+      }
+    >({
+      query: (userInfo) => ({
+        url: '/members/me',
+        method: 'PUT',
+        body: userInfo,
+      }),
+      invalidatesTags: ['User'],
+    }),
+    editPassword: builder.mutation<
+      any,
+      {
+        currentPassword: string;
+        newPassword: string;
+      }
+    >({
+      query: (data) => ({
+        url: '/members/me/password',
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
+    unregister: builder.mutation<any, { password: string }>({
+      query: (password) => ({
+        url: '/memners/me',
+        method: 'DELETE',
+        body: password,
+      }),
     }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useFetchUserMutation } =
-  authApiSlice;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useFetchUserMutation,
+  useGetUserInfoQuery,
+  useEditUserInfoMutation,
+  useEditPasswordMutation,
+  useUnregisterMutation
+} = authApiSlice;

@@ -5,17 +5,18 @@ import Billboard from '../components/Billboard';
 import Header from '../components/Header';
 import AddArtistModal from '../components/modals/AddArtistModal';
 import AddArtistTypeModal from '../components/modals/AddArtistTypeModal';
-import AddBookmarkFolderModal from '../components/modals/AddBookmarkFolderModal';
 import AddCategoryModal from '../components/modals/AddEventCategoryModal';
 import AddGroupModal from '../components/modals/AddGroupModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
+import BookmarkFolderModal from '../components/modals/BookmarkFolderModal';
 import CategorySelectModal from '../components/modals/CategorySelectModal';
 import {
   selectCategoryModalState,
   selectGroupModalState,
   selectArtistTypeModalState,
   selectArtistModalState,
-  selectBookmarkFolderModalState,
+  selectAddBookmarkFolderModalState,
+  selectEditBookmarkFolderModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
 } from '../redux/manageModalSlice';
@@ -34,7 +35,12 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const artistModalState = useSelector(selectArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
-  const bookmarkFolderModalState = useSelector(selectBookmarkFolderModalState);
+  const bookmarkAddFolderModalState = useSelector(
+    selectAddBookmarkFolderModalState
+  );
+  const bookmarkEditFolderModalState = useSelector(
+    selectEditBookmarkFolderModalState
+  );
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
 
@@ -45,7 +51,8 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {artistModalState && <AddArtistModal />}
       {artistTypeModalState && <AddArtistTypeModal />}
       {categoryModalState && <AddCategoryModal />}
-      {bookmarkFolderModalState && <AddBookmarkFolderModal />}
+      {bookmarkAddFolderModalState && <BookmarkFolderModal type="add" />}
+      {bookmarkEditFolderModalState && <BookmarkFolderModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
       <Header />

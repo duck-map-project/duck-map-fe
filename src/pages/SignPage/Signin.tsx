@@ -2,7 +2,6 @@ import { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
-// import client from '../../api/client';
 import kakaoIcon from '../../assets/kakao-icon.svg';
 import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
@@ -14,7 +13,7 @@ import {
   useFetchUserMutation,
   useLoginMutation,
 } from '../../redux/auth/authApiSlice';
-import { setCredentials } from '../../redux/auth/authSlice';
+import { setCredentials, setUser } from '../../redux/auth/authSlice';
 
 import {
   PageTitle,
@@ -46,40 +45,12 @@ const Signin = () => {
   const [fetchUser] = useFetchUserMutation();
   const dispatch = useDispatch();
 
-  // const getImage = async () => {
-  //   try {
-  //     const imageRes = await client.get(
-  //       '/images/0b4ca0d6-89e6-4094-a170-59fcd5fcfbf3.jpg'
-  //     );
-  //     const imageData = imageRes.data;
-  //     console.log(imageData);
-
-  //     return imageData;
-  //   } catch (error) {
-  //     console.error('Error fetching image data:', error);
-  //     return null;
-  //   }
-  // };
-
   const getUser = async () => {
-    try {
-      const res = await fetchUser({});
-      if ('userProfile' in res) {
-        // TODO: 이미지 값 받아오기
-        // const userProfile = await getImage();
-        // if (userProfile !== null) {
-        //   const updatedRes = {
-        //     ...res,
-        //     userProfile: userProfile,
-        //   };
-        //   console.log(updatedRes.userProfile); // 이미지 데이터 확인
-        //   return updatedRes;
-        // }
-      }
-      return res;
-    } catch (error) {
-      console.error(error);
+    const userData = await fetchUser({});
+    if (userData && !('error' in userData)) {
+      return userData;
     }
+    return;
   };
 
   const handleSignin = async (e: FormEvent<HTMLFormElement>) => {
@@ -91,20 +62,10 @@ const Signin = () => {
           password: password.value,
         }).unwrap();
 
-        dispatch(
-          setCredentials({
-            accessToken: userData.authorizationHeader,
-            user: null,
-          })
-        );
+        dispatch(setCredentials(userData.authorizationHeader));
 
         const user = await getUser();
-        dispatch(
-          setCredentials({
-            accessToken: userData.authorizationHeader,
-            user: user,
-          })
-        );
+        dispatch(setUser(user?.data));
 
         routeTo('/');
       } catch (error) {

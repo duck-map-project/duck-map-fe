@@ -12,7 +12,7 @@ type EventItemProps = {
 };
 
 type EditBtnProps = {
-  isEditmode: boolean;
+  editmode: string | undefined;
 };
 
 // BookmarkFolderItem styling
@@ -227,7 +227,7 @@ export const SettingBtn = styled.button`
 
 export const GoEditBtn = styled(SettingBtn)<EditBtnProps>`
   ${(props) =>
-    props.isEditmode &&
+    props.editmode &&
     `
   background-color: #B7EDE8;
 `}
@@ -245,7 +245,7 @@ export const EventsContainer = styled(FoldersContainer)``;
 export const EventSettingIconsWrapper = styled(SettingIconsWrapper)`
   top: -6%;
   right: -5%;
-`
+`;
 // Bookmark styling
 export const BookmarkWrapper = styled.section`
   width: 100%;

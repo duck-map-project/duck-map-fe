@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import {
+  useGetUserInfoQuery,
+  useEditUserInfoMutation,
+  useUnregisterMutation,
+} from '../../../redux/auth/authApiSlice';
+import { useAddImageMutation } from '../../../redux/imageSlice';
+
+import {
   UserProfileEditForm,
   ImagePreview,
   HiddenInput,
@@ -13,20 +20,25 @@ import {
   EditSubmitBtn,
 } from './EditProfileStyle';
 
-const testImg =
-  'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
-
 const EditProfile = () => {
-  //여기서 profile 정보 받아오기
+  const [userImage, setUserImage] = useState<File>(); //File 자체
+  const [previewImage, setPreviewImage] = useState<string>(''); //프리뷰 이미지용 blob
+  const [savedImagefile, setSavedImagefile] = useState<string | null>(''); // 저장된 이미지의 filename
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
 
-  const [userImage, setUserImage] = useState<File>();
-  const [previewImage, setPreviewImage] = useState<string>('');
+  const { data: userInfo } = useGetUserInfoQuery();
+  const [editUserInfo] = useEditUserInfoMutation();
+  const [addNewImage] = useAddImageMutation();
+  const [unregister] = useUnregisterMutation();
 
-  //test용 코드
   useEffect(() => {
-    setPreviewImage(testImg);
-  }, []);
-  userImage;
+    if (userInfo) {
+      setUsername(userInfo.username);
+      setEmail(userInfo.email);
+      setSavedImagefile(userInfo.userProfile.slice(8)); //image filename string 값 저장
+    }
+  }, [userInfo]);
 
   const onChangeUserImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -41,12 +53,68 @@ const EditProfile = () => {
     }
   };
 
+  const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const onClickSubmitBtn = async () => {
+    if (userImage) {
+      const formData = new FormData();
+      if (userImage instanceof File) {
+        formData.append('file', userImage);
+        try {
+          const response = await addNewImage({
+            imageFile: formData,
+          });
+          if ('error' in response) {
+            return;
+          }
+          const filename = response.data.filename;
+          sendEditUser(filename);
+        } catch (error) {
+          console.error(error);
+        }
+        return;
+      }
+    }
+    if (savedImagefile) {
+      sendEditUser(savedImagefile);
+    }
+  };
+
+  const sendEditUser = async (filename: string) => {
+    const userInfo = {
+      username,
+      image: filename,
+    };
+
+    await editUserInfo(userInfo);
+  };
+
+  const onClickUnregisterBtn = async () => {
+    if (!window.confirm('작성하신 글은 자동으로 삭제되지 않습니다.')) {
+      return;
+    }
+    const proptValue = window.prompt('비밀번호를 입력해주세요');
+    if (proptValue) {
+      const password = { password: proptValue };
+      await unregister(password);
+    }
+  };
+
   return (
     <UserProfileEditForm>
       <ImagePreview
         htmlFor="artistImage"
-        previewimage={previewImage}
+        previewimage={
+          previewImage
+            ? previewImage
+            : savedImagefile
+            ? process.env.REACT_APP_BASE_URL + '/images/' + savedImagefile
+            : ''
+        }
       ></ImagePreview>
+
       <HiddenInput
         type="file"
         id="artistImage"
@@ -55,15 +123,25 @@ const EditProfile = () => {
       />
       <UserInfoWrapper>
         <StyledLabel htmlFor="email">이메일</StyledLabel>
-        <EmailInput type="text" id="email" value="kkk111@naver.com" disabled />
+        <EmailInput type="text" id="email" value={email} disabled />
       </UserInfoWrapper>
       <UserInfoWrapper>
         <StyledLabel htmlFor="username">닉네임</StyledLabel>
-        <UsernameInput type="text" id="username" placeholder="닉네임 입력" />
+        <UsernameInput
+          type="text"
+          id="username"
+          placeholder="닉네임 입력"
+          value={username}
+          onChange={onChangeUsername}
+        />
       </UserInfoWrapper>
       <BtnWrapper>
-        <UnregisterBtn type="button">회원탈퇴</UnregisterBtn>
-        <EditSubmitBtn type="button">완료</EditSubmitBtn>
+        <UnregisterBtn type="button" onClick={onClickUnregisterBtn}>
+          회원탈퇴
+        </UnregisterBtn>
+        <EditSubmitBtn type="button" onClick={onClickSubmitBtn}>
+          완료
+        </EditSubmitBtn>
       </BtnWrapper>
     </UserProfileEditForm>
   );

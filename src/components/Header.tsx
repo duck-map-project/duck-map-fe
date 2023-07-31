@@ -78,6 +78,8 @@ const Header: React.FC = ({}) => {
   const dispatch = useDispatch();
   const user = useSelector(selectCurrentUser);
   const [logout] = useLogoutMutation();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
   const handleProfileClick = () => {
     if (user) {
       routeTo('/mypage');
@@ -179,7 +181,11 @@ const Header: React.FC = ({}) => {
         </MenuButton>
         <ProfileDropdown>
           <ProfileImg
-            src={defaultImage}
+            src={
+              user?.userProfile && user?.userProfile !== '/images/null'
+                ? `${baseUrl}${user.userProfile}`
+                : defaultImage
+            }
             alt="Profile"
             onClick={handleProfileClick}
           />
