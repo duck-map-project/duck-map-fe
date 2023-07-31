@@ -29,8 +29,6 @@ type EventItemProps = {
 };
 
 const BookmarkEventItem = ({ image, storeName }: EventItemProps) => {
-  //이 id 값이 폴더의 id 값. 이걸로 요청.
-
   return (
     <ItemWrapper>
       <EventImg src={image} />
@@ -40,7 +38,6 @@ const BookmarkEventItem = ({ image, storeName }: EventItemProps) => {
 };
 
 const BookmarkShare = () => {
-  //북마크 id를 params의 /:id로 받아오자
   const { routeTo } = useRouter();
   const { id } = useParams();
   const [folderId, setFolderId] = useState<number>(0);
