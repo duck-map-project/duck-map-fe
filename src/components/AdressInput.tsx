@@ -3,11 +3,15 @@ import { useEffect, useRef, useState } from 'react';
 import { AddrestList, EventInputWrapper } from './AdressInputStyle';
 import { EventInput } from './modals/AddEventModalStyle';
 
+interface Place {
+  place_name: string;
+  address_name: string;
+}
 interface AdressInputProps {
-  onAddressChange: (adress: string) => void;
+  onPlaceChange: (palce: Place) => void;
 }
 
-const AdressInput: React.FC<AdressInputProps> = ({ onAddressChange }) => {
+const AdressInput: React.FC<AdressInputProps> = ({ onPlaceChange }) => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [places, setPlaces] = useState<any[]>([]);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -57,11 +61,13 @@ const AdressInput: React.FC<AdressInputProps> = ({ onAddressChange }) => {
     }
   };
 
-  const handlePlaceSelect = (place: any) => {
+  const handlePlaceSelect = (place: Place) => {
     setPlaces([]);
 
-    // onAddressChange를 호출하여 선택한 주소를 외부로 전달
-    onAddressChange(place.address_name);
+    onPlaceChange({
+      place_name: place.place_name,
+      address_name: place.address_name,
+    });
   };
 
   return (
