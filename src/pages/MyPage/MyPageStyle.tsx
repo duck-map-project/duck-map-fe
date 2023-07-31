@@ -6,7 +6,7 @@ export const Main = styled.main`
   display: flex;
   justify-content: center;
   gap: 32px;
-  width: 90%;
+  width: 100%;
   padding: 0 ${px2vw(142)};
   margin: 0 auto;
 `;
