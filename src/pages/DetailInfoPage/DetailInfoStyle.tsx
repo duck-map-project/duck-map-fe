@@ -237,8 +237,9 @@ export const DetailContents = styled.section`
   background-color: #fffbe2;
   border: 2px solid #1e232c;
   border-radius: 20px;
-  padding: 30px 25px 31px 26px;
+  padding: 30px 26px 31px 26px;
   position: relative;
+
   &::after {
     display: block;
     box-sizing: border-box;
@@ -251,8 +252,20 @@ export const DetailContents = styled.section`
     position: absolute;
     top: 11px;
     left: 10px;
-    /* top: 0px;
-    left: 0px; */
     z-index: -9;
   }
+`;
+
+export const AddReviewButton = styled.button`
+  display: block;
+  width: 190px;
+  height: 40px;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.247916666666667;
+  margin: 25px 0 20px auto;
+  background-color: #defcf9;
+  border: 2px solid #1e232c;
+  border-radius: 50px;
+  box-shadow: 4px 4px 0px 0px #00000040;
 `;
