@@ -22,7 +22,6 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         const isLast = response.last;
         return { content, isLast };
       },
-      providesTags: ['Reviews'],
     }),
   }),
 });

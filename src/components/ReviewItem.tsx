@@ -84,7 +84,11 @@ const ReviewItem = ({ review }: ReviewItemProps) => {
       <TopSection>
         <ProfileImg alt="사용자 프로필" src={baseUrl + review.userProfile} />
         <ReviewInfoText>{review.username}</ReviewInfoText>
-        <FixedRating score={review.score} size="reviewItem" />
+        <FixedRating
+          score={review.score}
+          size="reviewItem"
+          className="reviewitem"
+        />
       </TopSection>
       <MiddleSection>
         <ReviewContentSection>

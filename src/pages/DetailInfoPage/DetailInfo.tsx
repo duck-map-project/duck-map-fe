@@ -95,7 +95,7 @@ const DetailInfo = () => {
                 <SmallHeart />
               </HeartContour>
             </div>
-            <FixedRating score={4.5} marginB="10px" />
+            <FixedRating score={4.5} marginB="10px" className="detailinfo" />
             <TextBoxWithTitle title="이벤트 기간">
               {eventInfo?.fromDate} ~ {eventInfo?.toDate}
             </TextBoxWithTitle>
