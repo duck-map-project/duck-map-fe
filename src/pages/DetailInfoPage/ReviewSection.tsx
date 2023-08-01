@@ -1,6 +1,10 @@
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import ReviewItem from '../../components/ReviewItem';
+import { useGetReviewsQuery } from '../../redux/reviewApiSlice';
+import { Review } from '../../types/eventService';
 import px2vw from '../../utils/px2vw';
 const Wrapper = styled.div`
   width: 100%;
@@ -43,19 +47,40 @@ const ReviewWrapper = styled.ul`
 `;
 
 const ReviewSection = () => {
+  const { id } = useParams<{ id: string }>();
+  const {
+    data: ReveiwData,
+    isLoading,
+    isError,
+    error,
+  } = useGetReviewsQuery({
+    eventId: parseInt(id as string) as number,
+    pageNumber: 0,
+    pageSize: 10,
+  });
+  const [reviewInfo, setReviewInfo] = useState<Review[]>([]);
+
+  useEffect(() => {
+    if (ReveiwData) {
+      setReviewInfo(ReveiwData.content);
+    }
+  }, [ReveiwData]);
+
+  let content;
+
+  if (reviewInfo) {
+    content = reviewInfo.map((review) => (
+      <ReviewItem key={review.id} review={review} />
+    ));
+  } else if (isLoading) {
+    <div>리뷰 목록을 불러오는 중 입니다.</div>;
+  } else if (isError) {
+    <div>{error.toString()}</div>;
+  }
   return (
     <Wrapper>
       <TabWrapper>
-        <ReviewWrapper>
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-        </ReviewWrapper>
+        <ReviewWrapper>{content}</ReviewWrapper>
       </TabWrapper>
     </Wrapper>
   );

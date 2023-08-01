@@ -38,8 +38,8 @@ import TwitterInfoSection from './TwitterInfoSection';
 const DetailInfo = () => {
   type CurrentType = 'info' | 'map' | 'review';
 
-  const [currentTab, setCurrentTab] = useState<CurrentType>('info');
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const [currentTab, setCurrentTab] = useState<CurrentType>('info');
 
   const handleTabClick = (tab: CurrentType) => {
     setCurrentTab(tab);

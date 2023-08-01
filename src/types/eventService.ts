@@ -43,3 +43,42 @@ export interface EventData {
   likeCount: number;
   bookmarkId: number;
 }
+
+export interface Review {
+  id: number;
+  userProfile: string;
+  username: string;
+  createdAt: string;
+  score: number;
+  reviewImage: string;
+  content: string;
+}
+
+export interface ReviewResponse {
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: Review[];
+  number: number;
+  sort: {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: {
+    offset: number;
+    sort: {
+      empty: boolean;
+      unsorted: boolean;
+      sorted: boolean;
+    };
+    unpaged: boolean;
+    pageSize: number;
+    paged: boolean;
+    pageNumber: number;
+  };
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
