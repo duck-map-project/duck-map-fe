@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { useRouter } from '../../../hooks/useRouter';
+import defaultImage from '../../../assets/user-profile.svg';
 import {
-  useGetUserInfoQuery,
   useEditUserInfoMutation,
   useUnregisterMutation,
+  useGetUserInfoQuery,
 } from '../../../redux/auth/authApiSlice';
 import { useLogoutMutation } from '../../../redux/auth/authApiSlice';
 import { useAddImageMutation } from '../../../redux/imageSlice';
@@ -24,24 +25,32 @@ import {
 
 const EditProfile = () => {
   const { routeTo } = useRouter();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const [userImage, setUserImage] = useState<File>(); //File 자체
   const [previewImage, setPreviewImage] = useState<string>(''); //프리뷰 이미지용 blob
-  const [savedImagefile, setSavedImagefile] = useState<string | null>(''); // 저장된 이미지의 filename
+  const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const { data: userInfo } = useGetUserInfoQuery();
+
+  const { data: userData } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
   const [unregister] = useUnregisterMutation();
   const [logout] = useLogoutMutation();
 
   useEffect(() => {
-    if (userInfo) {
-      setUsername(userInfo.username);
-      setEmail(userInfo.email);
-      setSavedImagefile(userInfo.userProfile.slice(8)); //image filename string 값 저장
+    if (userData) {
+      setUsername(userData.username);
+      setEmail(userData.email);
+      setSavedImagefile(userData.userProfile.slice(8)); //image filename string 값 저장
+      if (userData.userProfile === '/images/null') {
+        setPreviewImage(defaultImage);
+        return;
+      }
+      const url = baseUrl + userData.userProfile;
+      setPreviewImage(url);
     }
-  }, [userInfo]);
+  }, [userData]);
 
   const onChangeUserImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -89,6 +98,11 @@ const EditProfile = () => {
   };
 
   const sendEditUser = async (filename: string) => {
+    if (username === undefined) {
+      alert('닉네임은 필수값입니다.');
+      return;
+    }
+
     const userInfo = {
       username,
       image: filename,

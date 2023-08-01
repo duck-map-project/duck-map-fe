@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import GeneralLayout from './layout/GeneralLayout';
+import BookmarkShare from './pages/BookmarkShare/BookmarkShare';
 import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
@@ -95,6 +96,13 @@ const routerData: RouterElement[] = [
     //추후에 true로 변경
     withAuth: false,
     wrapWithLayout: true,
+  },
+  {
+    id: 11,
+    path: '/bookmark-share/:id',
+    element: <BookmarkShare />,
+    withAuth: false,
+    wrapWithLayout: false,
   },
 ];
 

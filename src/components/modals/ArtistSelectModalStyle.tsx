@@ -1,5 +1,6 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
+import artistDefaultImage from '../../assets/artist-default-image.svg';
 import closeIcon from '../../assets/close.svg';
 import magnifierIcon from '../../assets/magnifier.svg';
 
@@ -76,11 +77,36 @@ export const ArtistListSection = styled.ul`
   }
 `;
 
-export const ArtistListItem = styled.li`
+const primaryBackground = css`
+  background-image: url(${artistDefaultImage});
+  background-position: center;
+`;
+
+const isImageBackground = css<{ image: string }>`
+  background-image: ${(props) => `url(${props.image})`};
+  background-size: cover;
+`;
+
+export const selectedListStyle = css`
+  position: relative;
+  box-shadow: 0px 0px 0px 4px #ffd0ec;
+`;
+export const ArtistListItem = styled.li<{
+  image: string;
+  selectedIds: number[];
+  currentId: number;
+}>`
   width: 118px;
   height: 118px;
   border: 3.37px solid #1e232c;
+  background-color: #f8f8fa;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  ${(props) =>
+    props.image === '/images/null' ? primaryBackground : isImageBackground}
   border-radius: 50%;
+  ${(props) =>
+    props.selectedIds.includes(props.currentId) ? selectedListStyle : null}
 `;
 
 export const DoneButton = styled.button`

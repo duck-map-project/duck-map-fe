@@ -11,6 +11,7 @@ import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import starticon from '../../../assets/icons/starIcon.svg';
 import { emojiArray } from '../../../components/modals/EmojiArray';
 import { useGetBookmarkEventsQuery } from '../../../redux/bookmarkEventSlice';
+import { useDeleteBookmarkEventMutation } from '../../../redux/bookmarkEventSlice';
 import {
   useGetBookmarkFoldersQuery,
   useDeleteBookmarkFolderMutation,
@@ -156,14 +157,25 @@ const BookmarkEventItem = ({
   eventId,
   isEditmode,
 }: EventItemProps) => {
+  const [deleteEventFromFolder] = useDeleteBookmarkEventMutation();
   const onClickEvent = () => {
     eventId;
     alert('이벤트 상세페이지로 이동');
   };
 
-  const onClickDeleteBtn = (e: React.MouseEvent) => {
+  const onClickDeleteBtn = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    alert('이벤트삭제');
+    if (window.confirm('해당 이벤트의 북마크를 취소하시겠습니까?')) {
+      try {
+        const res = await deleteEventFromFolder({ id: eventId });
+        if ('error' in res) {
+          alert('잠시 후에 다시 시도해주세요');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      alert('이벤트삭제');
+    }
   };
 
   return (
@@ -332,6 +344,17 @@ const Events = ({
     ));
   }
 
+  const onClickShareBtn = async () => {
+    const originPath = window.location.origin;
+    const folderPath = `/bookmark-share/${folderId}`;
+    try {
+      await navigator.clipboard.writeText(originPath + folderPath);
+      alert('공유 주소가 복사되었습니다.');
+    } catch (error) {
+      alert('복사 실패');
+    }
+  };
+
   return (
     <>
       <EventsHeader>
@@ -343,13 +366,19 @@ const Events = ({
           <img src={arrowicon} />
           <span>{foldername}</span>
         </Path>
-        <GoEditBtn
-          onClick={onClickToggleEditmode}
-          editmode={isEditmode ? isEditmode.toString() : undefined}
-        >
-          <img src={editicon} />
-          북마크 편집하기
-        </GoEditBtn>
+        <SettingBtnWrapper>
+          <SettingBtn onClick={onClickShareBtn}>
+            <img src={plusicon} />
+            폴더 공유하기
+          </SettingBtn>
+          <GoEditBtn
+            onClick={onClickToggleEditmode}
+            editmode={isEditmode ? isEditmode.toString() : undefined}
+          >
+            <img src={editicon} />
+            북마크 편집하기
+          </GoEditBtn>
+        </SettingBtnWrapper>
       </EventsHeader>
       <EventsContainer onClick={onClickNoEditmode}>
         {hasEvents ? content : <div>북마크된 이벤트가 없습니다.</div>}

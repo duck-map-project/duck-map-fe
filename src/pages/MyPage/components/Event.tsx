@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 
 import usericon from '../../../assets/icons/mypage.svg';
-import { useGetMyeventQuery } from '../../../redux/mypageSlice';
+import {
+  useGetMyeventQuery,
+  useDeleteEventMutation,
+} from '../../../redux/mypageSlice';
 import { myevetType } from '../../../types/mypageType';
 
 import {
@@ -55,9 +58,25 @@ const EventItem = ({
   image,
   eventId,
 }: LikeItemProps) => {
+  const [deleteEvent] = useDeleteEventMutation();
   const onClickEventItem = () => {
     eventId;
     alert('이벤트 상세 페이지 이동');
+  };
+
+  const onClickDeleteBtn = async () => {
+    if (window.confirm('해당 이벤트를 삭제하시겠습니까?')) {
+      try {
+        const res = await deleteEvent({ id: eventId });
+        if ('error' in res) {
+          alert('잠시 후 다시 시도해주세요.');
+          return;
+        }
+        alert('삭제되었습니다.');
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   return (
@@ -77,7 +96,9 @@ const EventItem = ({
         <Adress>{address}</Adress>
         <EventControlsWrapper>
           <EditEventBtn type="button">수정하기</EditEventBtn>
-          <DeleteEventBtn type="button">삭제하기</DeleteEventBtn>
+          <DeleteEventBtn type="button" onClick={onClickDeleteBtn}>
+            삭제하기
+          </DeleteEventBtn>
         </EventControlsWrapper>
       </section>
     </EventWrapper>

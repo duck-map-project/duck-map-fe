@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
@@ -10,7 +10,10 @@ import logo from '../assets/logo.svg';
 import defaultImage from '../assets/user-profile.svg';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
-import { useLogoutMutation } from '../redux/auth/authApiSlice';
+import {
+  useLogoutMutation,
+  useGetUserInfoQuery,
+} from '../redux/auth/authApiSlice';
 import {
   logOut,
   selectCurrentUser,
@@ -75,15 +78,29 @@ export const ProfileImg = styled.img`
     linear-gradient(0deg, #1e232c, #1e232c);
   border: 2px solid #1e232c;
   flex-shrink: 0;
+  object-fit: cover;
 `;
 
 const Header: React.FC = ({}) => {
-  const { currentPath, routeTo } = useRouter();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
+  const { currentPath, routeTo } = useRouter();
   const user = useSelector(selectCurrentUser);
   const userRole = useSelector(selectCurrentRole);
   const [logout] = useLogoutMutation();
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const { data: userData } = useGetUserInfoQuery();
+  const [userProfile, setUserProfile] = useState('');
+
+  useEffect(() => {
+    if (userData?.userProfile) {
+      if (userProfile.slice(-11) !== 'images/null') {
+        const url = baseUrl + userData.userProfile;
+        setUserProfile(url);
+        return;
+      }
+      setUserProfile(defaultImage);
+    }
+  }, [userData]);
 
   const handleProfileClick = () => {
     if (user && userRole === 'ADMIN') {
@@ -189,11 +206,7 @@ const Header: React.FC = ({}) => {
         </MenuButton>
         <ProfileDropdown>
           <ProfileImg
-            src={
-              user?.userProfile && user?.userProfile !== '/images/null'
-                ? `${baseUrl}${user.userProfile}`
-                : defaultImage
-            }
+            src={userProfile}
             alt="Profile"
             onClick={handleProfileClick}
           />

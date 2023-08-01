@@ -1,166 +1,52 @@
-import { MouseEventHandler } from 'react';
+import React, { FormEvent, MouseEventHandler, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { styled } from 'styled-components';
 
-import defalutImage from '../../assets/add-image-defalut.svg';
-import closeIcon from '../../assets/close.svg';
+import useInput from '../../hooks/useInput';
+import { useRouter } from '../../hooks/useRouter';
+import { useAddEventMutation } from '../../redux/eventApiSlice';
+import { useAddImageMutation } from '../../redux/imageSlice';
 import {
   toggleEventArtist,
   toggleEventCategory,
 } from '../../redux/manageModalSlice';
-import { Input } from '../AuthInput';
+import {
+  selectSelectedArtist,
+  selectSelectedCategory,
+} from '../../redux/setEventElemetsSlice';
+import AdressInput from '../AdressInput';
 import SelectedElement from '../SelectedElement';
 
-import { PageWrapper } from './ModalStyle';
-
-const EventModalPageWrapper = styled(PageWrapper)`
-  background-color: #00000080;
-`;
-
-const Modal = styled.form`
-  border-radius: 20px;
-  border: 2px solid #1e232c;
-  background-color: #ffd0ec;
-  overflow: hidden;
-  padding-top: 50px;
-  position: relative;
-`;
-
-const ModalTitle = styled.h1`
-  width: 300px;
-  padding: 12.5px 0;
-  font-size: 2.8rem;
-  font-weight: 700;
-  line-height: 1.390714285714286;
-  background-color: #fcf9a4;
-  border: 2.94px solid #1e232c;
-  border-radius: 73px;
-  text-align: center;
-  margin: 0 auto 20px;
-`;
-
-const ContentsSection = styled.section`
-  background-color: #fffbe2;
-  border-top: 2px solid #1e232c;
-  padding: 24px 38px 34px 28px;
-`;
-
-const EventImageSection = styled.ul`
-  display: flex;
-  justify-content: space-between;
-  gap: 18.15px;
-  margin-bottom: 24px;
-`;
-
-const EventImage = styled.li`
-  width: 240px;
-  height: 214px;
-  background-color: #ededed;
-  background-image: url(${defalutImage});
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 29px;
-  border: 2.06px solid #1e232c;
-`;
-
-const FileInputLabel = styled.label`
-  display: block;
-  width: 240px;
-  height: 214px;
-  cursor: pointer;
-`;
-
-const FileInput = styled.input`
-  display: none;
-`;
-
-const InfoSection = styled.section`
-  display: grid;
-  gap: 19.5px 32px;
-  grid-template-columns: 128px auto;
-`;
-
-const InfoTitle = styled.p`
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.248;
-  margin: auto 0;
-`;
-
-const SelectButton = styled.button`
-  font-size: 1.8rem;
-  font-weight: 700;
-  line-height: 1.247777777777778;
-  width: 126px;
-  height: 40px;
-  border: 2px solid #1e232c;
-  border-radius: 20px;
-  background-color: #9fe5fb;
-  box-shadow: 4px 4px 0px 0px #00000040;
-`;
-
-export const ModalCloseButton = styled.button`
-  width: 30px;
-  height: 30px;
-  background-image: url(${closeIcon});
-  background-size: 30px;
-  position: absolute;
-  top: 10px;
-  right: 20px;
-`;
-
-const RawWrapper = styled.section`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 700;
-`;
-
-const RawWrapperWithGap = styled(RawWrapper)`
-  gap: 15px;
-`;
-
-const EventInput = styled(Input)`
-  margin-top: 0;
-`;
-
-const LinkInput = styled(EventInput)`
-  background-color: #9ac8ff;
-  color: #ffffff;
-`;
-
-const HashTagInput = styled(EventInput)`
-  background-color: #ffd0ec;
-  color: #1e232c;
-`;
-
-const FormButtonRawWrapper = styled(RawWrapper)`
-  gap: 20px;
-  margin-top: 24px;
-`;
-
-const FormButton = styled.button`
-  font-size: 2.4rem;
-  font-weight: 700;
-  line-height: 1.247916666666667;
-  width: 100px;
-  height: 64px;
-  border: 2px solid #1e232c;
-  border-radius: 50px;
-  box-shadow: 4px 4px 0px 0px #00000040;
-  background-color: #defcf9;
-  color: #1e232c;
-  flex-grow: 1;
-`;
-
-const CancelButton = styled(FormButton)`
-  background-color: #f0fffe;
-  color: #8b8e97;
-`;
+import {
+  CancelButton,
+  ContentsSection,
+  EventImage,
+  EventImageSection,
+  EventInput,
+  EventModalPageWrapper,
+  FileInput,
+  FileInputLabel,
+  FormButton,
+  FormButtonRawWrapper,
+  HashTagInput,
+  InfoSection,
+  InfoTitle,
+  LinkInput,
+  Modal,
+  ModalCloseButton,
+  ModalTitle,
+  RawWrapper,
+  RawWrapperWithGap,
+  SelectButton,
+} from './AddEventModalStyle';
 
 interface Props {
   handleClose: MouseEventHandler<HTMLButtonElement>;
+}
+
+interface Place {
+  place_name: string;
+  address_name: string;
 }
 
 const AddEventModal = ({ handleClose }: Props) => {
@@ -171,38 +57,169 @@ const AddEventModal = ({ handleClose }: Props) => {
   const handleSelectCategoryButton = () => {
     dispatch(toggleEventCategory());
   };
+  const [imagePreview, setImagePreview] = useState({
+    preview1: '',
+    preview2: '',
+    preview3: '',
+  });
+  const [images, SetImages] = useState<File[]>([]);
+  const selectedArtistIds = useSelector(selectSelectedArtist);
+  const selectedCategoryIds = useSelector(selectSelectedCategory);
+  const [place, setPlace] = useState<Place>({
+    place_name: '',
+    address_name: '',
+  });
+  const [businessHour, setBusinessHour] = useState<string>('');
+  const fromDate = useInput('');
+  const toDate = useInput('');
+  const hashTag = useInput('');
+  const twitterUrl = useInput('');
+  const fromDateRef = useRef<HTMLInputElement>(null);
+  const toDateRef = useRef<HTMLInputElement>(null);
+  const [addEvent] = useAddEventMutation();
+  const [addNewImage] = useAddImageMutation();
+  const { routeTo } = useRouter();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const artistIds = selectedArtistIds.map((artist) => artist.id);
+    const categoryIds = selectedCategoryIds.map((category) => category.id);
+
+    if (
+      images.length !== 0 &&
+      artistIds.length !== 0 &&
+      categoryIds.length !== 0 &&
+      place &&
+      businessHour &&
+      fromDate &&
+      toDate &&
+      hashTag &&
+      twitterUrl
+    ) {
+      try {
+        const imageUrls = await Promise.all(
+          Object.values(images).map(async (image: File) => {
+            const formData = new FormData();
+            formData.append('file', image);
+            const imagesResults = await addNewImage({ imageFile: formData });
+            if ('data' in imagesResults) {
+              return imagesResults.data.filename;
+            }
+          })
+        );
+
+        const eventPayload = {
+          storeName: place.place_name,
+          artistIds,
+          categoryIds,
+          address: place.address_name,
+          businessHour,
+          fromDate: fromDate.value,
+          toDate: toDate.value,
+          hashtag: hashTag.value,
+          twitterUrl: twitterUrl.value,
+          imageFilenames: imageUrls,
+        };
+
+        const eventResult = await addEvent(eventPayload);
+        if ('data' in eventResult) {
+          routeTo(`/event/${eventResult?.data.id}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setImagePreview((prev) => ({
+        ...prev,
+        [e.target.name]: URL.createObjectURL(file),
+      }));
+      SetImages((prevImages) => ({
+        ...prevImages,
+        [e.target.name]: file,
+      }));
+    }
+  };
+
+  const handleAddressChange = (place: Place) => {
+    setPlace(place);
+  };
+
+  const handleBusinessHourChange = () => {
+    if (fromDateRef.current && toDateRef.current) {
+      const fromDateValue = fromDateRef.current.value;
+      const toDateValue = toDateRef.current.value;
+
+      const [fromHours, fromMinutes] = fromDateValue.split(':');
+      const [toHours, toMinutes] = toDateValue.split(':');
+
+      let fromAmPm = 'AM';
+      let toAmPm = 'AM';
+
+      let fromHoursInt = parseInt(fromHours, 10);
+      let toHoursInt = parseInt(toHours, 10);
+
+      if (fromHoursInt >= 12) {
+        fromAmPm = 'PM';
+        fromHoursInt = fromHoursInt === 12 ? 12 : fromHoursInt - 12;
+      } else if (fromHoursInt === 0) {
+        fromHoursInt = 12;
+      }
+
+      if (toHoursInt >= 12) {
+        toAmPm = 'PM';
+        toHoursInt = toHoursInt === 12 ? 12 : toHoursInt - 12;
+      } else if (toHoursInt === 0) {
+        toHoursInt = 12;
+      }
+
+      const fromTimeInAmPmFormat = `${fromAmPm} ${fromHoursInt}:${fromMinutes}`;
+      const toTimeInAmPmFormat = `${toAmPm} ${toHoursInt}:${toMinutes}`;
+      const businessHourString = `${fromTimeInAmPmFormat} ~ ${toTimeInAmPmFormat}`;
+
+      setBusinessHour(businessHourString);
+    }
+  };
+
   return (
     <EventModalPageWrapper>
-      <Modal>
+      <Modal onSubmit={handleSubmit}>
         <ModalCloseButton onClick={handleClose} />
         <ContentsSection>
           <ModalTitle>이벤트 등록하기</ModalTitle>
           <EventImageSection>
             <EventImage>
-              <FileInputLabel htmlFor="event-image1" />
+              <FileInputLabel htmlFor="preview1" preview={imagePreview} />
               <FileInput
-                id="event-image1"
-                name="event-image1"
+                id="preview1"
+                name="preview1"
                 type="file"
                 accept="image/*"
+                onChange={handleImagePreview}
               />
             </EventImage>
             <EventImage>
-              <FileInputLabel htmlFor="event-image2" />
+              <FileInputLabel htmlFor="preview2" preview={imagePreview} />
               <FileInput
-                id="event-image2"
-                name="event-image2"
+                id="preview2"
+                name="preview2"
                 type="file"
                 accept="image/*"
+                onChange={handleImagePreview}
               />
             </EventImage>
             <EventImage>
-              <FileInputLabel htmlFor="event-image3" />
+              <FileInputLabel htmlFor="preview3" preview={imagePreview} />
               <FileInput
-                id="event-image3"
-                name="event-image3"
+                id="preview3"
+                name="preview3"
                 type="file"
                 accept="image/*"
+                onChange={handleImagePreview}
               />
             </EventImage>
           </EventImageSection>
@@ -212,33 +229,67 @@ const AddEventModal = ({ handleClose }: Props) => {
               <SelectButton type="button" onClick={handdleSelectArtistButton}>
                 아티스트 선택
               </SelectButton>
-              <SelectedElement>선택 아티스트</SelectedElement>
+              {selectedArtistIds &&
+                selectedArtistIds.map((artists) => (
+                  <SelectedElement key={artists.id} currentId={artists.id}>
+                    {artists.name}
+                  </SelectedElement>
+                ))}
             </RawWrapper>
             <InfoTitle>카테고리</InfoTitle>
             <RawWrapper>
               <SelectButton type="button" onClick={handleSelectCategoryButton}>
                 카테고리 선택
               </SelectButton>
-              <SelectedElement>선택 카테고리</SelectedElement>
+              {selectedCategoryIds &&
+                selectedCategoryIds.map((category) => (
+                  <SelectedElement
+                    key={category.id}
+                    currentId={category.id}
+                    isCategory={true}
+                  >
+                    {category.category}
+                  </SelectedElement>
+                ))}
             </RawWrapper>
+            {/* TODO: 디자인 요청하기 */}
             <InfoTitle>주소</InfoTitle>
-            <EventInput placeholder="주소 입력" />
+            <RawWrapper>
+              <AdressInput onPlaceChange={handleAddressChange} />
+              <div>{place.address_name}</div>
+            </RawWrapper>
             <InfoTitle>영업 시간</InfoTitle>
             <RawWrapperWithGap>
-              <EventInput type="time" />
+              <EventInput
+                type="time"
+                ref={fromDateRef}
+                onChange={handleBusinessHourChange}
+              />
               ~
-              <EventInput type="time" />
+              <EventInput
+                type="time"
+                ref={toDateRef}
+                onChange={handleBusinessHourChange}
+              />
             </RawWrapperWithGap>
             <InfoTitle>이벤트 날짜</InfoTitle>
             <RawWrapperWithGap>
-              <EventInput type="date" />
+              <EventInput type="date" onChange={fromDate.onChange} />
               ~
-              <EventInput type="date" />
+              <EventInput type="date" onChange={toDate.onChange} />
             </RawWrapperWithGap>
             <InfoTitle>해시태그</InfoTitle>
-            <HashTagInput placeholder="#생일해시태그 #생일해시태그" />
+            <HashTagInput
+              placeholder="#생일해시태그 #생일해시태그"
+              type="text"
+              onChange={hashTag.onChange}
+            />
             <InfoTitle>트위터 링크</InfoTitle>
-            <LinkInput placeholder="https://twitter.com/" />
+            <LinkInput
+              placeholder="https://twitter.com/"
+              type="text"
+              onChange={twitterUrl.onChange}
+            />
           </InfoSection>
           <FormButtonRawWrapper>
             <CancelButton type="button" onClick={handleClose}>

@@ -9,6 +9,9 @@ import editArtistTypeReducer from './editArtistTypeSlice';
 import editBookmarkFolderReducer from './editBookmarkFolderSlice';
 import editCategoryReducer from './editCategorySlice';
 import manageModalReducer from './manageModalSlice';
+import setEventElementReducer, {
+  SetEventElementsState,
+} from './setEventElemetsSlice';
 
 const reducers = combineReducers({
   manageModal: manageModalReducer,
@@ -18,6 +21,7 @@ const reducers = combineReducers({
   editCategory: editCategoryReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authReducer,
+  setEventElement: setEventElementReducer,
 });
 
 const persistConfig = {
@@ -38,3 +42,4 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export type { AuthState };
+export type { SetEventElementsState };

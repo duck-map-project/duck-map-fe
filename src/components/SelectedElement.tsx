@@ -1,7 +1,9 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import closeIcon from '../assets/close.svg';
+import { removeArtist, removeCategory } from '../redux/setEventElemetsSlice';
 
 const Selected = styled.div`
   font-size: 1.6rem;
@@ -26,16 +28,32 @@ const SelectedDeleteButton = styled.button`
   transform: translateY(-50%);
 `;
 
-const SelectedElement: React.FC<
-  React.DetailedHTMLProps<
+interface SelectedElementProps
+  extends React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLSpanElement>,
     HTMLSpanElement
-  >
-> = ({ children }) => {
+  > {
+  currentId: number;
+  isCategory?: boolean;
+}
+
+const SelectedElement: React.FC<SelectedElementProps> = ({
+  children,
+  currentId,
+  isCategory,
+}) => {
+  const dispatch = useDispatch();
+  const handleRemoveArtist = () => {
+    if (isCategory) {
+      dispatch(removeCategory(currentId));
+    } else {
+      dispatch(removeArtist(currentId));
+    }
+  };
   return (
     <Selected>
       <span>{children}</span>
-      <SelectedDeleteButton />
+      <SelectedDeleteButton onClick={handleRemoveArtist} />
     </Selected>
   );
 };
