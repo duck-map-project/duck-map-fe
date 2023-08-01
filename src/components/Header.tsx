@@ -89,16 +89,16 @@ const Header: React.FC = ({}) => {
   const userRole = useSelector(selectCurrentRole);
   const [logout] = useLogoutMutation();
   const { data: userData } = useGetUserInfoQuery();
-  const [userProfile, setUserProfile] = useState('');
+  const [userProfile, setUserProfile] = useState<string | null>('');
 
   useEffect(() => {
     if (userData?.userProfile) {
-      if (userProfile.slice(-11) !== 'images/null') {
+      if (userData?.userProfile !== '/images/null') {
         const url = baseUrl + userData.userProfile;
         setUserProfile(url);
         return;
       }
-      setUserProfile(defaultImage);
+      setUserProfile(null);
     }
   }, [userData]);
 
@@ -206,7 +206,7 @@ const Header: React.FC = ({}) => {
         </MenuButton>
         <ProfileDropdown>
           <ProfileImg
-            src={userProfile}
+            src={userProfile || defaultImage}
             alt="Profile"
             onClick={handleProfileClick}
           />
