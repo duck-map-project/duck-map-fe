@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 
 const TabWrapper = styled.section`
   width: 100%;
-  height: 1330px;
+  max-height: 1330px;
   padding: 28px 24px;
   background-color: #fcfefe;
   border-radius: 20px;
@@ -52,7 +52,7 @@ const ReviewSection = () => {
     data: ReveiwData,
     isLoading,
     isError,
-    error,
+    // error,
   } = useGetReviewsQuery({
     eventId: parseInt(id as string) as number,
     pageNumber: 0,
@@ -68,15 +68,16 @@ const ReviewSection = () => {
 
   let content;
 
-  if (reviewInfo) {
+  if (reviewInfo.length !== 0) {
     content = reviewInfo.map((review) => (
       <ReviewItem key={review.id} review={review} />
     ));
   } else if (isLoading) {
-    <div>리뷰 목록을 불러오는 중 입니다.</div>;
+    content = <div>리뷰 목록을 불러오는 중 입니다.</div>;
   } else if (isError) {
-    <div>{error.toString()}</div>;
+    content = <div>데이터를 불러오는데 실패했습니다.</div>;
   }
+
   return (
     <Wrapper>
       <TabWrapper>
