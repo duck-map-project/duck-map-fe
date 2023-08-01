@@ -1,3 +1,4 @@
+import { url } from 'inspector';
 import {
   mylikeEventsType,
   transformedMylike,
@@ -87,8 +88,18 @@ export const mypageApiSlice = apiSlice.injectEndpoints({
         return { numberOfElements, isLast, content };
       },
     }),
+    deleteEvent: builder.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `/events/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetMylikeQuery, useGetMyreviewQuery, useGetMyeventQuery } =
-  mypageApiSlice;
+export const {
+  useGetMylikeQuery,
+  useGetMyreviewQuery,
+  useGetMyeventQuery,
+  useDeleteEventMutation,
+} = mypageApiSlice;
