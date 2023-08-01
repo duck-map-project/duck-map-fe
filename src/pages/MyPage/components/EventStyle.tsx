@@ -15,6 +15,7 @@ export const EventWrapper = styled.article<EventWrapperProps>`
   align-items: center;
   gap: 14px;
   width: 100%;
+  height: 154px;
   padding: 11px 20px;
   margin-top: 22px;
   margin-right: 34px;
@@ -46,17 +47,24 @@ export const EventImg = styled.img`
   height: 124px;
   border: 2px solid var(--line-black);
   border-radius: 20px;
+  object-fit: cover;
 `;
 
 export const ArtistInfo = styled.div`
   font-size: 14px;
   font-weight: 400;
-  & span:first-of-type {
-    font-size: 16px;
-    font-weight: 700;
-    margin-right: 12px;
-  }
   margin-bottom: 7.6px;
+`;
+
+export const GroupName = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+export const ArtistName = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 5px;
 `;
 
 export const EventTypeWrapper = styled.div`
@@ -142,4 +150,11 @@ export const DeleteEventBtn = styled(StyledBtn)`
     background-repeat: no-repeat;
     background-position: center;
   }
+`;
+
+export const EventContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 `;
