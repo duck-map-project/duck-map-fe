@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { useRouter } from '../../../hooks/useRouter';
 import defaultImage from '../../../assets/user-profile.svg';
+import { useRouter } from '../../../hooks/useRouter';
 import {
   useEditUserInfoMutation,
   useUnregisterMutation,

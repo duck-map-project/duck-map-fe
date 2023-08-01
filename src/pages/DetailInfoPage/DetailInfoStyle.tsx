@@ -48,7 +48,7 @@ export const TopSection = styled.section`
   justify-content: center;
   position: relative;
   gap: 55px;
-  padding: 28px 41px 15px 26px;
+  padding: 28px 41px 63px 26px;
   &::after {
     content: '';
     box-sizing: border-box;
@@ -68,36 +68,12 @@ export const ImgSection = styled.section`
   position: relative;
 `;
 
-export const EventImg = styled.section<{ url: string }>`
-  width: 416px;
-  height: 357px;
-  border: 2px solid #1e232c;
-  background-image: url(${(props) => props.url});
-`;
-
-export const ImgNumMarkWrapper = styled.section`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  & > div {
-    margin-right: 26px;
-  }
-  & > div:last-child {
-    margin-right: 0;
-  }
-`;
-
 export const ImgNumMarkCircle = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background-color: var(--disabled);
   cursor: pointer;
-`;
-
-export const ImgNumMarkCirclePurple = styled(ImgNumMarkCircle)`
-  background-color: var(--purple);
 `;
 
 export const HeartButtonWrapper = styled.div`
@@ -107,7 +83,7 @@ export const HeartButtonWrapper = styled.div`
   align-items: center;
   position: absolute;
   right: 34px;
-  bottom: -7px;
+  bottom: -48px;
 `;
 
 export const LikeNum = styled.span`
@@ -129,7 +105,7 @@ export const BookmarkButton = styled(HeartButton)`
   height: 22px;
   position: absolute;
   right: 3px;
-  bottom: 14px;
+  bottom: -28px;
   ${(props) =>
     props.checked
       ? `background-image: url(${bookmarkActive})`

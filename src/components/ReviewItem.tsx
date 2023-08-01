@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import { Review } from '../types/eventService';
+
 import FixedRating from './FixedRating';
 
 const ReviewWrapper = styled.li`
@@ -71,45 +73,28 @@ const ReviewPhoto = styled.img`
   border: 1.4px solid #1e232c;
   border-radius: 20px;
 `;
+interface ReviewItemProps {
+  review: Review;
+}
 
-const ReviewItem = () => {
+const ReviewItem = ({ review }: ReviewItemProps) => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   return (
     <ReviewWrapper>
       <TopSection>
-        <ProfileImg
-          alt="사용자 프로필"
-          src="https://i.pinimg.com/736x/07/67/a9/0767a97903445549adcb066bb9ee74e3.jpg"
+        <ProfileImg alt="사용자 프로필" src={baseUrl + review.userProfile} />
+        <ReviewInfoText>{review.username}</ReviewInfoText>
+        <FixedRating
+          score={review.score}
+          size="reviewItem"
+          className="reviewitem"
         />
-        <ReviewInfoText>username</ReviewInfoText>
-        <FixedRating score={3.5} size="reviewItem" className="reviewitem" />
       </TopSection>
       <MiddleSection>
         <ReviewContentSection>
-          <ReviewContext>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum Lorem Ipsum is simply
-            dummy text of the printing and typesetting industry. Lorem Ipsum has
-            been the industrys standard dummy text ever since the 1500s, when an
-            unknown printer took a galley of type and scrambled it to make a
-            type specimen book. It has survived not only five centuries, but
-            also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently
-            with desktop publishing software like Aldus PageMaker including
-            versions of Lorem Ipsum
-          </ReviewContext>
+          <ReviewContext>{review.content}</ReviewContext>
         </ReviewContentSection>
-        <ReviewPhoto
-          src="https://images.unsplash.com/photo-1481833761820-0509d3217039?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-          alt="카페 리뷰 사진"
-        />
+        <ReviewPhoto src={baseUrl + review.reviewImage} alt="카페 리뷰 사진" />
       </MiddleSection>
     </ReviewWrapper>
   );
