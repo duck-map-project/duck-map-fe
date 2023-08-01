@@ -22,9 +22,10 @@ const primaryWrapper = css`
 `;
 
 const reviewItemWrapper = css`
+  width: 138px;
   padding: 4px 11.5px;
   background-color: #fffcedfa;
-  border: 1.4px solid #1e232c;
+  border: 2px solid #1e232c;
   border-radius: 20px;
 `;
 
@@ -66,11 +67,12 @@ interface FixedRatingProps {
   score: number;
   marginB?: string;
   size?: 'primary' | 'reviewItem';
+  className: string;
 }
 
-const FixedRating = ({ score, marginB, size }: FixedRatingProps) => {
+const FixedRating = ({ score, marginB, size, className }: FixedRatingProps) => {
   return (
-    <Wrapper $marginB={marginB} $size={size}>
+    <Wrapper $marginB={marginB} $size={size} className={className}>
       <FixedRatingStyle score={score} $size={size} />
     </Wrapper>
   );
