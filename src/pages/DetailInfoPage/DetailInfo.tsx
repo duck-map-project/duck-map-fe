@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
+import { setPlace } from '../../redux/eventPlaceSlice';
 import { EventData } from '../../types/eventService';
 
 import {
@@ -58,10 +60,17 @@ const DetailInfo = () => {
   const [eventInfo, setEventInfo] = useState<EventData | undefined>(
     eventInfoData
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (eventInfoData && id) {
       setEventInfo(eventInfoData);
+      dispatch(
+        setPlace({
+          adress: [eventInfoData.address],
+          storeName: [eventInfoData.storeName],
+        })
+      );
     }
   }, [eventInfoData]);
   console.log(eventInfo);
