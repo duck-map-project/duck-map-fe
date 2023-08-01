@@ -26,6 +26,7 @@ import {
   MapButton,
   ReviewButton,
   DetailContents,
+  AddReviewButton,
 } from './DetailInfoStyle';
 import MapSection from './MapSection';
 import ReviewSection from './ReviewSection';
@@ -134,6 +135,7 @@ const DetailInfo = () => {
           </TabSection>
         </TopSection>
       </TopSectionWrapper>
+      <AddReviewButton type="button">리뷰 작성</AddReviewButton>
       <DetailContents>
         {currentTab === 'info' ? (
           <InfoSection />
