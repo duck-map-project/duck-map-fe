@@ -152,3 +152,9 @@ export const Tab = styled.label<tabProps>`
       top: -2px;
   `}
 `;
+
+export const NoticeNoReview = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+`;
