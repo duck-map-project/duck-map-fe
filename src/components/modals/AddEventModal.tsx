@@ -123,7 +123,7 @@ const AddEventModal = ({ handleClose }: Props) => {
 
         const eventResult = await addEvent(eventPayload);
         if ('data' in eventResult) {
-          routeTo(`/events/${eventResult?.data.id}`);
+          routeTo(`/event/${eventResult?.data.id}`);
         }
       } catch (error) {
         console.error(error);
