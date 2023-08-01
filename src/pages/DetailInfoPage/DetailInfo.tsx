@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
+import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
+import { EventData } from '../../types/eventService';
 
 import {
   ImgSection,
@@ -49,6 +52,18 @@ const DetailInfo = () => {
   const [currentImg, setCurrentImg] = useState(0);
   const [isLike, setIsLike] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const { data: eventInfoData } = useGetEventByIdQuery(id as string);
+  const [eventInfo, setEventInfo] = useState<EventData | undefined>(
+    eventInfoData
+  );
+
+  useEffect(() => {
+    if (eventInfoData && id) {
+      setEventInfo(eventInfoData);
+    }
+  }, [eventInfoData]);
+  console.log(eventInfo);
 
   return (
     <PageWrapper>
@@ -82,7 +97,7 @@ const DetailInfo = () => {
             />
           </ImgSection>
           <InfoSection>
-            <TextBox>상호명</TextBox>
+            <TextBox>{eventInfo?.storeName}</TextBox>
             <div>
               <HeartContour>
                 <SmallHeart />
@@ -91,14 +106,22 @@ const DetailInfo = () => {
               </HeartContour>
             </div>
             <FixedRating score={4.5} marginB="10px" />
-            <TextBoxWithTitle title="이벤트 기간">날짜</TextBoxWithTitle>
-            <TextBoxWithTitle title="영업 시간">시간</TextBoxWithTitle>
+            <TextBoxWithTitle title="이벤트 기간">
+              {eventInfo?.fromDate} ~ {eventInfo?.toDate}
+            </TextBoxWithTitle>
+            <TextBoxWithTitle title="영업 시간">
+              {eventInfo?.businessHour}
+            </TextBoxWithTitle>
             <CopyTextBoxWrapper>
-              <TextBoxWithTitle title="해시태그">해시태그</TextBoxWithTitle>
+              <TextBoxWithTitle title="해시태그">
+                {eventInfo?.hashtag}
+              </TextBoxWithTitle>
               <CopyButton>복사</CopyButton>
             </CopyTextBoxWrapper>
             <CopyTextBoxWrapper>
-              <TextBoxWithTitle title="주소">주소</TextBoxWithTitle>
+              <TextBoxWithTitle title="주소">
+                {eventInfo?.address}
+              </TextBoxWithTitle>
               <CopyButton>복사</CopyButton>
             </CopyTextBoxWrapper>
 
