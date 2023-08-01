@@ -48,7 +48,7 @@ export const TopSection = styled.section`
   justify-content: center;
   position: relative;
   gap: 55px;
-  padding: 28px 41px 15px 26px;
+  padding: 28px 41px 63px 26px;
   &::after {
     content: '';
     box-sizing: border-box;
@@ -83,7 +83,7 @@ export const HeartButtonWrapper = styled.div`
   align-items: center;
   position: absolute;
   right: 34px;
-  bottom: -7px;
+  bottom: -48px;
 `;
 
 export const LikeNum = styled.span`
@@ -105,7 +105,7 @@ export const BookmarkButton = styled(HeartButton)`
   height: 22px;
   position: absolute;
   right: 3px;
-  bottom: 14px;
+  bottom: -28px;
   ${(props) =>
     props.checked
       ? `background-image: url(${bookmarkActive})`
