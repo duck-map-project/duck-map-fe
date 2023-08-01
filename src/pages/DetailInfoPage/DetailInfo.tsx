@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -105,13 +106,23 @@ const DetailInfo = () => {
               <TextBoxWithTitle title="해시태그">
                 {eventInfo?.hashtag}
               </TextBoxWithTitle>
-              <CopyButton>복사</CopyButton>
+              <CopyToClipboard
+                text={eventInfo?.hashtag as string}
+                onCopy={() => alert('클립보드에 복사되었습니다!')}
+              >
+                <CopyButton>복사하기</CopyButton>
+              </CopyToClipboard>
             </CopyTextBoxWrapper>
             <CopyTextBoxWrapper>
               <TextBoxWithTitle title="주소">
                 {eventInfo?.address}
               </TextBoxWithTitle>
-              <CopyButton>복사</CopyButton>
+              <CopyToClipboard
+                text={eventInfo?.address as string}
+                onCopy={() => alert('클립보드에 복사되었습니다!')}
+              >
+                <CopyButton>복사하기</CopyButton>
+              </CopyToClipboard>
             </CopyTextBoxWrapper>
 
             {/* TODO: 나중에 평균 별점값 받아오기 */}
