@@ -29,8 +29,18 @@ const ChangePassword = () => {
       currentPassword: currentPw,
       newPassword: newPw,
     };
+    try {
+      const res = await editPassword(data);
+      if ('data' in res) {
+        alert('정상적으로 변경되었습니다.');
+      }
+      if ('error' in res) {
+        alert('잠시 후 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error(error);
+    }
 
-    await editPassword(data);
     setCurrentPw('');
     setNewPw('');
   };
