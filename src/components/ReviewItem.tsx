@@ -81,7 +81,7 @@ const ReviewItem = () => {
           src="https://i.pinimg.com/736x/07/67/a9/0767a97903445549adcb066bb9ee74e3.jpg"
         />
         <ReviewInfoText>username</ReviewInfoText>
-        <FixedRating score={3.5} size="reviewItem" />
+        <FixedRating score={3.5} size="reviewItem" className="reviewitem" />
       </TopSection>
       <MiddleSection>
         <ReviewContentSection>

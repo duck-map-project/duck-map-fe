@@ -90,7 +90,7 @@ const DetailInfo = () => {
                 <SmallHeart />
               </HeartContour>
             </div>
-            <FixedRating score={4.5} marginB="10px" />
+            <FixedRating score={4.5} marginB="10px" className="detailinfo" />
             <TextBoxWithTitle title="이벤트 기간">날짜</TextBoxWithTitle>
             <TextBoxWithTitle title="영업 시간">시간</TextBoxWithTitle>
             <CopyTextBoxWrapper>

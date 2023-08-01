@@ -56,6 +56,7 @@ export const apiSlice = createApi({
     'EventCategory',
     'BookmarkFolders',
     'BookmarkEvents',
+    'Review',
   ],
   endpoints: () => ({}),
 });
