@@ -1,8 +1,9 @@
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { styled } from 'styled-components';
 
-// TODO: 트위터 임베드 해오기
 const TwitterEmbedSection = styled.section`
+  display: flex;
+  justify-content: center;
   width: 100%;
   padding: 25px;
   background-color: #fcfefe;

@@ -10,14 +10,10 @@ import { EventData } from '../../types/eventService';
 
 import {
   ImgSection,
-  EventImg,
   PageWrapper,
   TopSectionWrapper,
   TopSection,
   InfoSection,
-  ImgNumMarkWrapper,
-  ImgNumMarkCirclePurple,
-  ImgNumMarkCircle,
   HeartButtonWrapper,
   HeartButton,
   LikeNum,
@@ -33,26 +29,21 @@ import {
   DetailContents,
   AddReviewButton,
 } from './DetailInfoStyle';
+import ImageSlider from './ImageSlider';
 import MapSection from './MapSection';
 import ReviewSection from './ReviewSection';
 import TwitterInfoSection from './TwitterInfoSection';
 
 const DetailInfo = () => {
   type CurrentType = 'info' | 'map' | 'review';
-  // TODO: 예시 이미지 삭제하기
-  const testImg = [
-    'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80',
-    'https://images.unsplash.com/photo-1534040385115-33dcb3acba5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-    'https://images.unsplash.com/photo-1508424757105-b6d5ad9329d0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1335&q=80',
-  ];
 
   const [currentTab, setCurrentTab] = useState<CurrentType>('info');
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const handleTabClick = (tab: CurrentType) => {
     setCurrentTab(tab);
   };
 
-  const [currentImg, setCurrentImg] = useState(0);
   const [isLike, setIsLike] = useState(false);
   const [isBookmark, setIsBookmark] = useState(false);
   const { id } = useParams<{ id: string }>();
@@ -73,27 +64,15 @@ const DetailInfo = () => {
       );
     }
   }, [eventInfoData]);
-  console.log(eventInfo);
+
+  const images = eventInfo?.images.map((image) => baseUrl + image);
 
   return (
     <PageWrapper>
       <TopSectionWrapper>
         <TopSection>
-          {/* TODO: 이미지 슬라이드 기능 추가 */}
           <ImgSection>
-            <EventImg url={testImg[currentImg]} />
-            <ImgNumMarkWrapper>
-              {testImg.map((_, i) =>
-                i === currentImg ? (
-                  <ImgNumMarkCirclePurple
-                    key={i}
-                    onClick={() => setCurrentImg(i)}
-                  />
-                ) : (
-                  <ImgNumMarkCircle key={i} onClick={() => setCurrentImg(i)} />
-                )
-              )}
-            </ImgNumMarkWrapper>
+            <ImageSlider images={images as string[]} />
             <HeartButtonWrapper onClick={() => setIsLike((prev) => !prev)}>
               <HeartButton checked={isLike} />
               {/* TODO: 좋아요값 서버에서 가져오기 */}
@@ -181,5 +160,4 @@ const DetailInfo = () => {
     </PageWrapper>
   );
 };
-
 export default DetailInfo;
