@@ -51,11 +51,15 @@ const ShortcutsButton = styled.button`
   box-shadow: 3px 3px 0px 0px #00000040;
 `;
 
-const ReviewItem = () => {
+interface ReviewItemProps {
+  image: string;
+}
+
+const ReviewItem = ({ image }: ReviewItemProps) => {
   return (
     <Wrapper>
       <ContentBox>
-        <ReviewImg src="" />
+        <ReviewImg src={image} />
         <ShortcutsButton>바로가기</ShortcutsButton>
       </ContentBox>
       <WrapperAfter />
