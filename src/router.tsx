@@ -11,6 +11,7 @@ import ManagePage from './pages/ManagePage/Manage';
 import MyPage from './pages/MyPage/MyPage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
+import Reviews from './pages/Reviews/Reviews';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
 import { selectCurrentUser } from './redux/auth/authSlice';
@@ -103,6 +104,13 @@ const routerData: RouterElement[] = [
     element: <BookmarkShare />,
     withAuth: false,
     wrapWithLayout: false,
+  },
+  {
+    id: 12,
+    path: '/review',
+    element: <Reviews />,
+    withAuth: false,
+    wrapWithLayout: true,
   },
 ];
 

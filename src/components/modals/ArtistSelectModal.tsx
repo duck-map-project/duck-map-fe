@@ -19,6 +19,8 @@ import {
 } from './ArtistSelectModalStyle';
 import CommonModal, { ModalPortal } from './CommonModal';
 
+const loadedData = new Map();
+
 const ArtistSelectModal = () => {
   const dispatch = useDispatch();
   const [artists, setArtists] = useState<ArtistContent[]>([]);
@@ -36,8 +38,6 @@ const ArtistSelectModal = () => {
     pageNumber: page.toString(),
     pageSize: '18',
   });
-
-  const loadedData = new Map();
 
   const onArtistClick = (artistId: number, name: string) => {
     const existingArtist = artistIds.find((artist) => artist.id === artistId);

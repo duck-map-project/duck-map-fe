@@ -125,7 +125,7 @@ const Header: React.FC = ({}) => {
     routeTo('/event');
   };
   const handleReviewClick = () => {
-    console.log('리뷰!');
+    routeTo('/review');
   };
   const handleGroupClick = () => {
     dispatch(toggleGroup());

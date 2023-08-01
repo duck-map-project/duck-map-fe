@@ -61,7 +61,7 @@ const ReviewItem = ({
         <InfoBox>
           <UserName>{username}</UserName>
           <ReviewDate>{reviewdate}</ReviewDate>
-          <FixedRating score={3.5} />
+          <FixedRating score={3.5} className="reviewitem" />
         </InfoBox>
       </UserSection>
       <ReviewSection>

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 
+import { useRouter } from '../../../hooks/useRouter';
 import defaultImage from '../../../assets/user-profile.svg';
 import {
   useEditUserInfoMutation,
   useUnregisterMutation,
   useGetUserInfoQuery,
 } from '../../../redux/auth/authApiSlice';
+import { useLogoutMutation } from '../../../redux/auth/authApiSlice';
 import { useAddImageMutation } from '../../../redux/imageSlice';
 
 import {
@@ -22,6 +24,7 @@ import {
 } from './EditProfileStyle';
 
 const EditProfile = () => {
+  const { routeTo } = useRouter();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [userImage, setUserImage] = useState<File>(); //File 자체
   const [previewImage, setPreviewImage] = useState<string>(''); //프리뷰 이미지용 blob
@@ -33,6 +36,7 @@ const EditProfile = () => {
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
   const [unregister] = useUnregisterMutation();
+  const [logout] = useLogoutMutation();
 
   useEffect(() => {
     if (userData) {
@@ -74,6 +78,9 @@ const EditProfile = () => {
           const response = await addNewImage({
             imageFile: formData,
           });
+          if ('data' in response) {
+            alert('정상적으로 변경되었습니다.');
+          }
           if ('error' in response) {
             return;
           }
@@ -100,13 +107,12 @@ const EditProfile = () => {
       username,
       image: filename,
     };
-
     try {
       const res = await editUserInfo(userInfo);
       if ('data' in res) {
-        alert('성공적으로 수정되었습니다.');
+        alert('정상적으로 수정되었습니다.');
       } else if ('error' in res) {
-        alert('잠시 후에 다시 시도해주세요. ');
+        alert('잠시 후 다시 시도해주세요.');
       }
     } catch (error) {
       console.error(error);
@@ -120,7 +126,14 @@ const EditProfile = () => {
     const proptValue = window.prompt('비밀번호를 입력해주세요');
     if (proptValue) {
       const password = { password: proptValue };
-      await unregister(password);
+      const res = await unregister(password);
+      if ('data' in res) {
+        alert('탈퇴되었습니다.');
+        await logout({});
+        routeTo('/');
+      } else if ('error' in res) {
+        alert('잠시 후 다시 시도해주세요.');
+      }
     }
   };
 
