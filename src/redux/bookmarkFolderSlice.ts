@@ -1,6 +1,8 @@
 import {
   BookmarkFoldersData,
   transformedFoldersData,
+  shareBookmarkFolderData,
+  transformedShareFolderType,
 } from '../types/bookmarkFolderType';
 
 import { apiSlice } from './apiSlice';
@@ -67,6 +69,34 @@ export const bookmarkFolderApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['BookmarkFolders'],
     }),
+    getShareBookmarkFolder: builder.query<
+      transformedShareFolderType,
+      { id: number }
+    >({
+      query: ({ id }) => ({
+        url: `/bookmark-folders/${id}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: shareBookmarkFolderData) => {
+        const id = response.id;
+        const name = response.name;
+        const username = response.username;
+        const memberId = response.memberId;
+        const numberOfElements =
+          response.bookmarkedEventResPage.numberOfElements;
+        const isLast = response.bookmarkedEventResPage.last;
+        const content = response.bookmarkedEventResPage.content;
+        return {
+          id,
+          name,
+          username,
+          memberId,
+          numberOfElements,
+          isLast,
+          content,
+        };
+      },
+    }),
   }),
 });
 
@@ -75,4 +105,5 @@ export const {
   useAddBookmarkFolderMutation,
   useUpdateBookmarkFolderMutation,
   useDeleteBookmarkFolderMutation,
+  useGetShareBookmarkFolderQuery,
 } = bookmarkFolderApiSlice;
