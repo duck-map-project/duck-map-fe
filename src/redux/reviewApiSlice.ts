@@ -14,7 +14,7 @@ const reviewApiSlice = apiSlice.injectEndpoints({
       { eventId: number; pageNumber?: number; pageSize?: number }
     >({
       query: ({ eventId, pageNumber = 0, pageSize = 10 }) => ({
-        url: `/reviews/${eventId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+        url: `/reviews/event/${eventId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
         method: 'GET',
       }),
       transformResponse: (response: ReviewResponse) => {
