@@ -33,6 +33,7 @@ import {
 } from './DetailInfoStyle';
 import MapSection from './MapSection';
 import ReviewSection from './ReviewSection';
+import TwitterInfoSection from './TwitterInfoSection';
 
 const DetailInfo = () => {
   type CurrentType = 'info' | 'map' | 'review';
@@ -160,8 +161,8 @@ const DetailInfo = () => {
       </TopSectionWrapper>
       <AddReviewButton type="button">리뷰 작성</AddReviewButton>
       <DetailContents>
-        {currentTab === 'info' ? (
-          <InfoSection />
+        {currentTab === 'info' && eventInfo?.twitterUrl ? (
+          <TwitterInfoSection twitterUrl={eventInfo?.twitterUrl} />
         ) : currentTab === 'map' ? (
           <MapSection />
         ) : currentTab === 'review' ? (
