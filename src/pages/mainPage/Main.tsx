@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 
 import sortIcon from '../../assets/sort-book.svg';
 import KakaoMap from '../../components/KakaoMap';
+import { useGetMainEventQuery } from '../../redux/eventApiSlice';
+import { setPlace } from '../../redux/eventPlaceSlice';
 import { useGetMainReviewQuery } from '../../redux/reviewApiSlice';
+import { MainEvent } from '../../types/eventService';
 import { MainReview } from '../../types/reviewServie';
 
 import {
@@ -38,12 +42,35 @@ const Main = () => {
   const [SelectedText, setSelectedText] = useState<string | null>('Event List');
   const [_, setSelectedId] = useState<number | null>(null);
   const [reviewImages, setReviewImages] = useState<MainReview[]>([]);
+  const [events, setEvents] = useState<MainEvent[]>([]);
+  const sortProperty = SelectedText === '리뷰순' ? 'reviewCount' : 'likeCount';
+  const { data: eventData } = useGetMainEventQuery({ sortProperty });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (eventData) {
+      setEvents(eventData.content);
+    }
+  }, [eventData, SelectedText]);
+
+  useEffect(() => {
+    if (events.length > 0) {
+      const processedPlace = events.map((event) => ({
+        id: event.id,
+        address: [event.address],
+        storeName: [event.storeName],
+      }));
+      dispatch(setPlace(processedPlace));
+    }
+  }, [events]);
 
   useEffect(() => {
     if (mainReviewData) {
       setReviewImages(mainReviewData.content);
     }
   }, [mainReviewData]);
+
+  console.log(events);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
