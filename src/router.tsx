@@ -120,7 +120,7 @@ export const Router = () => {
   return (
     <Routes>
       {routerData.map((router) => {
-        if (user && router.withAuth) {
+        if (!user && router.withAuth) {
           return (
             <Route
               key={router.id}
