@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Rating from '../../components/Rating';
@@ -18,6 +18,7 @@ const EditReview = () => {
   const [addNewImage] = useAddImageMutation();
   const [addReview] = useAddReviewMutation();
   const { routeTo } = useRouter();
+  const contentBoxRef = useRef<HTMLFormElement>(null);
 
   const { id } = useParams<{ id: string }>();
   const reviewText = useInput('');
@@ -74,15 +75,16 @@ const EditReview = () => {
   };
 
   const calculateNumRings = () => {
-    const contentBoxWidth =
-      document.querySelector('#content-box')?.clientWidth || 0;
-    const ringsWidth = 79;
-    const ringsSpacing = 70;
-    const maxNumRings = 7;
-    const calculatedNumRings = Math.floor(
-      (contentBoxWidth - ringsSpacing) / (ringsWidth + ringsSpacing)
-    );
-    setNumRings(Math.min(maxNumRings, calculatedNumRings));
+    if (contentBoxRef.current) {
+      const contentBoxWidth = contentBoxRef.current.clientWidth || 0;
+      const ringsWidth = 79;
+      const ringsSpacing = 70;
+      const maxNumRings = 7;
+      const calculatedNumRings = Math.floor(
+        (contentBoxWidth - ringsSpacing) / (ringsWidth + ringsSpacing)
+      );
+      setNumRings(Math.min(maxNumRings, calculatedNumRings));
+    }
   };
 
   useEffect(() => {
@@ -108,7 +110,7 @@ const EditReview = () => {
           <S.Rings key={index} />
         ))}
       </S.RingsWrapper>
-      <S.ContentBox id="content-box" onSubmit={handleSubmit}>
+      <S.ContentBox ref={contentBoxRef} onSubmit={handleSubmit}>
         <S.TopSection>
           <S.AddImageSection>
             <S.CurrentPreview currentImage={currentPreview} />
