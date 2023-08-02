@@ -73,19 +73,19 @@ const EditReview = () => {
     }
   };
 
-  useEffect(() => {
-    const calculateNumRings = () => {
-      const contentBoxWidth =
-        document.querySelector('#content-box')?.clientWidth || 0;
-      const ringsWidth = 79;
-      const ringsSpacing = 70;
-      const maxNumRings = 7;
-      const calculatedNumRings = Math.floor(
-        (contentBoxWidth - ringsSpacing) / (ringsWidth + ringsSpacing)
-      );
-      setNumRings(Math.min(maxNumRings, calculatedNumRings));
-    };
+  const calculateNumRings = () => {
+    const contentBoxWidth =
+      document.querySelector('#content-box')?.clientWidth || 0;
+    const ringsWidth = 79;
+    const ringsSpacing = 70;
+    const maxNumRings = 7;
+    const calculatedNumRings = Math.floor(
+      (contentBoxWidth - ringsSpacing) / (ringsWidth + ringsSpacing)
+    );
+    setNumRings(Math.min(maxNumRings, calculatedNumRings));
+  };
 
+  useEffect(() => {
     calculateNumRings();
 
     window.addEventListener('resize', calculateNumRings);
