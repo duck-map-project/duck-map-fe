@@ -8,6 +8,13 @@ interface GetReviewsTransformedResponse {
   content: Review[];
 }
 
+interface ReviewData {
+  eventId: number;
+  score: number;
+  content: string;
+  imageFilenames: string[];
+}
+
 interface GetMainReviewsTransformedResponse {
   content: MainReview[];
 }
@@ -28,6 +35,13 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         return { content, isLast };
       },
     }),
+    addReview: builder.mutation({
+      query: (requestData: ReviewData) => ({
+        url: '/reviews',
+        method: 'POST',
+        body: { ...requestData },
+      }),
+    }),
     getMainReview: builder.query<
       GetMainReviewsTransformedResponse,
       { pageNumber?: number; pageSize?: number }
@@ -44,4 +58,8 @@ const reviewApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetReviewsQuery, useGetMainReviewQuery } = reviewApiSlice;
+export const {
+  useGetReviewsQuery,
+  useAddReviewMutation,
+  useGetMainReviewQuery,
+} = reviewApiSlice;

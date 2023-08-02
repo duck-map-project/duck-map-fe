@@ -62,7 +62,7 @@ const routerData: RouterElement[] = [
   },
   {
     id: 5,
-    path: '/review/edit',
+    path: '/review/edit/:id',
     element: <EditReview />,
     withAuth: true,
     wrapWithLayout: true,
@@ -120,7 +120,7 @@ export const Router = () => {
   return (
     <Routes>
       {routerData.map((router) => {
-        if (user && router.withAuth) {
+        if (!user && router.withAuth) {
           return (
             <Route
               key={router.id}
