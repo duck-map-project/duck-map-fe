@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { css, styled } from 'styled-components';
 
+import customMarker from '../assets/marker.svg';
 import { useRouter } from '../hooks/useRouter';
 import { selectPlaces } from '../redux/eventPlaceSlice';
 
@@ -44,7 +45,6 @@ interface MarkerInfo {
 const KakaoMap = ({ size }: KakaoMapProps) => {
   const placeList = useSelector(selectPlaces);
   const { routeTo } = useRouter();
-  console.log(placeList);
 
   useEffect(() => {
     const container = document.getElementById('map');
@@ -81,9 +81,15 @@ const KakaoMap = ({ size }: KakaoMapProps) => {
                 markers.forEach((markerInfo) => {
                   bounds.extend(markerInfo.coords);
 
+                  const markerImage = new window.kakao.maps.MarkerImage(
+                    customMarker,
+                    new window.kakao.maps.Size(36, 44)
+                  );
+
                   const marker = new window.kakao.maps.Marker({
                     map,
                     position: markerInfo.coords,
+                    image: markerImage,
                   });
 
                   window.kakao.maps.event.addListener(
@@ -109,7 +115,6 @@ const KakaoMap = ({ size }: KakaoMapProps) => {
       });
     }
   }, [placeList]);
-
   return <MapSection id="map" size={size} />;
 };
 
