@@ -76,6 +76,8 @@ const ReviewSection = () => {
     content = <div>리뷰 목록을 불러오는 중 입니다.</div>;
   } else if (isError) {
     content = <div>데이터를 불러오는데 실패했습니다.</div>;
+  } else if (reviewInfo.length === 0) {
+    content = <div>앗, 아직 리뷰가 없어요.</div>;
   }
 
   return (

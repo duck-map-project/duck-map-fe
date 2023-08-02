@@ -49,22 +49,26 @@ const DetailInfo = () => {
   const [isBookmark, setIsBookmark] = useState(false);
   const { id } = useParams<{ id: string }>();
   const { data: eventInfoData } = useGetEventByIdQuery(id as string);
-  const [eventInfo, setEventInfo] = useState<EventData | undefined>(
-    eventInfoData
-  );
+  const [eventInfo, setEventInfo] = useState<EventData | null>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (eventInfoData && id) {
       setEventInfo(eventInfoData);
-      dispatch(
-        setPlace({
-          adress: [eventInfoData.address],
-          storeName: [eventInfoData.storeName],
-        })
-      );
     }
   }, [eventInfoData]);
+
+  useEffect(() => {
+    if (eventInfo) {
+      const processedPlace = [
+        {
+          address: [eventInfo.address],
+          storeName: [eventInfo.storeName],
+        },
+      ];
+      dispatch(setPlace(processedPlace));
+    }
+  }, [currentTab]);
 
   const images = eventInfo?.images.map((image) => baseUrl + image);
 

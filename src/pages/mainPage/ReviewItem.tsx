@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import { useRouter } from '../../hooks/useRouter';
+
 const Wrapper = styled.li`
   position: relative;
 `;
@@ -53,14 +55,23 @@ const ShortcutsButton = styled.button`
 
 interface ReviewItemProps {
   image: string;
+  reviewId: number;
 }
 
-const ReviewItem = ({ image }: ReviewItemProps) => {
+const ReviewItem = ({ image, reviewId }: ReviewItemProps) => {
+  const { routeTo } = useRouter();
   return (
     <Wrapper>
       <ContentBox>
         <ReviewImg src={image} />
-        <ShortcutsButton>바로가기</ShortcutsButton>
+        <ShortcutsButton
+          type="button"
+          onClick={() => {
+            routeTo(`/review/${reviewId}`);
+          }}
+        >
+          바로가기
+        </ShortcutsButton>
       </ContentBox>
       <WrapperAfter />
     </Wrapper>

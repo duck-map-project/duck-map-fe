@@ -3,13 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
 export interface EventPlaceState {
-  address: string[]; // Array of strings for addresses
-  storeName: string[]; // Array of strings for store names
+  id?: number;
+  address: string[];
+  storeName: string[];
 }
 
-const initialState: EventPlaceState = {
-  address: [],
-  storeName: [],
+interface InitialState {
+  places: EventPlaceState[];
+}
+
+const initialState: InitialState = {
+  places: [],
 };
 
 const eventPlaceSlice = createSlice({
@@ -17,9 +21,7 @@ const eventPlaceSlice = createSlice({
   initialState,
   reducers: {
     setPlace: (state, action) => {
-      const { adress, storeName } = action.payload;
-      state.address = adress;
-      state.storeName = storeName;
+      state.places = action.payload;
     },
   },
 });
@@ -28,5 +30,4 @@ export const { setPlace } = eventPlaceSlice.actions;
 
 export default eventPlaceSlice.reducer;
 
-export const selectAddress = (state: RootState) => state.eventPlace.address;
-export const selectStoreName = (state: RootState) => state.eventPlace.storeName;
+export const selectPlaces = (state: RootState) => state.eventPlace.places;
