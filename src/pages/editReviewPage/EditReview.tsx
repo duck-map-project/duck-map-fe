@@ -95,7 +95,7 @@ const EditReview = () => {
     return () => {
       window.removeEventListener('resize', calculateNumRings);
     };
-  }, []);
+  }, [calculateNumRings]);
 
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
