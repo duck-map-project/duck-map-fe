@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
+import { useRouter } from '../../hooks/useRouter';
 import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
 import { setPlace } from '../../redux/eventPlaceSlice';
 import { EventData } from '../../types/eventService';
@@ -51,6 +52,7 @@ const DetailInfo = () => {
   const { data: eventInfoData } = useGetEventByIdQuery(id as string);
   const [eventInfo, setEventInfo] = useState<EventData | null>(null);
   const dispatch = useDispatch();
+  const { routeTo } = useRouter();
 
   useEffect(() => {
     if (eventInfoData && id) {
@@ -162,7 +164,12 @@ const DetailInfo = () => {
           </TabSection>
         </TopSection>
       </TopSectionWrapper>
-      <AddReviewButton type="button">리뷰 작성</AddReviewButton>
+      <AddReviewButton
+        type="button"
+        onClick={() => routeTo(`/review/edit/${id}`)}
+      >
+        리뷰 작성
+      </AddReviewButton>
       <DetailContents>
         {currentTab === 'info' && eventInfo?.twitterUrl ? (
           <TwitterInfoSection twitterUrl={eventInfo?.twitterUrl} />
