@@ -29,7 +29,7 @@ export const Rings = styled.div`
   background-size: 79px 81px;
 `;
 
-export const ContentBox = styled.section`
+export const ContentBox = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -107,6 +107,7 @@ export const PreviewImageSection = styled.section`
   display: flex;
   justify-content: center;
   width: 100%;
+  height: 287px;
   padding: 43px 0 42px;
   background-color: #f8f8fa;
   border: 2px solid #1e232c;
@@ -195,9 +196,14 @@ export const CancelButton = styled.button`
 export const TextSection = styled.textarea`
   width: 100%;
   height: 210px;
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 1.333333333333333;
+  padding: 23px 35px 10px;
   border: 2px solid #1e232c;
   border-radius: 20px;
   /* FIXME: 배경색 값 가져올 수 없음 */
   background-color: #fff;
   margin-bottom: 16px;
+  resize: none;
 `;

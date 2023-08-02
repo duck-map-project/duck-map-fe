@@ -62,7 +62,7 @@ const routerData: RouterElement[] = [
   },
   {
     id: 5,
-    path: '/review/edit',
+    path: '/review/edit/:id',
     element: <EditReview />,
     withAuth: true,
     wrapWithLayout: true,

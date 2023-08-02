@@ -7,6 +7,13 @@ interface TransformedResponse {
   content: Review[];
 }
 
+interface ReviewData {
+  eventId: number;
+  score: number;
+  content: string;
+  imageFilenames: string[];
+}
+
 const reviewApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getReviews: builder.query<
@@ -23,7 +30,14 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         return { content, isLast };
       },
     }),
+    addReview: builder.mutation({
+      query: (requestData: ReviewData) => ({
+        url: '/reviews',
+        method: 'POST',
+        body: { ...requestData },
+      }),
+    }),
   }),
 });
 
-export const { useGetReviewsQuery } = reviewApiSlice;
+export const { useGetReviewsQuery, useAddReviewMutation } = reviewApiSlice;
