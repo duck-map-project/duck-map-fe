@@ -16,8 +16,6 @@ interface TwitterInfoSectionProps {
 }
 
 const TwitterInfoSection = ({ twitterUrl }: TwitterInfoSectionProps) => {
-  console.log(twitterUrl);
-
   const getTweetIdFromUrl = (url: string) => {
     const regex = /status\/(\d+)/;
     const match = url.match(regex);

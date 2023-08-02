@@ -82,3 +82,43 @@ export interface ReviewResponse {
   last: boolean;
   empty: boolean;
 }
+
+export interface MainEvent {
+  id: number;
+  storeName: string;
+  address: string;
+  likeCount: number;
+  reviewCount: number;
+  artists: string[];
+}
+
+interface Pageable {
+  offset: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  unpaged: boolean;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+}
+
+export interface MainEventResponse {
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: MainEvent[];
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: Pageable;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}

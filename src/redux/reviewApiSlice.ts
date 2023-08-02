@@ -1,8 +1,9 @@
 import { Review, ReviewResponse } from '../types/eventService';
+import { MainReview, MainReviewResponse } from '../types/reviewServie';
 
 import { apiSlice } from './apiSlice';
 
-interface TransformedResponse {
+interface GetReviewsTransformedResponse {
   isLast: boolean;
   content: Review[];
 }
@@ -14,10 +15,14 @@ interface ReviewData {
   imageFilenames: string[];
 }
 
+interface GetMainReviewsTransformedResponse {
+  content: MainReview[];
+}
+
 const reviewApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getReviews: builder.query<
-      TransformedResponse,
+      GetReviewsTransformedResponse,
       { eventId: number; pageNumber?: number; pageSize?: number }
     >({
       query: ({ eventId, pageNumber = 0, pageSize = 10 }) => ({
@@ -37,7 +42,24 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         body: { ...requestData },
       }),
     }),
+    getMainReview: builder.query<
+      GetMainReviewsTransformedResponse,
+      { pageNumber?: number; pageSize?: number }
+    >({
+      query: ({ pageNumber = 0, pageSize = 5 }) => ({
+        url: `/reviews/images?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: MainReviewResponse) => {
+        const content = response.content;
+        return { content };
+      },
+    }),
   }),
 });
 
-export const { useGetReviewsQuery, useAddReviewMutation } = reviewApiSlice;
+export const {
+  useGetReviewsQuery,
+  useAddReviewMutation,
+  useGetMainReviewQuery,
+} = reviewApiSlice;
