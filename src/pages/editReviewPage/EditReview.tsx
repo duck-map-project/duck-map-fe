@@ -1,49 +1,71 @@
-import { styled } from 'styled-components';
+import { useState, useEffect } from 'react';
 
-import AddImageButton from '../../components/AddImageButton';
-import Button from '../../components/Button';
 import Rating from '../../components/Rating';
-import usePreviewImage from '../../hooks/usePreviewImage';
 
-import {
-  ImgInput,
-  PageWrapper,
-  PreviewImg,
-  TextArea,
-  TopSection,
-} from './EditReviewStyle';
-
-const ButtonWithMargin = styled(Button)`
-  margin-right: 11px;
-`;
+import * as S from './EditReviewStyle';
 
 const EditReview = () => {
-  const { previewImage, onChange } = usePreviewImage(null);
+  const [rating, setRating] = useState<number>(0);
+  const [numRings, setNumRings] = useState<number>(0);
+
+  useEffect(() => {
+    const calculateNumRings = () => {
+      const contentBoxWidth =
+        document.querySelector('#content-box')?.clientWidth || 0;
+      const ringsWidth = 79;
+      const ringsSpacing = 70;
+      const maxNumRings = 7;
+      const calculatedNumRings = Math.floor(
+        (contentBoxWidth - ringsSpacing) / (ringsWidth + ringsSpacing)
+      );
+      setNumRings(Math.min(maxNumRings, calculatedNumRings));
+    };
+
+    calculateNumRings();
+
+    window.addEventListener('resize', calculateNumRings);
+
+    return () => {
+      window.removeEventListener('resize', calculateNumRings);
+    };
+  }, []);
+
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating);
+  };
+
+  const ringsArray = new Array(numRings).fill(0);
 
   return (
-    <PageWrapper>
-      <TopSection>
-        <PreviewImg url={previewImage as string}>
-          <AddImageButton size="big" htmlFor="img-input" />
-          <ImgInput
-            id="img-input"
-            type="file"
-            accept="image/*"
-            onChange={onChange}
-          />
-        </PreviewImg>
-        <Rating />
+    <S.PageWrapper>
+      <S.RingsWrapper>
+        {ringsArray.map((_, index) => (
+          <S.Rings key={index} />
+        ))}
+      </S.RingsWrapper>
+      <S.ContentBox id="content-box">
+        <S.TopSection>
+          <S.AddImageSection>
+            <S.CurrentPreview currentImage={null} />
+            <S.ImageInputLabel>사진 추가</S.ImageInputLabel>
+          </S.AddImageSection>
+          <S.PreviewImageBox>
+            <S.PreviewImageSection>
+              <S.SelectedImage selectedImage="" />
+            </S.PreviewImageSection>
+            <S.ButtonWraaper>
+              <S.SmallButton>평점 주기</S.SmallButton>
+              <Rating initialRating={rating} onChange={handleRatingChange} />
+            </S.ButtonWraaper>
+          </S.PreviewImageBox>
+        </S.TopSection>
+        <S.TextSection />
         <div>
-          <ButtonWithMargin color="primary" size="mid">
-            작성 완료
-          </ButtonWithMargin>
-          <Button color="white" size="mid">
-            취소
-          </Button>
+          <S.SubmitButton>작성 완료</S.SubmitButton>
+          <S.CancelButton>취소</S.CancelButton>
         </div>
-      </TopSection>
-      <TextArea />
-    </PageWrapper>
+      </S.ContentBox>
+    </S.PageWrapper>
   );
 };
 
