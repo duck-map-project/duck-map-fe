@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
 import EventListItem from '../../components/EventListItem';
 import KakaoMap from '../../components/KakaoMap';
 import AddEventModal from '../../components/modals/AddEventModal';
 import { useGetEventQuery } from '../../redux/eventApiSlice';
+import { setPlace } from '../../redux/eventPlaceSlice';
 import { EventListData } from '../../types/eventService';
 
 import {
@@ -32,6 +34,7 @@ const EventList = () => {
   } = useGetEventQuery({ pageNumber: page.toString() });
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const scrollArea = scrollAreaRef.current;
+  const dispatch = useDispatch();
 
   const isLast = eventData?.isLast ?? true;
 
@@ -44,6 +47,19 @@ const EventList = () => {
       }
     }
   }, [eventData]);
+
+  useEffect(() => {
+    if (events.length > 0) {
+      const processedPlace = events.map((event) => ({
+        id: event.id,
+        address: [event.address],
+        storeName: [event.storeName],
+      }));
+      console.log(processedPlace);
+
+      dispatch(setPlace(processedPlace));
+    }
+  }, [events]);
 
   useEffect(() => {
     if (scrollArea) {
