@@ -16,7 +16,6 @@ export const EventListItemBox = styled.li`
   border-radius: 10px;
   padding: 18.6px 0 11.4px 20px;
   background-color: #e6f8fe;
-  cursor: pointer;
   position: relative;
 `;
 
@@ -76,16 +75,16 @@ const IconButton = styled.button`
   top: 12px;
 `;
 
-export const LikeButton = styled(IconButton)<{ isLike: boolean }>`
+export const LikeButton = styled(IconButton)<{ $isLike: boolean }>`
   background-size: 20px 16px;
-  background-image: url(${(props) => (props.isLike ? heartActive : heart)});
+  background-image: url(${(props) => (props.$isLike ? heartActive : heart)});
   right: 64px;
 `;
 
-export const BookmarkButton = styled(IconButton)<{ isBookmarked: boolean }>`
+export const BookmarkButton = styled(IconButton)<{ $isBookmarked: boolean }>`
   background-size: 12px 16px;
   background-image: ${(props) =>
-    props.isBookmarked ? `url(${bookmarkActive})` : `url(${bookmark})`};
+    props.$isBookmarked ? `url(${bookmarkActive})` : `url(${bookmark})`};
   right: 20px;
 `;
 
