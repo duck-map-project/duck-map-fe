@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { ReactComponent as Checkicon } from '../../assets/icons/checkicon.svg';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
 import ReviewRating from '../../components/ReviewRating';
+// import { useRouter } from '../../hooks/useRouter';
 import { useGetAllReviewsQuery } from '../../redux/reviewSlice';
 import { reviewType } from '../../types/reviewType';
 
@@ -54,12 +55,12 @@ const ReviewItem = ({
   reviewImage,
   categories,
 }: ReviewItemProps) => {
-  const onClickReviewItem = () => {
-    id;
-    alert('상세리뷰로 이동!');
-  };
+  // const { routeTo } = useRouter();
 
-  score;
+  const onClickReviewItem = () => {
+    // routeTo(`/reviews/${id}`);
+    alert(`${id}상세 리뷰 이동`);
+  };
 
   const categoryContent = categories.map((category) => (
     <Category key={Math.random()}>#{category}</Category>
@@ -89,36 +90,62 @@ const ReviewItem = ({
 const Reviews = () => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [selectedTab, setSelectedTab] = useState('current');
-  const [allReviewsArray, setAllReviewsArray] = useState<reviewType[]>([]);
-  const [currentReviewArray, setCurrentReviewArray] = useState<reviewType[]>(
-    []
-  );
+  const [reviewsArray, setReviewsArray] = useState<reviewType[]>([]);
   const [hasReview, setHasReview] = useState(false);
+  const [reviewlistPage, setReviewListPage] = useState(0);
+  const [reviewOnlyInprogress, setReviewOnlyInprogress] = useState(true);
   const {
     data: ReviewsData,
     isLoading,
+    isFetching,
     isSuccess,
     isError,
-  } = useGetAllReviewsQuery({});
+  } = useGetAllReviewsQuery({
+    pageNumber: reviewlistPage.toString(),
+    onlyInProgress: reviewOnlyInprogress.toString(),
+  });
 
   useEffect(() => {
-    console.log(ReviewsData);
     if (ReviewsData) {
-      setAllReviewsArray(ReviewsData.content);
-
+      setReviewsArray(ReviewsData.content);
       const numberofelement = ReviewsData.numberOfElements;
       setHasReview(Boolean(numberofelement));
-
-      const currentReviews = ReviewsData.content.filter(
-        (review) => review.inProgress === true
-      );
-      setCurrentReviewArray(currentReviews);
     }
   }, [ReviewsData]);
 
   const onClickTab = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTab(e.target.value);
+    if (e.target.value === 'current') {
+      setReviewOnlyInprogress(true);
+    } else if (e.target.value === 'all') {
+      setReviewOnlyInprogress(false);
+    }
   };
+
+  //무한 스크롤
+  const reviewsListRef = useRef<HTMLDivElement>(null);
+  const listElement = reviewsListRef.current;
+
+  const isLast = ReviewsData?.isLast ?? true;
+
+  useEffect(() => {
+    if (listElement) {
+      const handleScroll = () => {
+        const { scrollTop, clientHeight, scrollHeight } = listElement;
+        const isScrolledToEnd = scrollTop + clientHeight >= scrollHeight;
+
+        if (isScrolledToEnd && !isFetching && !isLast) {
+          setReviewListPage((prev) => prev + 1);
+        }
+      };
+
+      listElement.addEventListener('scroll', handleScroll);
+
+      return () => {
+        listElement.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [reviewlistPage, isFetching, listElement, reviewsListRef]);
 
   const tabContent = tabArray.map((data) => (
     <div key={data.id}>
@@ -142,31 +169,18 @@ const Reviews = () => {
   if (isLoading) {
     reviewContent = <div> 리뷰를 불러오는 중입니다. </div>;
   } else if (isSuccess) {
-    if (selectedTab === 'current') {
-      reviewContent = currentReviewArray.map((review) => (
-        <ReviewItem
-          key={review.id}
-          id={review.id}
-          artistName={review.artists}
-          score={review.score}
-          reviewImage={baseURL + review.image}
-          categories={review.categories}
-        />
-      ));
-    } else if (selectedTab === 'all') {
-      reviewContent = allReviewsArray.map((review) => (
-        <ReviewItem
-          key={review.id}
-          id={review.id}
-          artistName={review.artists}
-          score={review.score}
-          reviewImage={baseURL + review.image}
-          categories={review.categories}
-        />
-      ));
-    } else if (isError) {
-      reviewContent = <div>{'리뷰를 불러오지 못하였습니다. '}</div>;
-    }
+    reviewContent = reviewsArray.map((review) => (
+      <ReviewItem
+        key={review.id}
+        id={review.id}
+        artistName={review.artists}
+        score={review.score}
+        reviewImage={baseURL + review.image}
+        categories={review.categories}
+      />
+    ));
+  } else if (isError) {
+    reviewContent = <div>{'리뷰를 불러오지 못하였습니다. '}</div>;
   }
 
   return (
@@ -175,8 +189,7 @@ const Reviews = () => {
       <MainContent>
         <TabWrapper>{tabContent}</TabWrapper>
         <ReviewWrapper>
-          {/* TODO: 무한스크롤 */}
-          <ScrollWrapper>
+          <ScrollWrapper ref={reviewsListRef}>
             {hasReview ? (
               reviewContent
             ) : (

@@ -7,6 +7,8 @@ export const reviewSlice = apiSlice.injectEndpoints({
     getAllReviews: builder.query<
       transformedReviewDataType,
       {
+        pageNumber?: string;
+        pageSize?: string;
         artistId?: string;
         onlyInProgress?: string;
       }
