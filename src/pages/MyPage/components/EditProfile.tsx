@@ -107,7 +107,6 @@ const EditProfile = () => {
     };
     try {
       const res = await editUserInfo(userInfo);
-      console.log(res);
       if ('data' in res) {
         alert('정상적으로 수정되었습니다.');
       } else if ('error' in res) {
