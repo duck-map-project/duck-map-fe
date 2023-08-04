@@ -1,8 +1,10 @@
+import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import artistArrow from '../assets/artist-arrow.svg';
 import artistHeart from '../assets/artist-heart.svg';
 import tongs from '../assets/tongs.svg';
+import { toggleEventListArtist } from '../redux/manageModalSlice';
 
 const Bar = styled.section`
   width: 100%;
@@ -93,9 +95,15 @@ const NextButton = styled.button`
 `;
 
 const ChoiceArtistBar = () => {
+  const dispatch = useDispatch();
+
+  const handleArtistBarButton = () => {
+    dispatch(toggleEventListArtist());
+  };
+
   return (
     <Bar>
-      <OpenModalButton type="button" />
+      <OpenModalButton type="button" onClick={handleArtistBarButton} />
       <StarList>
         <StarItem />
         <StarItem />

@@ -17,6 +17,7 @@ export const manageModalSlice = createSlice({
     editBookmarkFolder: false,
     eventArtist: false,
     eventCategory: false,
+    eventListArtist: false,
   },
   reducers: {
     toggleGroup: (state) => {
@@ -55,6 +56,9 @@ export const manageModalSlice = createSlice({
     toggleEventCategory: (state) => {
       state.eventCategory = !state.eventCategory;
     },
+    toggleEventListArtist: (state) => {
+      state.eventListArtist = !state.eventListArtist;
+    },
   },
 });
 
@@ -71,6 +75,7 @@ export const {
   toggleEditBookmarkFolder,
   toggleEventArtist,
   toggleEventCategory,
+  toggleEventListArtist,
 } = manageModalSlice.actions;
 
 export default manageModalSlice.reducer;
@@ -110,3 +115,6 @@ export const selectEventArtistModalState = (state: RootState) =>
 
 export const selectEventCategoryModalState = (state: RootState) =>
   state.manageModal.eventCategory;
+
+export const selectEventListArtistModalState = (state: RootState) =>
+  state.manageModal.eventListArtist;
