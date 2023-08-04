@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useDispatch } from 'react-redux';
 
 import arrowicon from '../../../assets/icons/arrowright.svg';
@@ -293,6 +294,8 @@ const Events = ({
   setSelectedFoldername,
   setSelectedFolderId,
 }: EventsProps) => {
+  const originPath = window.location.origin;
+  const folderPath = `/bookmark-share/${folderId}`;
   const [isEditmode, setIsEditmode] = useState(false);
   const [eventsArray, setEventsArray] = useState<BookmarkEventType[]>([]);
   const [hasEvents, setHasEvents] = useState(false);
@@ -344,17 +347,11 @@ const Events = ({
     ));
   }
 
-  const onClickShareBtn = async () => {
-    const originPath = window.location.origin;
-    const folderPath = `/bookmark-share/${folderId}`;
-    try {
-      await navigator.clipboard.writeText(originPath + folderPath);
-      alert('공유 주소가 복사되었습니다.');
-    } catch (error) {
-      alert('복사 실패');
-    }
+  const onCopyURL = () => {
+    alert(
+      '북마크 폴더 공유 주소가 복사되었습니다. 원하는 곳에 붙여넣어 보세요.'
+    );
   };
-
   return (
     <>
       <EventsHeader>
@@ -367,10 +364,12 @@ const Events = ({
           <span>{foldername}</span>
         </Path>
         <SettingBtnWrapper>
-          <SettingBtn onClick={onClickShareBtn}>
-            <img src={plusicon} />
-            폴더 공유하기
-          </SettingBtn>
+          <CopyToClipboard text={originPath + folderPath} onCopy={onCopyURL}>
+            <SettingBtn>
+              <img src={plusicon} />
+              폴더 공유하기
+            </SettingBtn>
+          </CopyToClipboard>
           <GoEditBtn
             onClick={onClickToggleEditmode}
             editmode={isEditmode ? isEditmode.toString() : undefined}
