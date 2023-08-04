@@ -26,6 +26,7 @@ export const MapSection = styled.section`
   border-radius: 20px;
   box-shadow: 6px 6px 0px 0px #00000040;
   position: relative;
+  z-index: 9;
 `;
 
 export const MapSectionTitle = styled.h2`

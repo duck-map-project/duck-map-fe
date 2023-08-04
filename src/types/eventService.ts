@@ -122,3 +122,18 @@ export interface MainEventResponse {
   last: boolean;
   empty: boolean;
 }
+
+export interface EventListData {
+  id: number;
+  storeName: string;
+  inProgress: boolean;
+  address: string;
+  artists: Artist[];
+  categories: Category[];
+  image: string;
+  likeId: number | null;
+  bookmarkId: number | null;
+}
+export interface EventResponse extends Omit<MainEventResponse, 'content'> {
+  content: EventListData[];
+}
