@@ -2,36 +2,19 @@ import { useEffect, useState, useRef } from 'react';
 
 import { ReactComponent as Checkicon } from '../../assets/icons/checkicon.svg';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
-import ReviewRating from '../../components/ReviewRating';
 // import { useRouter } from '../../hooks/useRouter';
 import { useGetAllReviewsQuery } from '../../redux/reviewSlice';
 import { reviewType } from '../../types/reviewType';
 
+import ReviewItem from './ReviewItem';
 import {
-  ReviewItemWrapper,
-  ArtistsWrapper,
-  ArtistName,
-  NumberOfAritsts,
-  CategoryWrapper,
-  Category,
-  ReviewImgWrapper,
-  ReviewImg,
   MainContent,
   ReviewWrapper,
   ScrollWrapper,
-  RatingWrapper,
   Tab,
   TabWrapper,
   NoticeNoReview,
 } from './ReviewStyle';
-
-type ReviewItemProps = {
-  id: number;
-  artistName: string[];
-  score: number;
-  reviewImage: string;
-  categories: string[];
-};
 
 const tabArray = [
   {
@@ -47,45 +30,6 @@ const tabArray = [
     text: '모두 보기',
   },
 ];
-
-const ReviewItem = ({
-  id,
-  artistName,
-  score,
-  reviewImage,
-  categories,
-}: ReviewItemProps) => {
-  // const { routeTo } = useRouter();
-
-  const onClickReviewItem = () => {
-    // routeTo(`/reviews/${id}`);
-    alert(`${id}상세 리뷰 이동`);
-  };
-
-  const categoryContent = categories.map((category) => (
-    <Category key={Math.random()}>#{category}</Category>
-  ));
-
-  const isAlone = artistName.length > 1 ? false : true;
-
-  return (
-    <ReviewItemWrapper onClick={onClickReviewItem}>
-      <ReviewImgWrapper>
-        <ReviewImg src={reviewImage} />
-      </ReviewImgWrapper>
-      <ArtistsWrapper>
-        <ArtistName>{artistName[0]}</ArtistName>
-        <NumberOfAritsts>
-          {isAlone ? '' : `외 ${artistName.length}명`}
-        </NumberOfAritsts>
-      </ArtistsWrapper>
-      <CategoryWrapper>{categoryContent}</CategoryWrapper>
-      <RatingWrapper>
-        <ReviewRating score={score} className="reviewScore" />
-      </RatingWrapper>
-    </ReviewItemWrapper>
-  );
-};
 
 const Reviews = () => {
   const baseURL = process.env.REACT_APP_BASE_URL;
