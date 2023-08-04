@@ -41,4 +41,10 @@ export const ReviewImg = styled.img`
   height: 263px;
   border-top: 2px solid var(--line-black);
   border-bottom: 2px solid var(--line-black);
+  object-fit: cover;
+`;
+
+export const ReviewsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 `;

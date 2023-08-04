@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import locationIcon from '../../../assets/icons/location.svg';
+import FixedRating from '../../../components/FixedRating';
 import { useGetMyreviewQuery } from '../../../redux/mypageSlice';
 import { myreviewType } from '../../../types/mypageType';
 
@@ -10,6 +11,7 @@ import {
   EventName,
   ReviewContent,
   ReviewImg,
+  ReviewsWrapper,
 } from './ReviewStyle';
 
 type ReviewItemProps = {
@@ -26,6 +28,7 @@ const ReviewItem = ({
   reviewImage,
   content,
 }: ReviewItemProps) => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const onClickReviewItem = () => {
     id;
     alert('상세리뷰로 이동!');
@@ -37,11 +40,15 @@ const ReviewItem = ({
         <img src={locationIcon} />
         <div>
           <EventName>{eventStoreName}</EventName>
-          <span>{score}</span>
+          <FixedRating
+            score={score}
+            size="reviewItem"
+            className="myReviewItem"
+          />
         </div>
       </ReviewTitle>
       <ReviewContent> {content} </ReviewContent>
-      <ReviewImg src={reviewImage} />
+      <ReviewImg src={baseUrl + reviewImage} />
     </ReviewItemWrapper>
   );
 };
@@ -92,7 +99,7 @@ const Review = () => {
   return (
     <>
       {numberOfMyreview ? (
-        <div>{content}</div>
+        <ReviewsWrapper>{content}</ReviewsWrapper>
       ) : (
         <div>작성한 리뷰가 없습니다.</div>
       )}
