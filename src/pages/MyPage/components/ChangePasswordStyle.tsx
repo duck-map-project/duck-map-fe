@@ -3,9 +3,10 @@ import styled from 'styled-components';
 export const ChangePasswordForm = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100%;
 `;
 
 export const UserInfoWrapper = styled.div`
@@ -40,7 +41,7 @@ export const PasswordInput = styled(StyledInput)`
 
 export const EditSubmitBtn = styled.button`
   width: 474px;
-  margin: 201px 0 59px;
+  margin: 201px 0 0;
   padding: 17px;
   color: var(--font-black);
   font-size: 24px;

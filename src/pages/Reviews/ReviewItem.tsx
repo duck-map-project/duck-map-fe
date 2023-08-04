@@ -10,7 +10,6 @@ import {
   NumberOfAritsts,
   CategoryWrapper,
   RatingWrapper,
-
 } from './ReviewItemStyle';
 
 type ReviewItemProps = {
