@@ -4,71 +4,6 @@ type tabProps = {
   selected: boolean;
 };
 
-export const ReviewItemWrapper = styled.article`
-  position: relative;
-  width: 338px;
-  height: 302px;
-  padding: 20px 0;
-  border: 2px solid var(--line-black);
-  border-radius: 20px;
-  background-color: #f8f8fa;
-`;
-
-export const ReviewTitle = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin: 0 22px 10px;
-`;
-
-export const EventName = styled.span`
-  display: block;
-  margin-bottom: 3px;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: normal;
-`;
-
-export const ArtistName = styled.span`
-  font-size: 14px;
-  font-weight: 700;
-  line-height: normal;
-`;
-
-export const ReviewContent = styled.section`
-  display: -webkit-box;
-  margin: 0 22px 8px;
-  height: 36px;
-  //말줄임
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-height: 18px;
-`;
-
-export const Categories = styled.span`
-  margin: 0 22px;
-  font-size: 14px;
-  font-weight: 700;
-`;
-
-export const ReviewImg = styled.img`
-  width: 100%;
-  height: 93px;
-  margin-top: 12px;
-  border-top: 2px solid var(--line-black);
-  border-bottom: 2px solid var(--line-black);
-  object-fit: cover;
-`;
-
-export const Rating = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: end;
-  padding: 4px 10px 8px;
-`;
-
 export const MainContent = styled.main`
   position: relative;
   width: 90%;
@@ -90,9 +25,8 @@ export const ReviewWrapper = styled.div`
 `;
 
 export const ScrollWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   width: 100%;
   min-height: 80vh;

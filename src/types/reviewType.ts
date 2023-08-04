@@ -2,6 +2,9 @@ export type reviewType = {
   id: number;
   inProgress: boolean;
   image: string;
+  artists: string[];
+  categories: string[];
+  score: number;
 };
 
 export type reviewDataType = {
