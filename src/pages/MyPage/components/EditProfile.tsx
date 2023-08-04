@@ -78,10 +78,8 @@ const EditProfile = () => {
           const response = await addNewImage({
             imageFile: formData,
           });
-          if ('data' in response) {
-            alert('정상적으로 변경되었습니다.');
-          }
           if ('error' in response) {
+            alert('잠시 후 다시 시도해주세요.');
             return;
           }
           const filename = response.data.filename;
@@ -109,10 +107,20 @@ const EditProfile = () => {
     };
     try {
       const res = await editUserInfo(userInfo);
+      console.log(res);
       if ('data' in res) {
         alert('정상적으로 수정되었습니다.');
       } else if ('error' in res) {
-        alert('잠시 후 다시 시도해주세요.');
+        const error = res.error;
+        if ('data' in error) {
+          const data = error.data;
+          if (data !== null && typeof data === 'object' && 'message' in data) {
+            const errorMessage = data.message;
+            alert(errorMessage);
+            return;
+          }
+        }
+        alert('잠시 후에 다시 시도해주세요.');
       }
     } catch (error) {
       console.error(error);
