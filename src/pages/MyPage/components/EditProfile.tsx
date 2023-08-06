@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
 
 import defaultImage from '../../../assets/user-profile.svg';
@@ -31,7 +32,7 @@ const EditProfile = () => {
   const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-
+  const [isImgSaving, setIsImgSaving] = useState(false);
   const { data: userData } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
@@ -52,16 +53,20 @@ const EditProfile = () => {
     }
   }, [userData]);
 
-  const onChangeUserImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeUserImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      //파일 size 확인
-      if (imgFile.size > 1024 ** 2) {
-        alert('앗! 이미지가 너무 커요. 1MB 이하의 사진만 업로드 가능합니다.');
-        return;
+      imgFile && setPreviewImage(URL.createObjectURL(imgFile));
+      try {
+        setIsImgSaving(true);
+        const compressedFile = await imageCompression(imgFile, {
+          maxSizeMB: 0.5,
+        });
+        setUserImage(compressedFile);
+        setIsImgSaving(false);
+      } catch (error) {
+        console.error(error);
       }
-      setUserImage(imgFile);
-      setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
@@ -70,26 +75,31 @@ const EditProfile = () => {
   };
 
   const onClickSubmitBtn = async () => {
+    //이미지 압축 중일 떄
+    if (isImgSaving) {
+      alert('사진처리 중입니다. 잠시후 다시 시도해주세요. ');
+      return;
+    }
+    //추가된 이미지가 있을 경우
     if (userImage) {
       const formData = new FormData();
-      if (userImage instanceof File) {
-        formData.append('file', userImage);
-        try {
-          const response = await addNewImage({
-            imageFile: formData,
-          });
-          if ('error' in response) {
-            alert('잠시 후 다시 시도해주세요.');
-            return;
-          }
-          const filename = response.data.filename;
-          sendEditUser(filename);
-        } catch (error) {
-          console.error(error);
+      formData.append('file', userImage);
+      try {
+        const response = await addNewImage({
+          imageFile: formData,
+        });
+        if ('error' in response) {
+          alert('잠시 후 다시 시도해주세요.');
+          return;
         }
-        return;
+        const filename = response.data.filename;
+        sendEditUser(filename);
+      } catch (error) {
+        console.error(error);
       }
+      return;
     }
+    //기존 이미지 그대로 저장
     if (savedImagefile) {
       sendEditUser(savedImagefile);
     }
@@ -100,7 +110,6 @@ const EditProfile = () => {
       alert('닉네임은 필수값입니다.');
       return;
     }
-
     const userInfo = {
       username,
       image: filename,
@@ -108,7 +117,7 @@ const EditProfile = () => {
     try {
       const res = await editUserInfo(userInfo);
       if ('data' in res) {
-        alert('정상적으로 수정되었습니다.');
+        alert('정상적으로 수정되었습니다');
       } else if ('error' in res) {
         const error = res.error;
         if ('data' in error) {
