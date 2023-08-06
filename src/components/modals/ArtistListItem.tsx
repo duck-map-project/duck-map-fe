@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 
 import artistDefaultImage from '../../assets/artist-default-image.svg';
+import { Artist } from '../../types/eventService';
 
 const ArtistListItemBox = styled.section`
   display: flex;
@@ -49,20 +50,36 @@ const selectedListStyle = css`
 `;
 
 interface ArtistListPorps {
-  image: string;
-  selectedIds: number[];
+  groupData: Artist;
+  currentArtist: Artist | null;
   currentId: number;
+  setCurrentArtist: React.Dispatch<React.SetStateAction<Artist | null>>;
 }
 
-const ArtistListItem = ({ image, selectedIds, currentId }: ArtistListPorps) => {
+const ArtistListItem = ({
+  groupData,
+  currentArtist,
+  currentId,
+  setCurrentArtist,
+}: ArtistListPorps) => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
+  const image =
+    groupData.image === '/images/null'
+      ? '/images/null'
+      : baseUrl + groupData.image;
   return (
-    <ArtistListItemBox>
+    <ArtistListItemBox
+      onClick={() => {
+        setCurrentArtist(groupData);
+      }}
+    >
       <ArtistImg
         image={image}
-        selectedIds={selectedIds}
+        selectedIds={(currentArtist && [currentArtist.id]) || []}
         currentId={currentId}
       />
-      <ArtistName>name</ArtistName>
+      <ArtistName>{groupData.name}</ArtistName>
     </ArtistListItemBox>
   );
 };
