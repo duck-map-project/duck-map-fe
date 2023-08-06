@@ -37,7 +37,7 @@ const GroupModal = ({ type }: ModalType) => {
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
-  const [isImgSaving, setIsImgSaving] = useState(false);
+  const [isImgCompressing, setIsImgCompressing] = useState(false);
   const [addNewImage] = useAddImageMutation({});
   const [addNewGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
@@ -72,12 +72,12 @@ const GroupModal = ({ type }: ModalType) => {
       const imgFile = e.target.files[0];
       imgFile && setPreviewImage(URL.createObjectURL(imgFile));
       try {
-        setIsImgSaving(true);
+        setIsImgCompressing(true);
         const compressedFile = await imageCompression(imgFile, {
           maxSizeMB: 0.5,
         });
         setGroupImage(compressedFile);
-        setIsImgSaving(false);
+        setIsImgCompressing(false);
       } catch (error) {
         console.error(error);
       }
@@ -86,7 +86,7 @@ const GroupModal = ({ type }: ModalType) => {
 
   //** 리팩토링 필수 */
   const onClickAddGroupBtn = async () => {
-    if (isImgSaving) {
+    if (isImgCompressing) {
       alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
       return;
     }

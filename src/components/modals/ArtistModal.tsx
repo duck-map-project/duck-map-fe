@@ -64,7 +64,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   const [SortModal, setSortModal] = useState(false);
   const [groupPageNumber, _] = useState(0);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
-  const [isImgSaving, setIsImgSaving] = useState(false);
+  const [isImgCompressing, setIsImgCompressing] = useState(false);
   const pageSize = '20';
   const [addNewImage] = useAddImageMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
@@ -131,12 +131,12 @@ const ArtistModal = ({ type }: ModalProps) => {
       const imgFile = e.target.files[0];
       imgFile && setPreviewImage(URL.createObjectURL(imgFile));
       try {
-        setIsImgSaving(true);
+        setIsImgCompressing(true);
         const compressedFile = await imageCompression(imgFile, {
           maxSizeMB: 0.5,
         });
         setArtistImage(compressedFile);
-        setIsImgSaving(false);
+        setIsImgCompressing(false);
       } catch (error) {
         console.error(error);
       }
@@ -145,7 +145,7 @@ const ArtistModal = ({ type }: ModalProps) => {
 
   //** 리팩토링 필수 * /
   const onClickAddArtistBtn = async () => {
-    if (isImgSaving) {
+    if (isImgCompressing) {
       alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
       return;
     }

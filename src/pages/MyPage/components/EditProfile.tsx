@@ -32,7 +32,7 @@ const EditProfile = () => {
   const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [isImgSaving, setIsImgSaving] = useState(false);
+  const [isImgCompressing, setIsImgCompressing] = useState(false);
   const { data: userData } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
@@ -58,12 +58,12 @@ const EditProfile = () => {
       const imgFile = e.target.files[0];
       imgFile && setPreviewImage(URL.createObjectURL(imgFile));
       try {
-        setIsImgSaving(true);
+        setIsImgCompressing(true);
         const compressedFile = await imageCompression(imgFile, {
           maxSizeMB: 0.5,
         });
         setUserImage(compressedFile);
-        setIsImgSaving(false);
+        setIsImgCompressing(false);
       } catch (error) {
         console.error(error);
       }
@@ -76,7 +76,7 @@ const EditProfile = () => {
 
   const onClickSubmitBtn = async () => {
     //이미지 압축 중일 떄
-    if (isImgSaving) {
+    if (isImgCompressing) {
       alert('사진처리 중입니다. 잠시후 다시 시도해주세요. ');
       return;
     }
