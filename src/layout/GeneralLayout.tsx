@@ -53,7 +53,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   );
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
-  const eventListModalState = useSelector(selectEventListArtistModalState);
+  const eventListArtistModal = useSelector(selectEventListArtistModalState);
 
   return (
     <PageWrapper>
@@ -70,7 +70,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {bookmarkEditFolderModalState && <BookmarkFolderModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
-      {eventListModalState && <EventArtistModal />}
+      {eventListArtistModal && <EventArtistModal />}
       <Header />
       {children}
     </PageWrapper>

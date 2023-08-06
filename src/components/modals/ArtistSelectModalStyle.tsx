@@ -33,6 +33,7 @@ const SearchInput = styled.input`
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.248125;
+  background-color: inherit;
 `;
 
 const CancelButton = styled.button`

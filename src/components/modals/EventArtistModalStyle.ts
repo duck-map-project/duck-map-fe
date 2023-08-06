@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 
+import searchIcon from '../../assets/color-search-icon.svg';
 import leftArrow from '../../assets/left-arrow.svg';
 
 export const Wrapper = styled.section`
@@ -7,6 +8,17 @@ export const Wrapper = styled.section`
   width: 100%;
   padding-top: 28px;
   gap: 24px;
+`;
+
+export const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.248;
+  padding: 2.5px 0 2.5px 40px;
+  position: relative;
+  background-image: url(${searchIcon});
+  background-repeat: no-repeat;
+  margin-bottom: 14px;
 `;
 
 export const LeftSection = styled.section`
@@ -20,6 +32,8 @@ export const CurrentArtist = styled.img`
   border: 2px solid #1e232c;
   border-radius: 50%;
   margin-bottom: 10px;
+  object-fit: cover;
+  background-color: #d9d9d9;
 `;
 
 export const TextBox = styled.p`
@@ -49,6 +63,7 @@ const pseudoElementStlye = css`
 
 export const ArtistNameText = styled(TextBox)`
   font-size: 1.6rem;
+  height: 59px;
   background-color: #ecf5f8;
   margin-bottom: 17px;
   position: relative;
@@ -63,7 +78,10 @@ export const ArtistNameText = styled(TextBox)`
 `;
 
 export const ArtistTypeWrapper = styled.section`
+  width: 210px;
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 `;
 
 export const ArtistTypeButton = styled.button`
@@ -107,7 +125,7 @@ export const RightSection = styled.section`
   width: 100%;
 `;
 
-export const GroupSelectSection = styled.section<{ groupId: number | null }>`
+export const GroupSelectSection = styled.section`
   width: 100%;
   max-width: 872px;
   height: 630px;
@@ -116,20 +134,13 @@ export const GroupSelectSection = styled.section<{ groupId: number | null }>`
   border-radius: 20px;
   background-color: #ffd0ec;
   overflow: hidden;
-  padding: ${(props) => (props.groupId ? '22px 0' : '14px 0 0')};
+  padding-top: 14px;
 `;
 
-export const AritstSelectSection = styled(GroupSelectSection)`
-  padding: 22px 0;
-`;
-
-export const ArtistListSection = styled.ul`
+export const ArtistListWrapper = styled.section`
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  height: 558px;
   padding: 18px 22px 18px 20px;
-  gap: 20px 18px;
   background-color: #e6f8fe;
   border-top: 2px solid #1e232c;
   border-bottom: 2px solid #1e232c;
@@ -147,4 +158,11 @@ export const ArtistListSection = styled.ul`
     background: #fff4fb;
     border-left: 2px solid #1e232c;
   }
+`;
+
+export const ArtistListSection = styled.ul`
+  width: 100%;
+  gap: 20px 18px;
+  display: flex;
+  flex-wrap: wrap;
 `;

@@ -115,6 +115,5 @@ export const selectEventArtistModalState = (state: RootState) =>
 
 export const selectEventCategoryModalState = (state: RootState) =>
   state.manageModal.eventCategory;
-
 export const selectEventListArtistModalState = (state: RootState) =>
   state.manageModal.eventListArtist;
