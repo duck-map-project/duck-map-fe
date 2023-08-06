@@ -39,6 +39,7 @@ export const bookmarkFolderApiSlice = apiSlice.injectEndpoints({
         const isLast = response.last;
         return { numberOfElements, content, isLast };
       },
+      providesTags: ['BookmarkFolders'],
     }),
     addBookmarkFolder: builder.mutation({
       query: (folderValue: folderValueType) => ({
