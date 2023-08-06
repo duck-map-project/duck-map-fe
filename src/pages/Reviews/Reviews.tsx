@@ -1,40 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { ReactComponent as Checkicon } from '../../assets/icons/checkicon.svg';
-import locationIcon from '../../assets/icons/location.svg';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
-import FixedRating from '../../components/FixedRating';
-import { useGetReviewsQuery } from '../../redux/reviewSlice';
+// import { useRouter } from '../../hooks/useRouter';
+import { useGetAllReviewsQuery } from '../../redux/reviewSlice';
 import { reviewType } from '../../types/reviewType';
 
+import ReviewItem from './ReviewItem';
 import {
-  ReviewItemWrapper,
-  ReviewTitle,
-  ReviewContent,
-  EventName,
-  ArtistName,
-  Categories,
-  ReviewImg,
   MainContent,
   ReviewWrapper,
   ScrollWrapper,
-  Rating,
   Tab,
   TabWrapper,
   NoticeNoReview,
 } from './ReviewStyle';
-
-type ReviewItemProps = {
-  id: number;
-  eventStoreName: string;
-  artistName: string;
-  score: number;
-  reviewImage: string;
-  content: string;
-};
-
-const testText =
-  '대통령으로 선거될 수 있는 자는 국회의원의 피선거권이 있고 선거일 현재 40세에 달하여야 한다. 정기회의 회기는 100일을, 임시회의 회기는 30일을 초과할 수 없다.이 헌법은 1988년 2월 25일부터 시행한다. 다만, 이 헌법을 시행하기 위하여 필요한 법률의 제정·개정과 이 헌법에 의한 대통령 및 국회의원의 선거 기타 이 헌법시행에 관한 준비는 이 헌법시행 전에 할 수 있다.';
 
 const tabArray = [
   {
@@ -51,70 +31,65 @@ const tabArray = [
   },
 ];
 
-const ReviewItem = ({
-  id,
-  eventStoreName,
-  artistName,
-  score,
-  reviewImage,
-  content,
-}: ReviewItemProps) => {
-  const onClickReviewItem = () => {
-    id;
-    alert('상세리뷰로 이동!');
-  };
-
-  return (
-    <ReviewItemWrapper onClick={onClickReviewItem}>
-      <ReviewTitle>
-        <img src={locationIcon} />
-        <div>
-          <EventName>{eventStoreName}</EventName>
-          <ArtistName>{artistName}</ArtistName>
-        </div>
-      </ReviewTitle>
-      <ReviewContent> {content} </ReviewContent>
-      <Categories> #카테고리들 </Categories>
-      <ReviewImg src={reviewImage} />
-      <Rating>
-        <FixedRating score={score} size="reviewItem" className="리뷰아이템" />
-      </Rating>
-    </ReviewItemWrapper>
-  );
-};
-
 const Reviews = () => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [selectedTab, setSelectedTab] = useState('current');
-  const [allReviewsArray, setAllReviewsArray] = useState<reviewType[]>([]);
-  const [currentReviewArray, setCurrentReviewArray] = useState<reviewType[]>(
-    []
-  );
+  const [reviewsArray, setReviewsArray] = useState<reviewType[]>([]);
   const [hasReview, setHasReview] = useState(false);
-
+  const [reviewlistPage, setReviewListPage] = useState(0);
+  const [reviewOnlyInprogress, setReviewOnlyInprogress] = useState(true);
   const {
     data: ReviewsData,
     isLoading,
+    isFetching,
     isSuccess,
     isError,
-  } = useGetReviewsQuery({});
+  } = useGetAllReviewsQuery({
+    pageNumber: reviewlistPage.toString(),
+    onlyInProgress: reviewOnlyInprogress.toString(),
+  });
 
   useEffect(() => {
     if (ReviewsData) {
-      setAllReviewsArray(ReviewsData.content);
-
+      setReviewsArray(ReviewsData.content);
       const numberofelement = ReviewsData.numberOfElements;
       setHasReview(Boolean(numberofelement));
-
-      const currentReviews = allReviewsArray.filter(
-        (review) => review.inProgress === true
-      );
-      setCurrentReviewArray(currentReviews);
     }
   }, [ReviewsData]);
 
   const onClickTab = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTab(e.target.value);
+    if (e.target.value === 'current') {
+      setReviewOnlyInprogress(true);
+    } else if (e.target.value === 'all') {
+      setReviewOnlyInprogress(false);
+    }
   };
+
+  //무한 스크롤
+  const reviewsListRef = useRef<HTMLDivElement>(null);
+  const listElement = reviewsListRef.current;
+
+  const isLast = ReviewsData?.isLast ?? true;
+
+  useEffect(() => {
+    if (listElement) {
+      const handleScroll = () => {
+        const { scrollTop, clientHeight, scrollHeight } = listElement;
+        const isScrolledToEnd = scrollTop + clientHeight >= scrollHeight;
+
+        if (isScrolledToEnd && !isFetching && !isLast) {
+          setReviewListPage((prev) => prev + 1);
+        }
+      };
+
+      listElement.addEventListener('scroll', handleScroll);
+
+      return () => {
+        listElement.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [reviewlistPage, isFetching, listElement, reviewsListRef]);
 
   const tabContent = tabArray.map((data) => (
     <div key={data.id}>
@@ -134,36 +109,22 @@ const Reviews = () => {
   ));
 
   let reviewContent;
+
   if (isLoading) {
     reviewContent = <div> 리뷰를 불러오는 중입니다. </div>;
   } else if (isSuccess) {
-    if (selectedTab === 'current') {
-      reviewContent = currentReviewArray.map((review) => (
-        <ReviewItem
-          key={review.id}
-          id={review.id}
-          eventStoreName={'이벤트 이름'}
-          artistName={'아티스트 이름'}
-          score={4.5}
-          reviewImage={review.image}
-          content={testText}
-        />
-      ));
-    } else if (selectedTab === 'all') {
-      reviewContent = allReviewsArray.map((review) => (
-        <ReviewItem
-          key={review.id}
-          id={review.id}
-          eventStoreName={'이벤트 이름'}
-          artistName={'아티스트 이름'}
-          score={4.5}
-          reviewImage={review.image}
-          content={testText}
-        />
-      ));
-    } else if (isError) {
-      reviewContent = <div>{'리뷰를 불러오지 못하였습니다. '}</div>;
-    }
+    reviewContent = reviewsArray.map((review) => (
+      <ReviewItem
+        key={review.id}
+        id={review.id}
+        artistName={review.artists}
+        score={review.score}
+        reviewImage={baseURL + review.image}
+        categories={review.categories}
+      />
+    ));
+  } else if (isError) {
+    reviewContent = <div>{'리뷰를 불러오지 못하였습니다. '}</div>;
   }
 
   return (
@@ -172,7 +133,7 @@ const Reviews = () => {
       <MainContent>
         <TabWrapper>{tabContent}</TabWrapper>
         <ReviewWrapper>
-          <ScrollWrapper>
+          <ScrollWrapper ref={reviewsListRef}>
             {hasReview ? (
               reviewContent
             ) : (

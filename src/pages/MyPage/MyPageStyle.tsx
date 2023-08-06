@@ -65,11 +65,8 @@ export const ContentSection = styled.section`
 
 export const ContentWrapper = styled.div`
   display: flex;
-  /* flex-direction: column; */
-  /* flex-wrap: wrap; */
-  justify-content: center;
-  align-items: flex-start;
-  /* gap: 20px 23.5px; */
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
   padding: 4px;

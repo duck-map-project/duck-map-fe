@@ -120,21 +120,33 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
     setSelectEmoji(e.target.value);
   };
 
-  const onClickAddNewFolder = async () => {
+  const onClickAddNewFolder = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (foldername === '') {
+      alert('폴더 이름을 작성해주세요.');
+      return;
+    }
     await addNewBookmarkFolder({
       name: foldername,
       image: selectEmoji,
       color: selectColor,
     });
+    onHideModal();
   };
 
-  const onClickEditFolder = async () => {
+  const onClickEditFolder = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (foldername === '') {
+      alert('폴더 이름을 작성해주세요.');
+      return;
+    }
     const data = {
       name: foldername,
       image: selectEmoji,
       color: selectColor,
     };
     await editBookmarkFolder({ folderId, folderValue: data });
+    onHideModal();
   };
 
   return (
@@ -210,6 +222,7 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
             </ColorSelectSection>
           </FolderColorSection>
           <AddNewFolderBtn
+            type="button"
             onClick={type === 'add' ? onClickAddNewFolder : onClickEditFolder}
           >
             완료

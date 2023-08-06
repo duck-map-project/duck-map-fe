@@ -10,6 +10,7 @@ export const UserProfileEditForm = styled.form`
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 100%;
 `;
 
 export const ImagePreview = styled.label<imageType>`

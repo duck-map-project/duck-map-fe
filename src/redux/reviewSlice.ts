@@ -4,7 +4,7 @@ import { apiSlice } from './apiSlice';
 
 export const reviewSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getReviews: builder.query<
+    getAllReviews: builder.query<
       transformedReviewDataType,
       {
         pageNumber?: string;
@@ -28,7 +28,6 @@ export const reviewSlice = apiSlice.injectEndpoints({
         const content = response.content;
         const isLast = response.last;
         const numberOfElements = response.numberOfElements;
-
         return {
           content,
           isLast,
@@ -40,4 +39,4 @@ export const reviewSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetReviewsQuery } = reviewSlice;
+export const { useGetAllReviewsQuery } = reviewSlice;
