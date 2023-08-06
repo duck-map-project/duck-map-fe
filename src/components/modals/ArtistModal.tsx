@@ -133,7 +133,8 @@ const ArtistModal = ({ type }: ModalProps) => {
       try {
         setIsImgCompressing(true);
         const compressedFile = await imageCompression(imgFile, {
-          maxSizeMB: 0.5,
+          maxSizeMB: 0.2,
+          maxIteration: 30,
         });
         setArtistImage(compressedFile);
         setIsImgCompressing(false);
