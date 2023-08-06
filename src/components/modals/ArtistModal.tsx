@@ -137,7 +137,6 @@ const ArtistModal = ({ type }: ModalProps) => {
         });
         setArtistImage(compressedFile);
         setIsImgSaving(false);
-
       } catch (error) {
         console.error(error);
       }
@@ -164,7 +163,7 @@ const ArtistModal = ({ type }: ModalProps) => {
         const response = await addNewImage({
           imageFile: formData,
         });
-        
+
         if ('error' in response) {
           return;
         }
