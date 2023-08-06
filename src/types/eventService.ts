@@ -11,10 +11,10 @@ interface ArtistType {
   type: string;
 }
 
-interface Artist {
+export interface Artist {
   id: number;
-  groupId: number;
-  groupName: string;
+  groupId: number | null;
+  groupName: string | null;
   name: string;
   image: string;
   artistType: ArtistType;
