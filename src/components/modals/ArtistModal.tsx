@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -63,6 +64,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   const [SortModal, setSortModal] = useState(false);
   const [groupPageNumber, _] = useState(0);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
+  const [isImgSaving, setIsImgSaving] = useState(false);
   const pageSize = '20';
   const [addNewImage] = useAddImageMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
@@ -122,22 +124,32 @@ const ArtistModal = ({ type }: ModalProps) => {
     setArtistName(e.target.value);
   };
 
-  const onChangeArtistImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeArtistImage = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      //파일 size 확인
-      if (imgFile.size > 1024 ** 2) {
-        alert('앗! 이미지가 너무 커요. 1MB 이하의 사진만 업로드 가능합니다.');
-        return;
+      imgFile && setPreviewImage(URL.createObjectURL(imgFile));
+      try {
+        setIsImgSaving(true);
+        const compressedFile = await imageCompression(imgFile, {
+          maxSizeMB: 0.5,
+        });
+        setArtistImage(compressedFile);
+        setIsImgSaving(false);
+
+      } catch (error) {
+        console.error(error);
       }
-      setArtistImage(imgFile);
-      setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
   //** 리팩토링 필수 * /
   const onClickAddArtistBtn = async () => {
-    const formData = new FormData();
+    if (isImgSaving) {
+      alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
+      return;
+    }
     // 파일도, 프리뷰이미지도(string) 없으면 사진 입력
     if (artistImage === undefined) {
       if (previewImage === undefined) {
@@ -145,12 +157,14 @@ const ArtistModal = ({ type }: ModalProps) => {
       }
     }
     // 파일이 있다면 사진 저장 api
-    if (artistImage instanceof File) {
+    if (artistImage) {
+      const formData = new FormData();
       formData.append('file', artistImage);
       try {
         const response = await addNewImage({
           imageFile: formData,
         });
+        
         if ('error' in response) {
           return;
         }
