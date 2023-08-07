@@ -61,7 +61,6 @@ const CategorySelectModal = () => {
       setCategories(categoryData);
     }
   }, [categoryData]);
-  console.log(categories);
 
   return (
     <ModalPortal>

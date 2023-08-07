@@ -23,8 +23,6 @@ const TwitterInfoSection = ({ twitterUrl }: TwitterInfoSectionProps) => {
   };
   const twittId = getTweetIdFromUrl(twitterUrl);
 
-  console.log(twittId);
-
   return (
     <TwitterEmbedSection>
       {twittId ? (
