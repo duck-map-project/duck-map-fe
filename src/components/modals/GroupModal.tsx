@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -36,6 +37,7 @@ const GroupModal = ({ type }: ModalType) => {
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
+  const [isImgCompressing, setIsImgCompressing] = useState(false);
   const [addNewImage] = useAddImageMutation({});
   const [addNewGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
@@ -65,22 +67,30 @@ const GroupModal = ({ type }: ModalType) => {
     setGroupName(e.target.value);
   };
 
-  const onChangeGroupImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeGroupImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      //파일 size 확인
-      if (imgFile.size > 1024 ** 2) {
-        alert('앗! 이미지가 너무 커요. 1MB 이하의 사진만 업로드 가능합니다.');
-        return;
+      imgFile && setPreviewImage(URL.createObjectURL(imgFile));
+      try {
+        setIsImgCompressing(true);
+        const compressedFile = await imageCompression(imgFile, {
+          maxSizeMB: 0.2,
+          maxIteration: 30,
+        });
+        setGroupImage(compressedFile);
+        setIsImgCompressing(false);
+      } catch (error) {
+        console.error(error);
       }
-      setGroupImage(imgFile);
-      setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
   //** 리팩토링 필수 */
   const onClickAddGroupBtn = async () => {
-    const formData = new FormData();
+    if (isImgCompressing) {
+      alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
+      return;
+    }
 
     if (groupImage === undefined) {
       if (previewImage === undefined) {
@@ -88,7 +98,8 @@ const GroupModal = ({ type }: ModalType) => {
       }
     }
 
-    if (groupImage instanceof File) {
+    if (groupImage) {
+      const formData = new FormData();
       formData.append('file', groupImage);
       try {
         const response = await addNewImage({
