@@ -5,7 +5,7 @@ export interface ArtistValue {
   image: string;
 }
 
-export type artistType = {
+export type ArtistType = {
   id: number;
   type: string;
 };

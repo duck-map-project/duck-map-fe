@@ -1,10 +1,10 @@
-import { artistType } from '../types/artistsType';
+import { ArtistType } from '../types/artistsType';
 
 import { apiSlice } from './apiSlice';
 
 export const artistsTypeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getArtistsType: builder.query<artistType[], void>({
+    getArtistsType: builder.query<ArtistType[], void>({
       query: () => '/artists/types',
       providesTags: ['ArtistType'],
     }),

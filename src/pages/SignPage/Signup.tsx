@@ -56,7 +56,6 @@ const Signup = () => {
     { email: '', password: '', passwordCheck: '', username: '' },
     handleSignup
   );
-  console.log(errors);
 
   return (
     <PageWrapper>

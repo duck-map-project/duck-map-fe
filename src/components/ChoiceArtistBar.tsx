@@ -1,8 +1,21 @@
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import artistArrow from '../assets/artist-arrow.svg';
 import artistHeart from '../assets/artist-heart.svg';
 import tongs from '../assets/tongs.svg';
+import { useGetArtistOfGroupQuery } from '../redux/artistsSlice';
+import { toggleEventListArtist } from '../redux/manageModalSlice';
+import {
+  selectEventArtist,
+  selectEventGroup,
+  setEventArtist,
+} from '../redux/setEventArtistSlice';
+import { Artist } from '../types/eventService';
+
+import { selectedListStyle } from './modals/ArtistListItem';
 
 const Bar = styled.section`
   width: 100%;
@@ -26,14 +39,15 @@ const Bar = styled.section`
   }
 `;
 
-const OpenModalButton = styled.button`
+const OpenModalButton = styled.button<{ image: string | null }>`
   width: 98px;
   height: 98px;
   border: 2px solid #1e232c;
   border-radius: 50%;
   background-color: var(--white);
-  background-image: url(${artistHeart});
-  background-size: 50px;
+  background-image: ${(props) =>
+    props.image ? `url(${props.image})` : `url(${artistHeart})`};
+  background-size: ${(props) => (props.image ? 'cover' : '50px')};
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
@@ -65,13 +79,21 @@ const StarList = styled.ul`
   }
 `;
 
-const StarItem = styled.li`
+const StarItem = styled.li<{
+  image: string | null;
+  currentId: number;
+  selectedId: number;
+}>`
   width: 76px;
   height: 76px;
   border-radius: 50%;
   border: 2px solid #1e232c;
   background-color: var(--white);
   flex-shrink: 0;
+  background-image: url(${(props) => (props.image ? props.image : '')});
+  background-size: cover;
+  ${(props) =>
+    props.selectedId === props.currentId ? selectedListStyle : null}
 `;
 
 const NextSection = styled.section`
@@ -93,15 +115,68 @@ const NextButton = styled.button`
 `;
 
 const ChoiceArtistBar = () => {
+  const dispatch = useDispatch();
+  const [artists, setArtists] = useState<Artist[]>([]);
+  const selectedArtist = useSelector(selectEventArtist);
+  const selectedGroup = useSelector(selectEventGroup);
+  const [isGroupId, setIsGroupId] = useState<boolean>(true);
+  const [currentArtist, setCurrentArtist] = useState<Artist | null>(
+    selectedArtist
+  );
+
+  useEffect(() => {
+    if (selectedGroup && selectedGroup.id) {
+      setIsGroupId(false);
+    }
+  }, [selectedGroup]);
+
+  const { data: artistData } = useGetArtistOfGroupQuery(
+    selectedGroup?.id as number,
+    {
+      skip: isGroupId,
+    }
+  );
+
+  useEffect(() => {
+    if (artistData) {
+      setArtists(artistData);
+    }
+  }, [artistData, isGroupId]);
+
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const groupImage = selectedGroup && baseUrl + selectedGroup.image;
+
+  const artistImage = selectedArtist && baseUrl + selectedArtist.image;
+
+  const handleArtistBarButton = () => {
+    dispatch(toggleEventListArtist());
+  };
+
+  const onClickStarItem = (artist: Artist) => {
+    setCurrentArtist(artist);
+    dispatch(setEventArtist({ artist: artist, group: selectedGroup }));
+  };
+
   return (
     <Bar>
-      <OpenModalButton type="button" />
+      <OpenModalButton
+        type="button"
+        onClick={handleArtistBarButton}
+        image={groupImage || artistImage}
+      />
       <StarList>
-        <StarItem />
-        <StarItem />
-        <StarItem />
-        <StarItem />
-        <StarItem />
+        {artists &&
+          artists.map((artist) => (
+            <StarItem
+              key={artist.id}
+              image={
+                artist.image !== '/images/null' ? baseUrl + artist.image : null
+              }
+              currentId={artist.id}
+              selectedId={currentArtist?.id as number}
+              onClick={() => onClickStarItem(artist)}
+            />
+          ))}
       </StarList>
       <NextSection>
         <NextButton />

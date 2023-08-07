@@ -74,7 +74,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
           pageSize: '3',
           ...params,
         };
-        const url = '/events/';
+        const url = '/events';
         const queryString = params
           ? new URLSearchParams(defaultParams).toString()
           : '';

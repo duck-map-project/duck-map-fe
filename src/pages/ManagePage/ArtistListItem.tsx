@@ -52,7 +52,7 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
       await deleteArtist(data.id);
       alert('성공적으로 삭제되었습니다!');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
