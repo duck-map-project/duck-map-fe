@@ -65,7 +65,6 @@ const BookmarkShare = () => {
     },
     { skip }
   );
-
   useEffect(() => {
     if (BookmarkFolderData) {
       setEventsArray(BookmarkFolderData.content);

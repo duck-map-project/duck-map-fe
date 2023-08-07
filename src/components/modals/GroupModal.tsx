@@ -37,7 +37,6 @@ const GroupModal = ({ type }: ModalType) => {
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
-  const [isImgCompressing, setIsImgCompressing] = useState(false);
   const [addNewImage] = useAddImageMutation({});
   const [addNewGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
@@ -70,28 +69,13 @@ const GroupModal = ({ type }: ModalType) => {
   const onChangeGroupImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      imgFile && setPreviewImage(URL.createObjectURL(imgFile));
-      try {
-        setIsImgCompressing(true);
-        const compressedFile = await imageCompression(imgFile, {
-          maxSizeMB: 0.2,
-          maxIteration: 30,
-        });
-        setGroupImage(compressedFile);
-        setIsImgCompressing(false);
-      } catch (error) {
-        console.error(error);
-      }
+      setGroupImage(imgFile);
+      setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
   //** 리팩토링 필수 */
   const onClickAddGroupBtn = async () => {
-    if (isImgCompressing) {
-      alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
-
     if (groupImage === undefined) {
       if (previewImage === undefined) {
         alert('사진은 필수입니다.');
@@ -99,8 +83,21 @@ const GroupModal = ({ type }: ModalType) => {
     }
 
     if (groupImage) {
+      //image-compressing
+      let compressedFile;
+
+      try {
+        compressedFile = await imageCompression(groupImage, {
+          maxSizeMB: 0.2,
+          maxIteration: 30,
+        });
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+
       const formData = new FormData();
-      formData.append('file', groupImage);
+      formData.append('file', compressedFile);
       try {
         const response = await addNewImage({
           imageFile: formData,

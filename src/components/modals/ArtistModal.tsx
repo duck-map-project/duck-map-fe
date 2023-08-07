@@ -64,7 +64,6 @@ const ArtistModal = ({ type }: ModalProps) => {
   const [SortModal, setSortModal] = useState(false);
   const [groupPageNumber, _] = useState(0);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
-  const [isImgCompressing, setIsImgCompressing] = useState(false);
   const pageSize = '20';
   const [addNewImage] = useAddImageMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
@@ -129,37 +128,34 @@ const ArtistModal = ({ type }: ModalProps) => {
   ) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      imgFile && setPreviewImage(URL.createObjectURL(imgFile));
-      try {
-        setIsImgCompressing(true);
-        const compressedFile = await imageCompression(imgFile, {
-          maxSizeMB: 0.2,
-          maxIteration: 30,
-        });
-        setArtistImage(compressedFile);
-        setIsImgCompressing(false);
-      } catch (error) {
-        console.error(error);
-      }
+      setArtistImage(imgFile);
+      setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
-  //** 리팩토링 필수 * /
+  // TODO: 리팩토링
   const onClickAddArtistBtn = async () => {
-    if (isImgCompressing) {
-      alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
     // 파일도, 프리뷰이미지도(string) 없으면 사진 입력
     if (artistImage === undefined) {
       if (previewImage === undefined) {
         alert('사진은 필수값입니다.');
       }
     }
-    // 파일이 있다면 사진 저장 api
+    // 파일이 있다면 사진 저장
     if (artistImage) {
+      let compressedFile;
+      try {
+        compressedFile = await imageCompression(artistImage, {
+          maxSizeMB: 0.2,
+          maxIteration: 30,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
       const formData = new FormData();
-      formData.append('file', artistImage);
+      compressedFile && formData.append('file', compressedFile);
+
       try {
         const response = await addNewImage({
           imageFile: formData,
@@ -178,6 +174,7 @@ const ArtistModal = ({ type }: ModalProps) => {
       }
       return;
     }
+
     if (type === 'edit') {
       if (previewImage) {
         editArtistInfo(previewImage.slice(8));
