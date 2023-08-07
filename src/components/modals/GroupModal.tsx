@@ -12,6 +12,7 @@ import { selectEditArtistSlice } from '../../redux/editArtistSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleGroup } from '../../redux/manageModalSlice';
 import { toggleEditGroup } from '../../redux/manageModalSlice';
+import Loading from '../Loading';
 
 import {
   ModalTitle,
@@ -37,6 +38,7 @@ const GroupModal = ({ type }: ModalType) => {
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
+  const [isRequesting, setIsRequesting] = useState(false);
   const [addNewImage] = useAddImageMutation({});
   const [addNewGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
@@ -79,9 +81,10 @@ const GroupModal = ({ type }: ModalType) => {
     if (groupImage === undefined) {
       if (previewImage === undefined) {
         alert('사진은 필수입니다.');
+        return;
       }
     }
-
+    setIsRequesting(true);
     if (groupImage) {
       //image-compressing
       let compressedFile;
@@ -93,6 +96,7 @@ const GroupModal = ({ type }: ModalType) => {
         });
       } catch (error) {
         console.error(error);
+        setIsRequesting(false);
         return;
       }
 
@@ -114,11 +118,13 @@ const GroupModal = ({ type }: ModalType) => {
       } catch (error) {
         console.error(error);
       }
+      setIsRequesting(false);
       return;
     }
     if (type === 'edit') {
       if (previewImage) {
         EditGroupInfo(previewImage.slice(8));
+        setIsRequesting(false);
       }
     }
   };
@@ -156,6 +162,7 @@ const GroupModal = ({ type }: ModalType) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
+        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
         <ModalTitle>그룹 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />

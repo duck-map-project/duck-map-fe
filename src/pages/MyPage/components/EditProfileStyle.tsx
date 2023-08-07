@@ -5,6 +5,7 @@ type imageType = {
 };
 
 export const UserProfileEditForm = styled.form`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;

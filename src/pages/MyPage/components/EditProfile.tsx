@@ -2,6 +2,7 @@ import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
 
 import defaultImage from '../../../assets/user-profile.svg';
+import Loading from '../../../components/Loading';
 import { useRouter } from '../../../hooks/useRouter';
 import {
   useEditUserInfoMutation,
@@ -32,7 +33,7 @@ const EditProfile = () => {
   const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  // const [isImgCompressing, setIsImgCompressing] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
   const { data: userData } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [addNewImage] = useAddImageMutation();
@@ -66,6 +67,7 @@ const EditProfile = () => {
   };
 
   const onClickSubmitBtn = async () => {
+    setIsRequesting(true);
     //추가된 이미지가 있을 경우
     let compressedFile;
     if (userImage) {
@@ -76,6 +78,8 @@ const EditProfile = () => {
         });
       } catch (error) {
         console.error(error);
+        setIsRequesting(false);
+        return;
       }
 
       const formData = new FormData();
@@ -93,11 +97,13 @@ const EditProfile = () => {
       } catch (error) {
         console.error(error);
       }
+      setIsRequesting(false);
       return;
     }
     //기존 이미지 그대로 저장
     if (savedImagefile) {
       sendEditUser(savedImagefile);
+      setIsRequesting(false);
     }
   };
 
@@ -151,6 +157,9 @@ const EditProfile = () => {
 
   return (
     <UserProfileEditForm>
+      {isRequesting && (
+        <Loading text="프로필을 수정 중입니다. 잠시만 기다려주세요." />
+      )}
       <ImagePreview
         htmlFor="artistImage"
         previewimage={

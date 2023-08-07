@@ -15,6 +15,7 @@ import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleArtist } from '../../redux/manageModalSlice';
 import { toggleEditArtist } from '../../redux/manageModalSlice';
 import { artistType } from '../../types/artistsType';
+import Loading from '../Loading';
 
 import {
   ModalTitle,
@@ -63,6 +64,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   const [artistTypeArray, setArtistTypeArray] = useState<artistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
   const [groupPageNumber, _] = useState(0);
+  const [isRequesting, setIsRequesting] = useState(false);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
   const pageSize = '20';
   const [addNewImage] = useAddImageMutation({});
@@ -135,12 +137,15 @@ const ArtistModal = ({ type }: ModalProps) => {
 
   // TODO: 리팩토링
   const onClickAddArtistBtn = async () => {
+
     // 파일도, 프리뷰이미지도(string) 없으면 사진 입력
     if (artistImage === undefined) {
       if (previewImage === undefined) {
         alert('사진은 필수값입니다.');
+        return;
       }
     }
+    setIsRequesting(true);
     // 파일이 있다면 사진 저장
     if (artistImage) {
       let compressedFile;
@@ -151,6 +156,8 @@ const ArtistModal = ({ type }: ModalProps) => {
         });
       } catch (error) {
         console.error(error);
+        setIsRequesting(false);
+        return;
       }
 
       const formData = new FormData();
@@ -172,12 +179,15 @@ const ArtistModal = ({ type }: ModalProps) => {
       } catch (error) {
         console.error(error);
       }
+      setIsRequesting(false);
       return;
     }
 
+    //파일은 없지만 프리뷰 이미지가 있다면(수정)
     if (type === 'edit') {
       if (previewImage) {
         editArtistInfo(previewImage.slice(8));
+        setIsRequesting(false);
       }
     }
   };
@@ -234,6 +244,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
+        {isRequesting || <Loading text="저장중입니다. 잠시만 기다려주세요." />}
         <ModalTitle>아티스트 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
