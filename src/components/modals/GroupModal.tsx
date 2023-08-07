@@ -34,6 +34,7 @@ const testImg =
   'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
 
 const GroupModal = ({ type }: ModalType) => {
+  const baseURL = process.env.REACT_APP_BASE_URL;
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
@@ -51,7 +52,7 @@ const GroupModal = ({ type }: ModalType) => {
         setPreviewImage(testImg);
         return;
       }
-      setPreviewImage(editData.image);
+      setPreviewImage(baseURL + editData.image);
     }
   }, [editData]);
 
