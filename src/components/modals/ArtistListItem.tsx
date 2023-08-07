@@ -44,7 +44,7 @@ const isImageBackground = css<{ image: string }>`
   background-size: cover;
 `;
 
-const selectedListStyle = css`
+export const selectedListStyle = css`
   position: relative;
   box-shadow: 0px 0px 0px 4px #ffd0ec;
 `;

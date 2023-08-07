@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
@@ -7,6 +8,11 @@ import KakaoMap from '../../components/KakaoMap';
 import AddEventModal from '../../components/modals/AddEventModal';
 import { useGetEventQuery } from '../../redux/eventApiSlice';
 import { setPlace } from '../../redux/eventPlaceSlice';
+import {
+  selectEventArtist,
+  selectEventGroup,
+} from '../../redux/setEventArtistSlice';
+import { setArtist } from '../../redux/setEventElemetsSlice';
 import { EventListData } from '../../types/eventService';
 
 import {
@@ -25,18 +31,31 @@ const EventList = () => {
   const [addEventModal, setAddEventModal] = useState(false);
   const [page, setPage] = useState(0);
   const [events, setEvents] = useState<EventListData[]>([]);
+  const selectedArtist = useSelector(selectEventArtist);
+  const selectedGroup = useSelector(selectEventGroup);
+
   const {
     data: eventData,
     isLoading,
     isFetching,
     isError,
     error,
-  } = useGetEventQuery({ pageNumber: page.toString() });
+  } = useGetEventQuery({
+    pageNumber: page.toString(),
+    ...(selectedArtist && { artistId: selectedArtist.id.toString() }),
+    ...(selectedGroup &&
+      !selectedArtist && { artistId: selectedGroup.id.toString() }),
+  });
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const scrollArea = scrollAreaRef.current;
   const dispatch = useDispatch();
 
   const isLast = eventData?.isLast ?? true;
+
+  useEffect(() => {
+    setPage(0);
+    setArtist([]);
+  }, [selectedArtist, selectedGroup]);
 
   useEffect(() => {
     if (eventData) {
@@ -46,7 +65,7 @@ const EventList = () => {
         setEvents((prev) => [...prev, ...eventData.content]);
       }
     }
-  }, [eventData]);
+  }, [eventData, selectedArtist, selectedGroup]);
 
   useEffect(() => {
     if (events.length > 0) {
@@ -55,7 +74,6 @@ const EventList = () => {
         address: [event.address],
         storeName: [event.storeName],
       }));
-      console.log(processedPlace);
 
       dispatch(setPlace(processedPlace));
     }
@@ -91,15 +109,15 @@ const EventList = () => {
   let content;
 
   if (events) {
-    content =
-      events &&
-      events.map((event) => <EventListItem event={event} key={event.id} />);
+    content = events.map((event) => (
+      <EventListItem event={event} key={event.id} />
+    ));
   } else if (isLoading) {
     content = <div>이벤트 목록을 불러오는 중입니다</div>;
   } else if (isError) {
-    <div>{error.toString()}</div>;
+    content = <div>{error.toString()}</div>;
   } else {
-    <div>이벤트가 없습니다</div>;
+    content = <div>이벤트가 없습니다</div>;
   }
 
   return (

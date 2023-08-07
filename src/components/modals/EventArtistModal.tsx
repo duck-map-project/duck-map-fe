@@ -5,6 +5,7 @@ import useScroll from '../../hooks/useScroll';
 import { useGetArtistsQuery } from '../../redux/artistsSlice';
 import { useGetArtistsTypeQuery } from '../../redux/artistsTypeSlice';
 import { toggleEventListArtist } from '../../redux/manageModalSlice';
+import { setEventArtist } from '../../redux/setEventArtistSlice';
 import { ArtistType } from '../../types/artistsType';
 import { Artist } from '../../types/eventService';
 
@@ -84,6 +85,21 @@ const EventArtistModal = () => {
     setCurrentType(type);
   };
 
+  const handleOkButton = () => {
+    if (currentArtist) {
+      if (currentArtist.groupId) {
+        dispatch(setEventArtist({ artist: currentArtist }));
+      } else {
+        dispatch(
+          setEventArtist({
+            group: currentArtist,
+          })
+        );
+      }
+      dispatch(toggleEventListArtist());
+    }
+  };
+
   useScroll({
     targetRef,
     isFetching,
@@ -97,8 +113,6 @@ const EventArtistModal = () => {
     currentArtist && currentArtist?.image !== '/images/null'
       ? baseUrl + currentArtist?.image
       : '';
-
-  console.log(page);
 
   return (
     <ModalPortal>
@@ -130,7 +144,9 @@ const EventArtistModal = () => {
               </S.ArtistTypeButton>
             </S.ArtistTypeWrapper>
             <S.ButtonWrapper>
-              <S.SubmitButton type="button">확인</S.SubmitButton>
+              <S.SubmitButton type="button" onClick={handleOkButton}>
+                확인
+              </S.SubmitButton>
             </S.ButtonWrapper>
           </S.LeftSection>
           <S.RightSection>

@@ -1,4 +1,5 @@
 import { ArtistValue, ArtistsData } from '../types/artistsType';
+import { Artist } from '../types/eventService';
 
 import { apiSlice } from './apiSlice';
 
@@ -27,7 +28,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
       transformedResponse,
       {
         artistTypeId?: string;
-        artistName?: string | undefined;
+        artistName?: string;
         pageNumber?: string;
         pageSize?: string;
       }
@@ -49,12 +50,17 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
         return { content, isLast };
       },
       serializeQueryArgs: ({ queryArgs, endpointName }) => {
-        return endpointName + queryArgs.artistTypeId + queryArgs.pageNumber;
+        return (
+          endpointName +
+          queryArgs.artistTypeId +
+          queryArgs.pageNumber +
+          queryArgs.artistName
+        );
       },
       providesTags: ['Artists'],
     }),
-    getArtistOfGroup: builder.query({
-      query: (gruopId: number) => `/artists/${gruopId}/artists`,
+    getArtistOfGroup: builder.query<Artist[], number>({
+      query: (gruopId) => `/artists/${gruopId}/artists`,
       providesTags: ['Artists'],
     }),
     addArtists: builder.mutation({

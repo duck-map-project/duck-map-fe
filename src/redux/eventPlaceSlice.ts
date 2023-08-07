@@ -2,17 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
 
-export interface EventPlaceState {
+interface EventPlaceState {
   id?: number;
   address: string[];
   storeName: string[];
 }
 
-interface InitialState {
+export interface EventPlaceInitialState {
   places: EventPlaceState[];
 }
 
-const initialState: InitialState = {
+const initialState: EventPlaceInitialState = {
   places: [],
 };
 
