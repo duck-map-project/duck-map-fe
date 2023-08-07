@@ -8,8 +8,11 @@ import editArtistReducer from './editArtistSlice';
 import editArtistTypeReducer from './editArtistTypeSlice';
 import editBookmarkFolderReducer from './editBookmarkFolderSlice';
 import editCategoryReducer from './editCategorySlice';
-import eventPlaceReducer, { EventPlaceState } from './eventPlaceSlice';
+import eventPlaceReducer, { EventPlaceInitialState } from './eventPlaceSlice';
 import manageModalReducer from './manageModalSlice';
+import setEventArtistReducer, {
+  SetEventArtistinitialState,
+} from './setEventArtistSlice';
 import setEventElementReducer, {
   SetEventElementsState,
 } from './setEventElemetsSlice';
@@ -24,6 +27,7 @@ const reducers = combineReducers({
   auth: authReducer,
   setEventElement: setEventElementReducer,
   eventPlace: eventPlaceReducer,
+  setEventArtist: setEventArtistReducer,
 });
 
 const persistConfig = {
@@ -45,4 +49,5 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export type { AuthState };
 export type { SetEventElementsState };
-export type { EventPlaceState };
+export type { EventPlaceInitialState };
+export type { SetEventArtistinitialState };

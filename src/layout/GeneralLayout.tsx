@@ -9,6 +9,7 @@ import ArtistTypeModal from '../components/modals/ArtistTypeModal';
 import BookmarkFolderModal from '../components/modals/BookmarkFolderModal';
 import CategoryModal from '../components/modals/CategoryModal';
 import CategorySelectModal from '../components/modals/CategorySelectModal';
+import EventArtistModal from '../components/modals/EventArtistModal';
 import GroupModal from '../components/modals/GroupModal';
 import {
   selectCategoryModalState,
@@ -23,6 +24,7 @@ import {
   selectEventArtistModalState,
   selectEventCategoryModalState,
   selectEditGroupModalState,
+  selectEventListArtistModalState,
 } from '../redux/manageModalSlice';
 
 interface GeneralLayoutProps {
@@ -51,6 +53,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   );
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
+  const eventListArtistModal = useSelector(selectEventListArtistModalState);
 
   return (
     <PageWrapper>
@@ -67,6 +70,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {bookmarkEditFolderModalState && <BookmarkFolderModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
+      {eventListArtistModal && <EventArtistModal />}
       <Header />
       {children}
     </PageWrapper>

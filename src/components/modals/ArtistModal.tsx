@@ -14,7 +14,7 @@ import { selectEditArtistSlice } from '../../redux/editArtistSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleArtist } from '../../redux/manageModalSlice';
 import { toggleEditArtist } from '../../redux/manageModalSlice';
-import { artistType } from '../../types/artistsType';
+import { ArtistType } from '../../types/artistsType';
 
 import {
   ModalTitle,
@@ -60,7 +60,7 @@ const ArtistModal = ({ type }: ModalProps) => {
     undefined
   );
   const [artistName, setArtistName] = useState('');
-  const [artistTypeArray, setArtistTypeArray] = useState<artistType[] | []>([]);
+  const [artistTypeArray, setArtistTypeArray] = useState<ArtistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
   const [groupPageNumber, _] = useState(0);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
@@ -103,7 +103,7 @@ const ArtistModal = ({ type }: ModalProps) => {
 
   useEffect(() => {
     const filteredTypeData = artistTypeData
-      ? artistTypeData.filter((data: artistType) => data.id !== 1)
+      ? artistTypeData.filter((data: ArtistType) => data.id !== 1)
       : [];
     setArtistTypeArray(filteredTypeData);
   }, [artistTypeData]);
