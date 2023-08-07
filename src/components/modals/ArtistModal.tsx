@@ -137,7 +137,6 @@ const ArtistModal = ({ type }: ModalProps) => {
 
   // TODO: 리팩토링
   const onClickAddArtistBtn = async () => {
-
     // 파일도, 프리뷰이미지도(string) 없으면 사진 입력
     if (artistImage === undefined) {
       if (previewImage === undefined) {
@@ -244,7 +243,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
-        {isRequesting || <Loading text="저장중입니다. 잠시만 기다려주세요." />}
+        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
         <ModalTitle>아티스트 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
