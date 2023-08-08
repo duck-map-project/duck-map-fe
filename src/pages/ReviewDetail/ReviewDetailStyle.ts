@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 
+import heartSticker from '../../assets/heart-sticker.svg';
 import tape from '../../assets/icons/tape.svg';
 
 export const LeftSection = styled.section`
@@ -39,6 +40,33 @@ export const ImageSection = styled.section`
     left: 50%;
     transform: translateX(-50%) rotate(6deg);
   }
+`;
+const HeartSticker = styled.div`
+  width: 42.65px;
+  height: 37.73px;
+  background-image: url(${heartSticker});
+  position: absolute;
+`;
+
+export const LeftHeart = styled(HeartSticker)`
+  left: -17px;
+  bottom: 54.88px;
+`;
+
+export const RightHeart = styled(HeartSticker)`
+  right: -21.65px;
+  top: 200px;
+`;
+
+export const CircleSticker = styled.div`
+  width: 23px;
+  height: 23px;
+  background-color: #cbb8ff;
+  border-radius: 50%;
+  border: 2px solid #1e232c;
+  position: absolute;
+  bottom: 85.61px;
+  right: -11px;
 `;
 
 export const GoToEventButton = styled.button.attrs({ type: 'button' })`

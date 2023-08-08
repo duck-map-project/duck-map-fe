@@ -33,6 +33,9 @@ function ReviewDetail() {
           <S.ImageSection>
             <ImageSlider images={images} type="review" />
             <FixedRating score={review.score} className="reveiw-detail" />
+            <S.LeftHeart />
+            <S.RightHeart />
+            <S.CircleSticker />
           </S.ImageSection>
           <S.GoToEventButton
             type="button"
