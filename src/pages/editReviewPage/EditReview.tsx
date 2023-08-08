@@ -78,7 +78,7 @@ const EditReview = () => {
   };
 
   return (
-    <SketchbookLayout onSubmit={handleSubmit}>
+    <SketchbookLayout flex="col" onSubmit={handleSubmit}>
       <S.TopSection>
         <S.AddImageSection>
           <S.CurrentPreview currentImage={currentPreview} />
