@@ -1,7 +1,8 @@
-import { useState, useEffect, FormEvent, useRef } from 'react';
+import { useState, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Rating from '../../components/Rating';
+import SketchbookLayout from '../../components/SketchbookLayout';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 import { useAddImageMutation } from '../../redux/imageSlice';
@@ -11,14 +12,12 @@ import * as S from './EditReviewStyle';
 
 const EditReview = () => {
   const [rating, setRating] = useState<number>(0);
-  const [numRings, setNumRings] = useState<number>(0);
   const [previews, setPreviews] = useState<string[]>([]);
   const [currentPreview, setCurrentPreview] = useState<string | null>(null);
   const [reqImages, setReqImages] = useState<File[]>([]);
   const [addNewImage] = useAddImageMutation();
   const [addReview] = useAddReviewMutation();
   const { routeTo } = useRouter();
-  const contentBoxRef = useRef<HTMLFormElement>(null);
 
   const { id } = useParams<{ id: string }>();
   const reviewText = useInput('');
@@ -74,77 +73,43 @@ const EditReview = () => {
     }
   };
 
-  const calculateNumRings = () => {
-    if (contentBoxRef.current) {
-      const contentBoxWidth = contentBoxRef.current.clientWidth || 0;
-      const ringsWidth = 79;
-      const ringsSpacing = 70;
-      const maxNumRings = 7;
-      const calculatedNumRings = Math.floor(
-        (contentBoxWidth - ringsSpacing) / (ringsWidth + ringsSpacing)
-      );
-      setNumRings(Math.min(maxNumRings, calculatedNumRings));
-    }
-  };
-
-  useEffect(() => {
-    calculateNumRings();
-
-    window.addEventListener('resize', calculateNumRings);
-
-    return () => {
-      window.removeEventListener('resize', calculateNumRings);
-    };
-  }, [calculateNumRings]);
-
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
   };
 
-  const ringsArray = new Array(numRings).fill(0);
-
   return (
-    <S.PageWrapper>
-      <S.RingsWrapper>
-        {ringsArray.map((_, index) => (
-          <S.Rings key={index} />
-        ))}
-      </S.RingsWrapper>
-      <S.ContentBox ref={contentBoxRef} onSubmit={handleSubmit}>
-        <S.TopSection>
-          <S.AddImageSection>
-            <S.CurrentPreview currentImage={currentPreview} />
-            <S.ImageInputLabel htmlFor="reviewImage">
-              사진 추가
-            </S.ImageInputLabel>
-            <input
-              style={{ display: 'none' }}
-              id="reviewImage"
-              name="reviewImage"
-              type="file"
-              accept="image/*"
-              onChange={handleImagePreview}
-            />
-          </S.AddImageSection>
-          <S.PreviewImageBox>
-            <S.PreviewImageSection>
-              {previews.map((preview, index) => (
-                <S.SelectedImage key={index} selectedImage={preview} />
-              ))}
-            </S.PreviewImageSection>
-            <S.ButtonWraaper>
-              <S.SmallButton>평점 주기</S.SmallButton>
-              <Rating initialRating={rating} onChange={handleRatingChange} />
-            </S.ButtonWraaper>
-          </S.PreviewImageBox>
-        </S.TopSection>
-        <S.TextSection onChange={reviewText.onChange} />
-        <div>
-          <S.SubmitButton>작성 완료</S.SubmitButton>
-          <S.CancelButton>취소</S.CancelButton>
-        </div>
-      </S.ContentBox>
-    </S.PageWrapper>
+    <SketchbookLayout flex="col" onSubmit={handleSubmit}>
+      <S.TopSection>
+        <S.AddImageSection>
+          <S.CurrentPreview currentImage={currentPreview} />
+          <S.ImageInputLabel htmlFor="reviewImage">사진 추가</S.ImageInputLabel>
+          <input
+            style={{ display: 'none' }}
+            id="reviewImage"
+            name="reviewImage"
+            type="file"
+            accept="image/*"
+            onChange={handleImagePreview}
+          />
+        </S.AddImageSection>
+        <S.PreviewImageBox>
+          <S.PreviewImageSection>
+            {previews.map((preview, index) => (
+              <S.SelectedImage key={index} selectedImage={preview} />
+            ))}
+          </S.PreviewImageSection>
+          <S.ButtonWraaper>
+            <S.SmallButton>평점 주기</S.SmallButton>
+            <Rating initialRating={rating} onChange={handleRatingChange} />
+          </S.ButtonWraaper>
+        </S.PreviewImageBox>
+      </S.TopSection>
+      <S.TextSection onChange={reviewText.onChange} />
+      <div>
+        <S.SubmitButton>작성 완료</S.SubmitButton>
+        <S.CancelButton>취소</S.CancelButton>
+      </div>
+    </SketchbookLayout>
   );
 };
 

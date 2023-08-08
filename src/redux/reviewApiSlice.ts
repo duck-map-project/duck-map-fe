@@ -1,5 +1,9 @@
 import { Review, ReviewResponse } from '../types/eventService';
-import { MainReview, MainReviewResponse } from '../types/reviewServie';
+import {
+  MainReview,
+  MainReviewResponse,
+  ReviewById,
+} from '../types/reviewServie';
 
 import { apiSlice } from './apiSlice';
 
@@ -55,6 +59,12 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         return { content };
       },
     }),
+    getReviewById: builder.query<ReviewById, string>({
+      query: (id) => ({
+        url: `/reviews/${id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -62,4 +72,5 @@ export const {
   useGetReviewsQuery,
   useAddReviewMutation,
   useGetMainReviewQuery,
+  useGetReviewByIdQuery,
 } = reviewApiSlice;
