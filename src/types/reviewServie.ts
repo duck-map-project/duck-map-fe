@@ -32,3 +32,16 @@ export interface MainReviewResponse {
   last: boolean;
   empty: boolean;
 }
+
+export interface ReviewById {
+  id: number;
+  userProfile: string;
+  username: string;
+  createdAt: Date | null;
+  score: number;
+  content: string;
+  photos: string[];
+  eventId: number;
+  eventStoreName: string;
+  hashtag: string;
+}
