@@ -11,6 +11,7 @@ import ManagePage from './pages/ManagePage/Manage';
 import MyPage from './pages/MyPage/MyPage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
+import ReviewDetail from './pages/ReviewDetail/ReviewDetail';
 import Reviews from './pages/Reviews/Reviews';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
@@ -67,7 +68,13 @@ const routerData: RouterElement[] = [
     withAuth: true,
     wrapWithLayout: true,
   },
-  //TODO: 만약 라우터 추가 시 6번 부터 추가해주세요!
+  {
+    id: 6,
+    path: '/review/:id',
+    element: <ReviewDetail />,
+    withAuth: false,
+    wrapWithLayout: true,
+  },
   {
     id: 7,
     path: '*',
