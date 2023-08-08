@@ -110,4 +110,6 @@ export const {
   useGetEventByIdQuery,
   useGetMainEventQuery,
   useGetEventQuery,
+  useAddLikeMutation,
+  useDeleteLikeMutation,
 } = eventApiSlice;
