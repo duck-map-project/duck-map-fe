@@ -90,6 +90,18 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         return { content, isLast };
       },
     }),
+    addLike: builder.mutation<{ id: number }, number>({
+      query: (id) => ({
+        url: `/events/${id}/likes`,
+        method: 'POST',
+      }),
+    }),
+    deleteLike: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/events/${id}/likes`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
