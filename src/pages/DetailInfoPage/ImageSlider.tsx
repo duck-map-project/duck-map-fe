@@ -110,10 +110,10 @@ const reviewDot = css`
   border: 2px solid #1e232c;
 `;
 
-const Dot = styled.div<{ active: boolean; type: 'review' | 'primary' }>`
+const Dot = styled.div<{ $active: boolean; type: 'review' | 'primary' }>`
   ${(props) => (props.type === 'review' ? reviewDot : primary)}
   border-radius: 50%;
-  background-color: ${(props) => (props.active ? '#FE83AF' : '#F8F8FA')};
+  background-color: ${(props) => (props.$active ? '#FE83AF' : '#F8F8FA')};
 `;
 
 interface ImageSliderProps {
@@ -159,7 +159,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
         {type === 'primary' ? (
           <DotContainer type={type}>
             {images.map((_, index) => (
-              <Dot key={index} active={index === currentSlide} type={type} />
+              <Dot key={index} $active={index === currentSlide} type={type} />
             ))}
           </DotContainer>
         ) : null}
@@ -173,7 +173,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
       {type === 'review' ? (
         <DotContainer type={type}>
           {images.map((_, index) => (
-            <Dot key={index} active={index === currentSlide} type={type} />
+            <Dot key={index} $active={index === currentSlide} type={type} />
           ))}
         </DotContainer>
       ) : null}
