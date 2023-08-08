@@ -7,6 +7,10 @@ import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 import { useRouter } from '../../hooks/useRouter';
 import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
+import {
+  useAddLikeMutation,
+  useDeleteLikeMutation,
+} from '../../redux/eventApiSlice';
 import { setPlace } from '../../redux/eventPlaceSlice';
 import { EventData } from '../../types/eventService';
 
@@ -46,17 +50,23 @@ const DetailInfo = () => {
     setCurrentTab(tab);
   };
 
-  const [isLike, setIsLike] = useState(false);
-  const [isBookmark, setIsBookmark] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data: eventInfoData } = useGetEventByIdQuery(id as string);
+  const { data: eventInfoData, refetch } = useGetEventByIdQuery(id as string);
+  const [isLike, setIsLike] = useState(eventInfoData?.likeId ? true : false);
+  const [isBookmark, setIsBookmark] = useState(false);
   const [eventInfo, setEventInfo] = useState<EventData | null>(null);
+  const [addLike] = useAddLikeMutation();
+  const [deleteLike] = useDeleteLikeMutation();
   const dispatch = useDispatch();
   const { routeTo } = useRouter();
 
   useEffect(() => {
     if (eventInfoData && id) {
       setEventInfo(eventInfoData);
+      if (eventInfoData.likeId) {
+        setIsLike(true);
+      } else {
+      }
     }
   }, [eventInfoData]);
 
@@ -72,7 +82,29 @@ const DetailInfo = () => {
     }
   }, [currentTab]);
 
+  console.log(eventInfo);
+
   const images = eventInfo?.images.map((image) => baseUrl + image);
+
+  const handleLikeButton = async () => {
+    if (id) {
+      if (eventInfo?.likeId) {
+        try {
+          await deleteLike(eventInfo?.likeId).unwrap();
+          refetch();
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        try {
+          await addLike(id).unwrap();
+          refetch();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
 
   return (
     <PageWrapper>
@@ -81,9 +113,9 @@ const DetailInfo = () => {
           <ImgSection>
             <ImageSlider images={images as string[]} />
             <HeartButtonWrapper onClick={() => setIsLike((prev) => !prev)}>
-              <HeartButton checked={isLike} />
+              <HeartButton checked={isLike} onClick={handleLikeButton} />
               {/* TODO: 좋아요값 서버에서 가져오기 */}
-              <LikeNum>123</LikeNum>
+              <LikeNum>{eventInfo?.likeCount}</LikeNum>
             </HeartButtonWrapper>
             <BookmarkButton
               checked={isBookmark}

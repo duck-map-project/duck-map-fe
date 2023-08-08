@@ -90,7 +90,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         return { content, isLast };
       },
     }),
-    addLike: builder.mutation<{ id: number }, number>({
+    addLike: builder.mutation<{ id: number }, string>({
       query: (id) => ({
         url: `/events/${id}/likes`,
         method: 'POST',
