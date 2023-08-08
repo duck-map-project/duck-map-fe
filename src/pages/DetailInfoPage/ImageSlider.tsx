@@ -6,6 +6,10 @@ import rightTriangle from '../../assets/right-triangle.svg';
 import whiteLeftArrow from '../../assets/white-left-arrow.svg';
 import whiteRightArrow from '../../assets/white-right-arrow.svg';
 
+const SliderSection = styled.section`
+  position: relative;
+`;
+
 const primarySize = css`
   width: 400px;
   height: 357px;
@@ -91,7 +95,7 @@ const DotContainer = styled.div<{ type: 'review' | 'primary' }>`
   gap: ${(props) => (props.type === 'review' ? '19.25px' : '14px')};
   margin-top: 8px;
   position: absolute;
-  bottom: 13px;
+  bottom: ${(props) => (props.type === 'primary' ? '13px' : '-31.39px')};
   left: 50%;
   transform: translateX(-50%);
 `;
@@ -140,7 +144,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
   }
 
   return (
-    <>
+    <SliderSection>
       <SliderContainer type={type}>
         <SliderTrack transform={currentSlide} type={type}>
           {images.map((image, index) => (
@@ -179,7 +183,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           <RightSlideButton type="button" onClick={nextSlide} />
         </>
       ) : null}
-    </>
+    </SliderSection>
   );
 };
 
