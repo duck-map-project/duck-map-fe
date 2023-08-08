@@ -19,7 +19,6 @@ function ReviewDetail() {
   const baseUrl = process.env.REACT_APP_BASE_URL || '';
   const hashTags = review?.hashtag.split(' ');
   const images = review?.photos.map((photo) => baseUrl + photo);
-  console.log(images);
 
   useEffect(() => {
     if (reviewData) {
