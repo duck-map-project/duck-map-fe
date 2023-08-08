@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
 import ring from '../assets/icons/ring.svg';
 import px2vw from '../utils/px2vw';
@@ -12,11 +12,20 @@ export const PageWrapper = styled.main`
   padding: 60px ${px2vw(142)} 0 ${px2vw(144)};
 `;
 
-export const ContentBox = styled.form`
-  width: 100%;
-  display: flex;
+const felxCol = css`
   flex-direction: column;
   align-items: center;
+`;
+
+const flexRow = css`
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+export const ContentBox = styled.form<{ flex: string }>`
+  width: 100%;
+  display: flex;
+  ${(props) => (props.flex === 'col' ? felxCol : flexRow)}
   background-color: #fffbe2;
   padding: 81px ${px2vw(49)} 24px ${px2vw(45)};
   border: 2px solid #1e232c;
@@ -56,11 +65,13 @@ export const Rings = styled.div`
 interface SketchbookLayoutProps {
   children: React.ReactNode;
   onSubmit?: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  flex: 'col' | 'row';
 }
 
 const SketchbookLayout: React.FC<SketchbookLayoutProps> = ({
   children,
   onSubmit,
+  flex,
 }) => {
   const [numRings, setNumRings] = useState<number>(0);
 
@@ -98,7 +109,7 @@ const SketchbookLayout: React.FC<SketchbookLayoutProps> = ({
           <Rings key={index} />
         ))}
       </RingsWrapper>
-      <ContentBox ref={contentBoxRef} onSubmit={onSubmit}>
+      <ContentBox ref={contentBoxRef} onSubmit={onSubmit} flex={flex}>
         {children}
       </ContentBox>
     </PageWrapper>
