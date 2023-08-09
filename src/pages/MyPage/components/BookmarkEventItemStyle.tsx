@@ -26,6 +26,7 @@ export const ItemWrapper = styled.div<EventItemProps>`
   align-items: center;
   width: 142px;
   gap: 10px;
+  cursor: pointer;
   &::after {
     position: absolute;
     display: block;

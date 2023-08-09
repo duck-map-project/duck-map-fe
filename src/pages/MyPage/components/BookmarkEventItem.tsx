@@ -1,5 +1,6 @@
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
+import { useRouter } from '../../../hooks/useRouter';
 import { useDeleteBookmarkEventMutation } from '../../../redux/bookmarkEventSlice';
 
 import {
@@ -24,10 +25,12 @@ const BookmarkEventItem = ({
 }: EventItemProps) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const imgURL = baseUrl + image;
+  const { routeTo } = useRouter();
   const [deleteEventFromFolder] = useDeleteBookmarkEventMutation();
+
   const onClickEvent = () => {
     eventId;
-    alert('이벤트 상세페이지로 이동');
+    routeTo(`/event/${eventId}`);
   };
 
   const onClickDeleteBtn = async (e: React.MouseEvent) => {
