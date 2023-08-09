@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useRouter } from '../hooks/useRouter';
 import { addBookmarkInfo, selectAddBookmarkInfo } from '../redux/addBookmark';
+import { useDeleteBookmarkEventMutation } from '../redux/bookmarkEventSlice';
 import { toggleAddBookmark } from '../redux/manageModalSlice';
 import { EventListData } from '../types/eventService';
 
@@ -29,6 +30,7 @@ const EventListItem = ({
   const [isLike, setIsLike] = useState(!!event.likeId);
   const [isBookmark, setIsBookmark] = useState(!!event.bookmarkId);
   const bookmarkInfoState = useSelector(selectAddBookmarkInfo);
+  const [deleteBookmark] = useDeleteBookmarkEventMutation();
 
   const handleEventClick = () => {
     if (onEventListClick) {
@@ -41,11 +43,26 @@ const EventListItem = ({
     setIsLike((prev) => !prev);
   };
 
-  const handleBookmarkButton = () => {
+  const handleBookmarkButton = async () => {
     if (isBookmark) {
-      //이떄는 북마크 삭제 요청
+      const res = await deleteBookmark({ id: event.id });
+      if ('data' in res) {
+        setIsBookmark(false);
+      } else if ('error' in res) {
+        const error = res.error;
+        if ('data' in error) {
+          const data = error.data;
+          if (data !== null && typeof data === 'object' && 'message' in data) {
+            const errorMessage = data.message;
+            alert(errorMessage);
+            return;
+          }
+        }
+        alert('잠시 후에 다시 시도해주세요.');
+      }
       return;
     }
+
     dispatch(addBookmarkInfo({ eventId: event.id }));
     dispatch(toggleAddBookmark());
   };
