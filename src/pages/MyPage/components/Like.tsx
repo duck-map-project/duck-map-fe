@@ -9,6 +9,7 @@ import {
   LikeWrapper,
   EventImg,
   ArtistInfo,
+  ArtistName,
   EventTypeWrapper,
   StoreName,
   Adress,
@@ -52,17 +53,21 @@ const LikeItem = ({
   image,
   eventId,
 }: LikeItemProps) => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const imgURL = baseUrl + image;
   const onClickMyLike = () => {
     eventId;
     //이벤트 상세 페이지로 이동
   };
+  console.log(artists);
   return (
     <LikeWrapper icon={hearticon} onClick={onClickMyLike}>
-      <EventImg src={image} />
+      <EventImg src={imgURL} />
       <section>
         <ArtistInfo>
-          <span>{artists.map((artist) => artist.groupName)}</span>
-          <span>{artists.map((artist) => artist.name)}</span>
+          {artists.map((artist) => (
+            <ArtistName key={artist.id}>{artist.name}</ArtistName>
+          ))}
         </ArtistInfo>
         <EventTypeWrapper>
           {category.map((type) => (

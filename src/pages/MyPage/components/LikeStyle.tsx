@@ -44,17 +44,19 @@ export const EventImg = styled.img`
   height: 124px;
   border: 2px solid var(--line-black);
   border-radius: 20px;
+  object-fit: cover;
 `;
 
 export const ArtistInfo = styled.div`
   font-size: 14px;
   font-weight: 400;
-  & span:first-of-type {
-    font-size: 16px;
-    font-weight: 700;
-    margin-right: 12px;
-  }
   margin-bottom: 7.6px;
+`;
+
+export const ArtistName = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 5px;
 `;
 
 export const EventTypeWrapper = styled.div`
