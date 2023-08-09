@@ -69,7 +69,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {artistTypeEditModalState && <ArtistTypeModal type="edit" />}
       {categoryModalState && <CategoryModal type="add" />}
       {categroyEditModalState && <CategoryModal type="edit" />}
-      {bookmarkModalState || <BookmarkModal />}
+      {bookmarkModalState && <BookmarkModal />}
       {bookmarkAddFolderModalState && <BookmarkFolderModal type="add" />}
       {bookmarkEditFolderModalState && <BookmarkFolderModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}

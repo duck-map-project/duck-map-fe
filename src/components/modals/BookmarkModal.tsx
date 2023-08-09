@@ -1,8 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import closeIcon from '../../assets/icons/close.svg';
 import useScroll from '../../hooks/useScroll';
+import {
+  selectAddBookmarkInfo,
+  addBookmarkInfo,
+} from '../../redux/addBookmark';
+import { useAddBookmarkEventMutation } from '../../redux/bookmarkEventSlice';
 import { useGetBookmarkFoldersQuery } from '../../redux/bookmarkFolderSlice';
 import { toggleAddBookmark } from '../../redux/manageModalSlice';
 import { BookmarkFolderType } from '../../types/bookmarkFolderType';
@@ -54,12 +59,19 @@ const BookmarkFolderItem = ({
 const BookmarkModal = () => {
   const dispatch = useDispatch();
   const targetRef = useRef<HTMLDivElement>(null);
+  const bookmarkEventInfo = useSelector(selectAddBookmarkInfo);
+  const [eventId, setEventId] = useState<number | null>(null);
   const [bookmarkFoldersPage, setBookmarkFoldersPage] = useState(0);
   const [selectedFolder, setSelectedFolder] = useState<number | null>(null);
   const [bookmarkFolders, setBookmarkFolders] = useState<BookmarkFolderType[]>(
     []
   );
+  const [addBookmark] = useAddBookmarkEventMutation();
   selectedFolder;
+  useEffect(() => {
+    setEventId(bookmarkEventInfo.eventId);
+  }, [bookmarkEventInfo]);
+
   const {
     data: BookmarkFolderData,
     isSuccess,
@@ -107,14 +119,33 @@ const BookmarkModal = () => {
   const onHideModal = () => {
     dispatch(toggleAddBookmark());
   };
-  const onClickSubmit = () => {
-    console.log('완료');
-    onHideModal();
+  const onClickSubmit = async () => {
+    if (selectedFolder === null) {
+      alert('북마크 폴더를 선택해주세요.');
+      return;
+    }
+    const res = await addBookmark({ id: eventId, folderId: selectedFolder });
+
+    if ('data' in res) {
+      dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
+      onHideModal();
+    } else if ('error' in res) {
+      const error = res.error;
+      if ('data' in error) {
+        const data = error.data;
+        if (data !== null && typeof data === 'object' && 'message' in data) {
+          const errorMessage = data.message;
+          alert(errorMessage);
+          return;
+        }
+      }
+      alert('잠시 후에 다시 시도해주세요.');
+    }
   };
 
   return (
     <ModalPortal>
-      <CommonModal width="490">
+      <CommonModal width="490" onClick={onHideModal}>
         <S.ModalTitle>북마크 추가하기</S.ModalTitle>
         <S.ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
