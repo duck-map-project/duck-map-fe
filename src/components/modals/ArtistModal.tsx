@@ -243,7 +243,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
-        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
+        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
         <ModalTitle>아티스트 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
