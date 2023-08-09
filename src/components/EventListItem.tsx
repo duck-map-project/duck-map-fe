@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useRouter } from '../hooks/useRouter';
+import { addBookmarkInfo, selectAddBookmarkInfo } from '../redux/addBookmark';
+import { useDeleteBookmarkEventMutation } from '../redux/bookmarkEventSlice';
+import { toggleAddBookmark } from '../redux/manageModalSlice';
 import { EventListData } from '../types/eventService';
 
 import * as S from './EventListItemStyle';
@@ -21,8 +25,12 @@ const EventListItem = ({
   handleLikeClick,
 }: EventListItemProps) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const dispatch = useDispatch();
   const { routeTo } = useRouter();
   const [isLike, setIsLike] = useState(!!event.likeId);
+  const [isBookmark, setIsBookmark] = useState(!!event.bookmarkId);
+  const bookmarkInfoState = useSelector(selectAddBookmarkInfo);
+  const [deleteBookmark] = useDeleteBookmarkEventMutation();
 
   const handleEventClick = () => {
     if (onEventListClick) {
@@ -32,8 +40,43 @@ const EventListItem = ({
 
   const handleLikeButton = async () => {
     await handleLikeClick({ eventId: event.id, likeId: event.likeId });
-    setIsLike(!isLike);
+    setIsLike((prev) => !prev);
   };
+
+  const handleBookmarkButton = async () => {
+    if (isBookmark) {
+      const res = await deleteBookmark({ id: event.id });
+      if ('data' in res) {
+        setIsBookmark(false);
+      } else if ('error' in res) {
+        const error = res.error;
+        if ('data' in error) {
+          const data = error.data;
+          if (data !== null && typeof data === 'object' && 'message' in data) {
+            const errorMessage = data.message;
+            alert(errorMessage);
+            return;
+          }
+        }
+        alert('잠시 후에 다시 시도해주세요.');
+      }
+      return;
+    }
+
+    dispatch(addBookmarkInfo({ eventId: event.id }));
+    dispatch(toggleAddBookmark());
+  };
+
+  useEffect(() => {
+    if (
+      bookmarkInfoState.eventId === event.id &&
+      bookmarkInfoState.isBookmark === true
+    ) {
+      setIsBookmark(true);
+      dispatch(addBookmarkInfo({ eventId: null, isBookmark: false }));
+      return;
+    }
+  }, [bookmarkInfoState]);
 
   return (
     <S.EventListItemBox onClick={handleEventClick}>
@@ -54,7 +97,11 @@ const EventListItem = ({
           type="button"
           onClick={handleLikeButton}
         />
-        <S.BookmarkButton $isBookmarked={true} type="button" />
+        <S.BookmarkButton
+          $isBookmarked={isBookmark}
+          type="button"
+          onClick={handleBookmarkButton}
+        />
         <S.SeeMoreButton
           type="button"
           onClick={() => routeTo(`/event/${event.id}`)}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import usericon from '../../../assets/icons/mypage.svg';
+import { useRouter } from '../../../hooks/useRouter';
 import {
   useGetMyeventQuery,
   useDeleteEventMutation,
@@ -62,9 +63,9 @@ const EventItem = ({
 }: LikeItemProps) => {
   const imagePath = process.env.REACT_APP_BASE_URL + image;
   const [deleteEvent] = useDeleteEventMutation();
-
+  const { routeTo } = useRouter();
   const onClickEventItem = () => {
-    alert('이벤트 상세 페이지 이동');
+    routeTo(`/event/${eventId}`);
   };
 
   const onClickEditBtn = (event: React.MouseEvent) => {

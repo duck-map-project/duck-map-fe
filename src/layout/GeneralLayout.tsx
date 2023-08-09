@@ -7,6 +7,7 @@ import ArtistModal from '../components/modals/ArtistModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
 import ArtistTypeModal from '../components/modals/ArtistTypeModal';
 import BookmarkFolderModal from '../components/modals/BookmarkFolderModal';
+import BookmarkModal from '../components/modals/BookmarkModal';
 import CategoryModal from '../components/modals/CategoryModal';
 import CategorySelectModal from '../components/modals/CategorySelectModal';
 import EventArtistModal from '../components/modals/EventArtistModal';
@@ -19,6 +20,7 @@ import {
   selectEditArtistTypeModalState,
   selectArtistModalState,
   selectEditArtistModalState,
+  selectAddBookmarkModalState,
   selectAddBookmarkFolderModalState,
   selectEditBookmarkFolderModalState,
   selectEventArtistModalState,
@@ -45,6 +47,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const artistTypeEditModalState = useSelector(selectEditArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
   const categroyEditModalState = useSelector(selectEditCategoryModalState);
+  const bookmarkModalState = useSelector(selectAddBookmarkModalState);
   const bookmarkAddFolderModalState = useSelector(
     selectAddBookmarkFolderModalState
   );
@@ -66,6 +69,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {artistTypeEditModalState && <ArtistTypeModal type="edit" />}
       {categoryModalState && <CategoryModal type="add" />}
       {categroyEditModalState && <CategoryModal type="edit" />}
+      {bookmarkModalState && <BookmarkModal />}
       {bookmarkAddFolderModalState && <BookmarkFolderModal type="add" />}
       {bookmarkEditFolderModalState && <BookmarkFolderModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}

@@ -26,6 +26,7 @@ export const ItemWrapper = styled.div<EventItemProps>`
   align-items: center;
   width: 142px;
   gap: 10px;
+  cursor: pointer;
   &::after {
     position: absolute;
     display: block;
@@ -42,6 +43,7 @@ export const EventImg = styled.img`
   height: 119px;
   border: 2px solid var(--line-black);
   border-radius: 20px;
+  object-fit: cover;
 `;
 
 export const EventName = styled.span`
