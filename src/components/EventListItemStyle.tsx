@@ -29,6 +29,7 @@ export const EventImage = styled.img`
   border: 2px solid #1e232c;
   border-radius: 20px;
   margin-right: 10px;
+  object-fit: cover;
 `;
 
 export const EventTextSection = styled.section`
