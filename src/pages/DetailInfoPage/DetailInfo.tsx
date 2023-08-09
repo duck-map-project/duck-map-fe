@@ -8,6 +8,7 @@ import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 import { useRouter } from '../../hooks/useRouter';
 import { addBookmarkInfo } from '../../redux/addBookmark';
 import { selectAddBookmarkInfo } from '../../redux/addBookmark';
+import { useDeleteBookmarkEventMutation } from '../../redux/bookmarkEventSlice';
 import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
 import {
   useAddLikeMutation,
@@ -59,6 +60,7 @@ const DetailInfo = () => {
   const [isBookmark, setIsBookmark] = useState(false);
   const [eventInfo, setEventInfo] = useState<EventData | null>(null);
   const bookmarkInfoState = useSelector(selectAddBookmarkInfo);
+  const [deleteBookmark] = useDeleteBookmarkEventMutation();
   const [addLike] = useAddLikeMutation();
   const [deleteLike] = useDeleteLikeMutation();
   const dispatch = useDispatch();
@@ -111,8 +113,24 @@ const DetailInfo = () => {
   };
 
   const handleBookmarkButton = async () => {
-    if (isBookmark) {
-      // 삭제요청
+    if (isBookmark && id) {
+      const eventId = parseInt(id);
+      const res = await deleteBookmark({ id: eventId });
+
+      if ('data' in res) {
+        setIsBookmark(false);
+      } else if ('error' in res) {
+        const error = res.error;
+        if ('data' in error) {
+          const data = error.data;
+          if (data !== null && typeof data === 'object' && 'message' in data) {
+            const errorMessage = data.message;
+            alert(errorMessage);
+            return;
+          }
+        }
+        alert('잠시 후에 다시 시도해주세요.');
+      }
       return;
     }
     dispatch(addBookmarkInfo({ eventId: id }));
