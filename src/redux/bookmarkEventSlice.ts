@@ -24,9 +24,10 @@ export const bookmarkEventApiSlice = apiSlice.injectEndpoints({
       providesTags: ['BookmarkEvents'],
     }),
     addBookmarkEvent: builder.mutation({
-      query: ({ id }) => ({
+      query: ({ id, folderId }) => ({
         url: `events/${id}/bookmarks`,
         method: 'POST',
+        body: { bookmarkFolderId: folderId },
       }),
       invalidatesTags: ['BookmarkEvents'],
     }),
