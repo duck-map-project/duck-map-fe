@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 import { useRouter } from '../../hooks/useRouter';
+import { addBookmarkInfo } from '../../redux/addBookmark';
+import { selectAddBookmarkInfo } from '../../redux/addBookmark';
 import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
 import {
   useAddLikeMutation,
   useDeleteLikeMutation,
 } from '../../redux/eventApiSlice';
 import { setPlace } from '../../redux/eventPlaceSlice';
+import { toggleAddBookmark } from '../../redux/manageModalSlice';
 import { EventData } from '../../types/eventService';
 
 import {
@@ -55,6 +58,7 @@ const DetailInfo = () => {
   const [isLike, setIsLike] = useState(eventInfoData?.likeId ? true : false);
   const [isBookmark, setIsBookmark] = useState(false);
   const [eventInfo, setEventInfo] = useState<EventData | null>(null);
+  const bookmarkInfoState = useSelector(selectAddBookmarkInfo);
   const [addLike] = useAddLikeMutation();
   const [deleteLike] = useDeleteLikeMutation();
   const dispatch = useDispatch();
@@ -65,7 +69,9 @@ const DetailInfo = () => {
       setEventInfo(eventInfoData);
       if (eventInfoData.likeId) {
         setIsLike(true);
-      } else {
+      }
+      if (eventInfoData.bookmarkId) {
+        setIsBookmark(true);
       }
     }
   }, [eventInfoData]);
@@ -81,8 +87,6 @@ const DetailInfo = () => {
       dispatch(setPlace(processedPlace));
     }
   }, [currentTab]);
-
-  console.log(eventInfo);
 
   const images = eventInfo?.images.map((image) => baseUrl + image);
 
@@ -106,6 +110,26 @@ const DetailInfo = () => {
     }
   };
 
+  const handleBookmarkButton = async () => {
+    if (isBookmark) {
+      // 삭제요청
+      return;
+    }
+    dispatch(addBookmarkInfo({ eventId: id }));
+    dispatch(toggleAddBookmark());
+  };
+
+  useEffect(() => {
+    if (
+      bookmarkInfoState.eventId === id &&
+      bookmarkInfoState.isBookmark === true
+    ) {
+      setIsBookmark(true);
+      dispatch(addBookmarkInfo({ eventId: null, isBookmark: false }));
+      return;
+    }
+  }, [bookmarkInfoState]);
+
   return (
     <PageWrapper>
       <TopSectionWrapper>
@@ -119,9 +143,7 @@ const DetailInfo = () => {
             </HeartButtonWrapper>
             <BookmarkButton
               checked={isBookmark}
-              onClick={() => {
-                setIsBookmark((prev) => !prev);
-              }}
+              onClick={handleBookmarkButton}
             />
           </ImgSection>
           <InfoSection>
