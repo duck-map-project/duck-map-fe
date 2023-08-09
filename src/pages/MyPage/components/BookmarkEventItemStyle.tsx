@@ -42,6 +42,7 @@ export const EventImg = styled.img`
   height: 119px;
   border: 2px solid var(--line-black);
   border-radius: 20px;
+  object-fit: cover;
 `;
 
 export const EventName = styled.span`

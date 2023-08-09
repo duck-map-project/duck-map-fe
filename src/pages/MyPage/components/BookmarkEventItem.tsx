@@ -22,6 +22,8 @@ const BookmarkEventItem = ({
   eventId,
   isEditmode,
 }: EventItemProps) => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const imgURL = baseUrl + image;
   const [deleteEventFromFolder] = useDeleteBookmarkEventMutation();
   const onClickEvent = () => {
     eventId;
@@ -45,7 +47,7 @@ const BookmarkEventItem = ({
 
   return (
     <ItemWrapper bookmarkicon={bookmarkicon} onClick={onClickEvent}>
-      <EventImg src={image} />
+      <EventImg src={imgURL} />
       <EventName>{storeName}</EventName>
       {isEditmode && (
         <EventSettingIconsWrapper>
