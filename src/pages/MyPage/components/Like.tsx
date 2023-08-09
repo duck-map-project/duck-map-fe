@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import hearticon from '../../../assets/icons/heart-big.svg';
+import { useRouter } from '../../../hooks/useRouter';
 import { useGetMylikeQuery } from '../../../redux/mypageSlice';
 import { mylikeType } from '../../../types/mypageType';
 
@@ -55,11 +56,12 @@ const LikeItem = ({
 }: LikeItemProps) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const imgURL = baseUrl + image;
+  const { routeTo } = useRouter();
+
   const onClickMyLike = () => {
-    eventId;
-    //이벤트 상세 페이지로 이동
+    routeTo(`/event/${eventId}`);
   };
-  console.log(artists);
+
   return (
     <LikeWrapper icon={hearticon} onClick={onClickMyLike}>
       <EventImg src={imgURL} />
