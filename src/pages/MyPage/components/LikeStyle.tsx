@@ -19,6 +19,7 @@ export const LikeWrapper = styled.article<LikeWrapperProps>`
   border: 2px solid var(--line-black);
   border-radius: 20px;
   background-color: #f8f8fa;
+  cursor: pointer;
   &::after {
     position: absolute;
     display: block;

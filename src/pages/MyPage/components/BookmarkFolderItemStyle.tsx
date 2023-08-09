@@ -20,6 +20,7 @@ export const FolderWrapper = styled.div`
   align-items: center;
   gap: 10px;
   width: 142px;
+  cursor: pointer;
 `;
 
 export const EmojiPreview = styled.span<EmojiPreviewType>`
