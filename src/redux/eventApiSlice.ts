@@ -28,6 +28,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
     }),
     getEventById: builder.query<EventData, string>({
       query: (id) => ({ url: '/events/' + id, method: 'GET' }),
+      providesTags: ['BookmarkEvents'],
     }),
     getMainEvent: builder.query<
       GetMainEventTransformedResponse,
