@@ -38,6 +38,7 @@ const BookmarkEventItem = ({ image, storeName }: EventItemProps) => {
 };
 
 const BookmarkShare = () => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const { routeTo } = useRouter();
   const { id } = useParams();
   const [folderId, setFolderId] = useState<number>(0);
@@ -87,7 +88,7 @@ const BookmarkShare = () => {
     content = eventsArray.map((event) => (
       <BookmarkEventItem
         key={event.id}
-        image={event.image}
+        image={baseUrl + event.image}
         storeName={event.storeName}
       />
     ));
