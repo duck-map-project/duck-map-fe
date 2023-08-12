@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import GeneralLayout from './layout/GeneralLayout';
 import BookmarkShare from './pages/BookmarkShare/BookmarkShare';
 import DetailInfo from './pages/DetailInfoPage/DetailInfo';
+import EditEvent from './pages/EditEvent/EditEvent';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
@@ -117,6 +118,13 @@ const routerData: RouterElement[] = [
     path: '/review',
     element: <Reviews />,
     withAuth: false,
+    wrapWithLayout: true,
+  },
+  {
+    id: 13,
+    path: '/event/edit',
+    element: <EditEvent />,
+    withAuth: true,
     wrapWithLayout: true,
   },
 ];
