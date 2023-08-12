@@ -1,20 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { AddrestList, EventInputWrapper } from './AdressInputStyle';
-import { EventInput } from './modals/AddEventModalStyle';
+import { setPlace } from '../redux/eventPlaceSlice';
 
-interface Place {
+import {
+  AddressItem,
+  AddrestList,
+  EventInputWrapper,
+} from './AdressInputStyle';
+import { ArtistSearchInput } from './modals/ArtistSelectModalStyle';
+
+export interface Place {
   place_name: string;
   address_name: string;
 }
-interface AdressInputProps {
-  onPlaceChange: (palce: Place) => void;
+
+interface AddressInputProps {
+  setCurrentPlace: React.Dispatch<React.SetStateAction<Place | null>>;
 }
 
-const AdressInput: React.FC<AdressInputProps> = ({ onPlaceChange }) => {
+const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   const [places, setPlaces] = useState<any[]>([]);
   const searchRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -61,24 +70,38 @@ const AdressInput: React.FC<AdressInputProps> = ({ onPlaceChange }) => {
     }
   };
 
-  const handlePlaceSelect = (place: Place) => {
-    setPlaces([]);
-
-    onPlaceChange({
+  const handlePlaceSelect = (place: any) => {
+    dispatch(
+      setPlace([
+        {
+          address: [place.address_name],
+          storeName: [place.place_name],
+        },
+      ])
+    );
+    setCurrentPlace({
       place_name: place.place_name,
       address_name: place.address_name,
     });
+    setSearchKeyword('');
+    setPlaces([]);
   };
 
   return (
     <EventInputWrapper ref={searchRef}>
-      <EventInput placeholder="주소 입력" onChange={handleInputChange} />
+      <ArtistSearchInput
+        placeholder="주소 검색"
+        onChange={handleInputChange}
+        value={searchKeyword}
+      />
       {places.length > 0 && (
         <AddrestList>
           {places.map((place, index) => (
-            <li key={index} onClick={() => handlePlaceSelect(place)}>
-              {place.place_name}
-            </li>
+            <AddressItem
+              key={index}
+              place={place}
+              onClick={handlePlaceSelect}
+            />
           ))}
         </AddrestList>
       )}

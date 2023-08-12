@@ -5,8 +5,10 @@ import SelectedElement from '../../components/SelectedElement';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 import { useAddEventMutation } from '../../redux/eventApiSlice';
+import { selectPlaces } from '../../redux/eventPlaceSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import {
+  toggleAddressSearch,
   toggleEventArtist,
   toggleEventCategory,
 } from '../../redux/manageModalSlice';
@@ -43,6 +45,7 @@ const EditEvent = () => {
   const [addEvent] = useAddEventMutation();
   const [addNewImage] = useAddImageMutation();
   const { routeTo } = useRouter();
+  const place = useSelector(selectPlaces);
 
   const handleHashtagChange = (index: number, value: string) => {
     const newHashtag = [...hashtags];
@@ -60,6 +63,7 @@ const EditEvent = () => {
     const categoryIds = selectedCategoryIds.map((category) => category.id);
 
     if (
+      place.length !== 0 &&
       images.length !== 0 &&
       artistIds.length !== 0 &&
       categoryIds.length !== 0 &&
@@ -82,10 +86,10 @@ const EditEvent = () => {
         );
 
         const eventPayload = {
-          storeName: '',
+          storeName: place[0].storeName[0],
           artistIds,
           categoryIds,
-          address: '',
+          address: place[0].address[0],
           businessHour,
           fromDate: fromDate.value,
           toDate: toDate.value,
@@ -152,6 +156,10 @@ const EditEvent = () => {
 
       setBusinessHour(businessHourString);
     }
+  };
+
+  const handleAddressButton = () => {
+    dispatch(toggleAddressSearch());
   };
 
   return (
@@ -226,8 +234,13 @@ const EditEvent = () => {
             {/* TODO: 디자인 요청하기 */}
             <S.InfoTitle>주소</S.InfoTitle>
             <S.RawWrapper>
-              <S.SearchButton>검색</S.SearchButton>
-              <S.AdressDisplayInput readOnly />
+              <S.SearchButton type="button" onClick={handleAddressButton}>
+                검색
+              </S.SearchButton>
+              <S.AdressDisplayInput
+                readOnly
+                placeholder={place.length !== 0 ? place[0].address[0] : ''}
+              />
             </S.RawWrapper>
             <S.InfoTitle>영업 시간</S.InfoTitle>
             <S.RawWrapperWithGap>

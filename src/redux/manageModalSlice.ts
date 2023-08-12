@@ -18,6 +18,7 @@ export const manageModalSlice = createSlice({
     eventArtist: false,
     eventCategory: false,
     eventListArtist: false,
+    addressSearch: false,
   },
   reducers: {
     toggleGroup: (state) => {
@@ -59,6 +60,9 @@ export const manageModalSlice = createSlice({
     toggleEventListArtist: (state) => {
       state.eventListArtist = !state.eventListArtist;
     },
+    toggleAddressSearch: (state) => {
+      state.addressSearch = !state.addressSearch;
+    },
   },
 });
 
@@ -76,6 +80,7 @@ export const {
   toggleEventArtist,
   toggleEventCategory,
   toggleEventListArtist,
+  toggleAddressSearch,
 } = manageModalSlice.actions;
 
 export default manageModalSlice.reducer;
@@ -117,3 +122,5 @@ export const selectEventCategoryModalState = (state: RootState) =>
   state.manageModal.eventCategory;
 export const selectEventListArtistModalState = (state: RootState) =>
   state.manageModal.eventListArtist;
+export const selectAddressSearchModalState = (state: RootState) =>
+  state.manageModal.addressSearch;

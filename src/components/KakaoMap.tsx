@@ -24,7 +24,13 @@ const detail = css`
   height: 450px;
 `;
 
-const sizes = { main, eventList, detail };
+const address = css`
+  height: 286px;
+  border-top: 2px solid #1e232c;
+  border-bottom: 2px solid #1e232c;
+`;
+
+const sizes = { main, eventList, detail, address };
 
 declare global {
   interface Window {
@@ -33,7 +39,7 @@ declare global {
 }
 
 interface KakaoMapProps {
-  size: 'main' | 'eventList' | 'detail';
+  size: 'main' | 'eventList' | 'detail' | 'address';
 }
 
 interface MarkerInfo {
