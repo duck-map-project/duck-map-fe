@@ -14,7 +14,7 @@ import {
 } from '../../redux/setEventElemetsSlice';
 
 import { ModalTitle } from './AddArtistModalStyle';
-import { ModalCloseButton } from './AddEventModalStyle';
+import { ModalCloseButton } from './ArtistSelectModalStyle';
 import { DoneButton } from './ArtistSelectModalStyle';
 import {
   CategoryItem,

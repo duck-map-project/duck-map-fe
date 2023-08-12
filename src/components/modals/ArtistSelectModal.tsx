@@ -9,13 +9,13 @@ import { Artist, selectSelectedArtist } from '../../redux/setEventElemetsSlice';
 import { ArtistContent } from '../../types/artistsType';
 
 import { ModalTitle } from './AddEventCategoryModalStyle';
-import { ModalCloseButton } from './AddEventModalStyle';
 import {
   AritstSelectSection,
   ArtistListItem,
   ArtistListSection,
   ArtistSearchInput,
   DoneButton,
+  ModalCloseButton,
 } from './ArtistSelectModalStyle';
 import CommonModal, { ModalPortal } from './CommonModal';
 

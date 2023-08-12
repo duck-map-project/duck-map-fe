@@ -43,10 +43,25 @@ const CancelButton = styled.button`
   background-size: 20px;
 `;
 
-export const ArtistSearchInput = () => {
+interface ArtistSearchInputProps {
+  placeholder?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+}
+
+export const ArtistSearchInput = ({
+  placeholder,
+  onChange,
+  value,
+}: ArtistSearchInputProps) => {
   return (
     <SearchBar>
-      <SearchInput placeholder="아티스트 검색" type="text" />
+      <SearchInput
+        placeholder={placeholder || '아티스트 검색'}
+        type="text"
+        onChange={onChange}
+        value={value}
+      />
       <CancelButton />
     </SearchBar>
   );
@@ -121,4 +136,14 @@ export const DoneButton = styled.button`
   border-radius: 73px;
   box-shadow: 4.405120372772217px 4.405120372772217px 0px 0px #00000040;
   margin-top: 26px;
+`;
+
+export const ModalCloseButton = styled.button`
+  width: 30px;
+  height: 30px;
+  background-image: url(${closeIcon});
+  background-size: 30px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
 `;
