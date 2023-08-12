@@ -28,6 +28,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
     }),
     getEventById: builder.query<EventData, string>({
       query: (id) => ({ url: '/events/' + id, method: 'GET' }),
+      providesTags: ['BookmarkEvents'],
     }),
     getMainEvent: builder.query<
       GetMainEventTransformedResponse,
@@ -89,6 +90,19 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         const isLast = response.last;
         return { content, isLast };
       },
+      providesTags: ['BookmarkEvents'],
+    }),
+    addLike: builder.mutation<{ id: number }, string>({
+      query: (id) => ({
+        url: `/events/${id}/likes`,
+        method: 'POST',
+      }),
+    }),
+    deleteLike: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/events/${id}/likes`,
+        method: 'DELETE',
+      }),
     }),
   }),
 });
@@ -98,4 +112,6 @@ export const {
   useGetEventByIdQuery,
   useGetMainEventQuery,
   useGetEventQuery,
+  useAddLikeMutation,
+  useDeleteLikeMutation,
 } = eventApiSlice;

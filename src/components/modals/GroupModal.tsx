@@ -12,6 +12,7 @@ import { selectEditArtistSlice } from '../../redux/editArtistSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleGroup } from '../../redux/manageModalSlice';
 import { toggleEditGroup } from '../../redux/manageModalSlice';
+import Loading from '../Loading';
 
 import {
   ModalTitle,
@@ -38,7 +39,7 @@ const GroupModal = ({ type }: ModalType) => {
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
   const [groupName, setGroupName] = useState('');
-  const [isImgCompressing, setIsImgCompressing] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
   const [addNewImage] = useAddImageMutation({});
   const [addNewGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
@@ -71,37 +72,37 @@ const GroupModal = ({ type }: ModalType) => {
   const onChangeGroupImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      imgFile && setPreviewImage(URL.createObjectURL(imgFile));
-      try {
-        setIsImgCompressing(true);
-        const compressedFile = await imageCompression(imgFile, {
-          maxSizeMB: 0.2,
-          maxIteration: 30,
-        });
-        setGroupImage(compressedFile);
-        setIsImgCompressing(false);
-      } catch (error) {
-        console.error(error);
-      }
+      setGroupImage(imgFile);
+      setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
   //** 리팩토링 필수 */
   const onClickAddGroupBtn = async () => {
-    if (isImgCompressing) {
-      alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
-
     if (groupImage === undefined) {
       if (previewImage === undefined) {
         alert('사진은 필수입니다.');
+        return;
       }
     }
-
+    setIsRequesting(true);
     if (groupImage) {
+      //image-compressing
+      let compressedFile;
+
+      try {
+        compressedFile = await imageCompression(groupImage, {
+          maxSizeMB: 0.2,
+          maxIteration: 30,
+        });
+      } catch (error) {
+        console.error(error);
+        setIsRequesting(false);
+        return;
+      }
+
       const formData = new FormData();
-      formData.append('file', groupImage);
+      formData.append('file', compressedFile);
       try {
         const response = await addNewImage({
           imageFile: formData,
@@ -118,11 +119,13 @@ const GroupModal = ({ type }: ModalType) => {
       } catch (error) {
         console.error(error);
       }
+      setIsRequesting(false);
       return;
     }
     if (type === 'edit') {
       if (previewImage) {
         EditGroupInfo(previewImage.slice(8));
+        setIsRequesting(false);
       }
     }
   };
@@ -160,6 +163,7 @@ const GroupModal = ({ type }: ModalType) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
+        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
         <ModalTitle>그룹 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />

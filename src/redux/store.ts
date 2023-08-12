@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+import addBookmarkReducer from './addBookmark';
 import { apiSlice } from './apiSlice';
 import authReducer, { AuthState } from './auth/authSlice';
 import editArtistReducer from './editArtistSlice';
@@ -21,6 +22,7 @@ const reducers = combineReducers({
   manageModal: manageModalReducer,
   editArtist: editArtistReducer,
   editArtistType: editArtistTypeReducer,
+  addBookmark: addBookmarkReducer,
   editBookmarkFolder: editBookmarkFolderReducer,
   editCategory: editCategoryReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,

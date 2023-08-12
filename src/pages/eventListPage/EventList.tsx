@@ -3,11 +3,17 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
-import EventListItem from '../../components/EventListItem';
+import EventListItem, {
+  HandleLikeClickProps,
+} from '../../components/EventListItem';
 import KakaoMap from '../../components/KakaoMap';
 import { useRouter } from '../../hooks/useRouter';
 import { selectCurrentUser } from '../../redux/auth/authSlice';
-import { useGetEventQuery } from '../../redux/eventApiSlice';
+import {
+  useAddLikeMutation,
+  useDeleteLikeMutation,
+  useGetEventQuery,
+} from '../../redux/eventApiSlice';
 import { setPlace } from '../../redux/eventPlaceSlice';
 import {
   selectEventArtist,
@@ -47,6 +53,8 @@ const EventList = () => {
     ...(selectedGroup &&
       !selectedArtist && { artistId: selectedGroup.id.toString() }),
   });
+  const [addLike] = useAddLikeMutation();
+  const [deleteLike] = useDeleteLikeMutation();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const scrollArea = scrollAreaRef.current;
   const dispatch = useDispatch();
@@ -107,11 +115,31 @@ const EventList = () => {
     routeTo('/event/edit');
   };
 
+  const handleLikeClick = async ({ eventId, likeId }: HandleLikeClickProps) => {
+    if (likeId) {
+      try {
+        await deleteLike(likeId).unwrap();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await addLike(eventId.toString());
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   let content;
 
   if (events) {
     content = events.map((event) => (
-      <EventListItem event={event} key={event.id} />
+      <EventListItem
+        event={event}
+        key={event.id}
+        handleLikeClick={handleLikeClick}
+      />
     ));
   } else if (isLoading) {
     content = <div>이벤트 목록을 불러오는 중입니다</div>;
@@ -120,7 +148,6 @@ const EventList = () => {
   } else {
     content = <div>이벤트가 없습니다</div>;
   }
-
   return (
     <PageWrapper>
       <ChoiceArtistBar />

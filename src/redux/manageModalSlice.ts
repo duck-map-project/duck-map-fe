@@ -13,6 +13,7 @@ export const manageModalSlice = createSlice({
     editArtistType: false,
     category: false,
     editCategory: false,
+    addBookmark: false,
     addBookmarkFolder: false,
     editBookmarkFolder: false,
     eventArtist: false,
@@ -45,6 +46,9 @@ export const manageModalSlice = createSlice({
     toggleEditCategory: (state) => {
       state.editCategory = !state.editCategory;
     },
+    toggleAddBookmark: (state) => {
+      state.addBookmark = !state.addBookmark;
+    },
     toggleAddBookmarkFolder: (state) => {
       state.addBookmarkFolder = !state.addBookmarkFolder;
     },
@@ -75,6 +79,7 @@ export const {
   toggleEditArtistType,
   toggleGroup,
   toggleEditGroup,
+  toggleAddBookmark,
   toggleAddBookmarkFolder,
   toggleEditBookmarkFolder,
   toggleEventArtist,
@@ -109,6 +114,9 @@ export const selectCategoryModalState = (state: RootState) =>
 export const selectEditCategoryModalState = (state: RootState) =>
   state.manageModal.editCategory;
 
+export const selectAddBookmarkModalState = (state: RootState) =>
+  state.manageModal.addBookmark;
+
 export const selectAddBookmarkFolderModalState = (state: RootState) =>
   state.manageModal.addBookmarkFolder;
 
@@ -120,6 +128,7 @@ export const selectEventArtistModalState = (state: RootState) =>
 
 export const selectEventCategoryModalState = (state: RootState) =>
   state.manageModal.eventCategory;
+
 export const selectEventListArtistModalState = (state: RootState) =>
   state.manageModal.eventListArtist;
 export const selectAddressSearchModalState = (state: RootState) =>

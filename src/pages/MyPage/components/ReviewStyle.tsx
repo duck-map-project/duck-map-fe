@@ -7,6 +7,7 @@ export const ReviewItemWrapper = styled.article`
   border: 2px solid var(--line-black);
   border-radius: 20px;
   background-color: #f8f8fa;
+  cursor: pointer;
 `;
 
 export const ReviewTitle = styled.div`

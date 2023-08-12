@@ -75,5 +75,6 @@ const ModalOverlay = styled.form<ModalWidth>`
     border-top-right-radius: 29px;
     border-top-left-radius: 29px;
     background-color: #ffd0ec;
+    box-sizing: border-box;
   }
 `;

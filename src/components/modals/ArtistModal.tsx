@@ -15,6 +15,7 @@ import { useAddImageMutation } from '../../redux/imageSlice';
 import { toggleArtist } from '../../redux/manageModalSlice';
 import { toggleEditArtist } from '../../redux/manageModalSlice';
 import { ArtistType } from '../../types/artistsType';
+import Loading from '../Loading';
 
 import {
   ModalTitle,
@@ -64,8 +65,8 @@ const ArtistModal = ({ type }: ModalProps) => {
   const [artistTypeArray, setArtistTypeArray] = useState<ArtistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
   const [groupPageNumber, _] = useState(0);
+  const [isRequesting, setIsRequesting] = useState(false);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
-  const [isImgCompressing, setIsImgCompressing] = useState(false);
   const pageSize = '20';
   const [addNewImage] = useAddImageMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
@@ -130,37 +131,38 @@ const ArtistModal = ({ type }: ModalProps) => {
   ) => {
     if (e.target.files) {
       const imgFile = e.target.files[0];
-      imgFile && setPreviewImage(URL.createObjectURL(imgFile));
-      try {
-        setIsImgCompressing(true);
-        const compressedFile = await imageCompression(imgFile, {
-          maxSizeMB: 0.2,
-          maxIteration: 30,
-        });
-        setArtistImage(compressedFile);
-        setIsImgCompressing(false);
-      } catch (error) {
-        console.error(error);
-      }
+      setArtistImage(imgFile);
+      setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
 
-  //** 리팩토링 필수 * /
+  // TODO: 리팩토링
   const onClickAddArtistBtn = async () => {
-    if (isImgCompressing) {
-      alert('사진 처리 중입니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
     // 파일도, 프리뷰이미지도(string) 없으면 사진 입력
     if (artistImage === undefined) {
       if (previewImage === undefined) {
         alert('사진은 필수값입니다.');
+        return;
       }
     }
-    // 파일이 있다면 사진 저장 api
+    setIsRequesting(true);
+    // 파일이 있다면 사진 저장
     if (artistImage) {
+      let compressedFile;
+      try {
+        compressedFile = await imageCompression(artistImage, {
+          maxSizeMB: 0.2,
+          maxIteration: 30,
+        });
+      } catch (error) {
+        console.error(error);
+        setIsRequesting(false);
+        return;
+      }
+
       const formData = new FormData();
-      formData.append('file', artistImage);
+      compressedFile && formData.append('file', compressedFile);
+
       try {
         const response = await addNewImage({
           imageFile: formData,
@@ -177,11 +179,15 @@ const ArtistModal = ({ type }: ModalProps) => {
       } catch (error) {
         console.error(error);
       }
+      setIsRequesting(false);
       return;
     }
+
+    //파일은 없지만 프리뷰 이미지가 있다면(수정)
     if (type === 'edit') {
       if (previewImage) {
         editArtistInfo(previewImage.slice(8));
+        setIsRequesting(false);
       }
     }
   };
@@ -238,6 +244,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
+        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
         <ModalTitle>아티스트 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
         <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
