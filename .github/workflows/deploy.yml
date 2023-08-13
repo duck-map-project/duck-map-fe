@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   run:
@@ -31,4 +28,4 @@ jobs:
           folder: build
           bucket: ${{ secrets.S3_BUCKET }}
           dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          invalidation: "/*"
+          invalidation: '/*'
