@@ -73,11 +73,6 @@ const EditEvent = ({ type }: EditEventType) => {
   const { data: EventByIdData } = useGetEventByIdQuery(eventId, { skip });
 
   useEffect(() => {
-    console.log(savedImagefile);
-  }, [savedImagefile]);
-
-  useEffect(() => {
-    console.log(EventByIdData);
     if (type === 'edit' && EventByIdData) {
       // 프리뷰 이미지
       EventByIdData.images.forEach((image, index) => {
@@ -263,7 +258,6 @@ const EditEvent = ({ type }: EditEventType) => {
     if (fromDateRef.current && toDateRef.current) {
       const fromDateValue = fromDateRef.current.value;
       const toDateValue = toDateRef.current.value;
-      console.log(fromDateValue, toDateValue);
       const [fromHours, fromMinutes] = fromDateValue.split(':');
       const [toHours, toMinutes] = toDateValue.split(':');
 
@@ -339,7 +333,6 @@ const EditEvent = ({ type }: EditEventType) => {
           },
           id,
         });
-        console.log(res);
         if ('data' in res) {
           dispatch(setArtist([]));
           dispatch(setCategory([]));
