@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
+import useDebounce from '../../hooks/useDebounce';
+import useInput from '../../hooks/useInput';
+import useScroll from '../../hooks/useScroll';
 import { useGetArtistsQuery } from '../../redux/artistsSlice';
 import { toggleEventArtist } from '../../redux/manageModalSlice';
 import { setArtist } from '../../redux/setEventElemetsSlice';
 import { Artist, selectSelectedArtist } from '../../redux/setEventElemetsSlice';
 import { ArtistContent } from '../../types/artistsType';
+import scrollToTop from '../../utils/scrollToTop';
 
 import { ModalTitle } from './AddEventCategoryModalStyle';
 import {
@@ -19,14 +23,15 @@ import {
 } from './ArtistSelectModalStyle';
 import CommonModal, { ModalPortal } from './CommonModal';
 
-const loadedData = new Map();
-
 const ArtistSelectModal = () => {
   const dispatch = useDispatch();
   const [artists, setArtists] = useState<ArtistContent[]>([]);
   const [page, setPage] = useState(0);
   const selectedArtists = useSelector(selectSelectedArtist);
   const [artistIds, setArtistIds] = useState<Artist[]>(selectedArtists);
+  const search = useInput('');
+  const debouncedSearchInput = useDebounce(search.value, 600);
+  const ulRef = useRef<HTMLUListElement>(null);
 
   const {
     data: artistsData,
@@ -37,6 +42,7 @@ const ArtistSelectModal = () => {
   } = useGetArtistsQuery({
     pageNumber: page.toString(),
     pageSize: '18',
+    ...(debouncedSearchInput && { artistName: debouncedSearchInput }),
   });
 
   const onArtistClick = (artistId: number, name: string) => {
@@ -61,24 +67,20 @@ const ArtistSelectModal = () => {
 
   useEffect(() => {
     if (artistsData) {
-      artistsData.content.forEach((item) => {
-        const uniqueId = item.id;
-
-        if (!loadedData.has(uniqueId)) {
-          loadedData.set(uniqueId, item);
-        }
-      });
-      const filteredArtistData = Array.from(loadedData.values());
-      setArtists(filteredArtistData);
+      if (page === 0) {
+        scrollToTop({ targetRef: ulRef });
+        setArtists(artistsData.content);
+      } else {
+        setArtists((prev) => [...prev, ...artistsData.content]);
+      }
     }
-  }, [artistsData]);
+  }, [artistsData, debouncedSearchInput]);
 
   const isLast = artistsData?.isLast ?? true;
 
   let content;
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const ulRef = useRef<HTMLUListElement>(null);
 
   if (artists) {
     content = artists.map((artist) => (
@@ -102,37 +104,39 @@ const ArtistSelectModal = () => {
     content = <div>{error.toString()}</div>;
   }
 
-  const ulelement = ulRef.current;
-
-  useEffect(() => {
-    if (ulelement) {
-      const handleScroll = () => {
-        const { scrollTop, clientHeight, scrollHeight } = ulelement;
-        const isScrolledToEnd = scrollTop + clientHeight >= scrollHeight;
-
-        if (isScrolledToEnd && !isFetching && !isLast) {
-          setPage((prev) => prev + 1);
-        }
-      };
-
-      ulelement.addEventListener('scroll', handleScroll);
-
-      return () => {
-        ulelement.removeEventListener('scroll', handleScroll);
-      };
-    }
-  }, [page, isFetching, ulelement, ulRef]);
+  useScroll({
+    targetRef: ulRef,
+    isFetching,
+    isLast,
+    page,
+    setPage,
+  });
 
   const onHideModal = () => {
     dispatch(toggleEventArtist());
   };
+
+  const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    search.onChange(e);
+    setPage(0);
+  };
+
+  const onSearchInputReset = () => {
+    search.setValue('');
+    setPage(0);
+  };
+
   return (
     <ModalPortal>
       <CommonModal width="1046" onClick={onHideModal}>
         <ModalCloseButton onClick={onHideModal} />
         <ModalTitle>아티스트 선택하기</ModalTitle>
         <AritstSelectSection>
-          <ArtistSearchInput />
+          <ArtistSearchInput
+            onChange={onSearchInputChange}
+            value={search.value}
+            onReset={onSearchInputReset}
+          />
           <ArtistListSection ref={ulRef}>{content}</ArtistListSection>
         </AritstSelectSection>
         <DoneButton type="button" onClick={SaveArtistIds}>

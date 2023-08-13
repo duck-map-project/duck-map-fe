@@ -1,7 +1,9 @@
-import { useRef, useState, useEffect } from 'react';
+import imageCompression from 'browser-image-compression';
+import { FormEvent, useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import Loading from '../../components/Loading';
 import SelectedElement from '../../components/SelectedElement';
 import { useRouter } from '../../hooks/useRouter';
 import {
@@ -125,6 +127,7 @@ const EditEvent = ({ type }: EditEventType) => {
   const handleAddressButton = () => {
     dispatch(toggleAddressSearch());
   };
+  const [isCompression, setIsCompression] = useState<boolean>(false);
 
   const handleHashtagChange = (index: number, value: string) => {
     const newHashtag = [...hashtags];
@@ -136,6 +139,82 @@ const EditEvent = ({ type }: EditEventType) => {
     setHashtags((prev) => [...prev, '']);
   };
 
+  const compressImages = async (images: File[]): Promise<File[]> => {
+    const compressionImages = await Promise.all(
+      images.map(async (image: File) => {
+        try {
+          const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 438,
+          };
+          setIsCompression(true);
+          const compressionResult = await imageCompression(image, options);
+          return compressionResult;
+        } catch (error) {
+          console.error(error);
+          setIsCompression(false);
+          alert('이미지 압축 실패!');
+          return;
+        }
+      })
+    );
+
+    return compressionImages.filter((image) => image !== undefined) as File[];
+  };
+
+  const uploadNewImage = async (images: File[]): Promise<string[]> => {
+    const imageUrls = await Promise.all(
+      images.map(async (image: File) => {
+        try {
+          const formData = new FormData();
+          formData.append('file', image);
+          const uploadResult = await addNewImage({
+            imageFile: formData,
+          }).unwrap();
+          return uploadResult.filename;
+        } catch (error) {
+          console.error(error);
+          alert('이미지 업로드 실패!');
+          return;
+        }
+      })
+    );
+
+    return imageUrls.filter((image) => image !== undefined) as string[];
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const artistIds = selectedArtistIds.map((artist) => artist.id);
+    const categoryIds = selectedCategoryIds.map((category) => category.id);
+
+    if (
+      place.length !== 0 &&
+      images.length !== 0 &&
+      artistIds.length !== 0 &&
+      categoryIds.length !== 0 &&
+      businessHour &&
+      fromDate &&
+      toDate &&
+      hashtags.some((hastag) => hastag.trim() !== '') &&
+      twitterUrl
+    ) {
+      try {
+        const compressionResult = await compressImages(images);
+        const imageUrls = await uploadNewImage(compressionResult);
+
+        const eventPayload = {
+          storeName: place[0].storeName[0],
+          artistIds,
+          categoryIds,
+          address: place[0].address[0],
+          businessHour,
+          fromDate: fromDate.value,
+          toDate: toDate.value,
+          hashtag: hashtags.join(' '),
+          twitterUrl: twitterUrl.value,
+          imageFilenames: imageUrls,
+        };
   const handleEventDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -151,10 +230,7 @@ const EditEvent = ({ type }: EditEventType) => {
         ...prev,
         [e.target.name]: URL.createObjectURL(file),
       }));
-      SetImages((prevImages) => ({
-        ...prevImages,
-        [e.target.name]: file,
-      }));
+      SetImages((prevImages) => [...prevImages, file]);
     }
   };
 
@@ -270,6 +346,9 @@ const EditEvent = ({ type }: EditEventType) => {
   };
   return (
     <S.PageWrapper>
+      {isCompression && (
+        <Loading text="이벤트를 업로드 중입니다. 잠시만 기다려주세요." />
+      )}
       <S.editEventBox>
         <S.Title>이벤트 {type === 'add' ? '추가' : '수정'}하기</S.Title>
         <S.FormSection>
