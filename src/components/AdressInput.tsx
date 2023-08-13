@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import useDebounce from '../hooks/useDebounce';
+import useInput from '../hooks/useInput';
 import { setPlace } from '../redux/eventPlaceSlice';
 
 import {
@@ -20,7 +22,8 @@ interface AddressInputProps {
 }
 
 const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
-  const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const search = useInput('');
+  const debouncedSearchInput = useDebounce(search.value, 600);
   const [places, setPlaces] = useState<any[]>([]);
   const searchRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
@@ -41,21 +44,21 @@ const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
     };
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(event.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    search.onChange(e);
   };
 
   useEffect(() => {
-    if (searchKeyword.trim() !== '') {
+    if (debouncedSearchInput.trim() !== '') {
       searchPlaces();
     } else {
       setPlaces([]);
     }
-  }, [searchKeyword]);
+  }, [debouncedSearchInput]);
 
   const searchPlaces = () => {
     const ps = new (window as any).kakao.maps.services.Places();
-    ps.keywordSearch(searchKeyword, placesSearchCB);
+    ps.keywordSearch(debouncedSearchInput, placesSearchCB);
   };
 
   const placesSearchCB = (data: any[], status: any) => {
@@ -83,7 +86,7 @@ const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
       place_name: place.place_name,
       address_name: place.address_name,
     });
-    setSearchKeyword('');
+    search.setValue('');
     setPlaces([]);
   };
 
@@ -92,7 +95,7 @@ const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
       <ArtistSearchInput
         placeholder="주소 검색"
         onChange={handleInputChange}
-        value={searchKeyword}
+        value={search.value}
       />
       {places.length > 0 && (
         <AddrestList>
