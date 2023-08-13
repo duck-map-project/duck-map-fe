@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import Billboard from '../components/Billboard';
 import Header from '../components/Header';
+import AddressSearchModal from '../components/modals/AddressSearchModal';
 import ArtistModal from '../components/modals/ArtistModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
 import ArtistTypeModal from '../components/modals/ArtistTypeModal';
@@ -27,6 +28,7 @@ import {
   selectEventCategoryModalState,
   selectEditGroupModalState,
   selectEventListArtistModalState,
+  selectAddressSearchModalState,
 } from '../redux/manageModalSlice';
 
 interface GeneralLayoutProps {
@@ -57,6 +59,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
   const eventListArtistModal = useSelector(selectEventListArtistModalState);
+  const addressSearchModal = useSelector(selectAddressSearchModalState);
 
   return (
     <PageWrapper>
@@ -75,6 +78,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
       {eventListArtistModal && <EventArtistModal />}
+      {addressSearchModal && <AddressSearchModal />}
       <Header />
       {children}
     </PageWrapper>

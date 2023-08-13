@@ -64,6 +64,9 @@ const Main = () => {
       }));
       dispatch(setPlace(processedPlace));
     }
+    return () => {
+      dispatch(setPlace([]));
+    };
   }, [events]);
 
   useEffect(() => {

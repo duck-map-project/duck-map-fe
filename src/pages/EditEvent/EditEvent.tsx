@@ -1,12 +1,14 @@
-import React, { FormEvent, MouseEventHandler, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { FormEvent, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import SelectedElement from '../../components/SelectedElement';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 import { useAddEventMutation } from '../../redux/eventApiSlice';
+import { selectPlaces } from '../../redux/eventPlaceSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import {
+  toggleAddressSearch,
   toggleEventArtist,
   toggleEventCategory,
 } from '../../redux/manageModalSlice';
@@ -14,42 +16,10 @@ import {
   selectSelectedArtist,
   selectSelectedCategory,
 } from '../../redux/setEventElemetsSlice';
-import AdressInput from '../AdressInput';
-import SelectedElement from '../SelectedElement';
 
-import {
-  CancelButton,
-  ContentsSection,
-  EventImage,
-  EventImageSection,
-  EventInput,
-  EventModalPageWrapper,
-  FileInput,
-  FileInputLabel,
-  FormButton,
-  FormButtonRawWrapper,
-  HashTagInput,
-  InfoSection,
-  InfoTitle,
-  LinkInput,
-  Modal,
-  ModalCloseButton,
-  ModalTitle,
-  RawWrapper,
-  RawWrapperWithGap,
-  SelectButton,
-} from './AddEventModalStyle';
+import * as S from './EditEventStyle';
 
-interface Props {
-  handleClose: MouseEventHandler<HTMLButtonElement>;
-}
-
-interface Place {
-  place_name: string;
-  address_name: string;
-}
-
-const AddEventModal = ({ handleClose }: Props) => {
+const EditEvent = () => {
   const dispatch = useDispatch();
   const handdleSelectArtistButton = () => {
     dispatch(toggleEventArtist());
@@ -65,20 +35,27 @@ const AddEventModal = ({ handleClose }: Props) => {
   const [images, SetImages] = useState<File[]>([]);
   const selectedArtistIds = useSelector(selectSelectedArtist);
   const selectedCategoryIds = useSelector(selectSelectedCategory);
-  const [place, setPlace] = useState<Place>({
-    place_name: '',
-    address_name: '',
-  });
   const [businessHour, setBusinessHour] = useState<string>('');
   const fromDate = useInput('');
   const toDate = useInput('');
-  const hashTag = useInput('');
   const twitterUrl = useInput('');
+  const [hashtags, setHashtags] = useState<string[]>(['']);
   const fromDateRef = useRef<HTMLInputElement>(null);
   const toDateRef = useRef<HTMLInputElement>(null);
   const [addEvent] = useAddEventMutation();
   const [addNewImage] = useAddImageMutation();
   const { routeTo } = useRouter();
+  const place = useSelector(selectPlaces);
+
+  const handleHashtagChange = (index: number, value: string) => {
+    const newHashtag = [...hashtags];
+    newHashtag[index] = value;
+    setHashtags(newHashtag);
+  };
+
+  const handleAddHashtag = () => {
+    setHashtags((prev) => [...prev, '']);
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,14 +63,14 @@ const AddEventModal = ({ handleClose }: Props) => {
     const categoryIds = selectedCategoryIds.map((category) => category.id);
 
     if (
+      place.length !== 0 &&
       images.length !== 0 &&
       artistIds.length !== 0 &&
       categoryIds.length !== 0 &&
-      place &&
       businessHour &&
       fromDate &&
       toDate &&
-      hashTag &&
+      hashtags.some((hastag) => hastag.trim() !== '') &&
       twitterUrl
     ) {
       try {
@@ -109,14 +86,14 @@ const AddEventModal = ({ handleClose }: Props) => {
         );
 
         const eventPayload = {
-          storeName: place.place_name,
+          storeName: place[0].storeName[0],
           artistIds,
           categoryIds,
-          address: place.address_name,
+          address: place[0].address[0],
           businessHour,
           fromDate: fromDate.value,
           toDate: toDate.value,
-          hashtag: hashTag.value,
+          hashtag: hashtags.join(' '),
           twitterUrl: twitterUrl.value,
           imageFilenames: imageUrls,
         };
@@ -143,10 +120,6 @@ const AddEventModal = ({ handleClose }: Props) => {
         [e.target.name]: file,
       }));
     }
-  };
-
-  const handleAddressChange = (place: Place) => {
-    setPlace(place);
   };
 
   const handleBusinessHourChange = () => {
@@ -185,62 +158,68 @@ const AddEventModal = ({ handleClose }: Props) => {
     }
   };
 
+  const handleAddressButton = () => {
+    dispatch(toggleAddressSearch());
+  };
+
   return (
-    <EventModalPageWrapper>
-      <Modal onSubmit={handleSubmit}>
-        <ModalCloseButton onClick={handleClose} />
-        <ContentsSection>
-          <ModalTitle>이벤트 등록하기</ModalTitle>
-          <EventImageSection>
-            <EventImage>
-              <FileInputLabel htmlFor="preview1" preview={imagePreview} />
-              <FileInput
+    <S.PageWrapper>
+      <S.editEventBox>
+        <S.Title>이벤트 추가하기</S.Title>
+        <S.FormSection onSubmit={handleSubmit}>
+          <S.EventImageSection>
+            <S.EventImage>
+              <S.FileInputLabel htmlFor="preview1" preview={imagePreview} />
+              <S.FileInput
                 id="preview1"
                 name="preview1"
                 type="file"
                 accept="image/*"
                 onChange={handleImagePreview}
               />
-            </EventImage>
-            <EventImage>
-              <FileInputLabel htmlFor="preview2" preview={imagePreview} />
-              <FileInput
+            </S.EventImage>
+            <S.EventImage>
+              <S.FileInputLabel htmlFor="preview2" preview={imagePreview} />
+              <S.FileInput
                 id="preview2"
                 name="preview2"
                 type="file"
                 accept="image/*"
                 onChange={handleImagePreview}
               />
-            </EventImage>
-            <EventImage>
-              <FileInputLabel htmlFor="preview3" preview={imagePreview} />
-              <FileInput
+            </S.EventImage>
+            <S.EventImage>
+              <S.FileInputLabel htmlFor="preview3" preview={imagePreview} />
+              <S.FileInput
                 id="preview3"
                 name="preview3"
                 type="file"
                 accept="image/*"
                 onChange={handleImagePreview}
               />
-            </EventImage>
-          </EventImageSection>
-          <InfoSection>
-            <InfoTitle>아티스트</InfoTitle>
-            <RawWrapper>
-              <SelectButton type="button" onClick={handdleSelectArtistButton}>
+            </S.EventImage>
+          </S.EventImageSection>
+          <S.InfoSection>
+            <S.InfoTitle>아티스트</S.InfoTitle>
+            <S.RawWrapper>
+              <S.SelectButton type="button" onClick={handdleSelectArtistButton}>
                 아티스트 선택
-              </SelectButton>
+              </S.SelectButton>
               {selectedArtistIds &&
                 selectedArtistIds.map((artists) => (
                   <SelectedElement key={artists.id} currentId={artists.id}>
                     {artists.name}
                   </SelectedElement>
                 ))}
-            </RawWrapper>
-            <InfoTitle>카테고리</InfoTitle>
-            <RawWrapper>
-              <SelectButton type="button" onClick={handleSelectCategoryButton}>
+            </S.RawWrapper>
+            <S.InfoTitle>카테고리</S.InfoTitle>
+            <S.RawWrapper>
+              <S.SelectButton
+                type="button"
+                onClick={handleSelectCategoryButton}
+              >
                 카테고리 선택
-              </SelectButton>
+              </S.SelectButton>
               {selectedCategoryIds &&
                 selectedCategoryIds.map((category) => (
                   <SelectedElement
@@ -251,56 +230,66 @@ const AddEventModal = ({ handleClose }: Props) => {
                     {category.category}
                   </SelectedElement>
                 ))}
-            </RawWrapper>
+            </S.RawWrapper>
             {/* TODO: 디자인 요청하기 */}
-            <InfoTitle>주소</InfoTitle>
-            <RawWrapper>
-              <AdressInput onPlaceChange={handleAddressChange} />
-              <div>{place.address_name}</div>
-            </RawWrapper>
-            <InfoTitle>영업 시간</InfoTitle>
-            <RawWrapperWithGap>
-              <EventInput
+            <S.InfoTitle>주소</S.InfoTitle>
+            <S.RawWrapper>
+              <S.SearchButton type="button" onClick={handleAddressButton}>
+                검색
+              </S.SearchButton>
+              <S.AdressDisplayInput
+                readOnly
+                placeholder={place.length !== 0 ? place[0].address[0] : ''}
+              />
+            </S.RawWrapper>
+            <S.InfoTitle>영업 시간</S.InfoTitle>
+            <S.RawWrapperWithGap>
+              <S.EventInput
                 type="time"
                 ref={fromDateRef}
                 onChange={handleBusinessHourChange}
               />
               ~
-              <EventInput
+              <S.EventInput
                 type="time"
                 ref={toDateRef}
                 onChange={handleBusinessHourChange}
               />
-            </RawWrapperWithGap>
-            <InfoTitle>이벤트 날짜</InfoTitle>
-            <RawWrapperWithGap>
-              <EventInput type="date" onChange={fromDate.onChange} />
+            </S.RawWrapperWithGap>
+            <S.InfoTitle>이벤트 날짜</S.InfoTitle>
+            <S.RawWrapperWithGap>
+              <S.EventInput type="date" onChange={fromDate.onChange} />
               ~
-              <EventInput type="date" onChange={toDate.onChange} />
-            </RawWrapperWithGap>
-            <InfoTitle>해시태그</InfoTitle>
-            <HashTagInput
-              placeholder="#생일해시태그 #생일해시태그"
-              type="text"
-              onChange={hashTag.onChange}
-            />
-            <InfoTitle>트위터 링크</InfoTitle>
-            <LinkInput
+              <S.EventInput type="date" onChange={toDate.onChange} />
+            </S.RawWrapperWithGap>
+            <S.InfoTitle>해시태그</S.InfoTitle>
+            <S.RawWrapperForHashtag>
+              {hashtags.map((hashtag, index) => (
+                <S.HashTagInput
+                  key={index}
+                  value={hashtag}
+                  placeholder="#해시태그"
+                  type="text"
+                  onChange={(e) => handleHashtagChange(index, e.target.value)}
+                />
+              ))}
+              <S.AddInputButton type="button" onClick={handleAddHashtag} />
+            </S.RawWrapperForHashtag>
+            <S.InfoTitle>트위터 링크</S.InfoTitle>
+            <S.LinkInput
               placeholder="https://twitter.com/"
               type="text"
               onChange={twitterUrl.onChange}
             />
-          </InfoSection>
-          <FormButtonRawWrapper>
-            <CancelButton type="button" onClick={handleClose}>
-              취소
-            </CancelButton>
-            <FormButton>저장</FormButton>
-          </FormButtonRawWrapper>
-        </ContentsSection>
-      </Modal>
-    </EventModalPageWrapper>
+          </S.InfoSection>
+          <S.FormButtonRawWrapper>
+            <S.CancelButton type="button">취소</S.CancelButton>
+            <S.FormButton>저장</S.FormButton>
+          </S.FormButtonRawWrapper>
+        </S.FormSection>
+      </S.editEventBox>
+    </S.PageWrapper>
   );
 };
 
-export default AddEventModal;
+export default EditEvent;

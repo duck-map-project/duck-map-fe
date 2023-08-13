@@ -7,7 +7,8 @@ import EventListItem, {
   HandleLikeClickProps,
 } from '../../components/EventListItem';
 import KakaoMap from '../../components/KakaoMap';
-import AddEventModal from '../../components/modals/AddEventModal';
+import { useRouter } from '../../hooks/useRouter';
+import { selectCurrentUser } from '../../redux/auth/authSlice';
 import {
   useAddLikeMutation,
   useDeleteLikeMutation,
@@ -34,11 +35,11 @@ import {
 } from './EventListStyle';
 
 const EventList = () => {
-  const [addEventModal, setAddEventModal] = useState(false);
   const [page, setPage] = useState(0);
   const [events, setEvents] = useState<EventListData[]>([]);
   const selectedArtist = useSelector(selectEventArtist);
   const selectedGroup = useSelector(selectEventGroup);
+  const user = useSelector(selectCurrentUser);
 
   const {
     data: eventData,
@@ -57,6 +58,7 @@ const EventList = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const scrollArea = scrollAreaRef.current;
   const dispatch = useDispatch();
+  const { routeTo } = useRouter();
 
   const isLast = eventData?.isLast ?? true;
 
@@ -85,6 +87,9 @@ const EventList = () => {
 
       dispatch(setPlace(processedPlace));
     }
+    return () => {
+      dispatch(setPlace([]));
+    };
   }, [events]);
 
   useEffect(() => {
@@ -107,11 +112,7 @@ const EventList = () => {
   }, [page, isFetching, scrollArea, scrollAreaRef]);
 
   const handleAddEventButton = () => {
-    setAddEventModal(true);
-  };
-
-  const handleModalCloseButton = () => {
-    setAddEventModal(false);
+    routeTo('/event/edit');
   };
 
   const handleLikeClick = async ({ eventId, likeId }: HandleLikeClickProps) => {
@@ -153,9 +154,11 @@ const EventList = () => {
       <ListContentsSection>
         <MapSection>
           <MapSectionTitle>지도</MapSectionTitle>
-          <EventAddButton type="button" onClick={handleAddEventButton}>
-            이벤트 추가
-          </EventAddButton>
+          {user && (
+            <EventAddButton type="button" onClick={handleAddEventButton}>
+              이벤트 추가
+            </EventAddButton>
+          )}
           <KakaoMap size="eventList" />
         </MapSection>
         <ItemListSection ref={scrollAreaRef}>
@@ -165,7 +168,6 @@ const EventList = () => {
           </DotWrapper>
         </ItemListSection>
       </ListContentsSection>
-      {addEventModal && <AddEventModal handleClose={handleModalCloseButton} />}
     </PageWrapper>
   );
 };

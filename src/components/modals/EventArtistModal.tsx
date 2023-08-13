@@ -9,8 +9,8 @@ import { setEventArtist } from '../../redux/setEventArtistSlice';
 import { ArtistType } from '../../types/artistsType';
 import { Artist } from '../../types/eventService';
 
-import { ModalCloseButton } from './AddEventModalStyle';
 import ArtistListItem from './ArtistListItem';
+import { ModalCloseButton } from './ArtistSelectModalStyle';
 import { ArtistSearchInput } from './ArtistSelectModalStyle';
 import CommonModal, { ModalPortal } from './CommonModal';
 import * as S from './EventArtistModalStyle';
