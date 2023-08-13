@@ -1,6 +1,8 @@
+import imageCompression from 'browser-image-compression';
 import { FormEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Loading from '../../components/Loading';
 import SelectedElement from '../../components/SelectedElement';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
@@ -46,6 +48,7 @@ const EditEvent = () => {
   const [addNewImage] = useAddImageMutation();
   const { routeTo } = useRouter();
   const place = useSelector(selectPlaces);
+  const [isCompression, setIsCompression] = useState<boolean>(false);
 
   const handleHashtagChange = (index: number, value: string) => {
     const newHashtag = [...hashtags];
@@ -55,6 +58,50 @@ const EditEvent = () => {
 
   const handleAddHashtag = () => {
     setHashtags((prev) => [...prev, '']);
+  };
+
+  const compressImages = async (images: File[]): Promise<File[]> => {
+    const compressionImages = await Promise.all(
+      images.map(async (image: File) => {
+        try {
+          const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 438,
+          };
+          setIsCompression(true);
+          const compressionResult = await imageCompression(image, options);
+          return compressionResult;
+        } catch (error) {
+          console.error(error);
+          setIsCompression(false);
+          alert('이미지 압축 실패!');
+          return;
+        }
+      })
+    );
+
+    return compressionImages.filter((image) => image !== undefined) as File[];
+  };
+
+  const uploadNewImage = async (images: File[]): Promise<string[]> => {
+    const imageUrls = await Promise.all(
+      images.map(async (image: File) => {
+        try {
+          const formData = new FormData();
+          formData.append('file', image);
+          const uploadResult = await addNewImage({
+            imageFile: formData,
+          }).unwrap();
+          return uploadResult.filename;
+        } catch (error) {
+          console.error(error);
+          alert('이미지 업로드 실패!');
+          return;
+        }
+      })
+    );
+
+    return imageUrls.filter((image) => image !== undefined) as string[];
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -74,16 +121,8 @@ const EditEvent = () => {
       twitterUrl
     ) {
       try {
-        const imageUrls = await Promise.all(
-          Object.values(images).map(async (image: File) => {
-            const formData = new FormData();
-            formData.append('file', image);
-            const imagesResults = await addNewImage({ imageFile: formData });
-            if ('data' in imagesResults) {
-              return imagesResults.data.filename;
-            }
-          })
-        );
+        const compressionResult = await compressImages(images);
+        const imageUrls = await uploadNewImage(compressionResult);
 
         const eventPayload = {
           storeName: place[0].storeName[0],
@@ -115,10 +154,7 @@ const EditEvent = () => {
         ...prev,
         [e.target.name]: URL.createObjectURL(file),
       }));
-      SetImages((prevImages) => ({
-        ...prevImages,
-        [e.target.name]: file,
-      }));
+      SetImages((prevImages) => [...prevImages, file]);
     }
   };
 
@@ -164,6 +200,9 @@ const EditEvent = () => {
 
   return (
     <S.PageWrapper>
+      {isCompression && (
+        <Loading text="이벤트를 업로드 중입니다. 잠시만 기다려주세요." />
+      )}
       <S.editEventBox>
         <S.Title>이벤트 추가하기</S.Title>
         <S.FormSection onSubmit={handleSubmit}>

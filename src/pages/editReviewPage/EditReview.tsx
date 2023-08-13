@@ -1,6 +1,8 @@
+import imageCompression from 'browser-image-compression';
 import { useState, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Loading from '../../components/Loading';
 import Rating from '../../components/Rating';
 import SketchbookLayout from '../../components/SketchbookLayout';
 import useInput from '../../hooks/useInput';
@@ -18,6 +20,7 @@ const EditReview = () => {
   const [addNewImage] = useAddImageMutation();
   const [addReview] = useAddReviewMutation();
   const { routeTo } = useRouter();
+  const [isCompression, setIsCompression] = useState<boolean>(false);
 
   const { id } = useParams<{ id: string }>();
   const reviewText = useInput('');
@@ -41,35 +44,76 @@ const EditReview = () => {
     }
   };
 
+  const compressImages = async (images: File[]): Promise<File[]> => {
+    const compressionImages = await Promise.all(
+      images.map(async (image: File) => {
+        try {
+          const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 438,
+          };
+          setIsCompression(true);
+          const compressionResult = await imageCompression(image, options);
+          return compressionResult;
+        } catch (error) {
+          console.error(error);
+          setIsCompression(false);
+          alert('이미지 압축 실패!');
+          return;
+        }
+      })
+    );
+
+    return compressionImages.filter((image) => image !== undefined) as File[];
+  };
+
+  const uploadNewImage = async (images: File[]): Promise<string[]> => {
+    const imageUrls = await Promise.all(
+      images.map(async (image: File) => {
+        try {
+          const formData = new FormData();
+          formData.append('file', image);
+          const uploadResult = await addNewImage({
+            imageFile: formData,
+          }).unwrap();
+          return uploadResult.filename;
+        } catch (error) {
+          console.error(error);
+          alert('이미지 업로드 실패!');
+          return;
+        }
+      })
+    );
+
+    return imageUrls.filter((image) => image !== undefined) as string[];
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (id && rating && reviewText.value && reqImages.length > 0) {
       try {
-        const imageUrls = await Promise.all(
-          Object.values(reqImages).map(async (image: File) => {
-            const formData = new FormData();
-            formData.append('file', image);
-            const imagesResults = await addNewImage({
-              imageFile: formData,
-            });
-            if ('data' in imagesResults) {
-              return imagesResults.data.filename;
-            }
-          })
-        );
+        const compressionResult = await compressImages(reqImages);
+        const imageUrls = await uploadNewImage(compressionResult);
 
         const reqData = {
           eventId: parseInt(id),
           score: rating,
           content: reviewText.value,
-          imageFilenames: imageUrls as string[],
+          imageFilenames: imageUrls,
         };
 
-        const reviewResult = await addReview(reqData);
-        if ('data' in reviewResult) {
-          routeTo(`/review/${reviewResult.data.id}`);
+        try {
+          setIsCompression(false);
+          const reviewResult = await addReview(reqData);
+          if ('data' in reviewResult) {
+            routeTo(`/review/${reviewResult.data.id}`);
+          }
+        } catch (reviewError) {
+          console.error('리뷰 추가 오류:', reviewError);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error('전체 처리 오류:', error);
+      }
     }
   };
 
@@ -79,6 +123,9 @@ const EditReview = () => {
 
   return (
     <SketchbookLayout flex="col" onSubmit={handleSubmit}>
+      {isCompression && (
+        <Loading text="리뷰를 업로드 중입니다. 잠시만 기다려주세요." />
+      )}
       <S.TopSection>
         <S.AddImageSection>
           <S.CurrentPreview currentImage={currentPreview} />
