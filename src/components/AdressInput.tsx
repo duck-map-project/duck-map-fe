@@ -90,12 +90,17 @@ const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
     setPlaces([]);
   };
 
+  const onSearchInputReset = () => {
+    search.setValue('');
+  };
+
   return (
     <EventInputWrapper ref={searchRef}>
       <ArtistSearchInput
         placeholder="주소 검색"
         onChange={handleInputChange}
         value={search.value}
+        onReset={onSearchInputReset}
       />
       {places.length > 0 && (
         <AddrestList>
