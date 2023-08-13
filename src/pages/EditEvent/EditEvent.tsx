@@ -124,6 +124,18 @@ const EditEvent = ({ type }: EditEventType) => {
       // 트위터 url
       setTwitterUrl(EventByIdData.twitterUrl);
     }
+    return () => {
+      dispatch(setArtist([]));
+      dispatch(setCategory([]));
+      dispatch(
+        setPlace([
+          {
+            address: '',
+            storeName: '',
+          },
+        ])
+      );
+    };
   }, [EventByIdData]);
 
   const handleSelectArtistButton = () => {
