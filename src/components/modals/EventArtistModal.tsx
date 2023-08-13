@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import useDebounce from '../../hooks/useDebounce';
+import useInput from '../../hooks/useInput';
 import useScroll from '../../hooks/useScroll';
 import { useGetArtistsQuery } from '../../redux/artistsSlice';
 import { useGetArtistsTypeQuery } from '../../redux/artistsTypeSlice';
@@ -8,6 +10,7 @@ import { toggleEventListArtist } from '../../redux/manageModalSlice';
 import { setEventArtist } from '../../redux/setEventArtistSlice';
 import { ArtistType } from '../../types/artistsType';
 import { Artist } from '../../types/eventService';
+import scrollToTop from '../../utils/scrollToTop';
 
 import ArtistListItem from './ArtistListItem';
 import { ModalCloseButton } from './ArtistSelectModalStyle';
@@ -23,6 +26,8 @@ const EventArtistModal = () => {
   const [currentArtist, setCurrentArtist] = useState<Artist | null>(null);
   const [currentType, setCurrentType] = useState<number | null>(null);
   const targetRef = useRef<HTMLDivElement>(null);
+  const search = useInput('');
+  const debouncedSearchInput = useDebounce(search.value, 600);
 
   const {
     data: artistData,
@@ -34,6 +39,7 @@ const EventArtistModal = () => {
     pageNumber: page.toString(),
     pageSize: '24',
     ...(currentType && { artistTypeId: currentType.toString() }),
+    ...(debouncedSearchInput && { artistName: debouncedSearchInput }),
   });
   const { data: typesData } = useGetArtistsTypeQuery();
 
@@ -47,12 +53,13 @@ const EventArtistModal = () => {
   useEffect(() => {
     if (artistData) {
       if (page === 0) {
+        scrollToTop({ targetRef });
         setArtists(artistData.content);
       } else {
         setArtists((prev) => [...prev, ...artistData.content]);
       }
     }
-  }, [artistData, typesData]);
+  }, [artistData, typesData, debouncedSearchInput]);
 
   let content;
 
@@ -81,8 +88,8 @@ const EventArtistModal = () => {
   };
 
   const handleTypeButton = (type: number | null) => {
-    setPage(0);
     setCurrentType(type);
+    setPage(0);
   };
 
   const handleOkButton = () => {
@@ -113,6 +120,11 @@ const EventArtistModal = () => {
     currentArtist && currentArtist?.image !== '/images/null'
       ? baseUrl + currentArtist?.image
       : '';
+
+  const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    search.onChange(e);
+    setPage(0);
+  };
 
   return (
     <ModalPortal>
@@ -152,7 +164,10 @@ const EventArtistModal = () => {
           <S.RightSection>
             <S.Title>아티스트 검색하기</S.Title>
             <S.GroupSelectSection>
-              <ArtistSearchInput />
+              <ArtistSearchInput
+                value={search.value}
+                onChange={onSearchInputChange}
+              />
               <S.ArtistListWrapper ref={targetRef}>
                 <S.ArtistListSection>{content}</S.ArtistListSection>
               </S.ArtistListWrapper>
