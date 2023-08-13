@@ -47,12 +47,14 @@ interface ArtistSearchInputProps {
   placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  onReset?: () => void;
 }
 
 export const ArtistSearchInput = ({
   placeholder,
   onChange,
   value,
+  onReset,
 }: ArtistSearchInputProps) => {
   return (
     <SearchBar>
@@ -62,7 +64,7 @@ export const ArtistSearchInput = ({
         onChange={onChange}
         value={value}
       />
-      <CancelButton />
+      <CancelButton type="button" onClick={onReset} />
     </SearchBar>
   );
 };

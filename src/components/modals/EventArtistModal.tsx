@@ -88,6 +88,7 @@ const EventArtistModal = () => {
   };
 
   const handleTypeButton = (type: number | null) => {
+    search.setValue('');
     setCurrentType(type);
     setPage(0);
   };
@@ -122,7 +123,13 @@ const EventArtistModal = () => {
       : '';
 
   const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCurrentType(null);
     search.onChange(e);
+    setPage(0);
+  };
+
+  const onSearchInputReset = () => {
+    search.setValue('');
     setPage(0);
   };
 
@@ -167,6 +174,7 @@ const EventArtistModal = () => {
               <ArtistSearchInput
                 value={search.value}
                 onChange={onSearchInputChange}
+                onReset={onSearchInputReset}
               />
               <S.ArtistListWrapper ref={targetRef}>
                 <S.ArtistListSection>{content}</S.ArtistListSection>
