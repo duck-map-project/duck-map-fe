@@ -1,5 +1,5 @@
 import imageCompression from 'browser-image-compression';
-import { FormEvent, useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import SelectedElement from '../../components/SelectedElement';
 import { useRouter } from '../../hooks/useRouter';
 import {
   useAddEventMutation,
+  useEditEventMutation,
   useGetEventByIdQuery,
 } from '../../redux/eventApiSlice';
 import { selectPlaces, setPlace } from '../../redux/eventPlaceSlice';
@@ -42,22 +43,25 @@ const EditEvent = ({ type }: EditEventType) => {
     preview3: '',
   });
   const [images, SetImages] = useState<File[]>([]);
+  const [savedImagefile, setSavedImagefile] = useState<string[]>([]); // 저장된 이미지의 filename
   const [eventId, setEventId] = useState<string>('');
-  const selectedArtistIds = useSelector(selectSelectedArtist);
-  const selectedCategoryIds = useSelector(selectSelectedCategory);
   const [businessHour, setBusinessHour] = useState<string>('');
   const [skip, setSkip] = useState(true);
   const [twitterUrl, setTwitterUrl] = useState('');
   const [hashtags, setHashtags] = useState<string[]>([]);
+  const [isCompression, setIsCompression] = useState<boolean>(false);
   const [date, setDate] = useState({
     fromDate: '',
     toDate: '',
   });
+  const selectedArtistIds = useSelector(selectSelectedArtist);
+  const selectedCategoryIds = useSelector(selectSelectedCategory);
+  const place = useSelector(selectPlaces);
   const fromDateRef = useRef<HTMLInputElement>(null);
   const toDateRef = useRef<HTMLInputElement>(null);
   const [addEvent] = useAddEventMutation();
   const [addNewImage] = useAddImageMutation();
-  const place = useSelector(selectPlaces);
+  const [editEvent] = useEditEventMutation();
 
   useEffect(() => {
     if (id) {
@@ -69,6 +73,11 @@ const EditEvent = ({ type }: EditEventType) => {
   const { data: EventByIdData } = useGetEventByIdQuery(eventId, { skip });
 
   useEffect(() => {
+    console.log(savedImagefile);
+  }, [savedImagefile]);
+
+  useEffect(() => {
+    console.log(EventByIdData);
     if (type === 'edit' && EventByIdData) {
       // 프리뷰 이미지
       EventByIdData.images.forEach((image, index) => {
@@ -78,6 +87,12 @@ const EditEvent = ({ type }: EditEventType) => {
           [imageKey]: baseUrl + image,
         }));
       });
+      // 이미지파일 이름
+      EventByIdData.images.forEach((image) => {
+        const formattedImage = image.slice(8);
+        setSavedImagefile((prev) => [...prev, formattedImage]);
+      });
+
       // 아티스트
       dispatch(setArtist(EventByIdData.artists));
       // 카테고리
@@ -95,7 +110,7 @@ const EditEvent = ({ type }: EditEventType) => {
       // 영업 시간
       if (fromDateRef.current && toDateRef.current) {
         const hours = EventByIdData.businessHour.split(' ~ ');
-        const [fromDate, toDate] = hours.map((original) =>
+        const [fromDate, toDate] = hours.map((original: any) =>
           formattingHours(original)
         );
         fromDateRef.current.value = fromDate;
@@ -109,7 +124,7 @@ const EditEvent = ({ type }: EditEventType) => {
       });
       // 해시태그
       const hashTagsArr = EventByIdData.hashtag.split(' ');
-      hashTagsArr.map((tag) => setHashtags((prev) => [...prev, tag]));
+      hashTagsArr.map((tag: any) => setHashtags((prev) => [...prev, tag]));
 
       // 트위터 url
       setTwitterUrl(EventByIdData.twitterUrl);
@@ -127,7 +142,6 @@ const EditEvent = ({ type }: EditEventType) => {
   const handleAddressButton = () => {
     dispatch(toggleAddressSearch());
   };
-  const [isCompression, setIsCompression] = useState<boolean>(false);
 
   const handleHashtagChange = (index: number, value: string) => {
     const newHashtag = [...hashtags];
@@ -183,7 +197,7 @@ const EditEvent = ({ type }: EditEventType) => {
     return imageUrls.filter((image) => image !== undefined) as string[];
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const artistIds = selectedArtistIds.map((artist) => artist.id);
     const categoryIds = selectedCategoryIds.map((category) => category.id);
@@ -194,8 +208,8 @@ const EditEvent = ({ type }: EditEventType) => {
       artistIds.length !== 0 &&
       categoryIds.length !== 0 &&
       businessHour &&
-      fromDate &&
-      toDate &&
+      date.fromDate &&
+      date.toDate &&
       hashtags.some((hastag) => hastag.trim() !== '') &&
       twitterUrl
     ) {
@@ -209,12 +223,23 @@ const EditEvent = ({ type }: EditEventType) => {
           categoryIds,
           address: place[0].address[0],
           businessHour,
-          fromDate: fromDate.value,
-          toDate: toDate.value,
+          fromDate: date.fromDate,
+          toDate: date.toDate,
           hashtag: hashtags.join(' '),
-          twitterUrl: twitterUrl.value,
+          twitterUrl,
           imageFilenames: imageUrls,
         };
+
+        const eventResult = await addEvent(eventPayload);
+        if ('data' in eventResult) {
+          routeTo(`/event/${eventResult?.data.id}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   const handleEventDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -270,50 +295,120 @@ const EditEvent = ({ type }: EditEventType) => {
     }
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleEditSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     const artistIds = selectedArtistIds.map((artist) => artist.id);
     const categoryIds = selectedCategoryIds.map((category) => category.id);
 
+    const eventPayload = {
+      storeName: place[0].storeName[0],
+      artistIds,
+      categoryIds,
+      address: place[0].address[0],
+      businessHour,
+      fromDate: date.fromDate,
+      toDate: date.toDate,
+      hashtag: hashtags.join(' '),
+      twitterUrl: twitterUrl,
+    };
+
     if (
-      place.length !== 0 &&
-      images.length !== 0 &&
-      artistIds.length !== 0 &&
-      categoryIds.length !== 0 &&
-      businessHour &&
-      date.fromDate &&
-      date.toDate &&
-      hashtags.some((hastag) => hastag.trim() !== '') &&
-      twitterUrl
+      place.length === 0 ||
+      artistIds.length === 0 ||
+      categoryIds.length === 0 ||
+      !businessHour ||
+      !date.fromDate ||
+      !date.toDate ||
+      !hashtags.some((hashtag) => hashtag.trim() !== '') ||
+      !twitterUrl
     ) {
+      alert('모든 값을 입력해주세요!');
+      return;
+    }
+
+    // 추가된 이미지가 있을 경우
+    if (images.length !== 0) {
       try {
-        const imageUrls = await Promise.all(
-          Object.values(images).map(async (image: File) => {
-            const formData = new FormData();
-            formData.append('file', image);
-            const imagesResults = await addNewImage({ imageFile: formData });
-            if ('data' in imagesResults) {
-              return imagesResults.data.filename;
+        const compressionResult = await compressImages(images);
+        const imageUrls = await uploadNewImage(compressionResult);
+
+        const res = await editEvent({
+          EventData: {
+            ...eventPayload,
+            imageFilenames: [...savedImagefile, ...imageUrls],
+          },
+          id,
+        });
+        console.log(res);
+        if ('data' in res) {
+          dispatch(setArtist([]));
+          dispatch(setCategory([]));
+          dispatch(
+            setPlace([
+              {
+                address: '',
+                storeName: '',
+              },
+            ])
+          );
+          routeTo(`/event/${id}`);
+        } else if ('error' in res) {
+          const error = res.error;
+          if ('data' in error) {
+            const data = error.data;
+            if (
+              data !== null &&
+              typeof data === 'object' &&
+              'message' in data
+            ) {
+              const errorMessage = data.message;
+              alert(errorMessage);
+              return;
             }
-          })
-        );
+          }
+          alert('잠시 후에 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      return;
+    }
 
-        const eventPayload = {
-          storeName: place[0].storeName[0],
-          artistIds,
-          categoryIds,
-          address: place[0].address[0],
-          businessHour,
-          fromDate: date.fromDate,
-          toDate: date.toDate,
-          hashtag: hashtags.join(' '),
-          twitterUrl: twitterUrl,
-          imageFilenames: imageUrls,
-        };
-
-        const eventResult = await addEvent(eventPayload);
-        if ('data' in eventResult) {
-          routeTo(`/event/${eventResult?.data.id}`);
+    // 기존 이미지만 그대로 저장
+    if (savedImagefile) {
+      try {
+        const res = await editEvent({
+          EventData: { ...eventPayload, imageFilenames: savedImagefile },
+          id,
+        });
+        console.log(res);
+        if ('data' in res) {
+          dispatch(setArtist([]));
+          dispatch(setCategory([]));
+          dispatch(
+            setPlace([
+              {
+                address: '',
+                storeName: '',
+              },
+            ])
+          );
+          routeTo(`/event/${id}`);
+        } else if ('error' in res) {
+          const error = res.error;
+          if ('data' in error) {
+            const data = error.data;
+            if (
+              data !== null &&
+              typeof data === 'object' &&
+              'message' in data
+            ) {
+              const errorMessage = data.message;
+              alert(errorMessage);
+              return;
+            }
+          }
+          alert('잠시 후에 다시 시도해주세요.');
         }
       } catch (error) {
         console.error(error);
@@ -321,29 +416,6 @@ const EditEvent = ({ type }: EditEventType) => {
     }
   };
 
-  const handleEditSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    const artistIds = selectedArtistIds.map((artist) => artist.id);
-    const categoryIds = selectedCategoryIds.map((category) => category.id);
-    console.log('hi?');
-    if (
-      place.length !== 0 &&
-      images.length !== 0 &&
-      artistIds.length !== 0 &&
-      categoryIds.length !== 0 &&
-      businessHour &&
-      date.fromDate &&
-      date.toDate &&
-      hashtags.some((hastag) => hastag.trim() !== '') &&
-      twitterUrl
-    ) {
-      try {
-        console.log('go');
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
   return (
     <S.PageWrapper>
       {isCompression && (

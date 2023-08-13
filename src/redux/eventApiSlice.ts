@@ -92,6 +92,13 @@ export const eventApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ['BookmarkEvents'],
     }),
+    editEvent: builder.mutation({
+      query: ({ EventData, id }) => ({
+        url: `events/${id}`,
+        method: 'PUT',
+        body: EventData,
+      }),
+    }),
     addLike: builder.mutation<{ id: number }, string>({
       query: (id) => ({
         url: `/events/${id}/likes`,
@@ -113,5 +120,6 @@ export const {
   useGetMainEventQuery,
   useGetEventQuery,
   useAddLikeMutation,
+  useEditEventMutation,
   useDeleteLikeMutation,
 } = eventApiSlice;
