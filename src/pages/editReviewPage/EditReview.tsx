@@ -1,5 +1,5 @@
 import imageCompression from 'browser-image-compression';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Loading from '../../components/Loading';
@@ -12,7 +12,11 @@ import { useAddReviewMutation } from '../../redux/reviewApiSlice';
 
 import * as S from './EditReviewStyle';
 
-const EditReview = () => {
+interface EditReviewProps {
+  type?: 'add' | 'modify';
+}
+
+const EditReview = ({ type = 'add' }: EditReviewProps) => {
   const [rating, setRating] = useState<number>(0);
   const [previews, setPreviews] = useState<string[]>([]);
   const [currentPreview, setCurrentPreview] = useState<string | null>(null);
@@ -21,9 +25,15 @@ const EditReview = () => {
   const [addReview] = useAddReviewMutation();
   const { routeTo } = useRouter();
   const [isCompression, setIsCompression] = useState<boolean>(false);
-
   const { id } = useParams<{ id: string }>();
   const reviewText = useInput('');
+  const [_skip, setSkip] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (type === 'modify') {
+      setSkip(false);
+    }
+  }, [type]);
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {

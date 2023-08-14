@@ -134,6 +134,13 @@ const routerData: RouterElement[] = [
     withAuth: true,
     wrapWithLayout: true,
   },
+  {
+    id: 15,
+    path: '/review/modify/:id',
+    element: <EditReview type="modify" />,
+    withAuth: true,
+    wrapWithLayout: true,
+  },
 ];
 
 export const Router = () => {

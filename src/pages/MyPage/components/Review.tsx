@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import locationIcon from '../../../assets/icons/location.svg';
 import FixedRating from '../../../components/FixedRating';
+import { useRouter } from '../../../hooks/useRouter';
 import { useGetMyreviewQuery } from '../../../redux/mypageSlice';
 import { myreviewType } from '../../../types/mypageType';
 
@@ -37,6 +38,13 @@ const ReviewItem = ({
     alert('상세리뷰로 이동!');
   };
 
+  const { routeTo } = useRouter();
+
+  const onEditButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    routeTo(`/review/modify/${id}`);
+  };
+
   return (
     <ReviewItemWrapper onClick={onClickReviewItem}>
       <ReviewTitle>
@@ -53,7 +61,7 @@ const ReviewItem = ({
       <ReviewContent> {content} </ReviewContent>
       <ReviewImg src={baseUrl + reviewImage} />
       <ButtonWrapper>
-        <EditButton>수정하기</EditButton>
+        <EditButton onClick={onEditButtonClick}>수정하기</EditButton>
         <DeleteButton>삭제하기</DeleteButton>
       </ButtonWrapper>
     </ReviewItemWrapper>
