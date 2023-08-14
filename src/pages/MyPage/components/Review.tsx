@@ -12,6 +12,9 @@ import {
   ReviewContent,
   ReviewImg,
   ReviewsWrapper,
+  ButtonWrapper,
+  EditButton,
+  DeleteButton,
 } from './ReviewStyle';
 
 type ReviewItemProps = {
@@ -49,6 +52,10 @@ const ReviewItem = ({
       </ReviewTitle>
       <ReviewContent> {content} </ReviewContent>
       <ReviewImg src={baseUrl + reviewImage} />
+      <ButtonWrapper>
+        <EditButton>수정하기</EditButton>
+        <DeleteButton>삭제하기</DeleteButton>
+      </ButtonWrapper>
     </ReviewItemWrapper>
   );
 };
