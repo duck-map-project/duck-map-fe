@@ -1,13 +1,17 @@
 import imageCompression from 'browser-image-compression';
-import { FormEvent, useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import Loading from '../../components/Loading';
 import SelectedElement from '../../components/SelectedElement';
-import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
-import { useAddEventMutation } from '../../redux/eventApiSlice';
-import { selectPlaces } from '../../redux/eventPlaceSlice';
+import {
+  useAddEventMutation,
+  useEditEventMutation,
+  useGetEventByIdQuery,
+} from '../../redux/eventApiSlice';
+import { selectPlaces, setPlace } from '../../redux/eventPlaceSlice';
 import { useAddImageMutation } from '../../redux/imageSlice';
 import {
   toggleAddressSearch,
@@ -15,40 +19,136 @@ import {
   toggleEventCategory,
 } from '../../redux/manageModalSlice';
 import {
+  setArtist,
+  setCategory,
   selectSelectedArtist,
   selectSelectedCategory,
 } from '../../redux/setEventElemetsSlice';
+import formattingHours from '../../utils/formattingHours';
 
 import * as S from './EditEventStyle';
 
-const EditEvent = () => {
+type EditEventType = {
+  type: 'add' | 'edit';
+};
+
+const EditEvent = ({ type }: EditEventType) => {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const handdleSelectArtistButton = () => {
-    dispatch(toggleEventArtist());
-  };
-  const handleSelectCategoryButton = () => {
-    dispatch(toggleEventCategory());
-  };
+  const { routeTo } = useRouter();
   const [imagePreview, setImagePreview] = useState({
     preview1: '',
     preview2: '',
     preview3: '',
   });
   const [images, SetImages] = useState<File[]>([]);
+  const [savedImagefile, setSavedImagefile] = useState<string[]>([]); // 저장된 이미지의 filename
+  const [eventId, setEventId] = useState<string>('');
+  const [businessHour, setBusinessHour] = useState<string>('');
+  const [skip, setSkip] = useState(true);
+  const [twitterUrl, setTwitterUrl] = useState('');
+  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [isCompression, setIsCompression] = useState<boolean>(false);
+  const [date, setDate] = useState({
+    fromDate: '',
+    toDate: '',
+  });
   const selectedArtistIds = useSelector(selectSelectedArtist);
   const selectedCategoryIds = useSelector(selectSelectedCategory);
-  const [businessHour, setBusinessHour] = useState<string>('');
-  const fromDate = useInput('');
-  const toDate = useInput('');
-  const twitterUrl = useInput('');
-  const [hashtags, setHashtags] = useState<string[]>(['']);
+  const place = useSelector(selectPlaces);
   const fromDateRef = useRef<HTMLInputElement>(null);
   const toDateRef = useRef<HTMLInputElement>(null);
   const [addEvent] = useAddEventMutation();
   const [addNewImage] = useAddImageMutation();
-  const { routeTo } = useRouter();
-  const place = useSelector(selectPlaces);
-  const [isCompression, setIsCompression] = useState<boolean>(false);
+  const [editEvent] = useEditEventMutation();
+
+  useEffect(() => {
+    if (id) {
+      setEventId(id);
+      setSkip(false);
+    }
+  }, [eventId]);
+
+  const { data: EventByIdData } = useGetEventByIdQuery(eventId, { skip });
+
+  useEffect(() => {
+    if (type === 'edit' && EventByIdData) {
+      // 프리뷰 이미지
+      EventByIdData.images.forEach((image, index) => {
+        const imageKey = `preview${index + 1}`;
+        setImagePreview((prevImages) => ({
+          ...prevImages,
+          [imageKey]: baseUrl + image,
+        }));
+      });
+      // 이미지파일 이름
+      EventByIdData.images.forEach((image) => {
+        const formattedImage = image.slice(8);
+        setSavedImagefile((prev) => [...prev, formattedImage]);
+      });
+
+      // 아티스트
+      dispatch(setArtist(EventByIdData.artists));
+      // 카테고리
+      dispatch(setCategory(EventByIdData.categories));
+      // 주소
+      setPlace;
+      dispatch(
+        setPlace([
+          {
+            address: [EventByIdData.address],
+            storeName: [EventByIdData.storeName],
+          },
+        ])
+      );
+      // 영업 시간
+      if (fromDateRef.current && toDateRef.current) {
+        const hours = EventByIdData.businessHour.split(' ~ ');
+        const [fromDate, toDate] = hours.map((original: any) =>
+          formattingHours(original)
+        );
+        fromDateRef.current.value = fromDate;
+        toDateRef.current.value = toDate;
+        setBusinessHour(EventByIdData.businessHour);
+      }
+      // 이벤트 날짜
+      setDate({
+        fromDate: EventByIdData.fromDate,
+        toDate: EventByIdData.toDate,
+      });
+      // 해시태그
+      const hashTagsArr = EventByIdData.hashtag.split(' ');
+      hashTagsArr.map((tag: any) => setHashtags((prev) => [...prev, tag]));
+
+      // 트위터 url
+      setTwitterUrl(EventByIdData.twitterUrl);
+    }
+    return () => {
+      dispatch(setArtist([]));
+      dispatch(setCategory([]));
+      dispatch(
+        setPlace([
+          {
+            address: '',
+            storeName: '',
+          },
+        ])
+      );
+    };
+  }, [EventByIdData]);
+
+  const handleSelectArtistButton = () => {
+    dispatch(toggleEventArtist());
+  };
+
+  const handleSelectCategoryButton = () => {
+    dispatch(toggleEventCategory());
+  };
+
+  const handleAddressButton = () => {
+    dispatch(toggleAddressSearch());
+  };
 
   const handleHashtagChange = (index: number, value: string) => {
     const newHashtag = [...hashtags];
@@ -104,7 +204,7 @@ const EditEvent = () => {
     return imageUrls.filter((image) => image !== undefined) as string[];
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const artistIds = selectedArtistIds.map((artist) => artist.id);
     const categoryIds = selectedCategoryIds.map((category) => category.id);
@@ -115,8 +215,8 @@ const EditEvent = () => {
       artistIds.length !== 0 &&
       categoryIds.length !== 0 &&
       businessHour &&
-      fromDate &&
-      toDate &&
+      date.fromDate &&
+      date.toDate &&
       hashtags.some((hastag) => hastag.trim() !== '') &&
       twitterUrl
     ) {
@@ -130,10 +230,10 @@ const EditEvent = () => {
           categoryIds,
           address: place[0].address[0],
           businessHour,
-          fromDate: fromDate.value,
-          toDate: toDate.value,
+          fromDate: date.fromDate,
+          toDate: date.toDate,
           hashtag: hashtags.join(' '),
-          twitterUrl: twitterUrl.value,
+          twitterUrl,
           imageFilenames: imageUrls,
         };
 
@@ -145,6 +245,14 @@ const EditEvent = () => {
         console.error(error);
       }
     }
+  };
+
+  const handleEventDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDate((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleTwitterUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTwitterUrl(e.target.value);
   };
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,7 +270,6 @@ const EditEvent = () => {
     if (fromDateRef.current && toDateRef.current) {
       const fromDateValue = fromDateRef.current.value;
       const toDateValue = toDateRef.current.value;
-
       const [fromHours, fromMinutes] = fromDateValue.split(':');
       const [toHours, toMinutes] = toDateValue.split(':');
 
@@ -194,8 +301,124 @@ const EditEvent = () => {
     }
   };
 
-  const handleAddressButton = () => {
-    dispatch(toggleAddressSearch());
+  const handleEditSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    const artistIds = selectedArtistIds.map((artist) => artist.id);
+    const categoryIds = selectedCategoryIds.map((category) => category.id);
+
+    const eventPayload = {
+      storeName: place[0].storeName[0],
+      artistIds,
+      categoryIds,
+      address: place[0].address[0],
+      businessHour,
+      fromDate: date.fromDate,
+      toDate: date.toDate,
+      hashtag: hashtags.join(' '),
+      twitterUrl: twitterUrl,
+    };
+
+    if (
+      place.length === 0 ||
+      artistIds.length === 0 ||
+      categoryIds.length === 0 ||
+      !businessHour ||
+      !date.fromDate ||
+      !date.toDate ||
+      !hashtags.some((hashtag) => hashtag.trim() !== '') ||
+      !twitterUrl
+    ) {
+      alert('모든 값을 입력해주세요!');
+      return;
+    }
+
+    // 추가된 이미지가 있을 경우
+    if (images.length !== 0) {
+      try {
+        const compressionResult = await compressImages(images);
+        const imageUrls = await uploadNewImage(compressionResult);
+
+        const res = await editEvent({
+          EventData: {
+            ...eventPayload,
+            imageFilenames: [...savedImagefile, ...imageUrls],
+          },
+          id,
+        });
+        if ('data' in res) {
+          dispatch(setArtist([]));
+          dispatch(setCategory([]));
+          dispatch(
+            setPlace([
+              {
+                address: '',
+                storeName: '',
+              },
+            ])
+          );
+          routeTo(`/event/${id}`);
+        } else if ('error' in res) {
+          const error = res.error;
+          if ('data' in error) {
+            const data = error.data;
+            if (
+              data !== null &&
+              typeof data === 'object' &&
+              'message' in data
+            ) {
+              const errorMessage = data.message;
+              alert(errorMessage);
+              return;
+            }
+          }
+          alert('잠시 후에 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      return;
+    }
+
+    // 기존 이미지만 그대로 저장
+    if (savedImagefile) {
+      try {
+        const res = await editEvent({
+          EventData: { ...eventPayload, imageFilenames: savedImagefile },
+          id,
+        });
+        console.log(res);
+        if ('data' in res) {
+          dispatch(setArtist([]));
+          dispatch(setCategory([]));
+          dispatch(
+            setPlace([
+              {
+                address: '',
+                storeName: '',
+              },
+            ])
+          );
+          routeTo(`/event/${id}`);
+        } else if ('error' in res) {
+          const error = res.error;
+          if ('data' in error) {
+            const data = error.data;
+            if (
+              data !== null &&
+              typeof data === 'object' &&
+              'message' in data
+            ) {
+              const errorMessage = data.message;
+              alert(errorMessage);
+              return;
+            }
+          }
+          alert('잠시 후에 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   return (
@@ -204,8 +427,8 @@ const EditEvent = () => {
         <Loading text="이벤트를 업로드 중입니다. 잠시만 기다려주세요." />
       )}
       <S.editEventBox>
-        <S.Title>이벤트 추가하기</S.Title>
-        <S.FormSection onSubmit={handleSubmit}>
+        <S.Title>이벤트 {type === 'add' ? '추가' : '수정'}하기</S.Title>
+        <S.FormSection>
           <S.EventImageSection>
             <S.EventImage>
               <S.FileInputLabel htmlFor="preview1" preview={imagePreview} />
@@ -241,7 +464,7 @@ const EditEvent = () => {
           <S.InfoSection>
             <S.InfoTitle>아티스트</S.InfoTitle>
             <S.RawWrapper>
-              <S.SelectButton type="button" onClick={handdleSelectArtistButton}>
+              <S.SelectButton type="button" onClick={handleSelectArtistButton}>
                 아티스트 선택
               </S.SelectButton>
               {selectedArtistIds &&
@@ -297,9 +520,19 @@ const EditEvent = () => {
             </S.RawWrapperWithGap>
             <S.InfoTitle>이벤트 날짜</S.InfoTitle>
             <S.RawWrapperWithGap>
-              <S.EventInput type="date" onChange={fromDate.onChange} />
+              <S.EventInput
+                type="date"
+                name="fromDate"
+                value={date.fromDate}
+                onChange={handleEventDate}
+              />
               ~
-              <S.EventInput type="date" onChange={toDate.onChange} />
+              <S.EventInput
+                type="date"
+                name="toDate"
+                value={date.toDate}
+                onChange={handleEventDate}
+              />
             </S.RawWrapperWithGap>
             <S.InfoTitle>해시태그</S.InfoTitle>
             <S.RawWrapperForHashtag>
@@ -318,12 +551,18 @@ const EditEvent = () => {
             <S.LinkInput
               placeholder="https://twitter.com/"
               type="text"
-              onChange={twitterUrl.onChange}
+              value={twitterUrl}
+              onChange={handleTwitterUrl}
             />
           </S.InfoSection>
           <S.FormButtonRawWrapper>
             <S.CancelButton type="button">취소</S.CancelButton>
-            <S.FormButton>저장</S.FormButton>
+            <S.FormButton
+              type="button"
+              onClick={type === 'add' ? handleSubmit : handleEditSubmit}
+            >
+              저장
+            </S.FormButton>
           </S.FormButtonRawWrapper>
         </S.FormSection>
       </S.editEventBox>

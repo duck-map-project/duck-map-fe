@@ -54,5 +54,6 @@ export default setEventElemetsSlice.reducer;
 
 export const selectSelectedArtist = (state: RootState) =>
   state.setEventElement.selectedArtists;
+
 export const selectSelectedCategory = (state: RootState) =>
   state.setEventElement.selectedCategorys;

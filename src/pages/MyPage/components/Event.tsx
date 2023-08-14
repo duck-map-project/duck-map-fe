@@ -64,14 +64,16 @@ const EventItem = ({
   const imagePath = process.env.REACT_APP_BASE_URL + image;
   const [deleteEvent] = useDeleteEventMutation();
   const { routeTo } = useRouter();
+
   const onClickEventItem = () => {
     routeTo(`/event/${eventId}`);
   };
 
   const onClickEditBtn = (event: React.MouseEvent) => {
     event.stopPropagation();
-    alert('이벤트 수정');
+    routeTo(`/event/edit/${eventId}`);
   };
+
   const onClickDeleteBtn = async (event: React.MouseEvent) => {
     event.stopPropagation();
     if (window.confirm('해당 이벤트를 삭제하시겠습니까?')) {

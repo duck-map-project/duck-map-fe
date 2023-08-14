@@ -123,7 +123,14 @@ const routerData: RouterElement[] = [
   {
     id: 13,
     path: '/event/edit',
-    element: <EditEvent />,
+    element: <EditEvent type="add" />,
+    withAuth: true,
+    wrapWithLayout: true,
+  },
+  {
+    id: 14,
+    path: '/event/edit/:id',
+    element: <EditEvent type="edit" />,
     withAuth: true,
     wrapWithLayout: true,
   },
