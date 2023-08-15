@@ -88,6 +88,7 @@ export const SelectedImage = styled.div<{ $selectedImage: string }>`
   background-image: url(${(props) => props.$selectedImage});
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
 `;
 
 const smallButtonStyle = css`

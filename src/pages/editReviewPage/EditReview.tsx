@@ -2,6 +2,7 @@ import imageCompression from 'browser-image-compression';
 import { useState, FormEvent, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { ImageDeleteButton } from '../../components/Buttons';
 import Loading from '../../components/Loading';
 import Rating from '../../components/Rating';
 import SketchbookLayout from '../../components/SketchbookLayout';
@@ -63,20 +64,29 @@ const EditReview = ({ type = 'add' }: EditReviewProps) => {
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      setCurrentPreview(URL.createObjectURL(file));
-      if (previews.length === 3) {
-        previews.shift();
-        setPreviews([...previews, URL.createObjectURL(file)]);
+      if (previews.length === 3 && reqImages.length === 3) {
+        alert('이미지는 3개까지 등록 가능합니다!');
       } else {
         setPreviews((prev) => [...prev, URL.createObjectURL(file)]);
-      }
-      if (reqImages.length === 3) {
-        reqImages.shift();
-        setReqImages([...reqImages, file]);
-      } else {
         setReqImages((prev) => [...prev, file]);
+        setCurrentPreview(URL.createObjectURL(file));
       }
     }
+  };
+
+  console.log(previews[previews.length - 1]);
+  console.log(currentPreview);
+
+  const handleImageDelete = (deleteIndex: number) => {
+    const deletePreview = previews.filter((_, index) => index !== deleteIndex);
+    setPreviews(deletePreview);
+
+    setCurrentPreview(deletePreview[deletePreview.length - 1]);
+
+    const deleteReqImage = reqImages.filter(
+      (_, index) => index !== deleteIndex
+    );
+    setReqImages(deleteReqImage);
   };
 
   const compressImages = async (images: File[]): Promise<File[]> => {
@@ -200,6 +210,9 @@ const EditReview = ({ type = 'add' }: EditReviewProps) => {
     setRating(newRating);
   };
 
+  console.log(previews);
+  console.log(reqImages);
+
   return (
     <SketchbookLayout flex="col" onSubmit={handleSubmit}>
       {isCompression && (
@@ -221,7 +234,9 @@ const EditReview = ({ type = 'add' }: EditReviewProps) => {
         <S.PreviewImageBox>
           <S.PreviewImageSection>
             {previews.map((preview, index) => (
-              <S.SelectedImage key={index} $selectedImage={preview} />
+              <S.SelectedImage key={index} $selectedImage={preview}>
+                <ImageDeleteButton onClick={() => handleImageDelete(index)} />
+              </S.SelectedImage>
             ))}
           </S.PreviewImageSection>
           <S.ButtonWraaper>
