@@ -32,6 +32,12 @@ type EditEventType = {
   type: 'add' | 'edit';
 };
 
+interface ImageFile {
+  image1: File | null;
+  image2: File | null;
+  image3: File | null;
+}
+
 const EditEvent = ({ type }: EditEventType) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const { id } = useParams();
@@ -42,8 +48,16 @@ const EditEvent = ({ type }: EditEventType) => {
     preview2: '',
     preview3: '',
   });
-  const [images, SetImages] = useState<File[]>([]);
-  const [savedImagefile, setSavedImagefile] = useState<string[]>([]); // 저장된 이미지의 filename
+  const [images, SetImages] = useState<ImageFile>({
+    image1: null,
+    image2: null,
+    image3: null,
+  });
+  const [savedImagefile, setSavedImagefile] = useState({
+    image1: '',
+    image2: '',
+    image3: '',
+  }); // 저장된 이미지의 filename
   const [eventId, setEventId] = useState<string>('');
   const [businessHour, setBusinessHour] = useState<string>('');
   const [skip, setSkip] = useState(true);
@@ -83,9 +97,12 @@ const EditEvent = ({ type }: EditEventType) => {
         }));
       });
       // 이미지파일 이름
-      EventByIdData.images.forEach((image) => {
+      EventByIdData.images.forEach((image, index) => {
         const formattedImage = image.slice(8);
-        setSavedImagefile((prev) => [...prev, formattedImage]);
+        setSavedImagefile((prev) => ({
+          ...prev,
+          [`image${index + 1}`]: formattedImage,
+        }));
       });
 
       // 아티스트
@@ -208,10 +225,11 @@ const EditEvent = ({ type }: EditEventType) => {
     e.preventDefault();
     const artistIds = selectedArtistIds.map((artist) => artist.id);
     const categoryIds = selectedCategoryIds.map((category) => category.id);
+    const imagesArr = Object.values(images).filter((image) => image !== null);
 
     if (
       place.length !== 0 &&
-      images.length !== 0 &&
+      imagesArr.length !== 0 &&
       artistIds.length !== 0 &&
       categoryIds.length !== 0 &&
       businessHour &&
@@ -221,7 +239,7 @@ const EditEvent = ({ type }: EditEventType) => {
       twitterUrl
     ) {
       try {
-        const compressionResult = await compressImages(images);
+        const compressionResult = await compressImages(imagesArr);
         const imageUrls = await uploadNewImage(compressionResult);
 
         const eventPayload = {
@@ -258,11 +276,22 @@ const EditEvent = ({ type }: EditEventType) => {
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
+      const fileName = e.target.name;
       setImagePreview((prev) => ({
         ...prev,
-        [e.target.name]: URL.createObjectURL(file),
+        [fileName]: URL.createObjectURL(file),
       }));
-      SetImages((prevImages) => [...prevImages, file]);
+      const fileNumber = fileName[fileName.length - 1];
+
+      SetImages((prevImages) => ({
+        ...prevImages,
+        [`image${fileNumber}`]: file,
+      }));
+
+      setSavedImagefile((prev) => ({
+        ...prev,
+        [`image${fileNumber}`]: '',
+      }));
     }
   };
 
@@ -333,15 +362,28 @@ const EditEvent = ({ type }: EditEventType) => {
     }
 
     // 추가된 이미지가 있을 경우
-    if (images.length !== 0) {
+    const imagesArr = Object.values(images).filter((image) => image !== null);
+    if (imagesArr.length !== 0) {
       try {
-        const compressionResult = await compressImages(images);
+        const compressionResult = await compressImages(imagesArr);
         const imageUrls = await uploadNewImage(compressionResult);
+
+        const savedImageFileArr = Object.values(savedImagefile);
+
+        const updatedImages = savedImageFileArr
+          .map((savedImage) => {
+            if (!savedImage) {
+              const imageUrl = imageUrls.shift();
+              return imageUrl;
+            }
+            return savedImage;
+          })
+          .filter((image) => image !== '' && image !== undefined);
 
         const res = await editEvent({
           EventData: {
             ...eventPayload,
-            imageFilenames: [...savedImagefile, ...imageUrls],
+            imageFilenames: updatedImages,
           },
           id,
         });
@@ -382,8 +424,11 @@ const EditEvent = ({ type }: EditEventType) => {
     // 기존 이미지만 그대로 저장
     if (savedImagefile) {
       try {
+        const savedImageFileArr = Object.values(savedImagefile).filter(
+          (image) => image !== ''
+        );
         const res = await editEvent({
-          EventData: { ...eventPayload, imageFilenames: savedImagefile },
+          EventData: { ...eventPayload, imageFilenames: savedImageFileArr },
           id,
         });
         console.log(res);
