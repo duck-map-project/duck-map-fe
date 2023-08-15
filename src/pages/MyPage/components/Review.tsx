@@ -4,6 +4,7 @@ import locationIcon from '../../../assets/icons/location.svg';
 import FixedRating from '../../../components/FixedRating';
 import { useRouter } from '../../../hooks/useRouter';
 import { useGetMyreviewQuery } from '../../../redux/mypageSlice';
+import { useDeleteReviewMutation } from '../../../redux/reviewApiSlice';
 import { myreviewType } from '../../../types/mypageType';
 
 import {
@@ -24,6 +25,7 @@ type ReviewItemProps = {
   score: number;
   reviewImage: string;
   content: string;
+  refetch: () => void;
 };
 const ReviewItem = ({
   id,
@@ -31,8 +33,10 @@ const ReviewItem = ({
   score,
   reviewImage,
   content,
+  refetch,
 }: ReviewItemProps) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const [deleteReview] = useDeleteReviewMutation();
   const onClickReviewItem = () => {
     id;
     alert('상세리뷰로 이동!');
@@ -43,6 +47,14 @@ const ReviewItem = ({
   const onEditButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     routeTo(`/review/modify/${id}`);
+  };
+
+  const onDeleteButtonClick = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.stopPropagation();
+    await deleteReview(id);
+    refetch();
   };
 
   return (
@@ -62,7 +74,7 @@ const ReviewItem = ({
       <ReviewImg src={baseUrl + reviewImage} />
       <ButtonWrapper>
         <EditButton onClick={onEditButtonClick}>수정하기</EditButton>
-        <DeleteButton>삭제하기</DeleteButton>
+        <DeleteButton onClick={onDeleteButtonClick}>삭제하기</DeleteButton>
       </ButtonWrapper>
     </ReviewItemWrapper>
   );
@@ -80,6 +92,7 @@ const Review = () => {
     isSuccess,
     isError,
     error,
+    refetch,
   } = useGetMyreviewQuery({});
 
   useEffect(() => {
@@ -105,6 +118,7 @@ const Review = () => {
         reviewImage={review.reviewImage}
         content={review.content}
         eventStoreName={review.eventStoreName}
+        refetch={refetch}
       />
     ));
   } else if (isError) {
