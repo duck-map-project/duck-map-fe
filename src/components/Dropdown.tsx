@@ -1,8 +1,5 @@
 import { styled } from 'styled-components';
 
-import { useAuthContext } from '../contexts/AuthContext';
-import { useRouter } from '../hooks/useRouter';
-
 import { sortOptionsType } from './modals/ArtistModal';
 
 type dropdowonProps = {
@@ -78,28 +75,10 @@ const Dropdown: React.FC<DropdownProps> = ({
   setId,
   icon,
 }) => {
-  const auth = useAuthContext();
-  const { routeTo } = useRouter();
-
   const handleListClick = (list: string, id: number) => {
-    switch (list) {
-      case '로그아웃':
-        auth?.signOut();
-        setClicked(false);
-
-        break;
-
-      case '마이페이지':
-        routeTo('/mypage');
-        setClicked(false);
-
-        break;
-      default:
-        setSelectedText && setSelectedText(list);
-        setClicked(false);
-        setId(id);
-        break;
-    }
+    setSelectedText && setSelectedText(list);
+    setClicked(false);
+    setId(id);
   };
 
   return (
