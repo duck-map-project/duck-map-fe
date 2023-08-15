@@ -170,8 +170,8 @@ export const TabSection = styled.section`
 `;
 
 export const TabButton = styled.button<{
-  currentTab?: string;
-  tabType: string;
+  $currentTab?: string;
+  $tabType: string;
 }>`
   height: 53px;
   font-size: 2.4rem;
@@ -190,20 +190,20 @@ export const TabButton = styled.button<{
 
 export const InfoButton = styled(TabButton)`
   width: 127px;
-  height: ${(props) => (props.currentTab === 'info' ? '79px' : '')};
+  height: ${(props) => (props.$currentTab === 'info' ? '79px' : '')};
   background-image: url(${infoIcon});
 `;
 
 export const MapButton = styled(TabButton)`
   width: 133px;
   background-image: url(${mapIcon});
-  height: ${(props) => (props.currentTab === 'map' ? '79px' : '')};
+  height: ${(props) => (props.$currentTab === 'map' ? '79px' : '')};
   background-image: url(${infoIcon});
 `;
 
 export const ReviewButton = styled(TabButton)`
   width: 155px;
-  height: ${(props) => (props.currentTab === 'review' ? '79px' : '')};
+  height: ${(props) => (props.$currentTab === 'review' ? '79px' : '')};
   background-image: url(${infoIcon});
   background-image: url(${reviewIcon});
 `;
