@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
@@ -6,7 +6,6 @@ import kakaoIcon from '../../assets/kakao-icon.svg';
 import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
 import ResetPasswordModal from '../../components/modals/ResetPasswordModal';
-import { useAuthContext } from '../../contexts/AuthContext';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 import {
@@ -36,12 +35,12 @@ const FormWithMargin = styled(Form)<{ emailError: string | undefined }>`
 `;
 
 const Signin = () => {
-  const auth = useAuthContext();
   const { routeTo } = useRouter();
   const [passwordModal, setPasswordModal] = useState<boolean>(false);
   const email = useInput('');
   const password = useInput('');
-  const [login] = useLoginMutation();
+  const [login, { error }] = useLoginMutation();
+  const [errorMessage, setErrorMessage] = useState('');
   const [fetchUser] = useFetchUserMutation();
   const dispatch = useDispatch();
 
@@ -73,6 +72,14 @@ const Signin = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (error && 'status' in error) {
+      const errorData = error.data as { message: string };
+      setErrorMessage(errorData.message);
+    }
+  }, [error]);
+
   return (
     <PageWrapper>
       {passwordModal ? (
@@ -99,13 +106,9 @@ const Signin = () => {
           autoComplete="current-password"
           placeholder="비밀번호 입력"
         />
-
         <SubmitButton>로그인하기</SubmitButton>
       </FormWithMargin>
-      {/* TODO: 에러메세지 가져오는 방식 변경 */}
-      {auth?.errorMessage.signin && (
-        <ErrorMessage>{auth?.errorMessage.signin}</ErrorMessage>
-      )}
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <div>
         <CircleButton
           onClick={() => {
