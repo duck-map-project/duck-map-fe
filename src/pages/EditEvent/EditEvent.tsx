@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import { ImageDeleteButton } from '../../components/Buttons';
 import Loading from '../../components/Loading';
 import SelectedElement from '../../components/SelectedElement';
 import { useRouter } from '../../hooks/useRouter';
@@ -48,7 +49,7 @@ const EditEvent = ({ type }: EditEventType) => {
     preview2: '',
     preview3: '',
   });
-  const [images, SetImages] = useState<ImageFile>({
+  const [images, setImages] = useState<ImageFile>({
     image1: null,
     image2: null,
     image3: null,
@@ -283,7 +284,7 @@ const EditEvent = ({ type }: EditEventType) => {
       }));
       const fileNumber = fileName[fileName.length - 1];
 
-      SetImages((prevImages) => ({
+      setImages((prevImages) => ({
         ...prevImages,
         [`image${fileNumber}`]: file,
       }));
@@ -466,6 +467,14 @@ const EditEvent = ({ type }: EditEventType) => {
     }
   };
 
+  const handleImageDelete = (index: number) => {
+    setImages((prev) => ({ ...prev, [`image${index}`]: null }));
+    setImagePreview((prev) => ({ ...prev, [`preview${index}`]: '' }));
+    if (type === 'edit') {
+      setSavedImagefile((prev) => ({ ...prev, [`image${index}`]: '' }));
+    }
+  };
+
   return (
     <S.PageWrapper>
       {isCompression && (
@@ -484,6 +493,7 @@ const EditEvent = ({ type }: EditEventType) => {
                 accept="image/*"
                 onChange={handleImagePreview}
               />
+              <ImageDeleteButton onClick={() => handleImageDelete(1)} />
             </S.EventImage>
             <S.EventImage>
               <S.FileInputLabel htmlFor="preview2" preview={imagePreview} />
@@ -494,6 +504,7 @@ const EditEvent = ({ type }: EditEventType) => {
                 accept="image/*"
                 onChange={handleImagePreview}
               />
+              <ImageDeleteButton onClick={() => handleImageDelete(2)} />
             </S.EventImage>
             <S.EventImage>
               <S.FileInputLabel htmlFor="preview3" preview={imagePreview} />
@@ -504,6 +515,7 @@ const EditEvent = ({ type }: EditEventType) => {
                 accept="image/*"
                 onChange={handleImagePreview}
               />
+              <ImageDeleteButton onClick={() => handleImageDelete(3)} />
             </S.EventImage>
           </S.EventImageSection>
           <S.InfoSection>
@@ -538,7 +550,7 @@ const EditEvent = ({ type }: EditEventType) => {
                   </SelectedElement>
                 ))}
             </S.RawWrapper>
-            {/* TODO: 디자인 요청하기 */}
+
             <S.InfoTitle>주소</S.InfoTitle>
             <S.RawWrapper>
               <S.SearchButton type="button" onClick={handleAddressButton}>

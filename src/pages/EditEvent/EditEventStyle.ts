@@ -69,9 +69,7 @@ export const EventImageSection = styled.ul`
 export const EventImage = styled.li`
   width: 290.07px;
   height: 258.89px;
-  border-radius: 29px;
-  border: 2.06px solid #1e232c;
-  overflow: hidden;
+  position: relative;
 `;
 
 export const FileInputLabel = styled.label<{
@@ -91,6 +89,8 @@ export const FileInputLabel = styled.label<{
       : ''};
   background-repeat: no-repeat;
   background-position: center;
+  border-radius: 29px;
+  border: 2.06px solid #1e232c;
   cursor: pointer;
 `;
 
