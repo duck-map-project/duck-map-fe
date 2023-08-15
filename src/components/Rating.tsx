@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 import emptyStar from '../assets/star-empty.svg';
@@ -22,16 +22,20 @@ const RatingBox = styled.section`
   border-radius: 30px;
 `;
 
-const Star = styled.div<{ starUrl: string }>`
+const Star = styled.div<{ $starUrl: string }>`
   width: 25px;
   height: 23px;
-  background-image: url(${(props) => props.starUrl});
+  background-image: url(${(props) => props.$starUrl});
   background-size: cover;
   background-position: center;
 `;
 
 const Rating: React.FC<RatingProps> = ({ initialRating, onChange }) => {
-  const [rating, setRating] = useState(initialRating);
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    setRating(initialRating);
+  }, [initialRating]);
 
   const handleStarClick = (clickedRating: number) => {
     if (onChange) {
@@ -53,7 +57,7 @@ const Rating: React.FC<RatingProps> = ({ initialRating, onChange }) => {
       {[1, 2, 3, 4, 5].map((index) => (
         <Star
           key={index}
-          starUrl={rating >= index ? filledStar : emptyStar}
+          $starUrl={rating >= index ? filledStar : emptyStar}
           onClick={() => handleStarClick(index)}
           onMouseEnter={() => handleMouseEnter(index)}
           onMouseLeave={() => handleMouseLeave()}

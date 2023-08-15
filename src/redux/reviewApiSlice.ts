@@ -23,6 +23,17 @@ interface GetMainReviewsTransformedResponse {
   content: MainReview[];
 }
 
+interface EditReqData {
+  score: number;
+  content: string;
+  imageFilenames: string[];
+}
+
+interface EditReviewReq {
+  id: string;
+  requestData: EditReqData;
+}
+
 const reviewApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getReviews: builder.query<
@@ -65,6 +76,19 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    editReview: builder.mutation<void, EditReviewReq>({
+      query: ({ id, requestData }) => ({
+        url: `/reviews/${id}`,
+        method: 'PUT',
+        body: { ...requestData },
+      }),
+    }),
+    deleteReview: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/reviews/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -73,4 +97,6 @@ export const {
   useAddReviewMutation,
   useGetMainReviewQuery,
   useGetReviewByIdQuery,
+  useEditReviewMutation,
+  useDeleteReviewMutation,
 } = reviewApiSlice;

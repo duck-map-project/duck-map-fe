@@ -19,17 +19,17 @@ export const AddImageSection = styled.section`
   gap: 17px;
 `;
 
-export const CurrentPreview = styled.label<{ currentImage: string | null }>`
+export const CurrentPreview = styled.label<{ $currentImage: string | null }>`
   width: 335px;
   height: 283px;
   background-color: #ededed;
   border: 2px solid #1e232c;
   border-radius: 20px;
   background-image: ${(props) =>
-    props.currentImage ? `url(${props.currentImage})` : `url(${emptyImage})`};
+    props.$currentImage ? `url(${props.$currentImage})` : `url(${emptyImage})`};
   background-repeat: no-repeat;
   background-position: center;
-  background-size: ${(props) => (props.currentImage ? 'cover' : '52.38px')};
+  background-size: ${(props) => (props.$currentImage ? 'cover' : '52.38px')};
   position: relative;
   &::after {
     content: '';
@@ -80,12 +80,12 @@ export const PreviewImageSection = styled.section`
   }
 `;
 
-export const SelectedImage = styled.div<{ selectedImage: string }>`
+export const SelectedImage = styled.div<{ $selectedImage: string }>`
   width: 202px;
   height: 202px;
   border: 2px solid #1e232c;
   border-radius: 20px;
-  background-image: url(${(props) => props.selectedImage});
+  background-image: url(${(props) => props.$selectedImage});
   background-repeat: no-repeat;
   background-size: cover;
 `;

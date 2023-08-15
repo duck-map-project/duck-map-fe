@@ -1,5 +1,5 @@
 import imageCompression from 'browser-image-compression';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Loading from '../../components/Loading';
@@ -8,22 +8,57 @@ import SketchbookLayout from '../../components/SketchbookLayout';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 import { useAddImageMutation } from '../../redux/imageSlice';
-import { useAddReviewMutation } from '../../redux/reviewApiSlice';
+import {
+  useAddReviewMutation,
+  useEditReviewMutation,
+  useGetReviewByIdQuery,
+} from '../../redux/reviewApiSlice';
 
 import * as S from './EditReviewStyle';
 
-const EditReview = () => {
+interface EditReviewProps {
+  type?: 'add' | 'modify';
+}
+
+const EditReview = ({ type = 'add' }: EditReviewProps) => {
   const [rating, setRating] = useState<number>(0);
   const [previews, setPreviews] = useState<string[]>([]);
   const [currentPreview, setCurrentPreview] = useState<string | null>(null);
   const [reqImages, setReqImages] = useState<File[]>([]);
   const [addNewImage] = useAddImageMutation();
   const [addReview] = useAddReviewMutation();
+  const [editReview] = useEditReviewMutation();
   const { routeTo } = useRouter();
   const [isCompression, setIsCompression] = useState<boolean>(false);
-
   const { id } = useParams<{ id: string }>();
+  const [currentId, setCurrentId] = useState<string>('');
   const reviewText = useInput('');
+  const [skip, setSkip] = useState<boolean>(true);
+  const { data: reviewData, refetch } = useGetReviewByIdQuery(currentId, {
+    skip,
+  });
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
+  useEffect(() => {
+    if (id) {
+      setCurrentId(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (type === 'modify') {
+      setSkip(false);
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (reviewData) {
+      const processedPhotos = reviewData.photos.map((photo) => baseUrl + photo);
+      setRating(reviewData.score);
+      setPreviews(processedPhotos);
+      reviewText.setValue(reviewData.content);
+    }
+  }, [reviewData]);
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -90,7 +125,13 @@ const EditReview = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (id && rating && reviewText.value && reqImages.length > 0) {
+    if (
+      type === 'add' &&
+      id &&
+      rating &&
+      reviewText.value &&
+      reqImages.length > 0
+    ) {
       try {
         const compressionResult = await compressImages(reqImages);
         const imageUrls = await uploadNewImage(compressionResult);
@@ -114,6 +155,44 @@ const EditReview = () => {
       } catch (error) {
         console.error('전체 처리 오류:', error);
       }
+    } else if (
+      type === 'modify' &&
+      currentId &&
+      rating &&
+      reviewText.value &&
+      (reqImages.length > 0 || previews.length > 0)
+    ) {
+      try {
+        let imageUrls;
+        if (reqImages.length !== 0) {
+          const compressionResult = await compressImages(reqImages);
+          imageUrls = await uploadNewImage(compressionResult);
+        }
+
+        const processedPhoto =
+          reviewData &&
+          reviewData.photos.map((photo) => photo.replace('/images/', ''));
+
+        const reqData = {
+          score: rating,
+          content: reviewText.value,
+          imageFilenames:
+            reqImages.length !== 0 && imageUrls
+              ? imageUrls
+              : (processedPhoto as string[]),
+        };
+
+        try {
+          setIsCompression(false);
+          await editReview({ id: currentId, requestData: reqData }).unwrap();
+          await refetch();
+          routeTo(`/review/${currentId}`);
+        } catch (reviewError) {
+          console.error('리뷰 추가 오류:', reviewError);
+        }
+      } catch (error) {
+        console.error('전체 처리 오류:', error);
+      }
     }
   };
 
@@ -128,7 +207,7 @@ const EditReview = () => {
       )}
       <S.TopSection>
         <S.AddImageSection>
-          <S.CurrentPreview currentImage={currentPreview} />
+          <S.CurrentPreview $currentImage={currentPreview} />
           <S.ImageInputLabel htmlFor="reviewImage">사진 추가</S.ImageInputLabel>
           <input
             style={{ display: 'none' }}
@@ -142,7 +221,7 @@ const EditReview = () => {
         <S.PreviewImageBox>
           <S.PreviewImageSection>
             {previews.map((preview, index) => (
-              <S.SelectedImage key={index} selectedImage={preview} />
+              <S.SelectedImage key={index} $selectedImage={preview} />
             ))}
           </S.PreviewImageSection>
           <S.ButtonWraaper>
@@ -151,7 +230,7 @@ const EditReview = () => {
           </S.ButtonWraaper>
         </S.PreviewImageBox>
       </S.TopSection>
-      <S.TextSection onChange={reviewText.onChange} />
+      <S.TextSection onChange={reviewText.onChange} value={reviewText.value} />
       <div>
         <S.SubmitButton>작성 완료</S.SubmitButton>
         <S.CancelButton>취소</S.CancelButton>
