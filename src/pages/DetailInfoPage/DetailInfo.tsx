@@ -156,7 +156,6 @@ const DetailInfo = () => {
             <ImageSlider images={images as string[]} />
             <HeartButtonWrapper onClick={() => setIsLike((prev) => !prev)}>
               <HeartButton checked={isLike} onClick={handleLikeButton} />
-              {/* TODO: 좋아요값 서버에서 가져오기 */}
               <LikeNum>{eventInfo?.likeCount}</LikeNum>
             </HeartButtonWrapper>
             <BookmarkButton
@@ -173,7 +172,11 @@ const DetailInfo = () => {
                 <SmallHeart />
               </HeartContour>
             </div>
-            <FixedRating score={4.5} marginB="10px" className="detailinfo" />
+            <FixedRating
+              score={eventInfo?.score as number}
+              marginB="10px"
+              className="detailinfo"
+            />
             <TextBoxWithTitle title="이벤트 기간">
               {eventInfo?.fromDate} ~ {eventInfo?.toDate}
             </TextBoxWithTitle>
@@ -202,16 +205,14 @@ const DetailInfo = () => {
                 <CopyButton>복사하기</CopyButton>
               </CopyToClipboard>
             </CopyTextBoxWrapper>
-
-            {/* TODO: 나중에 평균 별점값 받아오기 */}
           </InfoSection>
           <TabSection>
             <InfoButton
               onClick={() => {
                 handleTabClick('info');
               }}
-              currentTab={currentTab}
-              tabType="info"
+              $currentTab={currentTab}
+              $tabType="info"
             >
               Info
             </InfoButton>
@@ -219,8 +220,8 @@ const DetailInfo = () => {
               onClick={() => {
                 handleTabClick('map');
               }}
-              currentTab={currentTab}
-              tabType="map"
+              $currentTab={currentTab}
+              $tabType="map"
             >
               Map
             </MapButton>
@@ -228,8 +229,8 @@ const DetailInfo = () => {
               onClick={() => {
                 handleTabClick('review');
               }}
-              currentTab={currentTab}
-              tabType="review"
+              $currentTab={currentTab}
+              $tabType="review"
             >
               Review
             </ReviewButton>
