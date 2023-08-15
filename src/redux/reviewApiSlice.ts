@@ -30,7 +30,7 @@ interface EditReqData {
 }
 
 interface EditReviewReq {
-  id: number;
+  id: string;
   requestData: EditReqData;
 }
 
