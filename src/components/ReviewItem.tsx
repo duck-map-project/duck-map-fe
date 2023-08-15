@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 
+import { useRouter } from '../hooks/useRouter';
 import { Review } from '../types/eventService';
 
 import FixedRating from './FixedRating';
@@ -12,6 +13,7 @@ const ReviewWrapper = styled.li`
   border-radius: 20px;
   background-color: #e6f8fe;
   padding: 22px 20px 18px 20px;
+  cursor: pointer;
 `;
 const ProfileImg = styled.img`
   width: 50px;
@@ -79,8 +81,9 @@ interface ReviewItemProps {
 
 const ReviewItem = ({ review }: ReviewItemProps) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const { routeTo } = useRouter();
   return (
-    <ReviewWrapper>
+    <ReviewWrapper onClick={() => routeTo(`/review/${review.id}`)}>
       <TopSection>
         <ProfileImg alt="사용자 프로필" src={baseUrl + review.userProfile} />
         <ReviewInfoText>{review.username}</ReviewInfoText>
