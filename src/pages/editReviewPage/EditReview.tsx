@@ -74,9 +74,6 @@ const EditReview = ({ type = 'add' }: EditReviewProps) => {
     }
   };
 
-  console.log(previews[previews.length - 1]);
-  console.log(currentPreview);
-
   const handleImageDelete = (deleteIndex: number) => {
     const deletePreview = previews.filter((_, index) => index !== deleteIndex);
     setPreviews(deletePreview);
@@ -209,9 +206,6 @@ const EditReview = ({ type = 'add' }: EditReviewProps) => {
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
   };
-
-  console.log(previews);
-  console.log(reqImages);
 
   return (
     <SketchbookLayout flex="col" onSubmit={handleSubmit}>
