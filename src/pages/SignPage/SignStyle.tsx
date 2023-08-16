@@ -23,14 +23,13 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 324px;
   max-width: 568px;
   background-color: #fffbe3fa;
   border: 2px solid #1e232c;
   border-radius: 20px;
   margin-top: 77px;
   margin-bottom: 24px;
-  padding: 27px 91px 0;
+  padding: 27px 91px 72px;
   position: relative;
   & > button {
     margin-top: 50px;
@@ -40,7 +39,7 @@ export const Form = styled.form`
     display: block;
     box-sizing: border-box;
     width: 100%;
-    height: 324px;
+    height: 100%;
     background-color: #fcf3befa;
     border: 2px solid #1e232c;
     border-radius: 20px;

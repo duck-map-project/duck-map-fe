@@ -19,6 +19,7 @@ const PageWrapper = styled.section`
 
 const ResetPasswordForm = styled(Form)`
   margin-top: 159px;
+  padding-bottom: 62px;
   & > input[name='password'] {
     margin-bottom: 16px;
   }
