@@ -4,6 +4,7 @@ import {
   EventResponse,
   MainEvent,
   MainEventResponse,
+  TodayHashtagsResponse,
 } from '../types/eventService';
 
 import { apiSlice } from './apiSlice';
@@ -114,6 +115,12 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
     }),
+    getTodayHashtags: builder.query<TodayHashtagsResponse[], void>({
+      query: () => ({
+        url: '/events/hashtags/today',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -125,4 +132,5 @@ export const {
   useAddLikeMutation,
   useEditEventMutation,
   useDeleteLikeMutation,
+  useGetTodayHashtagsQuery,
 } = eventApiSlice;
