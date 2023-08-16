@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 import kakaoIcon from '../../assets/kakao-icon.svg';
 import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
-import { useAuthContext } from '../../contexts/AuthContext';
 import useForm, { Errors } from '../../hooks/useForm';
+import { useRouter } from '../../hooks/useRouter';
+import { useSignUpMutation } from '../../redux/auth/authApiSlice';
 
 import {
   PageWrapper,
@@ -42,15 +44,26 @@ const SignupForm = styled(Form)<{ errors: Errors }>`
 `;
 
 const Signup = () => {
-  const auth = useAuthContext();
+  const [signUp, { isError, error }] = useSignUpMutation();
+  const [errorMessage, setErrorMessage] = useState('');
+  const { routeTo } = useRouter();
 
   const handleSignup = async () => {
-    await auth?.signUp({
+    const reqData = {
       username: inputs.username as string,
       email: inputs.email as string,
       password: inputs.password as string,
-    });
+    };
+    await signUp(reqData);
+    if (!isError) routeTo('/signin');
   };
+
+  useEffect(() => {
+    if (error && 'status' in error) {
+      const errorData = error.data as { message: string };
+      setErrorMessage(errorData.message);
+    }
+  }, [error]);
 
   const { handleChange, handleSubmit, inputs, errors } = useForm(
     { email: '', password: '', passwordCheck: '', username: '' },
@@ -109,8 +122,8 @@ const Signup = () => {
         />
         {errors.username && <ErrorMessage>{errors.username}</ErrorMessage>}
         <SubmitButton>가입하기</SubmitButton>
-        {auth?.errorMessage.signup && (
-          <CenterErrorMessage>{auth?.errorMessage.signup}</CenterErrorMessage>
+        {errorMessage && (
+          <CenterErrorMessage>{errorMessage}</CenterErrorMessage>
         )}
       </SignupForm>
       <NaverLoginButton>

@@ -1,4 +1,4 @@
-import { UserInfoType } from '../../types/auth';
+import { SignupRequest, UserInfoType } from '../../types/auth';
 import { apiSlice } from '../apiSlice';
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -69,6 +69,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: password,
       }),
     }),
+    signUp: builder.mutation<void, SignupRequest>({
+      query: (requestData) => ({
+        url: '/members/join',
+        method: 'POST',
+        body: { ...requestData },
+      }),
+    }),
   }),
 });
 
@@ -80,4 +87,5 @@ export const {
   useEditUserInfoMutation,
   useEditPasswordMutation,
   useUnregisterMutation,
+  useSignUpMutation,
 } = authApiSlice;
