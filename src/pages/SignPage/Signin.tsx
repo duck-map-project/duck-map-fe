@@ -27,10 +27,10 @@ import {
   KakaoIcon,
 } from './SignStyle';
 
-const FormWithMargin = styled(Form)<{ emailError: string | undefined }>`
+const FormWithMargin = styled(Form)<{ $emailError: string | undefined }>`
   margin-bottom: 55px;
   & > input:nth-child(3) {
-    margin-bottom: ${(props) => (props.emailError ? '0' : '16px')};
+    margin-bottom: ${(props) => (props.$emailError ? '0' : '16px')};
   }
 `;
 
@@ -85,7 +85,7 @@ const Signin = () => {
       {passwordModal ? (
         <ResetPasswordModal onClickButton={() => setPasswordModal(false)} />
       ) : null}
-      <FormWithMargin onSubmit={handleSignin} noValidate emailError="">
+      <FormWithMargin onSubmit={handleSignin} noValidate $emailError="">
         <PageTitle>로그인</PageTitle>
         <AuthInput
           name="email"
