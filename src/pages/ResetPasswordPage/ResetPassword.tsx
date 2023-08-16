@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-import { resetPassword } from '../../api/authApi';
 import AuthInput from '../../components/AuthInput';
 import SuccessResetModal from '../../components/modals/SuccessResetModal';
 import useForm from '../../hooks/useForm';
+import { useResetPasswordMutation } from '../../redux/auth/authApiSlice';
 import { ErrorMessage } from '../SignPage/SignStyle';
 import { PageTitle, Form, SubmitButton } from '../SignPage/SignStyle';
 
@@ -27,17 +27,19 @@ const ResetPasswordForm = styled(Form)`
 const ResetPassword = () => {
   const { id } = useParams();
   const [successModal, setSuccessModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [resetPassword, { isError, error }] = useResetPasswordMutation();
 
   const onResetPasswordSubmit = async () => {
-    try {
-      if (inputs.password === inputs.passwordCheck && id) {
-        const res = await resetPassword(id, inputs.password as string);
-        if (res === 'success') {
-          setSuccessModal(true);
-        }
-      }
-    } catch (error) {
-      console.error(error);
+    if (
+      inputs.password &&
+      inputs.passwordCheck &&
+      id &&
+      !errors.password &&
+      !errors.passwordCheck
+    ) {
+      await resetPassword({ id, newPassword: inputs.password });
+      if (!isError) setSuccessModal(true);
     }
   };
 
@@ -52,6 +54,13 @@ const ResetPassword = () => {
   const onModalClsoeButton = () => {
     setSuccessModal(false);
   };
+
+  useEffect(() => {
+    if (error && 'status' in error) {
+      const errorData = error.data as { message: string };
+      setErrorMessage(errorData.message);
+    }
+  }, [error]);
 
   return (
     <PageWrapper>
@@ -73,6 +82,7 @@ const ResetPassword = () => {
         {errors.passwordCheck && (
           <ErrorMessage>{errors.passwordCheck}</ErrorMessage>
         )}
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <SubmitButton>확인</SubmitButton>
       </ResetPasswordForm>
       {successModal ? (
