@@ -137,3 +137,8 @@ export interface EventListData {
 export interface EventResponse extends Omit<MainEventResponse, 'content'> {
   content: EventListData[];
 }
+
+export interface TodayHashtagsResponse {
+  eventId: number;
+  hashtag: string;
+}

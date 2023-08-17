@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { todayHashtags } from '../api/event';
+import { useGetTodayHashtagsQuery } from '../redux/eventApiSlice';
+import { TodayHashtagsResponse } from '../types/eventService';
 
 const SlideLeftAnimation = keyframes`
   from {
@@ -42,26 +43,15 @@ const ListItem = styled.li`
   margin-right: 10px;
 `;
 
-interface HashTag {
-  eventId: number;
-  hashtag: string;
-}
-
 const Billboard = () => {
-  const [hashtags, setHashtags] = useState<HashTag[]>([]);
-
-  const fetchTodayHashtag = async () => {
-    try {
-      const res = await todayHashtags();
-      setHashtags(res);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { data: hashtagsData } = useGetTodayHashtagsQuery();
+  const [hashtags, setHashtags] = useState<TodayHashtagsResponse[]>([]);
 
   useEffect(() => {
-    fetchTodayHashtag();
-  }, []);
+    if (hashtagsData) {
+      setHashtags(hashtagsData);
+    }
+  }, [hashtagsData]);
 
   const listItems = hashtags?.map((hashtag, index) => (
     <ListItem key={index}>{hashtag.hashtag}</ListItem>
