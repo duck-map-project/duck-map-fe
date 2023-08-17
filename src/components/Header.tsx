@@ -10,10 +10,7 @@ import logo from '../assets/logo.svg';
 import defaultImage from '../assets/user-profile.svg';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/mainPage/MainStyle';
-import {
-  useLogoutMutation,
-  useGetUserInfoQuery,
-} from '../redux/auth/authApiSlice';
+import { useLogoutMutation } from '../redux/auth/authApiSlice';
 import {
   logOut,
   selectCurrentUser,
@@ -87,20 +84,18 @@ const Header: React.FC = ({}) => {
   const { currentPath, routeTo } = useRouter();
   const user = useSelector(selectCurrentUser);
   const userRole = useSelector(selectCurrentRole);
-  const [logout] = useLogoutMutation();
-  const { data: userData } = useGetUserInfoQuery();
+  const [logout, { isError }] = useLogoutMutation();
   const [userProfile, setUserProfile] = useState<string | null>('');
 
   useEffect(() => {
-    if (userData?.userProfile) {
-      if (userData?.userProfile !== '/images/null') {
-        const url = baseUrl + userData.userProfile;
-        setUserProfile(url);
-        return;
-      }
+    if (user && user.userProfile !== '/images/null') {
+      const url = baseUrl + user.userProfile;
+      setUserProfile(url);
+      return;
+    } else {
       setUserProfile(null);
     }
-  }, [userData]);
+  }, [user]);
 
   const handleProfileClick = () => {
     if (user && userRole === 'ADMIN') {
@@ -111,11 +106,16 @@ const Header: React.FC = ({}) => {
     }
   };
 
-  const handleAuthButton = () => {
+  const handleAuthButton = async () => {
     if (user) {
       logout({});
-
-      dispatch(logOut({}));
+      if (isError) {
+        alert('로그아웃 실패!');
+        return;
+      } else {
+        dispatch(logOut({}));
+        routeTo('/signin');
+      }
     } else {
       routeTo('/signin');
     }
