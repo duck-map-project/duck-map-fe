@@ -1,7 +1,7 @@
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
-import { sendRsetPassword } from '../../api/authApi';
 import useForm from '../../hooks/useForm';
+import { useSendPasswordEmailMutation } from '../../redux/auth/authApiSlice';
 import AuthInput from '../AuthInput';
 
 import {
@@ -20,16 +20,20 @@ interface Props {
 }
 
 const ResetPasswordModal = ({ onClickButton }: Props) => {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [sendPasswordEmail, { error, isSuccess }] =
+    useSendPasswordEmailMutation();
+
+  useEffect(() => {
+    if (error && 'status' in error) {
+      const errorData = error.data as { message: string };
+      setErrorMessage(errorData.message);
+    }
+  }, [error]);
 
   const onEmailSubmit = async () => {
-    try {
-      const res = await sendRsetPassword(inputs.email as string);
-      if (res === 'success') {
-        setIsSuccess(true);
-      }
-    } catch (error) {
-      console.error(error);
+    if (inputs.email) {
+      sendPasswordEmail(inputs.email);
     }
   };
 
@@ -38,31 +42,37 @@ const ResetPasswordModal = ({ onClickButton }: Props) => {
     onEmailSubmit
   );
 
+  let content;
+
+  if (!isSuccess) {
+    content = (
+      <>
+        <EmailSubmitText>
+          가입했던 이메일을 입력해주세요. <br />
+          비밀번호 재설정 메일을 보내드립니다.
+        </EmailSubmitText>
+        <AuthInput
+          title="이메일"
+          id="reset-password"
+          name="email"
+          onChange={handleChange}
+        />
+        {errors.email ? (
+          <ErrorMessageWithAlign>{errors.email}</ErrorMessageWithAlign>
+        ) : errorMessage ? (
+          <ErrorMessageWithAlign>{errorMessage}</ErrorMessageWithAlign>
+        ) : null}
+        <EmailSubmitButton>이메일 전송하기</EmailSubmitButton>
+      </>
+    );
+  } else {
+    content = <SuccessText>이메일이 전송되었습니다.</SuccessText>;
+  }
+
   return (
     <PageWrapper>
       <ModalWrapper>
-        <EmailSubmitModal onSubmit={handleSubmit}>
-          {!isSuccess ? (
-            <>
-              <EmailSubmitText>
-                가입했던 이메일을 입력해주세요. <br />
-                비밀번호 재설정 메일을 보내드립니다.
-              </EmailSubmitText>
-              <AuthInput
-                title="이메일"
-                id="reset-password"
-                name="email"
-                onChange={handleChange}
-              />
-              {errors.email && (
-                <ErrorMessageWithAlign>{errors.email}</ErrorMessageWithAlign>
-              )}
-              <EmailSubmitButton>이메일 전송하기</EmailSubmitButton>
-            </>
-          ) : (
-            <SuccessText>이메일이 전송되었습니다.</SuccessText>
-          )}
-        </EmailSubmitModal>
+        <EmailSubmitModal onSubmit={handleSubmit}>{content}</EmailSubmitModal>
         <CloseButton onClick={onClickButton} />
       </ModalWrapper>
     </PageWrapper>

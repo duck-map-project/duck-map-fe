@@ -24,6 +24,7 @@ import {
 const SignupForm = styled(Form)<{ errors: Errors }>`
   height: 490px;
   margin-bottom: 60px;
+  padding-bottom: 60px;
   &::after {
     height: 490px;
   }

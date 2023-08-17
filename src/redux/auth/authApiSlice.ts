@@ -1,6 +1,11 @@
 import { SignupRequest, UserInfoType } from '../../types/auth';
 import { apiSlice } from '../apiSlice';
 
+interface ResetPasswordRequest {
+  newPassword: string;
+  id: string;
+}
+
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -76,6 +81,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...requestData },
       }),
     }),
+    sendPasswordEmail: builder.mutation<void, string>({
+      query: (email) => ({
+        url: '/auth/send-reset-password',
+        method: 'POST',
+        body: { email: email },
+      }),
+    }),
+    resetPassword: builder.mutation<void, ResetPasswordRequest>({
+      query: ({ newPassword, id }) => ({
+        url: `/members/reset-password/${id}`,
+        method: 'PATCH',
+        body: { newPassword },
+      }),
+    }),
   }),
 });
 
@@ -88,4 +107,6 @@ export const {
   useEditPasswordMutation,
   useUnregisterMutation,
   useSignUpMutation,
+  useSendPasswordEmailMutation,
+  useResetPasswordMutation,
 } = authApiSlice;
