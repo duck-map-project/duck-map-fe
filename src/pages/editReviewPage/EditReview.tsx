@@ -242,7 +242,9 @@ const EditReview = ({ type = 'add' }: EditReviewProps) => {
       <S.TextSection onChange={reviewText.onChange} value={reviewText.value} />
       <div>
         <S.SubmitButton>작성 완료</S.SubmitButton>
-        <S.CancelButton>취소</S.CancelButton>
+        <S.CancelButton type="button" onClick={() => routeTo(`/event/${id}`)}>
+          취소
+        </S.CancelButton>
       </div>
     </SketchbookLayout>
   );
