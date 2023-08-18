@@ -53,6 +53,13 @@ body {
     line-height: 1.25;
     font-family: 'Suite';
     font-weight: 400;
+  background-image:
+    linear-gradient(90deg, #ebd9fb 0px, #ebd9fb 1px, transparent 1px, transparent 99px,  transparent 100px),
+    linear-gradient(transparent 0px, transparent 5px, #ffeefc 5px, #ffeefc 95px, transparent 95px, transparent 100px),
+    linear-gradient(transparent 0px, transparent 1px, #ffeefc 1px, #ffeefc 99px, transparent 99px, transparent 100px),
+    linear-gradient(#ebd9fb, #ebd9fb);
+  background-size:100px 100%, 100% 100px, 100% 10px, 10px 100%, 100% 100px, 100px 100%, 100px 100%, 100px 100px, 100px 100px;
+  
 }
 
 button {
