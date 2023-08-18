@@ -1,5 +1,6 @@
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
+import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { useRouter } from '../../../hooks/useRouter';
 import { useDeleteBookmarkEventMutation } from '../../../redux/bookmarkEventSlice';
 
@@ -33,6 +34,11 @@ const BookmarkEventItem = ({
     routeTo(`/event/${eventId}`);
   };
 
+  const onClickEditBtn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert('북마크 폴더 변경하기');
+  };
+
   const onClickDeleteBtn = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm('해당 이벤트의 북마크를 취소하시겠습니까?')) {
@@ -54,6 +60,9 @@ const BookmarkEventItem = ({
       <EventName>{storeName}</EventName>
       {isEditmode && (
         <EventSettingIconsWrapper>
+          <SettingIcon onClick={onClickEditBtn}>
+            <img src={pencilicon} />
+          </SettingIcon>
           <SettingIcon onClick={onClickDeleteBtn}>
             <img src={deleteicon} />
           </SettingIcon>
