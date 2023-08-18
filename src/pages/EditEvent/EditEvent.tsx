@@ -613,7 +613,9 @@ const EditEvent = ({ type }: EditEventType) => {
             />
           </S.InfoSection>
           <S.FormButtonRawWrapper>
-            <S.CancelButton type="button">취소</S.CancelButton>
+            <S.CancelButton type="button" onClick={() => routeTo('/event')}>
+              취소
+            </S.CancelButton>
             <S.FormButton
               type="button"
               onClick={type === 'add' ? handleSubmit : handleEditSubmit}
