@@ -31,6 +31,14 @@ export const bookmarkEventApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['BookmarkEvents'],
     }),
+    editBookmarkEventFolder: builder.mutation({
+      query: ({ id, folderId }) => ({
+        url: `events/${id}/bookmarks`,
+        method: 'PUT',
+        body: { bookmarkFolderId: folderId },
+      }),
+      invalidatesTags: ['BookmarkEvents', 'BookmarkFolders'],
+    }),
     deleteBookmarkEvent: builder.mutation<any, { id: number }>({
       query: ({ id }) => ({
         url: `events/${id}/bookmarks`,
