@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 
 import { ReactComponent as Checkicon } from '../../assets/icons/checkicon.svg';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
-// import { useRouter } from '../../hooks/useRouter';
 import { useGetAllReviewsQuery } from '../../redux/reviewSlice';
 import {
   selectEventArtist,
@@ -44,7 +43,6 @@ const Reviews = () => {
   const [hasReview, setHasReview] = useState(false);
   const [reviewlistPage, setReviewListPage] = useState(0);
   const [reviewOnlyInprogress, setReviewOnlyInprogress] = useState(true);
-  //여기서 artist 정보를 받아와서, 넘겨주면 됨.
   const selectedArtist = useSelector(selectEventArtist);
   const selectedGroup = useSelector(selectEventGroup);
   const {

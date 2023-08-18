@@ -1,4 +1,5 @@
 import ReviewRating from '../../components/ReviewRating';
+import { useRouter } from '../../hooks/useRouter';
 
 import {
   Category,
@@ -27,11 +28,10 @@ const ReviewItem = ({
   reviewImage,
   categories,
 }: ReviewItemProps) => {
-  // const { routeTo } = useRouter();
+  const { routeTo } = useRouter();
 
   const onClickReviewItem = () => {
-    // routeTo(`/reviews/${id}`);
-    alert(`${id}상세 리뷰 이동`);
+    routeTo(`/review/${id}`);
   };
 
   const categoryContent = categories.map((category) => (

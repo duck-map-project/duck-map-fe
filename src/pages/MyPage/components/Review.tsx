@@ -38,8 +38,7 @@ const ReviewItem = ({
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [deleteReview] = useDeleteReviewMutation();
   const onClickReviewItem = () => {
-    id;
-    alert('상세리뷰로 이동!');
+    routeTo(`/review/${id}`);
   };
 
   const { routeTo } = useRouter();
