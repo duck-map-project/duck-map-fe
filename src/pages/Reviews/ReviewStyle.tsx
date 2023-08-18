@@ -1,8 +1,17 @@
 import styled from 'styled-components';
 
+import px2vw from '../../utils/px2vw';
+
 type tabProps = {
   selected: boolean;
 };
+
+export const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 ${px2vw(142)};
+`;
 
 export const MainContent = styled.main`
   position: relative;
