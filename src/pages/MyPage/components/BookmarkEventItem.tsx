@@ -1,8 +1,11 @@
+import { useDispatch } from 'react-redux';
+
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { useRouter } from '../../../hooks/useRouter';
 import { useDeleteBookmarkEventMutation } from '../../../redux/bookmarkEventSlice';
+import { toggleEditBookmark } from '../../../redux/manageModalSlice';
 
 import {
   ItemWrapper,
@@ -24,6 +27,7 @@ const BookmarkEventItem = ({
   eventId,
   isEditmode,
 }: EventItemProps) => {
+  const dispatch = useDispatch();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const imgURL = baseUrl + image;
   const { routeTo } = useRouter();
@@ -36,7 +40,7 @@ const BookmarkEventItem = ({
 
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
-    alert('북마크 폴더 변경하기');
+    dispatch(toggleEditBookmark());
   };
 
   const onClickDeleteBtn = async (e: React.MouseEvent) => {
