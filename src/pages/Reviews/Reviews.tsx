@@ -1,13 +1,18 @@
 import { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 import { ReactComponent as Checkicon } from '../../assets/icons/checkicon.svg';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
-// import { useRouter } from '../../hooks/useRouter';
 import { useGetAllReviewsQuery } from '../../redux/reviewSlice';
+import {
+  selectEventArtist,
+  selectEventGroup,
+} from '../../redux/setEventArtistSlice';
 import { reviewType } from '../../types/reviewType';
 
 import ReviewItem from './ReviewItem';
 import {
+  PageWrapper,
   MainContent,
   ReviewWrapper,
   ScrollWrapper,
@@ -38,6 +43,8 @@ const Reviews = () => {
   const [hasReview, setHasReview] = useState(false);
   const [reviewlistPage, setReviewListPage] = useState(0);
   const [reviewOnlyInprogress, setReviewOnlyInprogress] = useState(true);
+  const selectedArtist = useSelector(selectEventArtist);
+  const selectedGroup = useSelector(selectEventGroup);
   const {
     data: ReviewsData,
     isLoading,
@@ -47,6 +54,9 @@ const Reviews = () => {
   } = useGetAllReviewsQuery({
     pageNumber: reviewlistPage.toString(),
     onlyInProgress: reviewOnlyInprogress.toString(),
+    ...(selectedArtist && { artistId: selectedArtist.id.toString() }),
+    ...(selectedGroup &&
+      !selectedArtist && { artistId: selectedGroup.id.toString() }),
   });
 
   useEffect(() => {
@@ -128,7 +138,7 @@ const Reviews = () => {
   }
 
   return (
-    <>
+    <PageWrapper>
       <ChoiceArtistBar />
       <MainContent>
         <TabWrapper>{tabContent}</TabWrapper>
@@ -142,7 +152,7 @@ const Reviews = () => {
           </ScrollWrapper>
         </ReviewWrapper>
       </MainContent>
-    </>
+    </PageWrapper>
   );
 };
 
