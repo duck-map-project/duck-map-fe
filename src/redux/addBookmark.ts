@@ -7,11 +7,13 @@ export const addBookmark = createSlice({
   initialState: {
     eventId: null,
     isBookmark: false,
+    folderId: null,
   },
   reducers: {
     addBookmarkInfo: (state, action) => {
       state.eventId = action.payload.eventId;
       state.isBookmark = action.payload.isBookmark;
+      state.folderId = action.payload.folderId;
     },
   },
 });

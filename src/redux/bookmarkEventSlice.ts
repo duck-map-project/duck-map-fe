@@ -53,4 +53,5 @@ export const {
   useGetBookmarkEventsQuery,
   useAddBookmarkEventMutation,
   useDeleteBookmarkEventMutation,
+  useEditBookmarkEventFolderMutation,
 } = bookmarkEventApiSlice;

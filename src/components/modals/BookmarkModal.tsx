@@ -7,7 +7,10 @@ import {
   selectAddBookmarkInfo,
   addBookmarkInfo,
 } from '../../redux/addBookmark';
-import { useAddBookmarkEventMutation } from '../../redux/bookmarkEventSlice';
+import {
+  useAddBookmarkEventMutation,
+  useEditBookmarkEventFolderMutation,
+} from '../../redux/bookmarkEventSlice';
 import { useGetBookmarkFoldersQuery } from '../../redux/bookmarkFolderSlice';
 import {
   toggleAddBookmark,
@@ -75,9 +78,13 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
     []
   );
   const [addBookmark] = useAddBookmarkEventMutation();
-  selectedFolder;
+  const [editBookmarkFolder] = useEditBookmarkEventFolderMutation();
+
   useEffect(() => {
     setEventId(bookmarkEventInfo.eventId);
+    if (type === 'edit') {
+      setSelectedFolder(bookmarkEventInfo.folderId);
+    }
   }, [bookmarkEventInfo]);
 
   const {
@@ -131,12 +138,40 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
       dispatch(toggleEditBookmark());
     }
   };
+
   const onClickSubmit = async () => {
     if (selectedFolder === null) {
       alert('북마크 폴더를 선택해주세요.');
       return;
     }
     const res = await addBookmark({ id: eventId, folderId: selectedFolder });
+
+    if ('data' in res) {
+      dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
+      onHideModal();
+    } else if ('error' in res) {
+      const error = res.error;
+      if ('data' in error) {
+        const data = error.data;
+        if (data !== null && typeof data === 'object' && 'message' in data) {
+          const errorMessage = data.message;
+          alert(errorMessage);
+          return;
+        }
+      }
+      alert('잠시 후에 다시 시도해주세요.');
+    }
+  };
+
+  const onClickEdit = async () => {
+    if (selectedFolder === null) {
+      alert('북마크 폴더를 선택해주세요.');
+      return;
+    }
+    const res = await editBookmarkFolder({
+      id: eventId,
+      folderId: selectedFolder,
+    });
 
     if ('data' in res) {
       dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
@@ -173,7 +208,10 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
             )}
           </S.FoldersLists>
         </S.FoldersContainer>
-        <S.SubmitButton type="button" onClick={onClickSubmit}>
+        <S.SubmitButton
+          type="button"
+          onClick={type === 'add' ? onClickSubmit : onClickEdit}
+        >
           완료
         </S.SubmitButton>
       </CommonModal>

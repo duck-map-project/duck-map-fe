@@ -4,6 +4,7 @@ import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { useRouter } from '../../../hooks/useRouter';
+import { addBookmarkInfo } from '../../../redux/addBookmark';
 import { useDeleteBookmarkEventMutation } from '../../../redux/bookmarkEventSlice';
 import { toggleEditBookmark } from '../../../redux/manageModalSlice';
 
@@ -20,12 +21,14 @@ type EventItemProps = {
   storeName: string;
   eventId: number;
   isEditmode: boolean;
+  folderId: number;
 };
 const BookmarkEventItem = ({
   image,
   storeName,
   eventId,
   isEditmode,
+  folderId,
 }: EventItemProps) => {
   const dispatch = useDispatch();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -34,12 +37,12 @@ const BookmarkEventItem = ({
   const [deleteEventFromFolder] = useDeleteBookmarkEventMutation();
 
   const onClickEvent = () => {
-    eventId;
     routeTo(`/event/${eventId}`);
   };
 
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
+    dispatch(addBookmarkInfo({ eventId, folderId }));
     dispatch(toggleEditBookmark());
   };
 
