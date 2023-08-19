@@ -51,8 +51,6 @@ const useForm = (
     setIsSubmitting(false);
   }, [errors, isSubmitting]);
 
-  console.log(errors);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
     setErrors(validateAll(inputs));
