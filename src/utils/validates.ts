@@ -55,21 +55,18 @@ export const validatePasswordMatch = (
 export const validateAll = (inputs: Partial<Inputs>): Errors => {
   const errors: Errors = {};
   const { email, password, passwordCheck, username } = inputs;
-  // TODO: as 말고 다른 방식 사용하기
-  if (inputs.email) {
-    errors.email = validateEmail(email as string);
+
+  if (email !== undefined) {
+    errors.email = validateEmail(email);
   }
-  if (inputs.password) {
-    errors.password = validatePassword(password as string);
+  if (password !== undefined) {
+    errors.password = validatePassword(password);
   }
-  if (inputs.username) {
-    errors.username = validateUsername(username as string);
+  if (username !== undefined) {
+    errors.username = validateUsername(username);
   }
-  if (inputs.passwordCheck) {
-    errors.passwordCheck = validatePasswordMatch(
-      password as string,
-      passwordCheck as string
-    );
+  if (passwordCheck !== undefined && password !== undefined) {
+    errors.passwordCheck = validatePasswordMatch(password, passwordCheck);
   }
 
   return errors;
