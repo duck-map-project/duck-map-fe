@@ -22,9 +22,18 @@ const CommonModal = ({
   const preventBubbling = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
+
+  const preventSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <Backdrop className={className} onClick={onClick}>
-      <ModalOverlay onClick={preventBubbling} width={width}>
+      <ModalOverlay
+        onClick={preventBubbling}
+        onSubmit={preventSubmit}
+        width={width}
+      >
         {children}
       </ModalOverlay>
     </Backdrop>

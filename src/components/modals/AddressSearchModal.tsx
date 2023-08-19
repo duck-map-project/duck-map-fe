@@ -38,7 +38,7 @@ const AddressSearchModal = () => {
   return (
     <ModalPortal>
       <CommonModal onClick={onHideModal}>
-        <ModalCloseButton onClick={onHideModal} />
+        <ModalCloseButton type="button" onClick={onHideModal} />
         <S.Title>주소 검색</S.Title>
         <S.ContentBox>
           <AdressInput setCurrentPlace={setCurrentPlace} />
