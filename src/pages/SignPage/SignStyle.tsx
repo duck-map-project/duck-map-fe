@@ -69,6 +69,7 @@ export const SubmitButton = styled.button`
 export const CircleButton = styled.button`
   width: 274px;
   height: 50px;
+  background-color: #f8f8fa;
   font-size: 2.4rem;
   font-weight: 700;
   line-height: 1.247916666666667;
