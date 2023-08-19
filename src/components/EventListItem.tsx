@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useRouter } from '../hooks/useRouter';
 import { addBookmarkInfo, selectAddBookmarkInfo } from '../redux/addBookmark';
+import { selectCurrentUser } from '../redux/auth/authSlice';
 import { useDeleteBookmarkEventMutation } from '../redux/bookmarkEventSlice';
 import { toggleAddBookmark } from '../redux/manageModalSlice';
 import { EventListData } from '../types/eventService';
@@ -31,6 +32,7 @@ const EventListItem = ({
   const [isBookmark, setIsBookmark] = useState(!!event.bookmarkId);
   const bookmarkInfoState = useSelector(selectAddBookmarkInfo);
   const [deleteBookmark] = useDeleteBookmarkEventMutation();
+  const user = useSelector(selectCurrentUser);
 
   const handleEventClick = () => {
     if (onEventListClick) {
@@ -39,32 +41,44 @@ const EventListItem = ({
   };
 
   const handleLikeButton = async () => {
-    await handleLikeClick({ eventId: event.id, likeId: event.likeId });
-    setIsLike((prev) => !prev);
+    if (user) {
+      await handleLikeClick({ eventId: event.id, likeId: event.likeId });
+      setIsLike((prev) => !prev);
+    } else {
+      alert('로그인이 필요합니다!');
+    }
   };
 
   const handleBookmarkButton = async () => {
-    if (isBookmark) {
-      const res = await deleteBookmark({ id: event.id });
-      if ('data' in res) {
-        setIsBookmark(false);
-      } else if ('error' in res) {
-        const error = res.error;
-        if ('data' in error) {
-          const data = error.data;
-          if (data !== null && typeof data === 'object' && 'message' in data) {
-            const errorMessage = data.message;
-            alert(errorMessage);
-            return;
+    if (user) {
+      if (isBookmark) {
+        const res = await deleteBookmark({ id: event.id });
+        if ('data' in res) {
+          setIsBookmark(false);
+        } else if ('error' in res) {
+          const error = res.error;
+          if ('data' in error) {
+            const data = error.data;
+            if (
+              data !== null &&
+              typeof data === 'object' &&
+              'message' in data
+            ) {
+              const errorMessage = data.message;
+              alert(errorMessage);
+              return;
+            }
           }
+          alert('잠시 후에 다시 시도해주세요.');
         }
-        alert('잠시 후에 다시 시도해주세요.');
+        return;
       }
-      return;
-    }
 
-    dispatch(addBookmarkInfo({ eventId: event.id }));
-    dispatch(toggleAddBookmark());
+      dispatch(addBookmarkInfo({ eventId: event.id }));
+      dispatch(toggleAddBookmark());
+    } else {
+      alert('로그인이 필요합니다!');
+    }
   };
 
   useEffect(() => {
