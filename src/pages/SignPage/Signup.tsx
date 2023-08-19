@@ -45,19 +45,40 @@ const SignupForm = styled(Form)<{ errors: Errors }>`
 `;
 
 const Signup = () => {
-  const [signUp, { isError, error }] = useSignUpMutation();
+  const [signUp, { error }] = useSignUpMutation();
   const [errorMessage, setErrorMessage] = useState('');
   const { routeTo } = useRouter();
 
   const handleSignup = async () => {
-    const reqData = {
-      username: inputs.username as string,
-      email: inputs.email as string,
-      password: inputs.password as string,
-    };
-    await signUp(reqData);
-    if (!isError) routeTo('/signin');
+    if (
+      inputs.username &&
+      inputs.email &&
+      inputs.password &&
+      inputs.passwordCheck
+    ) {
+      const reqData = {
+        username: inputs.username,
+        email: inputs.email,
+        password: inputs.password,
+      };
+      try {
+        await signUp(reqData).unwrap();
+        alert('회원가입 성공!');
+        routeTo('/signin');
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
+
+  const { handleChange, handleSubmit, inputs, errors } = useForm(
+    { email: '', password: '', passwordCheck: '', username: '' },
+    handleSignup
+  );
+
+  useEffect(() => {
+    setErrorMessage('');
+  }, [inputs]);
 
   useEffect(() => {
     if (error && 'status' in error) {
@@ -65,11 +86,6 @@ const Signup = () => {
       setErrorMessage(errorData.message);
     }
   }, [error]);
-
-  const { handleChange, handleSubmit, inputs, errors } = useForm(
-    { email: '', password: '', passwordCheck: '', username: '' },
-    handleSignup
-  );
 
   return (
     <PageWrapper>
