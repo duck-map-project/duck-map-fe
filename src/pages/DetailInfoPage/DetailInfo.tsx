@@ -8,6 +8,7 @@ import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 import { useRouter } from '../../hooks/useRouter';
 import { addBookmarkInfo } from '../../redux/addBookmark';
 import { selectAddBookmarkInfo } from '../../redux/addBookmark';
+import { selectCurrentUser } from '../../redux/auth/authSlice';
 import { useDeleteBookmarkEventMutation } from '../../redux/bookmarkEventSlice';
 import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
 import {
@@ -65,6 +66,7 @@ const DetailInfo = () => {
   const [deleteLike] = useDeleteLikeMutation();
   const dispatch = useDispatch();
   const { routeTo } = useRouter();
+  const user = useSelector(selectCurrentUser);
 
   useEffect(() => {
     if (eventInfoData && id) {
@@ -93,48 +95,60 @@ const DetailInfo = () => {
   const images = eventInfo?.images.map((image) => baseUrl + image);
 
   const handleLikeButton = async () => {
-    if (id) {
-      if (eventInfo?.likeId) {
-        try {
-          await deleteLike(eventInfo?.likeId).unwrap();
-          refetch();
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
-          await addLike(id).unwrap();
-          refetch();
-        } catch (error) {
-          console.error(error);
+    if (user) {
+      if (id) {
+        if (eventInfo?.likeId) {
+          try {
+            await deleteLike(eventInfo?.likeId).unwrap();
+            refetch();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          try {
+            await addLike(id).unwrap();
+            refetch();
+          } catch (error) {
+            console.error(error);
+          }
         }
       }
+    } else {
+      alert('로그인이 필요합니다!');
     }
   };
 
   const handleBookmarkButton = async () => {
-    if (isBookmark && id) {
-      const eventId = parseInt(id);
-      const res = await deleteBookmark({ id: eventId });
+    if (user) {
+      if (isBookmark && id) {
+        const eventId = parseInt(id);
+        const res = await deleteBookmark({ id: eventId });
 
-      if ('data' in res) {
-        setIsBookmark(false);
-      } else if ('error' in res) {
-        const error = res.error;
-        if ('data' in error) {
-          const data = error.data;
-          if (data !== null && typeof data === 'object' && 'message' in data) {
-            const errorMessage = data.message;
-            alert(errorMessage);
-            return;
+        if ('data' in res) {
+          setIsBookmark(false);
+        } else if ('error' in res) {
+          const error = res.error;
+          if ('data' in error) {
+            const data = error.data;
+            if (
+              data !== null &&
+              typeof data === 'object' &&
+              'message' in data
+            ) {
+              const errorMessage = data.message;
+              alert(errorMessage);
+              return;
+            }
           }
+          alert('잠시 후에 다시 시도해주세요.');
         }
-        alert('잠시 후에 다시 시도해주세요.');
+        return;
       }
-      return;
+      dispatch(addBookmarkInfo({ eventId: id }));
+      dispatch(toggleAddBookmark());
+    } else {
+      alert('로그인이 필요합니다!');
     }
-    dispatch(addBookmarkInfo({ eventId: id }));
-    dispatch(toggleAddBookmark());
   };
 
   useEffect(() => {
@@ -154,7 +168,7 @@ const DetailInfo = () => {
         <TopSection>
           <ImgSection>
             <ImageSlider images={images as string[]} />
-            <HeartButtonWrapper onClick={() => setIsLike((prev) => !prev)}>
+            <HeartButtonWrapper>
               <HeartButton checked={isLike} onClick={handleLikeButton} />
               <LikeNum>{eventInfo?.likeCount}</LikeNum>
             </HeartButtonWrapper>
@@ -237,12 +251,14 @@ const DetailInfo = () => {
           </TabSection>
         </TopSection>
       </TopSectionWrapper>
-      <AddReviewButton
-        type="button"
-        onClick={() => routeTo(`/review/edit/${id}`)}
-      >
-        리뷰 작성
-      </AddReviewButton>
+      {user && (
+        <AddReviewButton
+          type="button"
+          onClick={() => routeTo(`/review/edit/${id}`)}
+        >
+          리뷰 작성
+        </AddReviewButton>
+      )}
       <DetailContents>
         {currentTab === 'info' && eventInfo?.twitterUrl ? (
           <TwitterInfoSection twitterUrl={eventInfo?.twitterUrl} />
