@@ -38,7 +38,7 @@ const useForm = (
   callback: Callback
 ): FormProps => {
   const [inputs, setInputs] = useState<Partial<Inputs>>(initialValue);
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<Errors>(initialValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,10 @@ const useForm = (
     if (hasAllUndefinedValues && isSubmitting) {
       callback();
     }
-  }, [errors]);
+    setIsSubmitting(false);
+  }, [errors, isSubmitting]);
+
+  console.log(errors);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
