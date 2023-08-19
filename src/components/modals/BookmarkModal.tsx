@@ -7,9 +7,15 @@ import {
   selectAddBookmarkInfo,
   addBookmarkInfo,
 } from '../../redux/addBookmark';
-import { useAddBookmarkEventMutation } from '../../redux/bookmarkEventSlice';
+import {
+  useAddBookmarkEventMutation,
+  useEditBookmarkEventFolderMutation,
+} from '../../redux/bookmarkEventSlice';
 import { useGetBookmarkFoldersQuery } from '../../redux/bookmarkFolderSlice';
-import { toggleAddBookmark } from '../../redux/manageModalSlice';
+import {
+  toggleAddBookmark,
+  toggleEditBookmark,
+} from '../../redux/manageModalSlice';
 import { BookmarkFolderType } from '../../types/bookmarkFolderType';
 
 import * as S from './BookmarkModalStyle';
@@ -22,6 +28,10 @@ type BookmarkFolderProps = {
   image: string;
   selectedFolder: number | null;
   setSelectFolder: React.Dispatch<React.SetStateAction<number | null>>;
+};
+
+type BookmarkModalType = {
+  type: 'add' | 'edit';
 };
 
 const BookmarkFolderItem = ({
@@ -56,7 +66,8 @@ const BookmarkFolderItem = ({
     </S.FolderItemWrapper>
   );
 };
-const BookmarkModal = () => {
+
+const BookmarkModal = ({ type }: BookmarkModalType) => {
   const dispatch = useDispatch();
   const targetRef = useRef<HTMLDivElement>(null);
   const bookmarkEventInfo = useSelector(selectAddBookmarkInfo);
@@ -67,9 +78,13 @@ const BookmarkModal = () => {
     []
   );
   const [addBookmark] = useAddBookmarkEventMutation();
-  selectedFolder;
+  const [editBookmarkFolder] = useEditBookmarkEventFolderMutation();
+
   useEffect(() => {
     setEventId(bookmarkEventInfo.eventId);
+    if (type === 'edit') {
+      setSelectedFolder(bookmarkEventInfo.folderId);
+    }
   }, [bookmarkEventInfo]);
 
   const {
@@ -117,8 +132,13 @@ const BookmarkModal = () => {
   });
 
   const onHideModal = () => {
-    dispatch(toggleAddBookmark());
+    if (type === 'add') {
+      dispatch(toggleAddBookmark());
+    } else if (type === 'edit') {
+      dispatch(toggleEditBookmark());
+    }
   };
+
   const onClickSubmit = async () => {
     if (selectedFolder === null) {
       alert('북마크 폴더를 선택해주세요.');
@@ -143,10 +163,39 @@ const BookmarkModal = () => {
     }
   };
 
+  const onClickEdit = async () => {
+    if (selectedFolder === null) {
+      alert('북마크 폴더를 선택해주세요.');
+      return;
+    }
+    const res = await editBookmarkFolder({
+      id: eventId,
+      folderId: selectedFolder,
+    });
+
+    if ('data' in res) {
+      dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
+      onHideModal();
+    } else if ('error' in res) {
+      const error = res.error;
+      if ('data' in error) {
+        const data = error.data;
+        if (data !== null && typeof data === 'object' && 'message' in data) {
+          const errorMessage = data.message;
+          alert(errorMessage);
+          return;
+        }
+      }
+      alert('잠시 후에 다시 시도해주세요.');
+    }
+  };
+
   return (
     <ModalPortal>
       <CommonModal width="490" onClick={onHideModal}>
-        <S.ModalTitle>북마크 추가하기</S.ModalTitle>
+        <S.ModalTitle>
+          {type === 'add' ? '북마크 추가하기' : '북마크 폴더 변경하기'}
+        </S.ModalTitle>
         <S.ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
         </S.ModalCloseButton>
@@ -159,7 +208,10 @@ const BookmarkModal = () => {
             )}
           </S.FoldersLists>
         </S.FoldersContainer>
-        <S.SubmitButton type="button" onClick={onClickSubmit}>
+        <S.SubmitButton
+          type="button"
+          onClick={type === 'add' ? onClickSubmit : onClickEdit}
+        >
           완료
         </S.SubmitButton>
       </CommonModal>

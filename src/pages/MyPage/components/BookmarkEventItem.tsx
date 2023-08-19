@@ -1,7 +1,12 @@
+import { useDispatch } from 'react-redux';
+
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
+import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { useRouter } from '../../../hooks/useRouter';
+import { addBookmarkInfo } from '../../../redux/addBookmark';
 import { useDeleteBookmarkEventMutation } from '../../../redux/bookmarkEventSlice';
+import { toggleEditBookmark } from '../../../redux/manageModalSlice';
 
 import {
   ItemWrapper,
@@ -16,21 +21,29 @@ type EventItemProps = {
   storeName: string;
   eventId: number;
   isEditmode: boolean;
+  folderId: number;
 };
 const BookmarkEventItem = ({
   image,
   storeName,
   eventId,
   isEditmode,
+  folderId,
 }: EventItemProps) => {
+  const dispatch = useDispatch();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const imgURL = baseUrl + image;
   const { routeTo } = useRouter();
   const [deleteEventFromFolder] = useDeleteBookmarkEventMutation();
 
   const onClickEvent = () => {
-    eventId;
     routeTo(`/event/${eventId}`);
+  };
+
+  const onClickEditBtn = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(addBookmarkInfo({ eventId, folderId }));
+    dispatch(toggleEditBookmark());
   };
 
   const onClickDeleteBtn = async (e: React.MouseEvent) => {
@@ -54,6 +67,9 @@ const BookmarkEventItem = ({
       <EventName>{storeName}</EventName>
       {isEditmode && (
         <EventSettingIconsWrapper>
+          <SettingIcon onClick={onClickEditBtn}>
+            <img src={pencilicon} />
+          </SettingIcon>
           <SettingIcon onClick={onClickDeleteBtn}>
             <img src={deleteicon} />
           </SettingIcon>

@@ -73,6 +73,7 @@ const BookmarkEvents = ({
         storeName={event.storeName}
         image={event.image}
         isEditmode={isEditmode}
+        folderId={folderId}
       />
     ));
   }
