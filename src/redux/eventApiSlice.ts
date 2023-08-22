@@ -108,12 +108,14 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         url: `/events/${id}/likes`,
         method: 'POST',
       }),
+      invalidatesTags: ['Like'],
     }),
     deleteLike: builder.mutation<void, number>({
       query: (id) => ({
         url: `/events/${id}/likes`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Like'],
     }),
     getTodayHashtags: builder.query<TodayHashtagsResponse[], void>({
       query: () => ({
