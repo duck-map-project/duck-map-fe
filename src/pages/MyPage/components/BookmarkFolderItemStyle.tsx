@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
+import media from '../../../utils/mediaQuery';
+
 type EmojiPreviewType = {
   img: string;
 };
@@ -21,6 +23,9 @@ export const FolderWrapper = styled.div`
   gap: 10px;
   width: 142px;
   cursor: pointer;
+  ${media.mobile`
+    width: 138px;
+  `}
 `;
 
 export const EmojiPreview = styled.span<EmojiPreviewType>`
@@ -49,6 +54,9 @@ export const FolderNameWrapper = styled.div`
   gap: 6px;
   width: 142px;
   margin: 0 auto;
+  ${media.mobile`
+    gap: 4px;
+  `}
 `;
 
 export const SettingIconsWrapper = styled.div`
@@ -73,6 +81,14 @@ export const SettingIcon = styled.span`
   animation: ${shaking} 0.15s infinite linear alternate;
   will-change: transform;
   cursor: pointer;
+  ${media.mobile`
+    width: 22.5px;
+    height: 22.5px;
+    &>img{
+      width: 12px;
+      height: 12px;
+    }
+  `}
 `;
 
 export const NameIcon = styled.button`
@@ -102,6 +118,7 @@ export const FolderName = styled.span`
   font-size: 14px;
   font-weight: 700;
   text-align: center;
+  color: #4e5761;
   border: 2px solid #4e5761;
   border-radius: 20px;
   background-color: #f8f8fa;
@@ -109,4 +126,9 @@ export const FolderName = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  ${media.mobile`
+  width: 105px;
+  height: 24px;
+  padding: 3px 6px;
+  `}
 `;

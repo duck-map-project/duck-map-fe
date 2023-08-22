@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import media from '../../../utils/mediaQuery';
+
 type EditBtnProps = {
   editmode: string | undefined;
 };
@@ -36,6 +38,18 @@ export const Path = styled.div`
     font-weight: 700;
     line-height: normal;
   }
+  ${media.mobile`
+    & > img {
+      width: 16px;
+      margin-left: 10px;
+    }
+    & > span {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  `}
 `;
 
 export const GoBookmarkFolders = styled.span`
@@ -45,15 +59,23 @@ export const GoBookmarkFolders = styled.span`
 export const SettingBtnWrapper = styled.div`
   display: flex;
   gap: 12px;
+  ${media.mobile`
+    gap: 10px;
+  `}
 `;
 
+export const SettingBtnText = styled.span`
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  ${media.mobile`
+    display: none;
+  `}
+`;
 export const SettingBtn = styled.button`
   display: flex;
   align-items: center;
   padding: 4px 12px;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: normal;
   border: 2px solid var(--line-black);
   border-radius: 20px;
   background-color: #defcf9;
@@ -62,6 +84,14 @@ export const SettingBtn = styled.button`
   & > img {
     margin-right: 10px;
   }
+  ${media.mobile`
+  min-width: 46px;
+  & > img {
+    width: 14px;
+    height: 12px;
+    margin: 0 auto;
+  }
+  `}
 `;
 
 export const GoEditBtn = styled(SettingBtn)<EditBtnProps>`
@@ -76,4 +106,7 @@ export const FoldersContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  ${media.mobile`
+    gap: 13px;
+  `}
 `;
