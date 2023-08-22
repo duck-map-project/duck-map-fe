@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 
 import iconPencil from '../assets/icon-pencil.svg';
 import iconPin from '../assets/icon-pin.svg';
+import arrow from '../assets/icons/arrowright.svg';
 import settingIcon from '../assets/icons/setting.svg';
 import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
@@ -20,6 +21,7 @@ import { toggleGroup } from '../redux/manageModalSlice';
 import { toggleArtist } from '../redux/manageModalSlice';
 import { toggleCategory } from '../redux/manageModalSlice';
 import { toggleArtistType } from '../redux/manageModalSlice';
+import media from '../utils/mediaQuery';
 import px2vw from '../utils/px2vw';
 
 export const HeaderStyle = styled.header`
@@ -28,11 +30,36 @@ export const HeaderStyle = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: ${px2vw(22)} ${px2vw(142)} ${px2vw(22)};
+  ${media.mobile`
+    padding: 7px 27px;
+    
+  `}
 `;
 
 export const Logo = styled.img`
   width: 249px;
   cursor: pointer;
+  ${media.mobile`
+  display: none;
+  `}
+`;
+
+export const MobileLogo = styled.div`
+  display: none;
+  ${media.mobile`
+  display: flex;
+  align-items: center;
+  &>img {
+    width: 22px;
+    transform: rotate(180deg);
+    margin-right: 18px;
+  }
+  &>span{
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+  }
+`}
 `;
 
 export const MenuButton = styled(TextButton)`
@@ -40,22 +67,45 @@ export const MenuButton = styled(TextButton)`
   align-items: center;
   padding: 12px 10px;
   height: 36px;
-  font-weight: 700;
-  font-size: 18px;
   margin-right: ${px2vw(18)};
   border: 2px solid #1e232c;
   border-radius: 3px;
   background-color: var(--yellow);
-  box-shadow: 3px 3px 0px 0px #00000040;
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.25);
   text-align: center;
   &:nth-child(3) {
     margin-right: ${px2vw(24)};
   }
+  ${media.mobile`
+  width: 40px;
+  height: 22px;
+  padding: 3px 12px;
+  margin-right: 8px;
+  border: 1.4px solid #1e232c;
+  border-radius: 20px;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.25);;
+  &:nth-child(3) {
+    margin-right: 12px;
+  }
+  `}
 `;
 
 const MenuButtonIcon = styled.img`
   height: 22px;
   margin-right: 8px;
+  ${media.mobile`
+    height: 14px;
+    margin-right:0;
+  `}
+`;
+
+const MenuButtonText = styled.span`
+  font-weight: 700;
+  font-size: 18px;
+  ${media.mobile`
+    display: none;
+  `}
 `;
 
 export const RightSection = styled.section`
@@ -76,6 +126,11 @@ export const ProfileImg = styled.img`
   border: 2px solid #1e232c;
   flex-shrink: 0;
   object-fit: cover;
+  ${media.mobile`
+    width: 46px;
+    height: 46px;
+    border: 1.4px solid #1e232c;
+  `}
 `;
 
 const Header: React.FC = ({}) => {
@@ -177,14 +232,14 @@ const Header: React.FC = ({}) => {
     content = managePageMenu.map((menu) => (
       <MenuButton key={menu.id} onClick={menu.handler}>
         <MenuButtonIcon src={menu.icon} />
-        {menu.title}
+        <MenuButtonText>{menu.title}</MenuButtonText>
       </MenuButton>
     ));
   } else {
     content = publicMenu.map((menu) => (
       <MenuButton key={menu.id} onClick={menu.handler}>
         <MenuButtonIcon src={menu.icon} />
-        {menu.title}
+        <MenuButtonText>{menu.title}</MenuButtonText>
       </MenuButton>
     ));
   }
@@ -198,11 +253,21 @@ const Header: React.FC = ({}) => {
           routeTo('/');
         }}
       />
+      {currentPath !== '/' && (
+        <MobileLogo
+          onClick={() => {
+            routeTo('/');
+          }}
+        >
+          <img src={arrow} />
+          <span>홈으로</span>
+        </MobileLogo>
+      )}
       <RightSection>
         {content}
         <MenuButton onClick={handleAuthButton}>
           <MenuButtonIcon src={iconLogin} />
-          {user ? 'Logout' : 'Login'}
+          <MenuButtonText>{user ? 'Logout' : 'Login'}</MenuButtonText>
         </MenuButton>
         <ProfileDropdown>
           <ProfileImg
