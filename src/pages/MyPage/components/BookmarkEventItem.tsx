@@ -13,8 +13,8 @@ import {
   EventImg,
   EventName,
   EventSettingIconsWrapper,
-  SettingIcon,
 } from './BookmarkEventItemStyle';
+import { SettingIcon } from './BookmarkFolderItemStyle';
 
 type EventItemProps = {
   image: string;

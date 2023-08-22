@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
+import media from '../../../utils/mediaQuery';
 
 import { SettingIconsWrapper } from './BookmarkFolderItemStyle';
 
@@ -36,6 +37,9 @@ export const ItemWrapper = styled.div<EventItemProps>`
     top: -4px;
     left: 19px;
   }
+  ${media.mobile`
+    width: 134px;
+  `}
 `;
 
 export const EventImg = styled.img`
@@ -59,6 +63,11 @@ export const EventName = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  ${media.mobile`
+  width: 134px;
+  height: 24px;
+  padding: 2px 6px;
+  `}
 `;
 
 export const SettingIcon = styled.span`

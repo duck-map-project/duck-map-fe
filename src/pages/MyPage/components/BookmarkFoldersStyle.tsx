@@ -29,9 +29,6 @@ export const FoldersHeader = styled.div`
 export const Path = styled.div`
   display: flex;
   align-items: center;
-  & > img {
-    margin-right: 10px;
-  }
   & > span {
     margin-right: 10px;
     font-size: 20px;
@@ -39,16 +36,23 @@ export const Path = styled.div`
     line-height: normal;
   }
   ${media.mobile`
-    & > img {
-      width: 16px;
-      margin-left: 10px;
-    }
     & > span {
       font-size: 16px;
       font-style: normal;
       font-weight: 700;
       line-height: normal;
     }
+  `}
+`;
+
+export const Star = styled.img`
+  margin-right: 10px;
+
+  ${media.mobile`
+      width: 16px;
+      height: 16px;
+      margin: 0 6px 0 10px;
+    
   `}
 `;
 

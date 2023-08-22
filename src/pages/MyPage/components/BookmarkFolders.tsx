@@ -82,7 +82,7 @@ const BookmarkFolders = ({
     <>
       <S.FoldersHeader>
         <S.Path>
-          <img src={starticon} />
+          <S.Star src={starticon} />
           <span>북마크</span>
         </S.Path>
         <S.SettingBtnWrapper>
