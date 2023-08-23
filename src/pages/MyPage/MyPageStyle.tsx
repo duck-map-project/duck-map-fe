@@ -75,6 +75,7 @@ export const ContentSection = styled.section`
   }
   ${media.mobile`
     width: 90%;
+  height: 578px;
     right: -10px;
     padding: 10px 20px 0 0;
     margin: 0 20px;
