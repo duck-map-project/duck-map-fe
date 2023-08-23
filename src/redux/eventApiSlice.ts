@@ -30,7 +30,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
     }),
     getEventById: builder.query<EventData, string>({
       query: (id) => ({ url: '/events/' + id, method: 'GET' }),
-      providesTags: ['Event', 'BookmarkEvents'],
+      providesTags: ['Event', 'BookmarkEvents', 'Like'],
     }),
     getMainEvent: builder.query<
       GetMainEventTransformedResponse,
@@ -62,7 +62,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         const content = response.content;
         return { content };
       },
-      providesTags: ['Event'],
+      providesTags: ['Event', 'BookmarkEvents', 'Like'],
     }),
     getEvent: builder.query<
       GetEventTransformedResponse,
@@ -93,7 +93,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         const isLast = response.last;
         return { content, isLast };
       },
-      providesTags: ['Event', 'BookmarkEvents'],
+      providesTags: ['Event', 'BookmarkEvents', 'Like'],
     }),
     editEvent: builder.mutation({
       query: ({ EventData, id }) => ({
