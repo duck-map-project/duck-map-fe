@@ -38,7 +38,9 @@ export const ItemWrapper = styled.div<EventItemProps>`
     left: 19px;
   }
   ${media.mobile`
-    width: 134px;
+  width: 50%;
+  gap: 9px;
+  margin-bottom: 12px;
   `}
 `;
 
@@ -48,6 +50,9 @@ export const EventImg = styled.img`
   border: 2px solid var(--line-black);
   border-radius: 20px;
   object-fit: cover;
+  ${media.mobile`
+    width: 95%;
+  `}
 `;
 
 export const EventName = styled.span`
@@ -64,7 +69,8 @@ export const EventName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   ${media.mobile`
-  width: 134px;
+  width: 95%;
+  /* width: 134px; */
   height: 24px;
   padding: 2px 6px;
   `}
@@ -89,4 +95,7 @@ export const SettingIcon = styled.span`
 export const EventSettingIconsWrapper = styled(SettingIconsWrapper)`
   top: -6%;
   right: -5%;
+  ${media.mobile`
+    right: 0;
+  `}
 `;

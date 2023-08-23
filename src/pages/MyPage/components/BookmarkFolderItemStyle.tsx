@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
+import { ReactComponent as Bookmarkfoldericon } from '../../../assets/icons/bookmark-folder.svg';
 import media from '../../../utils/mediaQuery';
 
 type EmojiPreviewType = {
@@ -24,8 +25,14 @@ export const FolderWrapper = styled.div`
   width: 142px;
   cursor: pointer;
   ${media.mobile`
-    width: 138px;
+  width: 50%;
+  gap: 0px;
   `}
+`;
+
+export const StyledFolderIcon = styled(Bookmarkfoldericon)`
+  width: 90%;
+  max-width: 135px;
 `;
 
 export const EmojiPreview = styled.span<EmojiPreviewType>`
@@ -33,29 +40,20 @@ export const EmojiPreview = styled.span<EmojiPreviewType>`
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 40%;
-  left: 15px;
-  transform: translate(50%, -50%);
-  width: 54px;
-  height: 54px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -75%);
+  min-width: 54px;
+  min-height: 54px;
   border: 2px solid var(--line-black);
-  border-radius: 50%;
+  border-radius: 100%;
   background-color: white;
   & > img {
-    width: 30px;
-    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
   }
-`;
-
-export const FolderNameWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  width: 142px;
-  margin: 0 auto;
   ${media.mobile`
-    gap: 4px;
+    top: 55%;
   `}
 `;
 
@@ -65,6 +63,10 @@ export const SettingIconsWrapper = styled.div`
   gap: 2px;
   top: 3px;
   right: 0;
+  ${media.mobile`
+    top: 12px;
+    right: 5px;
+  `}
 `;
 
 export const SettingIcon = styled.span`
@@ -88,6 +90,19 @@ export const SettingIcon = styled.span`
       width: 12px;
       height: 12px;
     }
+  `}
+`;
+
+export const FolderNameWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin: 0 auto;
+  ${media.mobile`
+    width: 95%;
+    gap: 3px;
   `}
 `;
 
@@ -127,7 +142,7 @@ export const FolderName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   ${media.mobile`
-  width: 105px;
+  width: 80%;
   height: 24px;
   padding: 3px 6px;
   `}

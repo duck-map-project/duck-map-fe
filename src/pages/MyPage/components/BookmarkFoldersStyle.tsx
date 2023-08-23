@@ -30,7 +30,6 @@ export const Path = styled.div`
   display: flex;
   align-items: center;
   & > span {
-    margin-right: 10px;
     font-size: 20px;
     font-weight: 700;
     line-height: normal;
@@ -57,7 +56,11 @@ export const Star = styled.img`
 `;
 
 export const GoBookmarkFolders = styled.span`
+  margin-right: 10px;
   cursor: pointer;
+  ${media.mobile`
+    margin-right: 5px;
+  `}
 `;
 
 export const SettingBtnWrapper = styled.div`
@@ -107,10 +110,11 @@ export const GoEditBtn = styled(SettingBtn)<EditBtnProps>`
 `;
 
 export const FoldersContainer = styled.div`
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   ${media.mobile`
-    gap: 13px;
+    gap: 0px;
   `}
 `;
