@@ -99,8 +99,6 @@ export const EventTypeWrapper = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 12px;
-  ${media.mobile`
-  `}
 `;
 
 export const TypeInfoBtn = styled.span`

@@ -55,7 +55,7 @@ export const ContentSection = styled.section`
   position: relative;
   width: 908px;
   height: 695px;
-  padding: 24px 28px;
+  padding: 24px 28px 24px 10px;
   background-color: #f6edb2;
   border: 2px solid var(--line-black);
   border-radius: 20px;

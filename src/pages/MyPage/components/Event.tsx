@@ -9,19 +9,23 @@ import {
 import { myevetType } from '../../../types/mypageType';
 
 import {
-  TypeInfoBtn,
   EventWrapper,
-  EventImg,
+  EventControlsWrapper,
+  EditBtn,
+  DeleteBtn,
+  EventContainer,
+  BtnText,
+} from './EventStyle';
+import {
+  InfoSection,
   ArtistInfo,
+  ArtistName,
   EventTypeWrapper,
+  TypeInfoBtn,
   StoreName,
   Adress,
-  EventControlsWrapper,
-  EditEventBtn,
-  DeleteEventBtn,
-  ArtistName,
-  EventContainer,
-} from './EventStyle';
+  EventImg,
+} from './LikeStyle';
 
 type LikeItemProps = {
   artists: [
@@ -93,7 +97,7 @@ const EventItem = ({
   return (
     <EventWrapper icon={usericon} onClick={onClickEventItem}>
       <EventImg src={imagePath} />
-      <section>
+      <InfoSection>
         <ArtistInfo>
           {artists.map((artist) => (
             <ArtistName key={artist.id}>{artist.name}</ArtistName>
@@ -107,14 +111,14 @@ const EventItem = ({
         <StoreName>{storeName}</StoreName>
         <Adress>{address}</Adress>
         <EventControlsWrapper>
-          <EditEventBtn type="button" onClick={onClickEditBtn}>
-            수정하기
-          </EditEventBtn>
-          <DeleteEventBtn type="button" onClick={onClickDeleteBtn}>
-            삭제하기
-          </DeleteEventBtn>
+          <EditBtn type="button" onClick={onClickEditBtn}>
+            <BtnText>수정하기</BtnText>
+          </EditBtn>
+          <DeleteBtn type="button" onClick={onClickDeleteBtn}>
+            <BtnText>삭제하기</BtnText>
+          </DeleteBtn>
         </EventControlsWrapper>
-      </section>
+      </InfoSection>
     </EventWrapper>
   );
 };
