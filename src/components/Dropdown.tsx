@@ -100,10 +100,11 @@ const Dropdown: React.FC<DropdownProps> = ({
   icon,
   size,
 }) => {
-  const handleListClick = (list: string, id: number) => {
+  const handleListClick = (list: string, id: number, handler?: () => void) => {
     setSelectedText && setSelectedText(list);
     setClicked(false);
     setId(id);
+    handler && handler();
   };
 
   return (
@@ -113,7 +114,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           key={i}
           value={list.id}
           onClick={() => {
-            handleListClick(list.sort, list.id);
+            handleListClick(list.sort, list.id, list.handler);
           }}
         >
           {list.sort}

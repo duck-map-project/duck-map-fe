@@ -266,6 +266,7 @@ const Header: React.FC = ({}) => {
             sortOptions={managePageSettingMenu.map((menu) => ({
               sort: menu.title,
               id: menu.id,
+              handler: menu.handler,
             }))}
             setId={setSortId}
             icon={setting}
