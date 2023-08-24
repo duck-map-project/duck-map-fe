@@ -94,6 +94,7 @@ export const List = styled.div`
   margin-bottom: 0;
   text-align: center;
   white-space: pre-wrap; 
+  word-break: keep-all;
   `}
 `;
 
