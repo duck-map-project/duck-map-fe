@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 type ModalProps = {
   className?: string;
   onClick?: () => void;
@@ -85,5 +87,12 @@ const ModalOverlay = styled.form<ModalWidth>`
     border-top-left-radius: 29px;
     background-color: #ffd0ec;
     box-sizing: border-box;
+    ${media.mobile`
+      height: 40px;
+    `}
   }
+  ${media.mobile`
+    width: 90%;
+    padding-top: 40px;
+  `}
 `;
