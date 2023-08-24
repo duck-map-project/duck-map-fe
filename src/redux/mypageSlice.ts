@@ -36,6 +36,7 @@ export const mypageApiSlice = apiSlice.injectEndpoints({
         const isLast = response.last;
         return { numberOfElements, content, isLast };
       },
+      providesTags: ['Like'],
     }),
     getMyreview: builder.query<
       transformedMyreview,

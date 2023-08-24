@@ -6,9 +6,11 @@ import { useGetMylikeQuery } from '../../../redux/mypageSlice';
 import { mylikeType } from '../../../types/mypageType';
 
 import {
+  LikeContainer,
   TypeInfoBtn,
   LikeWrapper,
   EventImg,
+  InfoSection,
   ArtistInfo,
   ArtistName,
   EventTypeWrapper,
@@ -65,7 +67,7 @@ const LikeItem = ({
   return (
     <LikeWrapper icon={hearticon} onClick={onClickMyLike}>
       <EventImg src={imgURL} />
-      <section>
+      <InfoSection>
         <ArtistInfo>
           {artists.map((artist) => (
             <ArtistName key={artist.id}>{artist.name}</ArtistName>
@@ -78,7 +80,7 @@ const LikeItem = ({
         </EventTypeWrapper>
         <StoreName>{storeName}</StoreName>
         <Adress>{address}</Adress>
-      </section>
+      </InfoSection>
     </LikeWrapper>
   );
 };
@@ -128,13 +130,13 @@ const Like = () => {
     content = <div>{error.toString()}</div>;
   }
   return (
-    <>
+    <LikeContainer>
       {numberOfMylike ? (
         <div>{content}</div>
       ) : (
         <div>좋아요 이벤트가 없습니다.</div>
       )}
-    </>
+    </LikeContainer>
   );
 };
 

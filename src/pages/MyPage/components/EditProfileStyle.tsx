@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import media from '../../../utils/mediaQuery';
+
 type imageType = {
   previewimage: string;
 };
@@ -39,6 +41,11 @@ export const ImagePreview = styled.label<imageType>`
     top: 50%;
     transform: translateY(-50%);
   }
+  ${media.mobile`
+    width:140px;
+    height: 140px;
+    margin-bottom: 48px;
+  `}
 `;
 
 export const HiddenInput = styled.input`
@@ -55,6 +62,10 @@ export const UserInfoWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 22px;
+  ${media.mobile`
+    width: 100%;
+    padding-left: 10px;
+  `}
 `;
 
 export const StyledLabel = styled.label`
@@ -63,6 +74,12 @@ export const StyledLabel = styled.label`
   font-size: 20px;
   font-weight: 700;
   line-height: normal;
+  ${media.mobile`
+  position: relative;
+    width: 20%;
+    left: 0px;
+    font-size: 16px;
+  `}
 `;
 
 export const StyledInput = styled.input`
@@ -74,6 +91,10 @@ export const StyledInput = styled.input`
   font-weight: 400;
   line-height: normal;
   border-radius: 20px;
+  ${media.mobile`
+    width: 80%;
+    margin-left: 14px;
+  `}
 `;
 
 export const EmailInput = styled(StyledInput)`
@@ -89,6 +110,15 @@ export const UsernameInput = styled(StyledInput)`
 
 export const BtnWrapper = styled.section`
   margin-top: 102px;
+  ${media.mobile`
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 74px;
+  `}
 `;
 
 export const StyledBtn = styled.button`
@@ -99,6 +129,10 @@ export const StyledBtn = styled.button`
   line-height: normal;
   border-radius: 50px;
   box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+  ${media.mobile`
+    width: 90%;
+    padding: 9px;
+  `}
 `;
 
 export const UnregisterBtn = styled(StyledBtn)`
@@ -106,6 +140,9 @@ export const UnregisterBtn = styled(StyledBtn)`
   color: #8b8e97;
   border: 2px solid #8b8e97;
   background-color: #e7efee;
+  ${media.mobile`
+    margin: 0 auto;
+  `}
 `;
 
 export const EditSubmitBtn = styled(StyledBtn)`

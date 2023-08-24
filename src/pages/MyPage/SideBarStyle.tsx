@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 type ListLabelProps = {
   selected?: boolean;
   hearticon: string;
@@ -9,7 +11,7 @@ type ListLabelProps = {
 export const SideBarSection = styled.section`
   position: relative;
   width: 231px;
-  min-height: 200px;
+  height: 387px;
   padding: 67px 44px 53px;
   background-color: #fffbe2;
   border: 2px solid var(--line-black);
@@ -26,6 +28,9 @@ export const SideBarSection = styled.section`
     border-bottom: 2px solid var(--line-black);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    ${media.mobile`
+    height: 22px;
+    `}
   }
   &::after {
     position: absolute;
@@ -39,7 +44,16 @@ export const SideBarSection = styled.section`
     top: 5px;
     right: -10px;
     z-index: -9;
+    ${media.mobile`
+    display: none;
+    `}
   }
+  ${media.mobile`
+    width: 100%;
+    height: 82px;
+    padding: 32px 18px 8px;
+    margin-top: 20px;
+  `}
 `;
 
 export const SpringWrapper = styled.div`
@@ -49,6 +63,9 @@ export const SpringWrapper = styled.div`
   top: -13px;
   right: 50%;
   transform: translateX(50%);
+  ${media.mobile`
+    gap: 20px;
+  `}
 `;
 
 export const Spring = styled.div`
@@ -62,10 +79,22 @@ export const Spring = styled.div`
 export const ListsWrapper = styled.article`
   display: flex;
   flex-direction: column;
+  ${media.mobile`
+  flex-direction: row;   
+  align-items: center;
+    width: 100%;
+    gap: 10px;
+  `}
 `;
 
 export const List = styled.div`
   margin-bottom: 15px;
+  ${media.mobile`
+  width: 45px;
+  margin-bottom: 0;
+  text-align: center;
+  white-space: pre-wrap; 
+  `}
 `;
 
 export const ListLink = styled(Link)<ListLabelProps>`
@@ -86,6 +115,11 @@ export const ListLink = styled(Link)<ListLabelProps>`
       left: -20px;
     }
   `}
+  &::before {
+    ${media.mobile`
+    display: none;
+    `}
+  }
   &::after {
     position: absolute;
     display: block;
@@ -97,5 +131,15 @@ export const ListLink = styled(Link)<ListLabelProps>`
     bottom: 3px;
     left: 5px;
     border-radius: 5px;
+    ${media.mobile`
+    display: none;
+    `}
   }
+
+  ${media.mobile`
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  `}
 `;

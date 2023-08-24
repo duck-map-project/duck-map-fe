@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import deleteicon from '../../../assets/icons/delete.svg';
 import editicon from '../../../assets/icons/edit.svg';
+import media from '../../../utils/mediaQuery';
 
 export const ReviewItemWrapper = styled.article`
   width: 390px;
@@ -10,6 +11,10 @@ export const ReviewItemWrapper = styled.article`
   border-radius: 20px;
   background-color: #f8f8fa;
   cursor: pointer;
+  ${media.mobile`
+    width: 100%;
+    padding: 16px 0 11px;
+  `}
 `;
 
 export const ReviewTitle = styled.div`
@@ -17,6 +22,10 @@ export const ReviewTitle = styled.div`
   align-items: center;
   gap: 18px;
   margin: 0 22px 25px;
+  ${media.mobile`
+    gap: 10px;
+    margin-bottom: 10px;
+  `}
 `;
 
 export const EventName = styled.span`
@@ -25,18 +34,32 @@ export const EventName = styled.span`
   font-size: 20px;
   font-weight: 700;
   line-height: normal;
+  ${media.mobile`
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal
+  `}
 `;
 
 export const ReviewContent = styled.section`
   display: -webkit-box;
-  margin: 0 22px 17px;
   height: 60px;
+  margin: 0 22px 17px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
   //말줄임
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  line-height: 20px;
+  ${media.mobile`
+    height: 54px;
+    margin :  0 16px 14px;
+    line-height: 18px;
+  `}
 `;
 
 export const ReviewImg = styled.img`
@@ -46,12 +69,20 @@ export const ReviewImg = styled.img`
   border-bottom: 2px solid var(--line-black);
   object-fit: cover;
   margin-bottom: 8px;
+  ${media.mobile`
+    height: 158px;
+  margin-bottom: 10px;
+  `}
 `;
 
 export const ReviewsWrapper = styled.div`
   display: grid;
   gap: 18px 16px;
   grid-template-columns: repeat(2, 1fr);
+  ${media.mobile`
+  grid-template-columns: repeat(1, 1fr);
+  padding-right: 14px;
+  `}
 `;
 
 export const ButtonWrapper = styled.div`
@@ -65,23 +96,39 @@ export const ButtonWrapper = styled.div`
 const Button = styled.button.attrs({ type: 'button' })`
   width: 100px;
   height: 28px;
-  font-size: 1.4rem;
-  font-weight: 700;
-  line-height: 1.247857142857143;
-  color: #1e232c;
   background-color: #fff3ac;
   border: 2px solid #1e232c;
   border-radius: 20px;
   background-repeat: no-repeat;
   background-position: 0 center;
+  ${media.mobile`
+    width: 42px;
+    height: 24px;
+  `}
 `;
 
 export const EditButton = styled(Button)`
   padding-left: 20px;
   background-image: url(${editicon});
+  ${media.mobile`
+    background-size: 40px 32px;
+  `}
 `;
 
 export const DeleteButton = styled(Button)`
   padding-left: 22px;
   background-image: url(${deleteicon});
+  ${media.mobile`
+    background-size: 40px 30px;
+  `}
+`;
+
+export const ButtonText = styled.span`
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.247857142857143;
+  color: #1e232c;
+  ${media.mobile`
+    display: none;
+  `}
 `;

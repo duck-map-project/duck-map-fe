@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 
-import { ReactComponent as Bookmarkfoldericon } from '../../../assets/icons/bookmark-folder.svg';
+// import { ReactComponent as Bookmarkfoldericon } from '../../../assets/icons/bookmark-folder.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { emojiArray } from '../../../components/modals/EmojiArray';
@@ -68,7 +68,7 @@ const BookmarkFolderItem = ({
 
   return (
     <S.FolderWrapper onClick={onClickFolder}>
-      <Bookmarkfoldericon fill={color} />
+      <S.StyledFolderIcon fill={color} />
       <S.EmojiPreview img={folderEmoji}>
         <img
           src={emojiArray.find((emoji) => emoji.value === folderEmoji)?.img}
