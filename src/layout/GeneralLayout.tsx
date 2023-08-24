@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 
 import Billboard from '../components/Billboard';
 import Header from '../components/Header';
+import MobileTab from '../components/MobileTab';
 import AddressSearchModal from '../components/modals/AddressSearchModal';
 import ArtistModal from '../components/modals/ArtistModal';
 import ArtistSelectModal from '../components/modals/ArtistSelectModal';
@@ -37,6 +38,7 @@ interface GeneralLayoutProps {
 }
 
 const PageWrapper = styled.section`
+  position: relative;
   display: flex;
   flex-direction: column;
 `;
@@ -84,6 +86,7 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {addressSearchModal && <AddressSearchModal />}
       <Header />
       {children}
+      <MobileTab />
     </PageWrapper>
   );
 };
