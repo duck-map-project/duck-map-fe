@@ -12,7 +12,6 @@ import { Artist, selectSelectedArtist } from '../../redux/setEventElemetsSlice';
 import { ArtistContent } from '../../types/artistsType';
 import scrollToTop from '../../utils/scrollToTop';
 
-import { ModalTitle } from './AddEventCategoryModalStyle';
 import {
   AritstSelectSection,
   ArtistListItem,
@@ -22,6 +21,7 @@ import {
   ModalCloseButton,
 } from './ArtistSelectModalStyle';
 import CommonModal, { ModalPortal } from './CommonModal';
+import { ModalTitle } from './EventCategoryModalStyle';
 
 const ArtistSelectModal = () => {
   const dispatch = useDispatch();

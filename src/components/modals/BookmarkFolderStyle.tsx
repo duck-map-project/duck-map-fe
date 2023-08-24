@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
+import { ReactComponent as BookmarkFolder } from '../../assets/icons/bookmark-folder.svg';
 import checkicon from '../../assets/icons/check.svg';
+import media from '../../utils/mediaQuery';
 
 type EmojiPreviewType = {
   img: string;
@@ -31,12 +33,25 @@ export const ModalTitle = styled.h4`
   border: 2.937px solid var(--line-black);
   border-radius: 73px;
   background-color: #fcf9a4;
+  ${media.mobile`
+    width: 80%;
+    padding: 8px 20px;
+    font-size: 20px;
+  `}
 `;
 
 export const ModalCloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 17px;
+  ${media.mobile`
+  top: 11px;
+  right: 14px;
+  & > img{
+    width: 17px;
+    height: 17px;
+  }
+  `}
 `;
 
 export const FoldernameSection = styled.section`
@@ -46,36 +61,62 @@ export const FoldernameSection = styled.section`
   gap: 10px;
   width: 60%;
   margin-bottom: 22px;
-  & > label {
-    margin-left: 20px;
-    font-size: 24px;
-    font-weight: 700;
-  }
-  & > input {
-    width: 503px;
-    height: 58px;
-    padding: 20px;
-    font-size: 20px;
-    border: 1.4px solid var(--line-black);
-    border-radius: 40px;
-    background-color: #f8f8fa;
-    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.25);
-  }
-  & > span {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 55px;
-    right: 0px;
-    width: 30px;
-    height: 30px;
-    color: #8b8e97;
-    border: 1.4px solid #8b8e97;
-    border-radius: 50%;
-    background-color: #ededed;
-    cursor: pointer;
-  }
+  ${media.mobile`
+  width: 100%;
+  align-items: center;
+  `}
+`;
+
+export const FoldernameLabel = styled.label`
+  margin-left: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  ${media.mobile`
+    font-size: 16px;
+  `}
+`;
+
+export const FoldernameInput = styled.input`
+  width: 503px;
+  height: 58px;
+  padding: 20px;
+  font-size: 20px;
+  border: 1.4px solid var(--line-black);
+  border-radius: 40px;
+  background-color: #f8f8fa;
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.25);
+  ${media.mobile`
+    width: 90%;
+    height: 36px;
+    padding: 12px 20px;
+    font-size: 14px;
+  `}
+`;
+
+export const FoldernameDeleteBtn = styled.span`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 55px;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+  color: #8b8e97;
+  border: 1.4px solid #8b8e97;
+  border-radius: 50%;
+  background-color: #ededed;
+  cursor: pointer;
+  ${media.mobile`
+    width: 14px;
+    height: 14px;
+    top: 41px;
+    right: 25px;
+    & > img {
+      width: 8px;
+      height: 8px;
+    }
+  `}
 `;
 
 export const FoldericonSection = styled.section`
@@ -85,18 +126,29 @@ export const FoldericonSection = styled.section`
   gap: 14px;
   width: 60%;
   margin-bottom: 22px;
+  ${media.mobile`
+    width: 100%;
+    align-items: center;
+  `}
 `;
 
 export const IconSectionTitle = styled.span`
   margin-left: 20px;
   font-size: 24px;
   font-weight: 700;
+  ${media.mobile`
+    font-size: 16px;
+  `}
 `;
 
 export const IconSelectSection = styled.div`
   display: flex;
   align-items: center;
   gap: 37px;
+  ${media.mobile`
+    flex-direction: column;
+    gap: 8px;
+  `}
 `;
 
 export const EmojiBox = styled.div`
@@ -130,6 +182,10 @@ export const EmojiBox = styled.div`
     border-radius: 0 0 20px 20px;
     background-color: #e1edfe;
   }
+  ${media.mobile`
+    width: 100%;
+    padding: 18px 2px 18px 0;
+  `}
 `;
 
 export const EmojiLists = styled.div`
@@ -160,7 +216,15 @@ export const EmojiLists = styled.div`
     width: 2px;
     height: 140px;
     background-color: var(--line-black);
+    ${media.mobile`
+      height: 90px;
+    `}
   }
+  ${media.mobile`
+  height: 81px;
+  padding: 12px 30px 12px 18px;
+  grid-template-columns: repeat(4, 40px);
+  `}
 `;
 
 export const EmojiPreviewFolderWrapper = styled.div`
@@ -172,6 +236,12 @@ export const EmojiPreviewFolderWrapper = styled.div`
   gap: 9px;
 `;
 
+export const StyledBookmarkFolder = styled(BookmarkFolder)`
+  ${media.mobile`
+    width: 105px;
+    height: 72px;
+  `}
+`;
 export const EmojiPreview = styled.span<EmojiPreviewType>`
   position: absolute;
   display: flex;
@@ -189,6 +259,16 @@ export const EmojiPreview = styled.span<EmojiPreviewType>`
     width: 30px;
     height: 30px;
   }
+  ${media.mobile`
+    width: 40px;
+    height: 40px;
+    top: 36%;
+    left: 12px;
+    & > img{
+      width: 19px;
+      height: 19px;
+    }
+  `}
 `;
 
 export const EmojiLabel = styled.label<EmojiLabelType>`
@@ -218,6 +298,11 @@ export const EmojiLabel = styled.label<EmojiLabelType>`
     background-position: center;
     background-repeat: no-repeat;
     box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.25);
+    ${media.mobile`
+      width: 20px;
+      height: 20px;
+      top: 6px;
+    `}
   }
 `;
 
@@ -233,6 +318,11 @@ export const Previewtext = styled.span`
   border-radius: 73.419px;
   background: #f8f8fa;
   box-shadow: 4.4px 4.4px 0px 0px rgba(0, 0, 0, 0.25);
+  ${media.mobile`
+    width: 87px;
+    font-size: 12px;
+    padding: 4px;
+  `}
 `;
 
 export const FolderColorSection = styled.section`
@@ -242,18 +332,30 @@ export const FolderColorSection = styled.section`
   gap: 14px;
   width: 60%;
   margin-bottom: 24px;
+  ${media.mobile`
+    width: 100%;
+    align-items: center;
+    gap: 5px;
+  `}
 `;
 
 export const ColorSectionTitle = styled.span`
   margin-left: 20px;
   font-size: 24px;
   font-weight: 700;
+  ${media.mobile`
+    font-size: 16px;
+  `}
 `;
 
 export const ColorSelectSection = styled.div`
   display: flex;
   align-items: center;
   gap: 37px;
+  ${media.mobile`
+    flex-direction: column;
+    gap: 8px;
+  `}
 `;
 
 export const ColorBox = styled.div`
@@ -290,6 +392,11 @@ export const ColorBox = styled.div`
     border-radius: 0 0 20px 20px;
     background-color: #e1edfe;
   }
+  ${media.mobile`
+    width: 100%;
+    min-width: 0;
+    padding: 30px;
+  `}
 `;
 
 export const ColorPreviewFolderWrapper = styled.div`
@@ -311,4 +418,9 @@ export const AddNewFolderBtn = styled.button`
   border-radius: 73.4px;
   background-color: #defcf9;
   box-shadow: 4.4px 4.4px 0px 0px rgba(0, 0, 0, 0.25);
+  ${media.mobile`
+    width: 160px;
+    padding: 10px;
+    font-size: 24px;
+  `}
 `;

@@ -14,6 +14,8 @@ import { toggleGroup } from '../../redux/manageModalSlice';
 import { toggleEditGroup } from '../../redux/manageModalSlice';
 import Loading from '../Loading';
 
+import CommonModal from './CommonModal';
+import { ModalPortal } from './CommonModal';
 import {
   ModalTitle,
   ModalCloseButton,
@@ -23,9 +25,7 @@ import {
   NameInput,
   NameLabel,
   SubmitButton,
-} from './AddGroupModalStyle';
-import CommonModal from './CommonModal';
-import { ModalPortal } from './CommonModal';
+} from './GroupModalStyle';
 
 type ModalType = {
   type: 'add' | 'edit';

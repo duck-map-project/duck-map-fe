@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import { ReactComponent as BookmarkFolder } from '../../assets/icons/bookmark-folder.svg';
 import closesmallicon from '../../assets/icons/close-small.svg';
 import closeicon from '../../assets/icons/close.svg';
 import {
@@ -17,27 +16,7 @@ import {
   toggleEditBookmarkFolder,
 } from '../../redux/manageModalSlice';
 
-import {
-  EmojiBox,
-  EmojiLabel,
-  EmojiLists,
-  EmojiPreview,
-  EmojiPreviewFolderWrapper,
-  ModalContent,
-  ModalCloseButton,
-  ModalTitle,
-  FolderColorSection,
-  FoldericonSection,
-  FoldernameSection,
-  IconSectionTitle,
-  IconSelectSection,
-  Previewtext,
-  ColorBox,
-  ColorPreviewFolderWrapper,
-  ColorSectionTitle,
-  ColorSelectSection,
-  AddNewFolderBtn,
-} from './AddBookmarkFolderStyle';
+import * as S from './BookmarkFolderStyle';
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
 import { emojiArray } from './EmojiArray';
@@ -57,9 +36,9 @@ type FolderModalType = {
 const Emoji = ({ value, img, name, isSelected, onChange }: EmojiType) => {
   return (
     <>
-      <EmojiLabel htmlFor={value} selected={isSelected}>
+      <S.EmojiLabel htmlFor={value} selected={isSelected}>
         <img src={img} />
-      </EmojiLabel>
+      </S.EmojiLabel>
       <input
         type="radio"
         id={value}
@@ -152,18 +131,18 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
   return (
     <ModalPortal>
       <CommonModal onClick={onHideModal} width="860">
-        <ModalContent>
-          <ModalTitle>
+        <S.ModalContent>
+          <S.ModalTitle>
             북마크 폴더 {type === 'add' ? '추가' : '수정'}하기
-          </ModalTitle>
-          <ModalCloseButton type="button" onClick={onHideModal}>
+          </S.ModalTitle>
+          <S.ModalCloseButton type="button" onClick={onHideModal}>
             <img src={closeicon} />
-          </ModalCloseButton>
-          <FoldernameSection>
-            <label>
+          </S.ModalCloseButton>
+          <S.FoldernameSection>
+            <S.FoldernameLabel>
               북마크 폴더 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
-            </label>
-            <input
+            </S.FoldernameLabel>
+            <S.FoldernameInput
               type="text"
               placeholder={
                 type === 'add' ? '북마크 폴더 이름' : '선택한 북마크 폴더 이름'
@@ -171,15 +150,17 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
               value={foldername}
               onChange={onChangeFoldername}
             />
-            <span onClick={onDeleteCurrentFoldername}>
+            <S.FoldernameDeleteBtn onClick={onDeleteCurrentFoldername}>
               <img src={closesmallicon} />
-            </span>
-          </FoldernameSection>
-          <FoldericonSection>
-            <IconSectionTitle>폴더 아이콘을 선택해 주세요.</IconSectionTitle>
-            <IconSelectSection>
-              <EmojiBox>
-                <EmojiLists>
+            </S.FoldernameDeleteBtn>
+          </S.FoldernameSection>
+          <S.FoldericonSection>
+            <S.IconSectionTitle>
+              폴더 아이콘을 선택해 주세요.
+            </S.IconSectionTitle>
+            <S.IconSelectSection>
+              <S.EmojiBox>
+                <S.EmojiLists>
                   {emojiArray.map((emoji) => (
                     <Emoji
                       key={emoji.id}
@@ -190,44 +171,46 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
                       isSelected={emoji.value === selectEmoji}
                     />
                   ))}
-                </EmojiLists>
-              </EmojiBox>
-              <EmojiPreviewFolderWrapper>
-                <BookmarkFolder fill="#DEFCF9" />
-                <EmojiPreview img={selectEmoji}>
+                </S.EmojiLists>
+              </S.EmojiBox>
+              <S.EmojiPreviewFolderWrapper>
+                <S.StyledBookmarkFolder fill="#DEFCF9" />
+                <S.EmojiPreview img={selectEmoji}>
                   <img
                     src={
                       emojiArray.find((emoji) => emoji.value === selectEmoji)
                         ?.img
                     }
                   />
-                </EmojiPreview>
-                <Previewtext>미리보기</Previewtext>
-              </EmojiPreviewFolderWrapper>
-            </IconSelectSection>
-          </FoldericonSection>
-          <FolderColorSection>
-            <ColorSectionTitle>폴더 컬러를 선택해 주세요.</ColorSectionTitle>
-            <ColorSelectSection>
-              <ColorBox>
+                </S.EmojiPreview>
+                <S.Previewtext>미리보기</S.Previewtext>
+              </S.EmojiPreviewFolderWrapper>
+            </S.IconSelectSection>
+          </S.FoldericonSection>
+          <S.FolderColorSection>
+            <S.ColorSectionTitle>
+              폴더 컬러를 선택해 주세요.
+            </S.ColorSectionTitle>
+            <S.ColorSelectSection>
+              <S.ColorBox>
                 <Wheel
                   color={hsva}
                   onChange={(color) => setHsva({ ...hsva, ...color.hsva })}
                 />
-              </ColorBox>
-              <ColorPreviewFolderWrapper>
-                <BookmarkFolder fill={selectColor} />
-                <Previewtext>미리보기</Previewtext>
-              </ColorPreviewFolderWrapper>
-            </ColorSelectSection>
-          </FolderColorSection>
-          <AddNewFolderBtn
+              </S.ColorBox>
+              <S.ColorPreviewFolderWrapper>
+                <S.StyledBookmarkFolder fill={selectColor} />
+                <S.Previewtext>미리보기</S.Previewtext>
+              </S.ColorPreviewFolderWrapper>
+            </S.ColorSelectSection>
+          </S.FolderColorSection>
+          <S.AddNewFolderBtn
             type="button"
             onClick={type === 'add' ? onClickAddNewFolder : onClickEditFolder}
           >
             완료
-          </AddNewFolderBtn>
-        </ModalContent>
+          </S.AddNewFolderBtn>
+        </S.ModalContent>
       </CommonModal>
     </ModalPortal>
   );
