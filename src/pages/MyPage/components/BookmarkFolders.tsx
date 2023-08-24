@@ -82,20 +82,20 @@ const BookmarkFolders = ({
     <>
       <S.FoldersHeader>
         <S.Path>
-          <img src={starticon} />
+          <S.Star src={starticon} />
           <span>북마크</span>
         </S.Path>
         <S.SettingBtnWrapper>
           <S.SettingBtn onClick={onClickAddNewFolder}>
             <img src={plusicon} />
-            북마크 폴더 추가하기
+            <S.SettingBtnText>북마크 폴더 추가하기</S.SettingBtnText>
           </S.SettingBtn>
           <S.GoEditBtn
             onClick={onClickToggleEditmode}
             editmode={isEditmode ? isEditmode.toString() : undefined}
           >
             <img src={editicon} />
-            북마크 편집하기
+            <S.SettingBtnText>북마크 편집하기</S.SettingBtnText>
           </S.GoEditBtn>
         </S.SettingBtnWrapper>
       </S.FoldersHeader>

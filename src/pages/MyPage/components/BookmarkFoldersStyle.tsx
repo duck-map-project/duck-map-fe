@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import media from '../../../utils/mediaQuery';
+
 type EditBtnProps = {
   editmode: string | undefined;
 };
@@ -27,33 +29,60 @@ export const FoldersHeader = styled.div`
 export const Path = styled.div`
   display: flex;
   align-items: center;
-  & > img {
-    margin-right: 10px;
-  }
   & > span {
-    margin-right: 10px;
     font-size: 20px;
     font-weight: 700;
     line-height: normal;
   }
+  ${media.mobile`
+    & > span {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+    }
+  `}
+`;
+
+export const Star = styled.img`
+  margin-right: 10px;
+
+  ${media.mobile`
+      width: 16px;
+      height: 16px;
+      margin: 0 6px 0 10px;
+    
+  `}
 `;
 
 export const GoBookmarkFolders = styled.span`
+  margin-right: 10px;
   cursor: pointer;
+  ${media.mobile`
+    margin-right: 5px;
+  `}
 `;
 
 export const SettingBtnWrapper = styled.div`
   display: flex;
   gap: 12px;
+  ${media.mobile`
+    gap: 10px;
+  `}
 `;
 
+export const SettingBtnText = styled.span`
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  ${media.mobile`
+    display: none;
+  `}
+`;
 export const SettingBtn = styled.button`
   display: flex;
   align-items: center;
   padding: 4px 12px;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: normal;
   border: 2px solid var(--line-black);
   border-radius: 20px;
   background-color: #defcf9;
@@ -62,6 +91,14 @@ export const SettingBtn = styled.button`
   & > img {
     margin-right: 10px;
   }
+  ${media.mobile`
+  min-width: 46px;
+  & > img {
+    width: 14px;
+    height: 12px;
+    margin: 0 auto;
+  }
+  `}
 `;
 
 export const GoEditBtn = styled(SettingBtn)<EditBtnProps>`
@@ -73,7 +110,11 @@ export const GoEditBtn = styled(SettingBtn)<EditBtnProps>`
 `;
 
 export const FoldersContainer = styled.div`
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  ${media.mobile`
+    gap: 0px;
+  `}
 `;

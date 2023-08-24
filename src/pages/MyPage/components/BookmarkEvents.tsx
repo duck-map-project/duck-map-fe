@@ -10,6 +10,15 @@ import { BookmarkEventType } from '../../../types/bookmarkEventType';
 
 import BookmarkEventItem from './BookmarkEventItem';
 import * as S from './BookmarkEventsStyle';
+import {
+  Path,
+  Star,
+  GoBookmarkFolders,
+  SettingBtnWrapper,
+  SettingBtnText,
+  SettingBtn,
+  GoEditBtn,
+} from './BookmarkFoldersStyle';
 
 type EventsProps = {
   foldername: string;
@@ -86,29 +95,29 @@ const BookmarkEvents = ({
   return (
     <>
       <S.EventsHeader>
-        <S.Path>
-          <img src={starticon} />
-          <S.GoBookmarkFolders onClick={onClickGoBookmarkFolders}>
+        <Path>
+          <Star src={starticon} />
+          <GoBookmarkFolders onClick={onClickGoBookmarkFolders}>
             북마크
-          </S.GoBookmarkFolders>
-          <img src={arrowicon} />
+          </GoBookmarkFolders>
+          <S.Arrow src={arrowicon} />
           <span>{foldername}</span>
-        </S.Path>
-        <S.SettingBtnWrapper>
+        </Path>
+        <SettingBtnWrapper>
           <CopyToClipboard text={originPath + folderPath} onCopy={onCopyURL}>
-            <S.SettingBtn>
+            <SettingBtn>
               <img src={plusicon} />
-              폴더 공유하기
-            </S.SettingBtn>
+              <SettingBtnText>폴더 공유하기</SettingBtnText>
+            </SettingBtn>
           </CopyToClipboard>
-          <S.GoEditBtn
+          <GoEditBtn
             onClick={onClickToggleEditmode}
             editmode={isEditmode ? isEditmode.toString() : undefined}
           >
             <img src={editicon} />
-            북마크 편집하기
-          </S.GoEditBtn>
-        </S.SettingBtnWrapper>
+            <SettingBtnText>북마크 편집하기</SettingBtnText>
+          </GoEditBtn>
+        </SettingBtnWrapper>
       </S.EventsHeader>
       <S.EventsContainer onClick={onClickNoEditmode}>
         {hasEvents ? content : <div>북마크된 이벤트가 없습니다.</div>}

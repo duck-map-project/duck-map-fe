@@ -2,10 +2,11 @@ import { css, styled } from 'styled-components';
 
 import emptyStar from '../assets/star-empty.svg';
 import filledStar from '../assets/star-filled.svg';
+import media from '../utils/mediaQuery';
 
 const Wrapper = styled.div<{
   $marginB?: string;
-  $size?: 'primary' | 'reviewItem';
+  $size?: 'primary' | 'reviewItem' | 'reviewItemMobile';
 }>`
   display: flex;
   align-items: center;
@@ -27,6 +28,10 @@ const reviewItemWrapper = css`
   background-color: #fffcedfa;
   border: 2px solid #1e232c;
   border-radius: 20px;
+  ${media.mobile`
+    width: 92px;
+    padding: 0 8.2px;
+  `}
 `;
 
 const primaryRatingStyle = css`
@@ -39,6 +44,9 @@ const reviewItemRatingStyle = css`
   width: 110px;
   height: 22px;
   background-size: 22px 22px;
+  ${media.mobile`
+  background-size: 14.5px 20px;
+  `}
 `;
 
 const FixedRatingStyle = styled.div<{

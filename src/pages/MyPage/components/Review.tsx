@@ -17,6 +17,7 @@ import {
   ButtonWrapper,
   EditButton,
   DeleteButton,
+  ButtonText,
 } from './ReviewStyle';
 
 type ReviewItemProps = {
@@ -72,8 +73,12 @@ const ReviewItem = ({
       <ReviewContent> {content} </ReviewContent>
       <ReviewImg src={baseUrl + reviewImage} />
       <ButtonWrapper>
-        <EditButton onClick={onEditButtonClick}>수정하기</EditButton>
-        <DeleteButton onClick={onDeleteButtonClick}>삭제하기</DeleteButton>
+        <EditButton onClick={onEditButtonClick}>
+          <ButtonText>수정하기</ButtonText>
+        </EditButton>
+        <DeleteButton onClick={onDeleteButtonClick}>
+          <ButtonText>삭제하기</ButtonText>
+        </DeleteButton>
       </ButtonWrapper>
     </ReviewItemWrapper>
   );

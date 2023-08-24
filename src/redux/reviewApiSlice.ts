@@ -49,6 +49,7 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         const isLast = response.last;
         return { content, isLast };
       },
+      providesTags: ['Review'],
     }),
     addReview: builder.mutation({
       query: (requestData: ReviewData) => ({
@@ -56,6 +57,7 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: { ...requestData },
       }),
+      invalidatesTags: ['Review'],
     }),
     getMainReview: builder.query<
       GetMainReviewsTransformedResponse,
@@ -69,12 +71,14 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         const content = response.content;
         return { content };
       },
+      providesTags: ['Review'],
     }),
     getReviewById: builder.query<ReviewById, string>({
       query: (id) => ({
         url: `/reviews/${id}`,
         method: 'GET',
       }),
+      providesTags: ['Review'],
     }),
     editReview: builder.mutation<void, EditReviewReq>({
       query: ({ id, requestData }) => ({
@@ -82,12 +86,14 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { ...requestData },
       }),
+      invalidatesTags: ['Review'],
     }),
     deleteReview: builder.mutation<void, number>({
       query: (id) => ({
         url: `/reviews/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Review'],
     }),
   }),
 });
