@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import heart from '../../assets/icons/heart.svg';
+import heartmobile from '../../assets/icons/heart3.svg';
 import media from '../../utils/mediaQuery';
 
 type ListLabelProps = {
-  selected?: boolean;
-  hearticon: string;
+  selected: boolean;
 };
 
 export const SideBarSection = styled.section`
@@ -51,7 +52,7 @@ export const SideBarSection = styled.section`
   ${media.mobile`
     width: 100%;
     height: 82px;
-    padding: 32px 18px 8px;
+    padding: 35px 18px 10px;
     margin-top: 20px;
   `}
 `;
@@ -93,7 +94,6 @@ export const List = styled.div`
   width: 45px;
   margin-bottom: 0;
   text-align: center;
-  white-space: pre-wrap; 
   word-break: keep-all;
   `}
 `;
@@ -109,18 +109,14 @@ export const ListLink = styled(Link)<ListLabelProps>`
     &::before {
       position: absolute;
       display: block;
-      content: url(${props.hearticon});
+      content: url(${heart});
       width: 12px;
       height: 12px;
-      top:  -3px;
+      top:  -2px;
       left: -20px;
     }
   `}
-  &::before {
-    ${media.mobile`
-    display: none;
-    `}
-  }
+
   &::after {
     position: absolute;
     display: block;
@@ -138,9 +134,26 @@ export const ListLink = styled(Link)<ListLabelProps>`
   }
 
   ${media.mobile`
+  display: block;
+  width: 100%;
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  `}
+  ${(props) =>
+    props.selected &&
+    media.mobile`
+    &::before {
+      position: absolute;
+      display: block;
+      content: url(${heartmobile});
+      width: 12px;
+      height: 12px;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-80%);
+      opacity: 0.8;
+    }
   `}
 `;
