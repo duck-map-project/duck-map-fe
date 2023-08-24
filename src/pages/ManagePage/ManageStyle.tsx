@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 type tabProps = {
   selected: boolean;
 };
@@ -12,6 +14,10 @@ export const ManageInfoSection = styled.section`
   border-top: 2px solid var(--line-black);
   border-bottom: 2px solid var(--line-black);
   margin-bottom: 100px;
+  background-color: #fffdf6;
+  ${media.mobile`
+  width: 100%;
+  `}
 `;
 
 export const ManageTitle = styled.div`
@@ -31,6 +37,9 @@ export const ManageTitle = styled.div`
 
 export const ManageInfoImage = styled.img`
   width: 520px;
+  ${media.mobile`
+    display: none;
+  `}
 `;
 
 export const List = styled.main`
@@ -59,6 +68,14 @@ export const List = styled.main`
     background-color: #fffbe2;
     z-index: -100;
   }
+  ${media.mobile`
+    width: 85%;
+    padding: 16px 14px;
+    margin-bottom: 0px;
+    &::before{
+      display: none;
+    }
+  `}
 `;
 
 export const TabWrapper = styled.article`
@@ -70,6 +87,9 @@ export const TabWrapper = styled.article`
   right: -55%;
   transform: translateX(-100%);
   /* z-index: -9; */
+  ${media.mobile`
+    display: none;
+  `}
 `;
 
 export const Tab = styled.label<tabProps>`
@@ -105,6 +125,10 @@ export const ListTitleText = styled.span`
   border: 2px solid var(--line-black);
   border-radius: 50px;
   background-color: #defcf9;
+  ${media.mobile`
+    padding: 6px 20px;
+    font-size: 16px;
+  `}
 `;
 
 export const ListTitleIcon = styled.div`
@@ -137,10 +161,32 @@ export const ArtistListSection = styled.section`
   &::-webkit-scrollbar {
     width: 20px;
   }
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    border: 5px solid transparent;
+    background-clip: content-box;
+    background-color: rgba(176, 180, 204, 0.5);
+  }
+
   &::-webkit-scrollbar-thumb {
     position: relative;
     background-color: #8f9ef2;
     border: 2px solid var(--line-black);
     border-radius: 17.7px;
   }
+
+  ${media.mobile`
+    width: 100%;
+    padding: 0;
+    grid-template-columns: repeat(1, 1fr);
+    &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    background-color: rgba(176, 180, 204, 0.5);
+  }
+  `}
 `;
