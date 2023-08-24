@@ -13,7 +13,6 @@ export const ListItem = styled.article`
   border-radius: 50px;
   background-color: #f8f8fa;
   ${media.mobile`
-    /* width: 100%; */
     max-width: 282px;
     padding: 13.5px 15px 13.5px 19.5px;
     margin: 0 auto;
@@ -44,7 +43,7 @@ export const ItemText = styled.span`
   ${media.mobile`
     font-size: 14px;
     &::after {
-top: 10px;
+    top: 10px;
       right: -5px;
     }
   `}
