@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import timer from '../assets/icons/timer.svg';
+import media from '../utils/mediaQuery';
 
 const Loading = ({ text }: { text: string }) => {
   const texts = text.split('. ');
@@ -38,6 +39,9 @@ export const LoadingWrapper = styled.article`
     background-color: #ffdcf1;
     border-radius: 20px 20px 0 0;
     border-bottom: 2px solid var(--line-black);
+    ${media.mobile`
+      height: 30px;
+    `}
   }
   &::after {
     position: absolute;
@@ -53,5 +57,13 @@ export const LoadingWrapper = styled.article`
     background-position: center;
     background-size: 58px 58px;
     z-index: 999;
+    ${media.mobile`
+      top: -30px;
+    `}
   }
+  ${media.mobile`
+    width: 100%;
+    font-size: 16px;
+    padding-top: 50px;
+  `}
 `;
