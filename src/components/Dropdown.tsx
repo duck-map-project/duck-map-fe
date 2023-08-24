@@ -1,9 +1,12 @@
 import { styled } from 'styled-components';
 
+import media from '../utils/mediaQuery';
+
 import { sortOptionsType } from './modals/ArtistModal';
 
 type dropdowonProps = {
   icon?: string | undefined;
+  size?: 'manage';
 };
 const Wrapper = styled.ul<dropdowonProps>`
   position: absolute;
@@ -32,6 +35,13 @@ const Wrapper = styled.ul<dropdowonProps>`
   padding-left: 10px;
   `
       : ``}
+  ${(props) =>
+    props.size === 'manage' &&
+    media.mobile`
+    left: -50%;
+    transform: translateX(-25%);
+    border: 1.4px solid #1e232c;
+  `}
 `;
 
 const Item = styled.li`
@@ -58,6 +68,19 @@ const Item = styled.li`
       border-radius: 10px;
     }
   }
+  ${media.mobile`
+    font-size: 14px;
+    padding: 5px 10px;
+    &:hover {
+      &::after{
+      width: 50px;
+      background-color: #FFD0EC;
+      top: 15px;
+      left:45%;
+      opacity: 0.6;
+      }
+    }
+  `}
 `;
 
 interface DropdownProps {
@@ -66,6 +89,7 @@ interface DropdownProps {
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;
   setId: React.Dispatch<React.SetStateAction<number | null>>;
   icon: string | undefined;
+  size?: 'manage';
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -74,6 +98,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   setClicked,
   setId,
   icon,
+  size,
 }) => {
   const handleListClick = (list: string, id: number) => {
     setSelectedText && setSelectedText(list);
@@ -82,7 +107,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <Wrapper icon={icon}>
+    <Wrapper icon={icon} size={size}>
       {lists.map((list, i) => (
         <Item
           key={i}
