@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import iconPencil from '../assets/icon-pencil.svg';
@@ -141,6 +142,7 @@ export const ProfileImg = styled.img`
 const Header: React.FC = ({}) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
+  const [, setParams] = useSearchParams();
   const { currentPath, routeTo } = useRouter();
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   const user = useSelector(selectCurrentUser);
@@ -149,7 +151,7 @@ const Header: React.FC = ({}) => {
   const [userProfile, setUserProfile] = useState<string | null>('');
   const [manageSort, setManageSort] = useState(false);
   const [manageSettingSort, setManageSettingSort] = useState(false);
-  const [_, setSortId] = useState<number | null>(null);
+  const [, setSortId] = useState<number | null>(null);
 
   useEffect(() => {
     if (user && user.userProfile !== '/images/null') {
@@ -209,9 +211,27 @@ const Header: React.FC = ({}) => {
     { id: 2, title: 'Review', icon: iconPencil, handler: handleReviewClick },
   ];
   const managePageMenu = [
-    { id: 0, sort: '아티스트 목록' },
-    { id: 1, sort: '카테고리 목록' },
-    { id: 2, sort: '아티스트타입 목록' },
+    {
+      id: 0,
+      sort: '아티스트 목록',
+      handler: () => {
+        setParams({ sort: 'artist' });
+      },
+    },
+    {
+      id: 1,
+      sort: '카테고리 목록',
+      handler: () => {
+        setParams({ sort: 'category' });
+      },
+    },
+    {
+      id: 2,
+      sort: '아티스트타입 목록',
+      handler: () => {
+        setParams({ sort: 'artisttype' });
+      },
+    },
   ];
   managePageMenu;
 

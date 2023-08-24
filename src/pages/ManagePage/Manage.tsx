@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { ReactComponent as Bookicon } from '../../assets/icons/book.svg';
 import manageImage from '../../assets/icons/manageImage.svg';
@@ -42,7 +42,12 @@ const tabArray = [
 ];
 
 const Manage = () => {
+  const [params] = useSearchParams();
+  const sort = params.get('sort');
   const [selectedTab, setSelectedTab] = useState('artist');
+  useEffect(() => {
+    sort && setSelectedTab(sort);
+  }, [sort]);
 
   let content;
   let title;

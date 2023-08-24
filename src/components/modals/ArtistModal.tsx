@@ -37,7 +37,7 @@ import TypeButton from './components/TypeButton';
 export type sortOptionsType = {
   sort: string;
   id: number;
-  handler ?: () => void;
+  handler?: () => void;
 };
 
 type ModalProps = {
