@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 export const ListItem = styled.article`
   position: relative;
   display: flex;
@@ -10,6 +12,12 @@ export const ListItem = styled.article`
   border: 2px solid var(--line-black);
   border-radius: 50px;
   background-color: #f8f8fa;
+  ${media.mobile`
+    /* width: 100%; */
+    max-width: 282px;
+    padding: 13.5px 15px 13.5px 19.5px;
+    margin: 0 auto;
+  `}
 `;
 
 export const ItemText = styled.span`
@@ -33,6 +41,13 @@ export const ItemText = styled.span`
     background-color: #ffbcbc;
     opacity: 40%;
   }
+  ${media.mobile`
+    font-size: 14px;
+    &::after {
+top: 10px;
+      right: -5px;
+    }
+  `}
 `;
 
 export const ButtonWrapper = styled.div`
@@ -50,10 +65,17 @@ export const CommonButton = styled.button`
   border: 2px solid var(--line-black);
   border-radius: 23.5px;
   background-color: #fffbe3;
-  > img {
+  & > img {
     position: absolute;
     width: 55px;
     top: 50%;
     transform: translate(-50%, -50%);
   }
+  ${media.mobile`
+    width: 52.5px;
+    height: 27px;
+    & > img {
+      width: 40px;
+    }
+  `}
 `;

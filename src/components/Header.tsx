@@ -249,16 +249,16 @@ const Header: React.FC = ({}) => {
       handler: handleArtistClick,
     },
     {
-      id: 2,
-      title: '아티스트 타입 등록',
-      icon: settingIcon,
-      handler: handleArtistTypeClick,
-    },
-    {
       id: 3,
       title: '카테고리 등록',
       icon: settingIcon,
       handler: handleCategoryClick,
+    },
+    {
+      id: 2,
+      title: '아티스트 타입 등록',
+      icon: settingIcon,
+      handler: handleArtistTypeClick,
     },
   ];
 

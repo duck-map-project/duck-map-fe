@@ -81,6 +81,7 @@ export const List = styled.main`
   }
   ${media.mobile`
     width: 85%;
+    height: 65vh;
     padding: 16px 14px;
     margin-bottom: 0px;
     &::before{
