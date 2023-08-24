@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 type imgType = {
   image: string;
 };
@@ -10,12 +12,15 @@ export const ListItem = styled.article`
   border: 2px solid var(--line-black);
   border-radius: 3.9px;
   background-color: var(--bg2);
+  ${media.mobile`
+    width: 100%;
+  `}
 `;
 
 export const ListItemTitle = styled.h4`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 10px;
   text-align: center;
 `;
@@ -23,7 +28,6 @@ export const ListItemTitle = styled.h4`
 export const ArtistName = styled.span`
   position: relative;
   display: block;
-  width: 50%;
   font-weight: 700;
   font-size: 1.7rem;
   text-align: center;
@@ -34,13 +38,25 @@ export const ArtistName = styled.span`
     display: block;
     position: absolute;
     content: '';
-    width: 80px;
+    width: 100%;
     height: 7.8px;
     top: 14px;
     right: -10px;
     background-color: #ffbcbc;
     opacity: 40%;
   }
+  ${media.mobile`
+    text-align: left;
+    &::after{
+      right: 0px;
+    }
+  `}
+`;
+
+export const SettingBtnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 export const CommonButton = styled.button`
@@ -52,12 +68,18 @@ export const CommonButton = styled.button`
   border: 1.5px solid var(--line-black);
   border-radius: 15px;
   background-color: #fffbe3;
-  > img {
+  & > img {
     position: absolute;
     width: 30px;
     top: 50%;
     transform: translate(-50%, -50%);
   }
+  ${media.mobile`
+    width: 63px;
+  & > img {
+    width: 40px;
+  }
+  `}
 `;
 
 export const ArtistImgContainer = styled.div`

@@ -12,6 +12,7 @@ import { ArtistContent } from '../../types/artistsType';
 import {
   ListItem,
   ListItemTitle,
+  SettingBtnWrapper,
   CommonButton,
   ArtistImgContainer,
   ArtistImg,
@@ -62,12 +63,14 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
     <ListItem>
       <ListItemTitle>
         <ArtistName>{data.name}</ArtistName>
-        <CommonButton type="button" onClick={onClickEditBtn}>
-          <img src={editIcon} />
-        </CommonButton>
-        <CommonButton type="button" onClick={onClickDeleteBtn}>
-          <img src={deleteIcon} />
-        </CommonButton>
+        <SettingBtnWrapper>
+          <CommonButton type="button" onClick={onClickEditBtn}>
+            <img src={editIcon} />
+          </CommonButton>
+          <CommonButton type="button" onClick={onClickDeleteBtn}>
+            <img src={deleteIcon} />
+          </CommonButton>
+        </SettingBtnWrapper>
       </ListItemTitle>
       <ArtistImgContainer>
         <ArtistImg image={artistImage} />

@@ -16,7 +16,10 @@ export const ManageInfoSection = styled.section`
   margin-bottom: 100px;
   background-color: #fffdf6;
   ${media.mobile`
+  justify-content: start;
   width: 100%;
+  padding: 23px;
+  margin-bottom: 20px;
   `}
 `;
 
@@ -25,14 +28,22 @@ export const ManageTitle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  > h2 {
+  & > h2 {
     font-size: 40px;
     font-weight: 700;
     margin-bottom: 16px;
   }
-  > p {
+  & > p {
     font-size: 16px;
   }
+  ${media.mobile`
+    & > h2 {
+      font-size: 24px;
+    }
+    & > p {
+      font-size: 12px;
+    }
+  `}
 `;
 
 export const ManageInfoImage = styled.img`
@@ -127,6 +138,7 @@ export const ListTitleText = styled.span`
   background-color: #defcf9;
   ${media.mobile`
     padding: 6px 20px;
+    margin-bottom: 12px;
     font-size: 16px;
   `}
 `;
@@ -177,7 +189,7 @@ export const ArtistListSection = styled.section`
 
   ${media.mobile`
     width: 100%;
-    padding: 0;
+    padding: 0 14px 0 0;
     grid-template-columns: repeat(1, 1fr);
     &::-webkit-scrollbar {
     width: 8px;
