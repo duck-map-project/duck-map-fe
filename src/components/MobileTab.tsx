@@ -7,6 +7,7 @@ import review from '../assets/icons/talk.svg';
 import mypage from '../assets/icons/user.svg';
 import { useRouter } from '../hooks/useRouter';
 import { selectCurrentRole, selectCurrentUser } from '../redux/auth/authSlice';
+import media from '../utils/mediaQuery';
 
 const MobileTab = () => {
   const { routeTo } = useRouter();
@@ -60,10 +61,12 @@ const MobileTab = () => {
 export default MobileTab;
 
 const TabWrapper = styled.section`
+  display: none;
+  ${media.mobile`
+    
+  
   position: relative;
   display: flex;
-  /* TODO: 모바일 회면에서만 노출되도록 하기 */
-  display: none;
   justify-content: center;
   align-items: center;
   gap: 34px;
@@ -86,6 +89,7 @@ const TabWrapper = styled.section`
     border-top: 1px solid var(--line-black);
     border-bottom: 1px solid var(--line-black);
   }
+  `}
 `;
 
 const IconWrapper = styled.div`
