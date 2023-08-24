@@ -32,6 +32,7 @@ import {
   selectEventListArtistModalState,
   selectAddressSearchModalState,
 } from '../redux/manageModalSlice';
+import media from '../utils/mediaQuery';
 
 interface GeneralLayoutProps {
   children: React.ReactNode;
@@ -41,6 +42,9 @@ const PageWrapper = styled.section`
   position: relative;
   display: flex;
   flex-direction: column;
+  ${media.mobile`
+    margin-bottom: 80px;
+  `}
 `;
 
 const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
