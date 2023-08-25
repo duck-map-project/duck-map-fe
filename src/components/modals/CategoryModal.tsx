@@ -13,6 +13,9 @@ import {
   toggleEditCategory,
 } from '../../redux/manageModalSlice';
 
+import CommonModal from './CommonModal';
+import { ModalPortal } from './CommonModal';
+import TypeButton from './components/TypeButton';
 import {
   ModalTitle,
   ModalCloseButton,
@@ -20,10 +23,7 @@ import {
   NameLabel,
   SubmitButton,
   TypeWrapper,
-} from './AddEventCategoryModalStyle';
-import CommonModal from './CommonModal';
-import { ModalPortal } from './CommonModal';
-import TypeButton from './components/TypeButton';
+} from './EventCategoryModalStyle';
 
 type categoryType = {
   id: number;

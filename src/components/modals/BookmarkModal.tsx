@@ -18,6 +18,7 @@ import {
 } from '../../redux/manageModalSlice';
 import { BookmarkFolderType } from '../../types/bookmarkFolderType';
 
+import { ModalCloseButton } from './BookmarkFolderStyle';
 import * as S from './BookmarkModalStyle';
 import CommonModal, { ModalPortal } from './CommonModal';
 import { emojiArray } from './EmojiArray';
@@ -196,9 +197,9 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
         <S.ModalTitle>
           {type === 'add' ? '북마크 추가하기' : '북마크 폴더 변경하기'}
         </S.ModalTitle>
-        <S.ModalCloseButton type="button" onClick={onHideModal}>
+        <ModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
-        </S.ModalCloseButton>
+        </ModalCloseButton>
         <S.FoldersContainer>
           <S.FoldersLists ref={targetRef}>
             {numberOfFolders ? (

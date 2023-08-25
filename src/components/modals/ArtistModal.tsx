@@ -29,7 +29,7 @@ import {
   SubmitButton,
   StyledInput,
   GroupSortDropdown,
-} from './AddArtistModalStyle';
+} from './ArtistModalStyle';
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
 import TypeButton from './components/TypeButton';

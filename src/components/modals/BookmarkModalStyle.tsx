@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 //BookmarkFolderItem styling
 export const EmojiBox = styled.div`
   width: 56px;
@@ -8,6 +10,11 @@ export const EmojiBox = styled.div`
   border: 1.4px solid var(--line-black);
   border-radius: 10px;
   background-color: #f8f8fa;
+  ${media.mobile`
+    width: 42px;
+    height: 42px;
+    padding: 10px;
+  `}
 `;
 
 export const EmojiWrapper = styled.div`
@@ -19,11 +26,19 @@ export const EmojiWrapper = styled.div`
   border: 1.4px solid var(--line-black);
   border-radius: 50%;
   background-color: #f9fffe;
+  ${media.mobile`
+    width: 21px;
+    height: 21px;
+  `}
 `;
 
 export const Emoji = styled.img`
   height: 16px;
   width: 16px;
+  ${media.mobile`
+    width: 12px;
+    height: 12px;
+  `}
 `;
 
 export const FolderItemWrapper = styled.article<{ $isSelected: boolean }>`
@@ -56,12 +71,11 @@ export const ModalTitle = styled.h4`
   border: 2.937px solid var(--line-black);
   border-radius: 73px;
   background-color: #fcf9a4;
-`;
-
-export const ModalCloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 17px;
+  ${media.mobile`
+    width: 80%;
+    font-size: 20px;
+    padding: 8px 20px;
+  `}
 `;
 
 export const FoldersContainer = styled.div`
@@ -96,18 +110,26 @@ export const FoldersContainer = styled.div`
     border-radius: 0 0 20px 20px;
     background-color: #ffd0ec;
   }
+  ${media.mobile`
+    width: 100%;
+    margin-bottom: 16px;
+  `}
 `;
 
 export const FoldersLists = styled.div`
   display: flex;
   flex-direction: column;
   height: 370px;
-  padding: 20px 6px 20px 6px;
+  padding: 6px 6px;
+  margin: 14px 0px 10px 0;
   overflow-x: hidden;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 18px;
     background-color: #fff4fb;
+    ${media.mobile`
+      width: 12px;
+    `}
   }
   &::-webkit-scrollbar-thumb {
     position: relative;
@@ -121,9 +143,9 @@ export const FoldersLists = styled.div`
     display: block;
     content: '';
     top: 32px;
-    right: 18px;
+    right: 12px;
     width: 2px;
-    height: 380px;
+    height: 390px;
     background-color: var(--line-black);
   }
 `;
@@ -137,4 +159,9 @@ export const SubmitButton = styled.button`
   font-size: 35px;
   font-weight: 700;
   box-shadow: 6px 4px 0px 0px rgb(0, 0, 0, 0.3);
+  ${media.mobile`
+    width: 135px;
+    padding: 12px;
+    font-size: 20px;
+  `}
 `;

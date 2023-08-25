@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import hearticon from '../../assets/icons/heart.svg';
 import { useRouter } from '../../hooks/useRouter';
 
 import {
@@ -82,11 +81,7 @@ const SideBar = () => {
       <ListsWrapper>
         {SideListArray.map((content) => (
           <List key={content.id}>
-            <ListLink
-              selected={content.value === selectedItem}
-              hearticon={hearticon}
-              to={content.to}
-            >
+            <ListLink selected={content.value === selectedItem} to={content.to}>
               {content.text}
             </ListLink>
           </List>

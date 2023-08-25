@@ -13,7 +13,7 @@ import {
   setCategory,
 } from '../../redux/setEventElemetsSlice';
 
-import { ModalTitle } from './AddArtistModalStyle';
+import { ModalTitle } from './ArtistModalStyle';
 import { ModalCloseButton } from './ArtistSelectModalStyle';
 import { DoneButton } from './ArtistSelectModalStyle';
 import {
