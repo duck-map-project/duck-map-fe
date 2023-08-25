@@ -6,12 +6,7 @@ import { useDeleteArtistsTypeMutation } from '../../redux/artistsTypeSlice';
 import { editArtistTypeInfo } from '../../redux/editArtistTypeSlice';
 import { toggleEditArtistType } from '../../redux/manageModalSlice';
 
-import {
-  ListItem,
-  ItemText,
-  ButtonWrapper,
-  CommonButton,
-} from './ArtistTypeListItemStyle';
+import * as S from './ArtistTypeListItemStyle';
 
 type listItemProps = {
   id: number;
@@ -40,17 +35,17 @@ const ArtistTypeListItem = ({ id, text }: listItemProps) => {
     }
   };
   return (
-    <ListItem>
-      <ItemText>{text}</ItemText>
-      <ButtonWrapper>
-        <CommonButton type="button" onClick={onClickEditBtn}>
+    <S.TypeListItem>
+      <S.TypeText>{text}</S.TypeText>
+      <S.TypeButtonWrapper>
+        <S.TypeCommonButton type="button" onClick={onClickEditBtn}>
           <img src={editIcon} />
-        </CommonButton>
-        <CommonButton type="button" onClick={onClickDeleteBtn}>
+        </S.TypeCommonButton>
+        <S.TypeCommonButton type="button" onClick={onClickDeleteBtn}>
           <img src={deleteIcon} />
-        </CommonButton>
-      </ButtonWrapper>
-    </ListItem>
+        </S.TypeCommonButton>
+      </S.TypeButtonWrapper>
+    </S.TypeListItem>
   );
 };
 

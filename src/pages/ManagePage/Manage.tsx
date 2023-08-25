@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { ReactComponent as Bookicon } from '../../assets/icons/book.svg';
 import manageImage from '../../assets/icons/manageImage.svg';
@@ -42,7 +42,12 @@ const tabArray = [
 ];
 
 const Manage = () => {
+  const [params] = useSearchParams();
+  const sort = params.get('sort');
   const [selectedTab, setSelectedTab] = useState('artist');
+  useEffect(() => {
+    sort && setSelectedTab(sort);
+  }, [sort]);
 
   let content;
   let title;
@@ -90,14 +95,10 @@ const Manage = () => {
         </ManageTitle>
         <ManageInfoImage src={manageImage} />
       </ManageInfoSection>
-      {/* 여기에 탭 */}
       <List>
         <TabWrapper>{tabContent}</TabWrapper>
         <ListTitleText>{title}</ListTitleText>
-        {/* 여기서 state에 따라 분기 content를 분기두면 되겠다.  */}
-        {/* content 자체를 하나의 section으로 하고, 이거를 저기로 그냥 다 옮기자 */}
         {content}
-        {/* <ArtistListSection ref={artistListRef}>{content}</ArtistListSection> */}
       </List>
     </>
   );

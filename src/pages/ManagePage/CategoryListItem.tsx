@@ -6,12 +6,7 @@ import { editCategoryInfo } from '../../redux/editCategorySlice';
 import { useDeleteEventCategoryMutation } from '../../redux/eventCategorySlice';
 import { toggleEditCategory } from '../../redux/manageModalSlice';
 
-import {
-  ListItem,
-  ItemText,
-  ButtonWrapper,
-  CommonButton,
-} from './CategoryListItemStyle';
+import * as S from './CategoryListItemStyle';
 
 type listItemProps = {
   id: number;
@@ -42,17 +37,17 @@ const CategoryListItem = ({ id, text }: listItemProps) => {
     }
   };
   return (
-    <ListItem>
-      <ItemText>{text}</ItemText>
-      <ButtonWrapper>
-        <CommonButton type="button" onClick={onClickEditBtn}>
+    <S.ListItem>
+      <S.ItemText>{text}</S.ItemText>
+      <S.ButtonWrapper>
+        <S.CommonButton type="button" onClick={onClickEditBtn}>
           <img src={editIcon} />
-        </CommonButton>
-        <CommonButton type="button" onClick={onClickDeleteBtn}>
+        </S.CommonButton>
+        <S.CommonButton type="button" onClick={onClickDeleteBtn}>
           <img src={deleteIcon} />
-        </CommonButton>
-      </ButtonWrapper>
-    </ListItem>
+        </S.CommonButton>
+      </S.ButtonWrapper>
+    </S.ListItem>
   );
 };
 

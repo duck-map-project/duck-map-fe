@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import iconPencil from '../assets/icon-pencil.svg';
 import iconPin from '../assets/icon-pin.svg';
 import arrow from '../assets/icons/arrowright.svg';
+import book from '../assets/icons/book-pink.svg';
+import setting from '../assets/icons/setting.svg';
 import settingIcon from '../assets/icons/setting.svg';
 import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
@@ -23,6 +26,8 @@ import { toggleCategory } from '../redux/manageModalSlice';
 import { toggleArtistType } from '../redux/manageModalSlice';
 import media from '../utils/mediaQuery';
 import px2vw from '../utils/px2vw';
+
+import SortDropdown from './SortButton';
 
 export const HeaderStyle = styled.header`
   width: 100%;
@@ -111,6 +116,7 @@ const MenuButtonText = styled.span`
 export const RightSection = styled.section`
   display: flex;
   align-items: center;
+  gap: 12px;
 `;
 
 export const ProfileDropdown = styled.div`
@@ -136,11 +142,16 @@ export const ProfileImg = styled.img`
 const Header: React.FC = ({}) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
+  const [, setParams] = useSearchParams();
   const { currentPath, routeTo } = useRouter();
+  const sortButtonRef = useRef<HTMLButtonElement>(null);
   const user = useSelector(selectCurrentUser);
   const userRole = useSelector(selectCurrentRole);
   const [logout, { isError }] = useLogoutMutation();
   const [userProfile, setUserProfile] = useState<string | null>('');
+  const [manageSort, setManageSort] = useState(false);
+  const [manageSettingSort, setManageSettingSort] = useState(false);
+  const [, setSortId] = useState<number | null>(null);
 
   useEffect(() => {
     if (user && user.userProfile !== '/images/null') {
@@ -202,6 +213,31 @@ const Header: React.FC = ({}) => {
   const managePageMenu = [
     {
       id: 0,
+      sort: '아티스트 목록',
+      handler: () => {
+        setParams({ sort: 'artist' });
+      },
+    },
+    {
+      id: 1,
+      sort: '카테고리 목록',
+      handler: () => {
+        setParams({ sort: 'category' });
+      },
+    },
+    {
+      id: 2,
+      sort: '아티스트타입 목록',
+      handler: () => {
+        setParams({ sort: 'artisttype' });
+      },
+    },
+  ];
+  managePageMenu;
+
+  const managePageSettingMenu = [
+    {
+      id: 0,
       title: '그룹 등록',
       icon: settingIcon,
       handler: handleGroupClick,
@@ -213,28 +249,59 @@ const Header: React.FC = ({}) => {
       handler: handleArtistClick,
     },
     {
-      id: 2,
-      title: '아티스트 타입 등록',
-      icon: settingIcon,
-      handler: handleArtistTypeClick,
-    },
-    {
       id: 3,
       title: '카테고리 등록',
       icon: settingIcon,
       handler: handleCategoryClick,
+    },
+    {
+      id: 2,
+      title: '아티스트 타입 등록',
+      icon: settingIcon,
+      handler: handleArtistTypeClick,
     },
   ];
 
   let content;
 
   if (currentPath === '/managepage' || currentPath === '/managePage') {
-    content = managePageMenu.map((menu) => (
-      <MenuButton key={menu.id} onClick={menu.handler}>
-        <MenuButtonIcon src={menu.icon} />
-        <MenuButtonText>{menu.title}</MenuButtonText>
-      </MenuButton>
-    ));
+    if (window.innerWidth <= 430) {
+      content = (
+        <>
+          <SortDropdown
+            className="manageLists"
+            clicked={manageSort}
+            setClicked={setManageSort}
+            sortButtonRef={sortButtonRef}
+            sortOptions={managePageMenu}
+            setId={setSortId}
+            icon={book}
+            size={'manage'}
+          />
+          <SortDropdown
+            className="manageLists"
+            clicked={manageSettingSort}
+            setClicked={setManageSettingSort}
+            sortButtonRef={sortButtonRef}
+            sortOptions={managePageSettingMenu.map((menu) => ({
+              sort: menu.title,
+              id: menu.id,
+              handler: menu.handler,
+            }))}
+            setId={setSortId}
+            icon={setting}
+            size={'manage'}
+          />
+        </>
+      );
+    } else {
+      content = managePageSettingMenu.map((menu) => (
+        <MenuButton key={menu.id} onClick={menu.handler}>
+          <MenuButtonIcon src={menu.icon} />
+          <MenuButtonText>{menu.title}</MenuButtonText>
+        </MenuButton>
+      ));
+    }
   } else {
     content = publicMenu.map((menu) => (
       <MenuButton key={menu.id} onClick={menu.handler}>
@@ -265,10 +332,12 @@ const Header: React.FC = ({}) => {
       )}
       <RightSection>
         {content}
-        <MenuButton onClick={handleAuthButton}>
-          <MenuButtonIcon src={iconLogin} />
-          <MenuButtonText>{user ? 'Logout' : 'Login'}</MenuButtonText>
-        </MenuButton>
+        {currentPath === '/managepage' || (
+          <MenuButton onClick={handleAuthButton}>
+            <MenuButtonIcon src={iconLogin} />
+            <MenuButtonText>{user ? 'Logout' : 'Login'}</MenuButtonText>
+          </MenuButton>
+        )}
         <ProfileDropdown>
           <ProfileImg
             src={userProfile || defaultImage}

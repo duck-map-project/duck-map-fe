@@ -2,11 +2,20 @@ import React from 'react';
 import { styled } from 'styled-components';
 
 import arrow from '../assets/sort-arrow.svg';
+import media from '../utils/mediaQuery';
 
 import Dropdown from './Dropdown';
 import { sortOptionsType } from './modals/ArtistModal';
 
-const Select = styled.button<{ $clicked: boolean; icon?: string }>`
+const SelectWrapper = styled.div`
+  position: relative;
+`;
+
+const Select = styled.button<{
+  $clicked: boolean;
+  icon?: string;
+  size?: 'manage';
+}>`
   position: relative;
   min-width: 131px;
   font-size: 1.8rem;
@@ -40,6 +49,22 @@ const Select = styled.button<{ $clicked: boolean; icon?: string }>`
     right: 13.5px;
     transform: scaleY(${(props) => (props.$clicked ? -1 : 1)});
   }
+
+  ${(props) =>
+    props.icon &&
+    props.size === 'manage' &&
+    media.mobile`
+    min-width: 40px;
+    top: -2px;
+    border: 1.4px solid #1e232c;
+    background-position: 11px 0px;
+    background-size : 17px 20px;
+    padding: 10px;
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.25);
+    &::after{
+      background-image: none;
+    }
+  `}
 `;
 
 export interface SortDropdownProps {
@@ -48,10 +73,11 @@ export interface SortDropdownProps {
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;
   sortButtonRef: React.RefObject<HTMLButtonElement>;
   sortOptions: sortOptionsType[];
-  selectedText: string | null;
-  setSelectedText: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedText?: string | null;
+  setSelectedText?: React.Dispatch<React.SetStateAction<string | null>>;
   setId: React.Dispatch<React.SetStateAction<number | null>>;
   icon?: string;
+  size?: 'manage';
 }
 
 const SortDropdown: React.FC<SortDropdownProps> = ({
@@ -64,6 +90,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   setSelectedText,
   setId,
   icon,
+  size,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -75,14 +102,15 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   };
 
   return (
-    <div className={className}>
+    <SelectWrapper className={className}>
       <Select
         $clicked={clicked}
         onClick={handleClick}
         icon={icon}
+        size={size}
         ref={sortButtonRef}
       >
-        {selectedText}
+        {selectedText && selectedText}
       </Select>
       {clicked ? (
         <Dropdown
@@ -91,9 +119,10 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
           setClicked={setClicked}
           setId={setId}
           icon={icon}
+          size={size}
         />
       ) : null}
-    </div>
+    </SelectWrapper>
   );
 };
 
