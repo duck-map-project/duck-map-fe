@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 type imageType = {
   previewimage: string;
 };
 
 export const ModalTitle = styled.h4`
-  width: 300px;
+  max-width: 300px;
   padding: 13px 58px;
   margin: 24px 0 50px;
   background-color: #fcf9a4;
@@ -14,12 +16,37 @@ export const ModalTitle = styled.h4`
   font-size: 28px;
   font-weight: 700;
   text-align: center;
+  ${media.mobile`
+    min-width: 55%; 
+    padding: 8px 20px;
+    font-size: 20px;
+    margin-bottom: 22.5px;
+  `}
 `;
 
 export const ModalCloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 17px;
+  ${media.mobile`
+  & > img {
+    width: 18px;
+    height: 18px;
+  }
+  `}
+`;
+
+export const ImageNameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 26px;
+  ${media.mobile`
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 19px;
+  `}
 `;
 
 export const ImagePreview = styled.label<imageType>`
@@ -57,11 +84,11 @@ export const StyledInput = styled.input`
   overflow: hidden;
 `;
 
-export const ImageNameWrapper = styled.div`
+export const NameWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 26px;
+  width: 100%;
 `;
 
 export const NameLabel = styled.label`
@@ -69,6 +96,9 @@ export const NameLabel = styled.label`
   font-size: 24px;
   font-weight: 700;
   margin: 10px 20px;
+  ${media.mobile`
+    font-size: 18px;
+  `}
 `;
 
 export const NameInput = styled.input`
@@ -85,6 +115,11 @@ export const NameInput = styled.input`
     font-size: 20px;
     color: #8f9196;
   }
+  ${media.mobile`
+    width: 90%;
+    padding: 12px 20px;
+    box-shadow: 3px 3px 0px 0px rgb(0, 0, 0, 0.25);
+  `}
 `;
 
 export const SubmitButton = styled.button`
@@ -96,4 +131,9 @@ export const SubmitButton = styled.button`
   border-radius: 73px;
   background-color: #defcf9;
   box-shadow: 6px 4px 0px 0px rgb(0, 0, 0, 0.3);
+  ${media.mobile`
+  max-width: 150px;
+    padding: 12px 50px;
+    font-size: 20px;
+  `}
 `;
