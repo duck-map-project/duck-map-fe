@@ -9,7 +9,6 @@ import {
 } from './ArtistSelectModalStyle';
 import { ModalTitle } from './GroupModalStyle';
 
-
 export const CategoryModalTitle = styled(ModalTitle)`
   ${media.mobile`
   padding: 8px 20px;

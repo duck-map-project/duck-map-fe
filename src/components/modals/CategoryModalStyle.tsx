@@ -2,23 +2,27 @@ import styled from 'styled-components';
 
 import media from '../../utils/mediaQuery';
 
-import { ModalTitle,ModalCloseButton,NameLabel,SubmitButton } from './GroupModalStyle';
+import {
+  ModalTitle,
+  ModalCloseButton,
+  NameLabel,
+  SubmitButton,
+} from './GroupModalStyle';
 
-export const CategoryModalTitle = styled(ModalTitle)`
-`;
+export const CategoryModalTitle = styled(ModalTitle)``;
 
-export const CategoryModalCloseButton = styled(ModalCloseButton)`
- 
-`;
+export const CategoryModalCloseButton = styled(ModalCloseButton)``;
 
 export const TypeWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 15px;
   width: 70%;
   margin: 10px 0 14px;
   ${media.mobile`
-    width: 90%;
+    width: 80%;
     gap: 4px;
   `}
 `;
@@ -39,8 +43,7 @@ export const ImageNameWrapper = styled.div`
   margin-bottom: 26px;
 `;
 
-export const CategoryNameLabel = styled(NameLabel)`
-`;
+export const CategoryNameLabel = styled(NameLabel)``;
 
 export const CategoryInput = styled.input`
   width: 70%;
@@ -68,5 +71,4 @@ export const CategoryInput = styled.input`
   `}
 `;
 
-export const CategorySubmitButton = styled(SubmitButton)`
-`;
+export const CategorySubmitButton = styled(SubmitButton)``;

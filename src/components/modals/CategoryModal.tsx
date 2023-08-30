@@ -106,7 +106,9 @@ const CategoryModal = ({ type }: categoryProps) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
-        <CategoryModalTitle>카테고리 {type === 'add' ? '등록' : '수정'}하기</CategoryModalTitle>
+        <CategoryModalTitle>
+          카테고리 {type === 'add' ? '등록' : '수정'}하기
+        </CategoryModalTitle>
         <CategoryModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
         </CategoryModalCloseButton>
