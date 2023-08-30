@@ -13,17 +13,16 @@ import {
   toggleEditArtistType,
 } from '../../redux/manageModalSlice';
 
+import { CategoryInput, TypeWrapper } from './CategoryModalStyle';
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
 import TypeButton from './components/TypeButton';
 import {
   ModalTitle,
   ModalCloseButton,
-  CategoryInput,
   NameLabel,
   SubmitButton,
-  TypeWrapper,
-} from './EventCategoryModalStyle';
+} from './GroupModalStyle';
 
 type artistType = {
   id: number;

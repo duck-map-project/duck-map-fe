@@ -7,7 +7,6 @@ type imageType = {
 };
 
 export const ModalTitle = styled.h4`
-  max-width: 300px;
   padding: 13px 58px;
   margin: 24px 0 50px;
   background-color: #fcf9a4;
@@ -88,7 +87,6 @@ export const NameWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 `;
 
 export const NameLabel = styled.label`
@@ -123,17 +121,18 @@ export const NameInput = styled.input`
 `;
 
 export const SubmitButton = styled.button`
-  width: 202px;
+  width: 30%;
   font-size: 35px;
   font-weight: 700;
-  padding: 16px;
+  padding: 16px 50px;
   border: 3px solid var(--line-black);
   border-radius: 73px;
   background-color: #defcf9;
   box-shadow: 6px 4px 0px 0px rgb(0, 0, 0, 0.3);
   ${media.mobile`
-  max-width: 150px;
-    padding: 12px 50px;
+  width: 50%;
     font-size: 20px;
+    padding: 12px 50px;
+  border: 2px solid var(--line-black);
   `}
 `;
