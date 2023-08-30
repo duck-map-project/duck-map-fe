@@ -18,11 +18,11 @@ import { ArtistType } from '../../types/artistsType';
 import Loading from '../Loading';
 
 import {
-  ModalTitle,
-  ModalCloseButton,
+  ArtistModalTitle,
+  ArtistModalCloseButton,
   TypeTitle,
   TypeWrapper,
-  ImageNameWrapper,
+  ArtistImageNameWrapper,
   ImagePreview,
   NameInput,
   NameLabel,
@@ -246,13 +246,15 @@ const ArtistModal = ({ type }: ModalProps) => {
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
         {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
-        <ModalTitle>아티스트 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
-        <ModalCloseButton type="button" onClick={onHideModal}>
+        <ArtistModalTitle>
+          아티스트 {type === 'add' ? '등록' : '수정'}하기
+        </ArtistModalTitle>
+        <ArtistModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
-        </ModalCloseButton>
+        </ArtistModalCloseButton>
         <TypeTitle>아티스트 타입</TypeTitle>
         <TypeWrapper>{content}</TypeWrapper>
-        <ImageNameWrapper>
+        <ArtistImageNameWrapper>
           <ImagePreview htmlFor="artistImage" previewimage={previewImage}>
             <img src={photoIcon} alt="아티스트 이미지 선택" />
           </ImagePreview>
@@ -284,7 +286,7 @@ const ArtistModal = ({ type }: ModalProps) => {
               placeholder="아티스트 이름"
             />
           </div>
-        </ImageNameWrapper>
+        </ArtistImageNameWrapper>
         <SubmitButton type="button" onClick={onClickAddArtistBtn}>
           완료
         </SubmitButton>

@@ -1,31 +1,30 @@
 import styled from 'styled-components';
 
+import media from '../../utils/mediaQuery';
 import SortDropdown from '../SortButton';
+
+import {
+  ModalTitle,
+  ModalCloseButton,
+  ImageNameWrapper,
+} from './GroupModalStyle';
 
 type imageType = {
   previewimage: string | undefined;
 };
 
-export const ModalTitle = styled.h4`
-  padding: 13px 58px;
-  margin: 24px 0 22px;
-  background-color: #fcf9a4;
-  border-radius: 73px;
-  border: 2.937px solid var(--line-black);
-  font-size: 28px;
-  font-weight: 700;
-  text-align: center;
-`;
+export const ArtistModalTitle = styled(ModalTitle)``;
 
-export const ModalCloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 17px;
-`;
+export const ArtistModalCloseButton = styled(ModalCloseButton)``;
+
+export const ArtistImageNameWrapper = styled(ImageNameWrapper)``;
 
 export const TypeTitle = styled.span`
   font-size: 24px;
   font-weight: 700;
+  ${media.mobile`
+    font-size: 18px;
+  `}
 `;
 
 export const TypeWrapper = styled.div`
@@ -35,6 +34,11 @@ export const TypeWrapper = styled.div`
   gap: 15px;
   width: 70%;
   margin: 10px 0 32px;
+  ${media.mobile`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  `}
 `;
 
 export const ImagePreview = styled.label<imageType>`
@@ -75,13 +79,6 @@ export const StyledInput = styled.input`
   height: 1px;
   margin: -1px;
   overflow: hidden;
-`;
-
-export const ImageNameWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 26px;
 `;
 
 export const NameLabel = styled.label`
