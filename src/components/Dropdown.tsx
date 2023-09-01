@@ -8,51 +8,71 @@ type dropdowonProps = {
   icon?: string | undefined;
   size?: 'manage';
 };
-const Wrapper = styled.ul<dropdowonProps>`
+
+const StyledDiv = styled.div<dropdowonProps>`
   position: absolute;
   top: 120%;
+  left: 0;
   min-width: 104px;
-  max-height: 180px;
+  max-width: 141px;
+  padding: 10px;
   border-radius: 20px;
   border: 2px solid #1e232c;
+  background-color: var(--yellow);
+  ${(props) =>
+    props.icon
+      ? `
+    min-width: 157px;
+    padding-left: 10px;
+  `
+      : ``}
+  ${media.mobile`
+    max-width: 111px;
+    padding: 10px 5px;
+    left: 50%;
+    transform: translate(-50%,0);
+  `}
+`;
+
+const Wrapper = styled.ul<dropdowonProps>`
+  position: relative;
+  min-width: 104px;
+  width: 100%;
+  max-height: 180px;
   background-color: var(--yellow);
   z-index: 999;
   overflow-y: scroll;
   text-align: center;
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
   }
   &::-webkit-scrollbar-thumb {
     position: relative;
-    background-color: #8f9ef2;
+    background-color: rgba(248, 248, 250, 0.4);
     border: 2px solid var(--line-black);
     border-radius: 17.7px;
   }
-  ${(props) =>
-    props.icon
-      ? `
-  min-width: 160px;
-  padding-left: 10px;
-  `
-      : ``}
+
+  ${media.mobile`
+  min-width: 80px;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  `}
   ${(props) =>
     props.size === 'manage' &&
     media.mobile`
-    left: -50%;
-    transform: translateX(-25%);
-    border: 1.4px solid #1e232c;
   `}
 `;
 
 const Item = styled.li`
   position: relative;
-  min-width: 104px;
   width: 100%;
   text-align: center;
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 1.247777777777778;
-  padding: 10px 20px;
+  padding: 8px;
   cursor: pointer;
   &:hover {
     &::after {
@@ -108,19 +128,21 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <Wrapper icon={icon} size={size}>
-      {lists.map((list, i) => (
-        <Item
-          key={i}
-          value={list.id}
-          onClick={() => {
-            handleListClick(list.sort, list.id, list.handler);
-          }}
-        >
-          {list.sort}
-        </Item>
-      ))}
-    </Wrapper>
+    <StyledDiv icon={icon}>
+      <Wrapper icon={icon} size={size}>
+        {lists.map((list, i) => (
+          <Item
+            key={i}
+            value={list.id}
+            onClick={() => {
+              handleListClick(list.sort, list.id, list.handler);
+            }}
+          >
+            {list.sort}
+          </Item>
+        ))}
+      </Wrapper>
+    </StyledDiv>
   );
 };
 
