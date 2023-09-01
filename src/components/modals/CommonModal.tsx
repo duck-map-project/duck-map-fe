@@ -12,15 +12,10 @@ type ModalProps = {
 };
 
 type ModalWidth = {
-  width: string;
+  width: string | undefined;
 };
 
-const CommonModal = ({
-  className,
-  onClick,
-  children,
-  width = '960',
-}: ModalProps) => {
+const CommonModal = ({ className, onClick, children, width }: ModalProps) => {
   const preventBubbling = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
@@ -64,7 +59,15 @@ const ModalOverlay = styled.form<ModalWidth>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${(props) => props.width}px;
+  ${(props) =>
+    props.width
+      ? `
+      width: ${props.width}px;
+      `
+      : `
+      width: 80%;
+      max-width: 960px;
+    `}
   max-height: 90vh;
   top: 5vh;
   padding: 50px 20px 0px;
@@ -96,6 +99,7 @@ const ModalOverlay = styled.form<ModalWidth>`
     width: 90%;
     padding-top: 40px;
     max-height: 80vh;
+    top: 10vh;
   `}
 `;
 
