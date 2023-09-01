@@ -58,8 +58,8 @@ const TypeLabel = styled.label<groupType>`
       background: #EDEDED;
       `}
   ${media.mobile`
-  min-width: 58px;
-  padding: 10px 10px;
+    min-width: 58px;
+    padding: 7px 10px;
     font-size: 10px;
     gap: 4px;
   `}

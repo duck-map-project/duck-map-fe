@@ -17,9 +17,9 @@ export const ModalTitle = styled.h4`
   text-align: center;
   ${media.mobile`
     min-width: 55%; 
+    margin-bottom: 22.5px;
     padding: 8px 20px;
     font-size: 20px;
-    margin-bottom: 22.5px;
   `}
 `;
 
@@ -71,7 +71,15 @@ export const ImagePreview = styled.label<imageType>`
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+    ${media.mobile`
+    width: 60px;
+      
+    `}
   }
+  ${media.mobile`
+    width: 150px;
+    height: 153px;
+  `}
 `;
 
 export const StyledInput = styled.input`
@@ -100,6 +108,7 @@ export const NameLabel = styled.label`
 `;
 
 export const NameInput = styled.input`
+  position: relative;
   width: 360px;
   height: 58px;
   padding: 20px;
@@ -112,15 +121,21 @@ export const NameInput = styled.input`
   &::placeholder {
     font-size: 20px;
     color: #8f9196;
+    ${media.mobile`
+      font-size: 14px;
+    `}
   }
   ${media.mobile`
-    width: 90%;
-    padding: 12px 20px;
+    width: 100%;
+    height: 36px;
+    padding: 6px 20px;
+    font-size: 14px;
     box-shadow: 3px 3px 0px 0px rgb(0, 0, 0, 0.25);
   `}
 `;
 
 export const SubmitButton = styled.button`
+  position: relative;
   width: 30%;
   font-size: 35px;
   font-weight: 700;
