@@ -7,6 +7,7 @@ import {
   ModalCloseButton,
   NameLabel,
   SubmitButton,
+  NameInput,
 } from './GroupModalStyle';
 
 export const CategoryModalTitle = styled(ModalTitle)``;
@@ -43,32 +44,18 @@ export const ImageNameWrapper = styled.div`
   margin-bottom: 26px;
 `;
 
-export const CategoryNameLabel = styled(NameLabel)``;
-
-export const CategoryInput = styled.input`
-  width: 70%;
-  /* height: 58px; */
-  padding: 20px;
-  margin-bottom: 31px;
-  font-size: 20px;
-  font-weight: 400;
-  background-color: #f8f8fa;
-  border: 1.4px solid var(--font-black);
-  border-radius: 30px;
-  box-shadow: 7px 5px 0px 0px rgb(0, 0, 0, 0.3);
-  &::placeholder {
-    font-size: 20px;
-    color: #8f9196;
-  }
+export const CategoryNameLabel = styled(NameLabel)`
   ${media.mobile`
-    width: 90%;
-    padding: 13px;
-    font-size: 13px;
-    border-radius: 20px;
-    &::placeholder {
-      font-size: 13px;
-    }
-  `}
+  margin-bottom: 0;
+`}
+`;
+
+export const CategoryInput = styled(NameInput)`
+  width: 70%;
+  margin-bottom: 20px;
+  ${media.mobile`
+  width: 90%;
+`}
 `;
 
 export const CategorySubmitButton = styled(SubmitButton)``;
