@@ -19,10 +19,11 @@ const StyledDiv = styled.div<dropdowonProps>`
   border-radius: 20px;
   border: 2px solid #1e232c;
   background-color: var(--yellow);
+  z-index: 999;
   ${(props) =>
     props.icon
       ? `
-    min-width: 157px;
+    min-width: 160px;
     padding-left: 10px;
   `
       : ``}
