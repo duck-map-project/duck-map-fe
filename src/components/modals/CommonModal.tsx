@@ -36,7 +36,7 @@ const CommonModal = ({
         onSubmit={preventSubmit}
         width={width}
       >
-        {children}
+        <ModalContent>{children}</ModalContent>
       </ModalOverlay>
     </Backdrop>
   );
@@ -65,8 +65,9 @@ const ModalOverlay = styled.form<ModalWidth>`
   align-items: center;
   justify-content: center;
   width: ${(props) => props.width}px;
+  max-height: 90vh;
   top: 5vh;
-  padding: 50px 20px 36px;
+  padding: 50px 20px 0px;
   margin: 0 auto;
   border: 3px solid var(--line-black);
   border-radius: 29px;
@@ -94,5 +95,19 @@ const ModalOverlay = styled.form<ModalWidth>`
   ${media.mobile`
     width: 90%;
     padding-top: 40px;
+    max-height: 80vh;
   `}
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 90%;
+  overflow-y: scroll;
+  padding-bottom: 30px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
