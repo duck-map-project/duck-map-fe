@@ -21,7 +21,7 @@ import {
   ModalCloseButton,
 } from './ArtistSelectModalStyle';
 import CommonModal, { ModalPortal } from './CommonModal';
-import { ModalTitle } from './EventCategoryModalStyle';
+import { ModalTitle } from './GroupModalStyle';
 
 const ArtistSelectModal = () => {
   const dispatch = useDispatch();

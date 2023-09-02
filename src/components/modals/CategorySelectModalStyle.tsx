@@ -1,11 +1,20 @@
 import { styled } from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 import {
   AritstSelectSection,
   ArtistListSection,
   selectedListStyle,
 } from './ArtistSelectModalStyle';
+import { ModalTitle } from './GroupModalStyle';
 
+export const CategoryModalTitle = styled(ModalTitle)`
+  ${media.mobile`
+  padding: 8px 20px;
+    
+  `}
+`;
 export const CategorySelectSection = styled(AritstSelectSection)`
   padding: 32px 0;
 `;

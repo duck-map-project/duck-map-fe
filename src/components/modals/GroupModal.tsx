@@ -22,6 +22,7 @@ import {
   ImageNameWrapper,
   ImagePreview,
   StyledInput,
+  NameWrapper,
   NameInput,
   NameLabel,
   SubmitButton,
@@ -178,7 +179,7 @@ const GroupModal = ({ type }: ModalType) => {
             accept="image/png, image/jpeg"
             onChange={onChangeGroupImage}
           />
-          <div>
+          <NameWrapper>
             <NameLabel htmlFor="artistName">
               그룹 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
             </NameLabel>
@@ -189,7 +190,7 @@ const GroupModal = ({ type }: ModalType) => {
               onChange={onChangeGroupName}
               placeholder="그룹 이름"
             />
-          </div>
+          </NameWrapper>
         </ImageNameWrapper>
         <SubmitButton type="button" onClick={onClickAddGroupBtn}>
           완료

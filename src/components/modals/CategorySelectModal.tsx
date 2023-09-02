@@ -13,10 +13,10 @@ import {
   setCategory,
 } from '../../redux/setEventElemetsSlice';
 
-import { ModalTitle } from './ArtistModalStyle';
 import { ModalCloseButton } from './ArtistSelectModalStyle';
 import { DoneButton } from './ArtistSelectModalStyle';
 import {
+  CategoryModalTitle,
   CategoryItem,
   CategoryListSection,
   CategorySelectSection,
@@ -66,7 +66,7 @@ const CategorySelectModal = () => {
     <ModalPortal>
       <CommonModal width="1046px" onClick={onHideModal}>
         <ModalCloseButton onClick={onHideModal} />
-        <ModalTitle>카테고리 선택하기</ModalTitle>
+        <CategoryModalTitle>카테고리 선택하기</CategoryModalTitle>
         <CategorySelectSection>
           <CategoryListSection>
             {categories &&

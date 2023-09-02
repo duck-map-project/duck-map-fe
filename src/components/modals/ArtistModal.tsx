@@ -18,15 +18,16 @@ import { ArtistType } from '../../types/artistsType';
 import Loading from '../Loading';
 
 import {
-  ModalTitle,
-  ModalCloseButton,
+  ArtistModalTitle,
+  ArtistModalCloseButton,
   TypeTitle,
   TypeWrapper,
-  ImageNameWrapper,
-  ImagePreview,
-  NameInput,
+  ArtistImageNameWrapper,
+  ArtistInfoWrapper,
+  ArtistImagePreview,
+  ArtistNameInput,
   NameLabel,
-  SubmitButton,
+  ArtistSubmitButton,
   StyledInput,
   GroupSortDropdown,
 } from './ArtistModalStyle';
@@ -246,23 +247,25 @@ const ArtistModal = ({ type }: ModalProps) => {
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
         {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
-        <ModalTitle>아티스트 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
-        <ModalCloseButton type="button" onClick={onHideModal}>
+        <ArtistModalTitle>
+          아티스트 {type === 'add' ? '등록' : '수정'}하기
+        </ArtistModalTitle>
+        <ArtistModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
-        </ModalCloseButton>
-        <TypeTitle>아티스트 타입</TypeTitle>
+        </ArtistModalCloseButton>
+        <TypeTitle>아티스트 타입을 선택해주세요.</TypeTitle>
         <TypeWrapper>{content}</TypeWrapper>
-        <ImageNameWrapper>
-          <ImagePreview htmlFor="artistImage" previewimage={previewImage}>
+        <ArtistImageNameWrapper>
+          <ArtistImagePreview htmlFor="artistImage" previewimage={previewImage}>
             <img src={photoIcon} alt="아티스트 이미지 선택" />
-          </ImagePreview>
+          </ArtistImagePreview>
           <StyledInput
             type="file"
             id="artistImage"
             accept="image/png, image/jpeg"
             onChange={onChangeArtistImage}
           />
-          <div>
+          <ArtistInfoWrapper>
             <GroupSortDropdown
               className="groupSortdrop"
               sortButtonRef={sortButtonRef}
@@ -276,18 +279,18 @@ const ArtistModal = ({ type }: ModalProps) => {
             <NameLabel htmlFor="artistName">
               아티스트 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
             </NameLabel>
-            <NameInput
+            <ArtistNameInput
               type="text"
               id="artistName"
               value={artistName}
               onChange={onChangeArtistName}
               placeholder="아티스트 이름"
             />
-          </div>
-        </ImageNameWrapper>
-        <SubmitButton type="button" onClick={onClickAddArtistBtn}>
+          </ArtistInfoWrapper>
+        </ArtistImageNameWrapper>
+        <ArtistSubmitButton type="button" onClick={onClickAddArtistBtn}>
           완료
-        </SubmitButton>
+        </ArtistSubmitButton>
       </CommonModal>
     </ModalPortal>
   );

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import media from '../../../utils/mediaQuery';
+
 type propsType = {
   data: { id: number; type?: string; category?: string };
   text: string;
@@ -36,7 +38,7 @@ const TypeButton = ({ data, text, onChange, selected }: propsType) => {
 export default TypeButton;
 
 const TypeLabel = styled.label<groupType>`
-  width: 130px;
+  min-width: 130px;
   font-size: 20px;
   font-weight: 400;
   text-align: center;
@@ -55,6 +57,12 @@ const TypeLabel = styled.label<groupType>`
       border: 2.056px solid #8B8E97;
       background: #EDEDED;
       `}
+  ${media.mobile`
+    min-width: 58px;
+    padding: 7px 10px;
+    font-size: 10px;
+    gap: 4px;
+  `}
 `;
 
 const StyledInput = styled.input`

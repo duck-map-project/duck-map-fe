@@ -49,13 +49,17 @@ const Select = styled.button<{
     right: 13.5px;
     transform: scaleY(${(props) => (props.$clicked ? -1 : 1)});
   }
-
+  ${media.mobile`
+  min-width: 111px;
+    font-size: 14px;
+  `}
   ${(props) =>
     props.icon &&
     props.size === 'manage' &&
     media.mobile`
     min-width: 40px;
     top: -2px;
+    font-size: 14px;
     border: 1.4px solid #1e232c;
     background-position: 11px 0px;
     background-size : 17px 20px;

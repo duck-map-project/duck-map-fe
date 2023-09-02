@@ -1,71 +1,69 @@
 import styled from 'styled-components';
 
+import media from '../../utils/mediaQuery';
 import SortDropdown from '../SortButton';
 
-type imageType = {
-  previewimage: string | undefined;
-};
+import {
+  ModalTitle,
+  ModalCloseButton,
+  ImageNameWrapper,
+  ImagePreview,
+  NameInput,
+  SubmitButton,
+} from './GroupModalStyle';
 
-export const ModalTitle = styled.h4`
-  padding: 13px 58px;
-  margin: 24px 0 22px;
-  background-color: #fcf9a4;
-  border-radius: 73px;
-  border: 2.937px solid var(--line-black);
-  font-size: 28px;
-  font-weight: 700;
-  text-align: center;
-`;
+export const ArtistModalTitle = styled(ModalTitle)``;
 
-export const ModalCloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 17px;
-`;
+export const ArtistModalCloseButton = styled(ModalCloseButton)``;
+
+export const ArtistImageNameWrapper = styled(ImageNameWrapper)``;
 
 export const TypeTitle = styled.span`
+  position: relative;
   font-size: 24px;
   font-weight: 700;
+  ${media.mobile`
+    font-size: 18px;
+    top: 175px;
+  `}
 `;
 
 export const TypeWrapper = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 15px;
   width: 70%;
   margin: 10px 0 32px;
+  ${media.mobile`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  top: 175px;
+  `}
 `;
 
-export const ImagePreview = styled.label<imageType>`
-  display: block;
-  position: relative;
-  width: 232px;
-  height: 232px;
-  border: 2px solid var(--line-black);
-  border-radius: 30px;
-  text-align: center;
-  cursor: pointer;
-  ${(props) =>
-    props.previewimage
-      ? `
-      background-image: url(${props.previewimage});
-      background-size: cover;
-      background-position: center center;
-      `
-      : `
-      background-color: var(--line-grey2);
-      `}
-  & > img {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+export const ArtistImagePreview = styled(ImagePreview)`
+  ${media.mobile`
+    top: -130px;
+  `}
+`;
+
+export const ArtistInfoWrapper = styled.div`
+  ${media.mobile`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`}
 `;
 
 export const GroupSortDropdown = styled(SortDropdown)`
   position: relative;
   right: 0;
+  ${media.mobile`
+    top: -5px;
+  `}
 `;
 
 export const StyledInput = styled.input`
@@ -77,43 +75,17 @@ export const StyledInput = styled.input`
   overflow: hidden;
 `;
 
-export const ImageNameWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 26px;
-`;
-
 export const NameLabel = styled.label`
+  position: relative;
   display: block;
   font-size: 24px;
   font-weight: 700;
   margin: 10px 20px;
+  ${media.mobile`
+    font-size: 18px;
+  `}
 `;
 
-export const NameInput = styled.input`
-  width: 360px;
-  height: 58px;
-  padding: 20px;
-  font-size: 20px;
-  font-weight: 400;
-  background-color: #f8f8fa;
-  border: 1.4px solid var(--font-black);
-  border-radius: 30px;
-  box-shadow: 7px 5px 0px 0px rgb(0, 0, 0, 0.3);
-  &::placeholder {
-    font-size: 20px;
-    color: #8f9196;
-  }
-`;
+export const ArtistNameInput = styled(NameInput)``;
 
-export const SubmitButton = styled.button`
-  width: 202px;
-  font-size: 35px;
-  font-weight: 700;
-  padding: 16px;
-  border: 3px solid var(--line-black);
-  border-radius: 73px;
-  background-color: #defcf9;
-  box-shadow: 6px 4px 0px 0px rgb(0, 0, 0, 0.3);
-`;
+export const ArtistSubmitButton = styled(SubmitButton)``;

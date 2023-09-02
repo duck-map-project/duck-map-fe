@@ -13,17 +13,17 @@ import {
   toggleEditCategory,
 } from '../../redux/manageModalSlice';
 
+import {
+  CategoryModalTitle,
+  CategoryModalCloseButton,
+  CategoryInput,
+  CategoryNameLabel,
+  CategorySubmitButton,
+  TypeWrapper,
+} from './CategoryModalStyle';
 import CommonModal from './CommonModal';
 import { ModalPortal } from './CommonModal';
 import TypeButton from './components/TypeButton';
-import {
-  ModalTitle,
-  ModalCloseButton,
-  CategoryInput,
-  NameLabel,
-  SubmitButton,
-  TypeWrapper,
-} from './EventCategoryModalStyle';
 
 type categoryType = {
   id: number;
@@ -106,13 +106,15 @@ const CategoryModal = ({ type }: categoryProps) => {
   return (
     <ModalPortal>
       <CommonModal className="addGroupModal" onClick={onHideModal}>
-        <ModalTitle>카테고리 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
-        <ModalCloseButton type="button" onClick={onHideModal}>
+        <CategoryModalTitle>
+          카테고리 {type === 'add' ? '등록' : '수정'}하기
+        </CategoryModalTitle>
+        <CategoryModalCloseButton type="button" onClick={onHideModal}>
           <img src={closeIcon} />
-        </ModalCloseButton>
-        <NameLabel htmlFor="artistName">
-          이벤트 타입을 {type === 'add' ? '입력' : '수정'}해 주세요.
-        </NameLabel>
+        </CategoryModalCloseButton>
+        <CategoryNameLabel htmlFor="artistName">
+          카테고리를 {type === 'add' ? '입력' : '수정'}해 주세요.
+        </CategoryNameLabel>
         <TypeWrapper>
           {type === 'add' ? (
             typeContents
@@ -131,14 +133,14 @@ const CategoryModal = ({ type }: categoryProps) => {
           onChange={onChangeCategoryName}
           placeholder="직접 입력"
         />
-        <SubmitButton
+        <CategorySubmitButton
           type="button"
           onClick={
             type === 'add' ? onClickAddCategoryBtn : onClickEditCategoryBtn
           }
         >
           완료
-        </SubmitButton>
+        </CategorySubmitButton>
       </CommonModal>
     </ModalPortal>
   );
