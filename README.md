@@ -25,4 +25,5 @@ REACT_APP_MAP_KEY = YOUR_KAKAO_APP_KEY
 ```
 
 ## 기술 스택
-<image width="530" src="https://github.com/duck-map-project/duck-map-fe/assets/89509857/4389a32c-0b2c-4af8-a89f-f1e170d49657"/>
+<image width="530" src="https://github.com/duck-map-project/duck-map-fe/assets/89509857/37972497-6f78-4503-ba6c-a99d35c41ac2"/>
+
