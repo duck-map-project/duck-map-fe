@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { setPlace } from '../../redux/eventPlaceSlice';
-import { toggleAddressSearch } from '../../redux/manageModalSlice';
+import { setPlace } from '../../features/eventPlaceSlice';
+import { toggleAddressSearch } from '../../features/manageModalSlice';
 import AdressInput, { Place } from '../AdressInput';
 import KakaoMap from '../KakaoMap';
 

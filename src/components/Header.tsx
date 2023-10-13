@@ -12,18 +12,20 @@ import settingIcon from '../assets/icons/setting.svg';
 import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
 import defaultImage from '../assets/user-profile.svg';
-import { useRouter } from '../hooks/useRouter';
-import { TextButton } from '../pages/mainPage/MainStyle';
-import { useLogoutMutation } from '../redux/auth/authApiSlice';
+import { useLogoutMutation } from '../features/auth/authApiSlice';
 import {
   logOut,
   selectCurrentUser,
   selectCurrentRole,
-} from '../redux/auth/authSlice';
-import { toggleGroup } from '../redux/manageModalSlice';
-import { toggleArtist } from '../redux/manageModalSlice';
-import { toggleCategory } from '../redux/manageModalSlice';
-import { toggleArtistType } from '../redux/manageModalSlice';
+} from '../features/auth/authSlice';
+import {
+  toggleGroup,
+  toggleArtist,
+  toggleCategory,
+  toggleArtistType,
+} from '../features/manageModalSlice';
+import { useRouter } from '../hooks/useRouter';
+import { TextButton } from '../pages/mainPage/MainStyle';
 import media from '../utils/mediaQuery';
 import px2vw from '../utils/px2vw';
 

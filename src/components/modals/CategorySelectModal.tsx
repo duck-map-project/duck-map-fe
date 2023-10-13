@@ -5,13 +5,13 @@ import { useDispatch } from 'react-redux';
 import {
   categoryType,
   useGetEventCategoryQuery,
-} from '../../redux/eventCategorySlice';
-import { toggleEventCategory } from '../../redux/manageModalSlice';
+} from '../../features/eventCategorySlice';
+import { toggleEventCategory } from '../../features/manageModalSlice';
 import {
   Category,
   selectSelectedCategory,
   setCategory,
-} from '../../redux/setEventElemetsSlice';
+} from '../../features/setEventElemetsSlice';
 
 import { ModalCloseButton } from './ArtistSelectModalStyle';
 import { DoneButton } from './ArtistSelectModalStyle';

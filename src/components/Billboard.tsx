@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import { useGetTodayHashtagsQuery } from '../redux/eventApiSlice';
+import { useGetTodayHashtagsQuery } from '../features/eventApiSlice';
 import { TodayHashtagsResponse } from '../types/eventService';
 
 const SlideLeftAnimation = keyframes`

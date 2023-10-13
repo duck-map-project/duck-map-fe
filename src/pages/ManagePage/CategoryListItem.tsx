@@ -2,9 +2,9 @@ import { useDispatch } from 'react-redux';
 
 import deleteIcon from '../../assets/icons/delete.svg';
 import editIcon from '../../assets/icons/edit.svg';
-import { editCategoryInfo } from '../../redux/editCategorySlice';
-import { useDeleteEventCategoryMutation } from '../../redux/eventCategorySlice';
-import { toggleEditCategory } from '../../redux/manageModalSlice';
+import { editCategoryInfo } from '../../features/editCategorySlice';
+import { useDeleteEventCategoryMutation } from '../../features/eventCategorySlice';
+import { toggleEditCategory } from '../../features/manageModalSlice';
 
 import * as S from './CategoryListItemStyle';
 

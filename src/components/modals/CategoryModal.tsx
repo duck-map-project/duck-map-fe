@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import closeIcon from '../../assets/icons/close.svg';
-import { selectEditCategorySlice } from '../../redux/editCategorySlice';
+import { selectEditCategorySlice } from '../../features/editCategorySlice';
 import {
   useGetEventCategoryQuery,
   useAddEventCategoryMutation,
   useEditEventCategoryMutation,
-} from '../../redux/eventCategorySlice';
+} from '../../features/eventCategorySlice';
 import {
   toggleCategory,
   toggleEditCategory,
-} from '../../redux/manageModalSlice';
+} from '../../features/manageModalSlice';
 
 import {
   CategoryModalTitle,

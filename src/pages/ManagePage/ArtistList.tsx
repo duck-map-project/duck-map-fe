@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 
-import { useGetArtistsQuery } from '../../redux/artistsSlice';
+import { useGetArtistsQuery } from '../../features/artistsSlice';
 import { ArtistContent } from '../../types/artistsType';
 
 import ArtistListItem from './ArtistListItem';

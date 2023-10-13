@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  addBookmarkInfo,
+  selectAddBookmarkInfo,
+} from '../features/addBookmark';
+import { selectCurrentUser } from '../features/auth/authSlice';
+import { useDeleteBookmarkEventMutation } from '../features/bookmarkEventSlice';
+import { toggleAddBookmark } from '../features/manageModalSlice';
 import { useRouter } from '../hooks/useRouter';
-import { addBookmarkInfo, selectAddBookmarkInfo } from '../redux/addBookmark';
-import { selectCurrentUser } from '../redux/auth/authSlice';
-import { useDeleteBookmarkEventMutation } from '../redux/bookmarkEventSlice';
-import { toggleAddBookmark } from '../redux/manageModalSlice';
 import { EventListData } from '../types/eventService';
 
 import * as S from './EventListItemStyle';

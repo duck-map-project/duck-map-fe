@@ -8,12 +8,12 @@ import Rating from '../../components/Rating';
 import SketchbookLayout from '../../components/SketchbookLayout';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
-import { useAddImageMutation } from '../../redux/imageSlice';
+import { useAddImageMutation } from '../../features/imageSlice';
 import {
   useAddReviewMutation,
   useEditReviewMutation,
   useGetReviewByIdQuery,
-} from '../../redux/reviewApiSlice';
+} from '../../features/reviewApiSlice';
 
 import * as S from './EditReviewStyle';
 

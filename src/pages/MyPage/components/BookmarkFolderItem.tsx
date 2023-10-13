@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { emojiArray } from '../../../components/modals/EmojiArray';
-import { useDeleteBookmarkFolderMutation } from '../../../redux/bookmarkFolderSlice';
-import { editFolderInfo } from '../../../redux/editBookmarkFolderSlice';
-import { toggleEditBookmarkFolder } from '../../../redux/manageModalSlice';
+import { useDeleteBookmarkFolderMutation } from '../../../features/bookmarkFolderSlice';
+import { editFolderInfo } from '../../../features/editBookmarkFolderSlice';
+import { toggleEditBookmarkFolder } from '../../../features/manageModalSlice';
 
 import * as S from './BookmarkFolderItemStyle';
 

@@ -8,9 +8,9 @@ import {
   useEditUserInfoMutation,
   useUnregisterMutation,
   useGetUserInfoQuery,
-} from '../../../redux/auth/authApiSlice';
-import { useLogoutMutation } from '../../../redux/auth/authApiSlice';
-import { useAddImageMutation } from '../../../redux/imageSlice';
+} from '../../../features/auth/authApiSlice';
+import { useLogoutMutation } from '../../../features/auth/authApiSlice';
+import { useAddImageMutation } from '../../../features/imageSlice';
 
 import {
   UserProfileEditForm,

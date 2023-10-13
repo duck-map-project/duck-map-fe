@@ -8,18 +8,18 @@ import EventListItem, {
 } from '../../components/EventListItem';
 import KakaoMap from '../../components/KakaoMap';
 import { useRouter } from '../../hooks/useRouter';
-import { selectCurrentUser } from '../../redux/auth/authSlice';
+import { selectCurrentUser } from '../../features/auth/authSlice';
 import {
   useAddLikeMutation,
   useDeleteLikeMutation,
   useGetEventQuery,
-} from '../../redux/eventApiSlice';
-import { setPlace } from '../../redux/eventPlaceSlice';
+} from '../../features/eventApiSlice';
+import { setPlace } from '../../features/eventPlaceSlice';
 import {
   selectEventArtist,
   selectEventGroup,
-} from '../../redux/setEventArtistSlice';
-import { setArtist } from '../../redux/setEventElemetsSlice';
+} from '../../features/setEventArtistSlice';
+import { setArtist } from '../../features/setEventElemetsSlice';
 import { EventListData } from '../../types/eventService';
 
 import {

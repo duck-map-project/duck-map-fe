@@ -5,8 +5,11 @@ import event from '../assets/icons/event.svg';
 import home from '../assets/icons/home.svg';
 import review from '../assets/icons/talk.svg';
 import mypage from '../assets/icons/user.svg';
+import {
+  selectCurrentRole,
+  selectCurrentUser,
+} from '../features/auth/authSlice';
 import { useRouter } from '../hooks/useRouter';
-import { selectCurrentRole, selectCurrentUser } from '../redux/auth/authSlice';
 import media from '../utils/mediaQuery';
 
 const MobileTab = () => {

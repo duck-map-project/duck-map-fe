@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 import AuthInput from '../../components/AuthInput';
 import SuccessResetModal from '../../components/modals/SuccessResetModal';
 import useForm from '../../hooks/useForm';
-import { useResetPasswordMutation } from '../../redux/auth/authApiSlice';
+import { useResetPasswordMutation } from '../../features/auth/authApiSlice';
 import { ErrorMessage } from '../SignPage/SignStyle';
 import { PageTitle, Form, SubmitButton } from '../SignPage/SignStyle';
 

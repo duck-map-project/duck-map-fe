@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import hearticon from '../../../assets/icons/heart-big.svg';
 import { useRouter } from '../../../hooks/useRouter';
-import { useGetMylikeQuery } from '../../../redux/mypageSlice';
+import { useGetMylikeQuery } from '../../../features/mypageSlice';
 import { mylikeType } from '../../../types/mypageType';
 
 import {

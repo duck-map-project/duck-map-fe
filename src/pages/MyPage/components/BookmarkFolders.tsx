@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import plusicon from '../../../assets/icons/cross.svg';
 import editicon from '../../../assets/icons/editpencil.svg';
 import starticon from '../../../assets/icons/starIcon.svg';
-import { useGetBookmarkFoldersQuery } from '../../../redux/bookmarkFolderSlice';
-import { toggleAddBookmarkFolder } from '../../../redux/manageModalSlice';
+import { useGetBookmarkFoldersQuery } from '../../../features/bookmarkFolderSlice';
+import { toggleAddBookmarkFolder } from '../../../features/manageModalSlice';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 
 import BookmarkFolderItem from './BookmarkFolderItem';

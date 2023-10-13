@@ -6,13 +6,13 @@ import { styled } from 'styled-components';
 import artistArrow from '../assets/artist-arrow.svg';
 import artistHeart from '../assets/artist-heart.svg';
 import tongs from '../assets/tongs.svg';
-import { useGetArtistOfGroupQuery } from '../redux/artistsSlice';
-import { toggleEventListArtist } from '../redux/manageModalSlice';
+import { useGetArtistOfGroupQuery } from '../features/artistsSlice';
+import { toggleEventListArtist } from '../features/manageModalSlice';
 import {
   selectEventArtist,
   selectEventGroup,
   setEventArtist,
-} from '../redux/setEventArtistSlice';
+} from '../features/setEventArtistSlice';
 import { Artist } from '../types/eventService';
 
 import { selectedListStyle } from './modals/ArtistListItem';
