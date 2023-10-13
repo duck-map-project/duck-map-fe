@@ -6,7 +6,7 @@ import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
 import useForm, { Errors } from '../../hooks/useForm';
 import { useRouter } from '../../hooks/useRouter';
-import { useSignUpMutation } from '../../redux/auth/authApiSlice';
+import { useSignUpMutation } from '../../features/auth/authApiSlice';
 
 import {
   PageWrapper,

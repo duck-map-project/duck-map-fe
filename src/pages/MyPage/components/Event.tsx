@@ -5,7 +5,7 @@ import { useRouter } from '../../../hooks/useRouter';
 import {
   useGetMyeventQuery,
   useDeleteEventMutation,
-} from '../../../redux/mypageSlice';
+} from '../../../features/mypageSlice';
 import { myevetType } from '../../../types/mypageType';
 
 import {

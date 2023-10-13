@@ -16,7 +16,7 @@ import ReviewDetail from './pages/ReviewDetail/ReviewDetail';
 import Reviews from './pages/Reviews/Reviews';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
-import { selectCurrentUser } from './redux/auth/authSlice';
+import { selectCurrentUser } from './features/auth/authSlice';
 
 interface RouterElement {
   id: number;

@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 
 import deleteIcon from '../../assets/icons/delete.svg';
 import editIcon from '../../assets/icons/edit.svg';
-import { useDeleteArtistsMutation } from '../../redux/artistsSlice';
-import { editArtistInfo } from '../../redux/editArtistSlice';
-import { toggleEditArtist } from '../../redux/manageModalSlice';
-import { toggleEditGroup } from '../../redux/manageModalSlice';
+import { useDeleteArtistsMutation } from '../../features/artistsSlice';
+import { editArtistInfo } from '../../features/editArtistSlice';
+import { toggleEditArtist } from '../../features/manageModalSlice';
+import { toggleEditGroup } from '../../features/manageModalSlice';
 import { ArtistContent } from '../../types/artistsType';
 
 import {

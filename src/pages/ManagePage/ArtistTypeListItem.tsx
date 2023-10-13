@@ -2,9 +2,9 @@ import { useDispatch } from 'react-redux';
 
 import deleteIcon from '../../assets/icons/delete.svg';
 import editIcon from '../../assets/icons/edit.svg';
-import { useDeleteArtistsTypeMutation } from '../../redux/artistsTypeSlice';
-import { editArtistTypeInfo } from '../../redux/editArtistTypeSlice';
-import { toggleEditArtistType } from '../../redux/manageModalSlice';
+import { useDeleteArtistsTypeMutation } from '../../features/artistsTypeSlice';
+import { editArtistTypeInfo } from '../../features/editArtistTypeSlice';
+import { toggleEditArtistType } from '../../features/manageModalSlice';
 
 import * as S from './ArtistTypeListItemStyle';
 

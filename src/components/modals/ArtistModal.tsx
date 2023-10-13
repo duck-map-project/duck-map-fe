@@ -8,12 +8,12 @@ import {
   useAddArtistsMutation,
   useGetArtistsQuery,
   useEditArtistsMutation,
-} from '../../redux/artistsSlice';
-import { useGetArtistsTypeQuery } from '../../redux/artistsTypeSlice';
-import { selectEditArtistSlice } from '../../redux/editArtistSlice';
-import { useAddImageMutation } from '../../redux/imageSlice';
-import { toggleArtist } from '../../redux/manageModalSlice';
-import { toggleEditArtist } from '../../redux/manageModalSlice';
+} from '../../features/artistsSlice';
+import { useGetArtistsTypeQuery } from '../../features/artistsTypeSlice';
+import { selectEditArtistSlice } from '../../features/editArtistSlice';
+import { useAddImageMutation } from '../../features/imageSlice';
+import { toggleArtist } from '../../features/manageModalSlice';
+import { toggleEditArtist } from '../../features/manageModalSlice';
 import { ArtistType } from '../../types/artistsType';
 import Loading from '../Loading';
 

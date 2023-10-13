@@ -11,8 +11,8 @@ import { useRouter } from '../../hooks/useRouter';
 import {
   useFetchUserMutation,
   useLoginMutation,
-} from '../../redux/auth/authApiSlice';
-import { setCredentials, setUser } from '../../redux/auth/authSlice';
+} from '../../features/auth/authApiSlice';
+import { setCredentials, setUser } from '../../features/auth/authSlice';
 
 import {
   PageTitle,

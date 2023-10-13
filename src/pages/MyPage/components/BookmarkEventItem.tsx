@@ -4,9 +4,9 @@ import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { useRouter } from '../../../hooks/useRouter';
-import { addBookmarkInfo } from '../../../redux/addBookmark';
-import { useDeleteBookmarkEventMutation } from '../../../redux/bookmarkEventSlice';
-import { toggleEditBookmark } from '../../../redux/manageModalSlice';
+import { addBookmarkInfo } from '../../../features/addBookmark';
+import { useDeleteBookmarkEventMutation } from '../../../features/bookmarkEventSlice';
+import { toggleEditBookmark } from '../../../features/manageModalSlice';
 
 import {
   ItemWrapper,

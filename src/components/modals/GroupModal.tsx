@@ -7,11 +7,11 @@ import photoIcon from '../../assets/icons/photo.svg';
 import {
   useAddArtistsMutation,
   useEditArtistsMutation,
-} from '../../redux/artistsSlice';
-import { selectEditArtistSlice } from '../../redux/editArtistSlice';
-import { useAddImageMutation } from '../../redux/imageSlice';
-import { toggleGroup } from '../../redux/manageModalSlice';
-import { toggleEditGroup } from '../../redux/manageModalSlice';
+} from '../../features/artistsSlice';
+import { selectEditArtistSlice } from '../../features/editArtistSlice';
+import { useAddImageMutation } from '../../features/imageSlice';
+import { toggleGroup } from '../../features/manageModalSlice';
+import { toggleEditGroup } from '../../features/manageModalSlice';
 import Loading from '../Loading';
 
 import CommonModal from './CommonModal';

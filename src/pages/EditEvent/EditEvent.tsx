@@ -11,20 +11,20 @@ import {
   useAddEventMutation,
   useEditEventMutation,
   useGetEventByIdQuery,
-} from '../../redux/eventApiSlice';
-import { selectPlaces, setPlace } from '../../redux/eventPlaceSlice';
-import { useAddImageMutation } from '../../redux/imageSlice';
+} from '../../features/eventApiSlice';
+import { selectPlaces, setPlace } from '../../features/eventPlaceSlice';
+import { useAddImageMutation } from '../../features/imageSlice';
 import {
   toggleAddressSearch,
   toggleEventArtist,
   toggleEventCategory,
-} from '../../redux/manageModalSlice';
+} from '../../features/manageModalSlice';
 import {
   setArtist,
   setCategory,
   selectSelectedArtist,
   selectSelectedCategory,
-} from '../../redux/setEventElemetsSlice';
+} from '../../features/setEventElemetsSlice';
 import formattingHours from '../../utils/formattingHours';
 
 import * as S from './EditEventStyle';

@@ -6,12 +6,12 @@ import {
   useGetArtistsTypeQuery,
   useAddArtistsTypeMutation,
   useEditArtistsTypeMutation,
-} from '../../redux/artistsTypeSlice';
-import { selectEditArtistType } from '../../redux/editArtistTypeSlice';
+} from '../../features/artistsTypeSlice';
+import { selectEditArtistType } from '../../features/editArtistTypeSlice';
 import {
   toggleArtistType,
   toggleEditArtistType,
-} from '../../redux/manageModalSlice';
+} from '../../features/manageModalSlice';
 
 import { CategoryInput, TypeWrapper } from './CategoryModalStyle';
 import CommonModal from './CommonModal';

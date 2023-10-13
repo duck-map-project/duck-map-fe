@@ -6,16 +6,16 @@ import useScroll from '../../hooks/useScroll';
 import {
   selectAddBookmarkInfo,
   addBookmarkInfo,
-} from '../../redux/addBookmark';
+} from '../../features/addBookmark';
 import {
   useAddBookmarkEventMutation,
   useEditBookmarkEventFolderMutation,
-} from '../../redux/bookmarkEventSlice';
-import { useGetBookmarkFoldersQuery } from '../../redux/bookmarkFolderSlice';
+} from '../../features/bookmarkEventSlice';
+import { useGetBookmarkFoldersQuery } from '../../features/bookmarkFolderSlice';
 import {
   toggleAddBookmark,
   toggleEditBookmark,
-} from '../../redux/manageModalSlice';
+} from '../../features/manageModalSlice';
 import { BookmarkFolderType } from '../../types/bookmarkFolderType';
 
 import { ModalCloseButton } from './BookmarkFolderStyle';

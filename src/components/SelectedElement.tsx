@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
 
 import closeIcon from '../assets/close.svg';
-import { removeArtist, removeCategory } from '../redux/setEventElemetsSlice';
+import { removeArtist, removeCategory } from '../features/setEventElemetsSlice';
 
 const Selected = styled.div`
   font-size: 1.6rem;

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { setPlace } from '../features/eventPlaceSlice';
 import useDebounce from '../hooks/useDebounce';
 import useInput from '../hooks/useInput';
-import { setPlace } from '../redux/eventPlaceSlice';
 
 import {
   AddressItem,

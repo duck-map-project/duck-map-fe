@@ -6,17 +6,17 @@ import { useParams } from 'react-router-dom';
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 import { useRouter } from '../../hooks/useRouter';
-import { addBookmarkInfo } from '../../redux/addBookmark';
-import { selectAddBookmarkInfo } from '../../redux/addBookmark';
-import { selectCurrentUser } from '../../redux/auth/authSlice';
-import { useDeleteBookmarkEventMutation } from '../../redux/bookmarkEventSlice';
-import { useGetEventByIdQuery } from '../../redux/eventApiSlice';
+import { addBookmarkInfo } from '../../features/addBookmark';
+import { selectAddBookmarkInfo } from '../../features/addBookmark';
+import { selectCurrentUser } from '../../features/auth/authSlice';
+import { useDeleteBookmarkEventMutation } from '../../features/bookmarkEventSlice';
+import { useGetEventByIdQuery } from '../../features/eventApiSlice';
 import {
   useAddLikeMutation,
   useDeleteLikeMutation,
-} from '../../redux/eventApiSlice';
-import { setPlace } from '../../redux/eventPlaceSlice';
-import { toggleAddBookmark } from '../../redux/manageModalSlice';
+} from '../../features/eventApiSlice';
+import { setPlace } from '../../features/eventPlaceSlice';
+import { toggleAddBookmark } from '../../features/manageModalSlice';
 import { EventData } from '../../types/eventService';
 
 import {

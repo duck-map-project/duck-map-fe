@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import logo from '../../assets/icons/logo.svg';
 import staricon from '../../assets/icons/starIcon.svg';
 import { useRouter } from '../../hooks/useRouter';
-import { useGetShareBookmarkFolderQuery } from '../../redux/bookmarkFolderSlice';
+import { useGetShareBookmarkFolderQuery } from '../../features/bookmarkFolderSlice';
 import { shareFolderEventsType } from '../../types/bookmarkFolderType';
 
 import {

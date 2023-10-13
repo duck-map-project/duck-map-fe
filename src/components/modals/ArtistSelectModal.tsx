@@ -5,10 +5,13 @@ import { useDispatch } from 'react-redux';
 import useDebounce from '../../hooks/useDebounce';
 import useInput from '../../hooks/useInput';
 import useScroll from '../../hooks/useScroll';
-import { useGetArtistsQuery } from '../../redux/artistsSlice';
-import { toggleEventArtist } from '../../redux/manageModalSlice';
-import { setArtist } from '../../redux/setEventElemetsSlice';
-import { Artist, selectSelectedArtist } from '../../redux/setEventElemetsSlice';
+import { useGetArtistsQuery } from '../../features/artistsSlice';
+import { toggleEventArtist } from '../../features/manageModalSlice';
+import { setArtist } from '../../features/setEventElemetsSlice';
+import {
+  Artist,
+  selectSelectedArtist,
+} from '../../features/setEventElemetsSlice';
 import { ArtistContent } from '../../types/artistsType';
 import scrollToTop from '../../utils/scrollToTop';
 

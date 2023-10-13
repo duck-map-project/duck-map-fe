@@ -1,7 +1,7 @@
 import { MouseEventHandler, useEffect, useState } from 'react';
 
 import useForm from '../../hooks/useForm';
-import { useSendPasswordEmailMutation } from '../../redux/auth/authApiSlice';
+import { useSendPasswordEmailMutation } from '../../features/auth/authApiSlice';
 import AuthInput from '../AuthInput';
 
 import {

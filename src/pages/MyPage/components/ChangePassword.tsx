@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useEditPasswordMutation } from '../../../redux/auth/authApiSlice';
+import { useEditPasswordMutation } from '../../../features/auth/authApiSlice';
 
 import {
   ChangePasswordForm,

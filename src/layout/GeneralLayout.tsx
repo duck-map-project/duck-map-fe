@@ -31,7 +31,7 @@ import {
   selectEditGroupModalState,
   selectEventListArtistModalState,
   selectAddressSearchModalState,
-} from '../redux/manageModalSlice';
+} from '../features/manageModalSlice';
 import media from '../utils/mediaQuery';
 
 interface GeneralLayoutProps {

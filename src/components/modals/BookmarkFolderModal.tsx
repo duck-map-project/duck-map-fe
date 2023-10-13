@@ -9,12 +9,12 @@ import closeicon from '../../assets/icons/close.svg';
 import {
   useAddBookmarkFolderMutation,
   useUpdateBookmarkFolderMutation,
-} from '../../redux/bookmarkFolderSlice';
-import { selectEditBookmarkFolder } from '../../redux/editBookmarkFolderSlice';
+} from '../../features/bookmarkFolderSlice';
+import { selectEditBookmarkFolder } from '../../features/editBookmarkFolderSlice';
 import {
   toggleAddBookmarkFolder,
   toggleEditBookmarkFolder,
-} from '../../redux/manageModalSlice';
+} from '../../features/manageModalSlice';
 
 import * as S from './BookmarkFolderStyle';
 import CommonModal from './CommonModal';

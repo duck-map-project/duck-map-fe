@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import locationIcon from '../../../assets/icons/location.svg';
 import FixedRating from '../../../components/FixedRating';
 import { useRouter } from '../../../hooks/useRouter';
-import { useGetMyreviewQuery } from '../../../redux/mypageSlice';
-import { useDeleteReviewMutation } from '../../../redux/reviewApiSlice';
+import { useGetMyreviewQuery } from '../../../features/mypageSlice';
+import { useDeleteReviewMutation } from '../../../features/reviewApiSlice';
 import { myreviewType } from '../../../types/mypageType';
 
 import {

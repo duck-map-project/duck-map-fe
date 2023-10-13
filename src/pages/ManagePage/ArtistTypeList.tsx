@@ -1,4 +1,4 @@
-import { useGetArtistsTypeQuery } from '../../redux/artistsTypeSlice';
+import { useGetArtistsTypeQuery } from '../../features/artistsTypeSlice';
 
 import ArtistTypeListItem from './ArtistTypeListItem';
 import { ArtistTypeListSection } from './ArtistTypeListStyle';
