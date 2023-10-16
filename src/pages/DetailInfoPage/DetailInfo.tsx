@@ -5,11 +5,12 @@ import { useParams } from 'react-router-dom';
 
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
-import { useRouter } from '../../hooks/useRouter';
-import { addBookmarkInfo } from '../../features/addBookmark';
-import { selectAddBookmarkInfo } from '../../features/addBookmark';
 import { selectCurrentUser } from '../../features/auth/authSlice';
-import { useDeleteBookmarkEventMutation } from '../../features/bookmarkEventSlice';
+import {
+  addBookmarkInfo,
+  selectAddBookmarkInfo,
+} from '../../features/bookmarks/api/addBookmark';
+import { useDeleteBookmarkEventMutation } from '../../features/bookmarks/api/bookmarkEventSlice';
 import { useGetEventByIdQuery } from '../../features/eventApiSlice';
 import {
   useAddLikeMutation,
@@ -17,6 +18,7 @@ import {
 } from '../../features/eventApiSlice';
 import { setPlace } from '../../features/eventPlaceSlice';
 import { toggleAddBookmark } from '../../features/manageModalSlice';
+import { useRouter } from '../../hooks/useRouter';
 import { EventData } from '../../types/eventService';
 
 import {

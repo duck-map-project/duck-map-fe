@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import { logOut, setCredentials } from '../../features/auth/authSlice';
+
 import { RootState } from './store';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;

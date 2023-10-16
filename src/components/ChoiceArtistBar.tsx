@@ -6,7 +6,7 @@ import { styled } from 'styled-components';
 import artistArrow from '../assets/artist-arrow.svg';
 import artistHeart from '../assets/artist-heart.svg';
 import tongs from '../assets/tongs.svg';
-import { useGetArtistOfGroupQuery } from '../features/artistsSlice';
+import { useGetArtistOfGroupQuery } from '../features/artists/api/artistsSlice';
 import { toggleEventListArtist } from '../features/manageModalSlice';
 import {
   selectEventArtist,
@@ -15,7 +15,7 @@ import {
 } from '../features/setEventArtistSlice';
 import { Artist } from '../types/eventService';
 
-import { selectedListStyle } from './modals/ArtistListItem';
+import { selectedListStyle } from './modals(to-be-deleted)/ArtistListItem';
 
 const Bar = styled.section`
   width: 100%;

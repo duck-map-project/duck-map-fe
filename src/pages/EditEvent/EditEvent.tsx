@@ -6,14 +6,13 @@ import { useParams } from 'react-router-dom';
 import { ImageDeleteButton } from '../../components/Buttons';
 import Loading from '../../components/Loading';
 import SelectedElement from '../../components/SelectedElement';
-import { useRouter } from '../../hooks/useRouter';
 import {
   useAddEventMutation,
   useEditEventMutation,
   useGetEventByIdQuery,
 } from '../../features/eventApiSlice';
 import { selectPlaces, setPlace } from '../../features/eventPlaceSlice';
-import { useAddImageMutation } from '../../features/imageSlice';
+import { useAddImageMutation } from '../../features/images/imageSlice';
 import {
   toggleAddressSearch,
   toggleEventArtist,
@@ -25,6 +24,7 @@ import {
   selectSelectedArtist,
   selectSelectedCategory,
 } from '../../features/setEventElemetsSlice';
+import { useRouter } from '../../hooks/useRouter';
 import formattingHours from '../../utils/formattingHours';
 
 import * as S from './EditEventStyle';

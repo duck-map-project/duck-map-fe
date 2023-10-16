@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { ArtistSearchInput } from '../features/artists/modals/ArtistSelectModalStyle';
 import { setPlace } from '../features/eventPlaceSlice';
 import useDebounce from '../hooks/useDebounce';
 import useInput from '../hooks/useInput';
@@ -10,7 +11,6 @@ import {
   AddrestList,
   EventInputWrapper,
 } from './AdressInputStyle';
-import { ArtistSearchInput } from './modals/ArtistSelectModalStyle';
 
 export interface Place {
   place_name: string;
