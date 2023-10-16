@@ -1,5 +1,5 @@
-import { SignupRequest, UserInfoType } from '../../types/auth';
 import { apiSlice } from '../../app/api/apiSlice';
+import { SignupRequest, UserInfoType } from '../../types/auth';
 
 interface ResetPasswordRequest {
   newPassword: string;

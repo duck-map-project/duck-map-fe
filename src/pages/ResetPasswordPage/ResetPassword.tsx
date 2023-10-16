@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import AuthInput from '../../components/AuthInput';
-import SuccessResetModal from '../../components/modals/SuccessResetModal';
-import useForm from '../../hooks/useForm';
+import SuccessResetModal from '../../components/modals(to-be-deleted)/SuccessResetModal';
 import { useResetPasswordMutation } from '../../features/auth/authApiSlice';
+import useForm from '../../hooks/useForm';
 import { ErrorMessage } from '../SignPage/SignStyle';
 import { PageTitle, Form, SubmitButton } from '../SignPage/SignStyle';
 

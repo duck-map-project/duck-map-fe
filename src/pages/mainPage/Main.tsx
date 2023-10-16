@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 
 import sortIcon from '../../assets/sort-book.svg';
 import KakaoMap from '../../components/KakaoMap';
-import { useRouter } from '../../hooks/useRouter';
 import { useGetMainEventQuery } from '../../features/eventApiSlice';
 import { setPlace } from '../../features/eventPlaceSlice';
 import { useGetMainReviewQuery } from '../../features/reviewApiSlice';
+import { useRouter } from '../../hooks/useRouter';
 import { MainEvent } from '../../types/eventService';
 import { MainReview } from '../../types/reviewServie';
 

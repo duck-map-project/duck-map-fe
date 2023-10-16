@@ -1,8 +1,7 @@
 import { styled } from 'styled-components';
 
+import { sortOptionsType } from '../features/artists/modals/ArtistModal';
 import media from '../utils/mediaQuery';
-
-import { sortOptionsType } from './modals/ArtistModal';
 
 type dropdowonProps = {
   icon?: string | undefined;

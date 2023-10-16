@@ -7,7 +7,6 @@ import EventListItem, {
   HandleLikeClickProps,
 } from '../../components/EventListItem';
 import KakaoMap from '../../components/KakaoMap';
-import { useRouter } from '../../hooks/useRouter';
 import { selectCurrentUser } from '../../features/auth/authSlice';
 import {
   useAddLikeMutation,
@@ -20,6 +19,7 @@ import {
   selectEventGroup,
 } from '../../features/setEventArtistSlice';
 import { setArtist } from '../../features/setEventElemetsSlice';
+import { useRouter } from '../../hooks/useRouter';
 import { EventListData } from '../../types/eventService';
 
 import {

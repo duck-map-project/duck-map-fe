@@ -2,10 +2,10 @@ import React from 'react';
 import { styled } from 'styled-components';
 
 import arrow from '../assets/sort-arrow.svg';
+import { sortOptionsType } from '../features/artists/modals/ArtistModal';
 import media from '../utils/mediaQuery';
 
 import Dropdown from './Dropdown';
-import { sortOptionsType } from './modals/ArtistModal';
 
 const SelectWrapper = styled.div`
   position: relative;

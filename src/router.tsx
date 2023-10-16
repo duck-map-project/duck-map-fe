@@ -1,22 +1,22 @@
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { selectCurrentUser } from './features/auth/authSlice';
 import GeneralLayout from './layout/GeneralLayout';
-import BookmarkShare from './pages/BookmarkShare/BookmarkShare';
+import BookmarkShare from './pages/BookmarkShare';
 import DetailInfo from './pages/DetailInfoPage/DetailInfo';
 import EditEvent from './pages/EditEvent/EditEvent';
 import EditReview from './pages/editReviewPage/EditReview';
 import EventList from './pages/eventListPage/EventList';
 import Main from './pages/mainPage/Main';
-import ManagePage from './pages/ManagePage/Manage';
-import MyPage from './pages/MyPage/MyPage';
+import ManagePage from './pages/ManagePage';
+import MyPage from './pages/MyPage';
 import NotFound from './pages/NotFoundPage/NotFound';
 import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
 import ReviewDetail from './pages/ReviewDetail/ReviewDetail';
 import Reviews from './pages/Reviews/Reviews';
 import Signin from './pages/SignPage/Signin';
 import Signup from './pages/SignPage/Signup';
-import { selectCurrentUser } from './features/auth/authSlice';
 
 interface RouterElement {
   id: number;

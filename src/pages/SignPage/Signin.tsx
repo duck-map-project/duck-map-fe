@@ -5,14 +5,14 @@ import { styled } from 'styled-components';
 import kakaoIcon from '../../assets/kakao-icon.svg';
 import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
-import ResetPasswordModal from '../../components/modals/ResetPasswordModal';
-import useInput from '../../hooks/useInput';
-import { useRouter } from '../../hooks/useRouter';
+import ResetPasswordModal from '../../components/modals(to-be-deleted)/ResetPasswordModal';
 import {
   useFetchUserMutation,
   useLoginMutation,
 } from '../../features/auth/authApiSlice';
 import { setCredentials, setUser } from '../../features/auth/authSlice';
+import useInput from '../../hooks/useInput';
+import { useRouter } from '../../hooks/useRouter';
 
 import {
   PageTitle,

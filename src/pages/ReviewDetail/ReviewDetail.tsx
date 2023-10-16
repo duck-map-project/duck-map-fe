@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import defaultImage from '../../assets/user-profile.svg';
 import FixedRating from '../../components/FixedRating';
 import SketchbookLayout from '../../components/SketchbookLayout';
-import { useRouter } from '../../hooks/useRouter';
 import { useGetReviewByIdQuery } from '../../features/reviewApiSlice';
+import { useRouter } from '../../hooks/useRouter';
 import { ReviewById } from '../../types/reviewServie';
 import ImageSlider from '../DetailInfoPage/ImageSlider';
 

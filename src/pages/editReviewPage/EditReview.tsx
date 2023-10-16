@@ -6,14 +6,14 @@ import { ImageDeleteButton } from '../../components/Buttons';
 import Loading from '../../components/Loading';
 import Rating from '../../components/Rating';
 import SketchbookLayout from '../../components/SketchbookLayout';
-import useInput from '../../hooks/useInput';
-import { useRouter } from '../../hooks/useRouter';
-import { useAddImageMutation } from '../../features/imageSlice';
+import { useAddImageMutation } from '../../features/images/imageSlice';
 import {
   useAddReviewMutation,
   useEditReviewMutation,
   useGetReviewByIdQuery,
 } from '../../features/reviewApiSlice';
+import useInput from '../../hooks/useInput';
+import { useRouter } from '../../hooks/useRouter';
 
 import * as S from './EditReviewStyle';
 
