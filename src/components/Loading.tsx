@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import timer from '../assets/icons/timer.svg';
+import timer from '../assets/timer.svg';
 import media from '../utils/mediaQuery';
 
 const Loading = ({ text }: { text: string }) => {

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import heart from '../../../assets/icons/heart.svg';
-import heartmobile from '../../../assets/icons/heart3.svg';
+import heart from '../../../assets/heart.svg';
+import heartmobile from '../../../assets/heart3.svg';
 import media from '../../../utils/mediaQuery';
 
 type ListLabelProps = {

@@ -1,8 +1,8 @@
 import { css, styled } from 'styled-components';
 
 import emptyImage from '../../assets/add-image-defalut.svg';
-import tape from '../../assets/icons/tape.svg';
-import pin from '../../assets/icons/thumbtack.svg';
+import tape from '../../assets/tape.svg';
+import pin from '../../assets/thumbtack.svg';
 import px2vw from '../../utils/px2vw';
 
 export const TopSection = styled.section`

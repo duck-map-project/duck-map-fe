@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { ReactComponent as Bookicon } from '../../assets/icons/book.svg';
-import manageImage from '../../assets/icons/manageImage.svg';
+import { ReactComponent as Bookicon } from '../../assets/book.svg';
+import manageImage from '../../assets/manageImage.svg';
 
 import ArtistList from './Artist/ArtistList';
 import ArtistTypeList from './ArtistType/ArtistTypeList';

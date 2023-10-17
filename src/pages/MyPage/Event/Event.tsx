@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import usericon from '../../../assets/icons/mypage.svg';
+import usericon from '../../../assets/mypage.svg';
 import {
   useGetMyeventQuery,
   useDeleteEventMutation,

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
-import { ReactComponent as Checkicon } from '../../assets/icons/checkicon.svg';
+import { ReactComponent as Checkicon } from '../../assets/checkicon.svg';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
 import {
   selectEventArtist,

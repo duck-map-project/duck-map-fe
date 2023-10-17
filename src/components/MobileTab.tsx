@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import event from '../assets/icons/event.svg';
-import home from '../assets/icons/home.svg';
-import review from '../assets/icons/talk.svg';
-import mypage from '../assets/icons/user.svg';
+import event from '../assets/event.svg';
+import home from '../assets/home.svg';
+import review from '../assets/talk.svg';
+import mypage from '../assets/user.svg';
 import {
   selectCurrentRole,
   selectCurrentUser,

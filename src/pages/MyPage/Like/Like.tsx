@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import hearticon from '../../../assets/icons/heart-big.svg';
+import hearticon from '../../../assets/heart-big.svg';
 import { useGetMylikeQuery } from '../../../features/mypageSlice';
 import { useRouter } from '../../../hooks/useRouter';
 import { mylikeType } from '../../../types/mypageType';
