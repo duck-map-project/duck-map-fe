@@ -2,8 +2,8 @@ import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import closeIcon from '../../../assets/icons/close.svg';
-import photoIcon from '../../../assets/icons/photo.svg';
+import closeIcon from '../../../assets/close.svg';
+import photoIcon from '../../../assets/photo.svg';
 import Loading from '../../../components/Loading';
 import CommonModal, {
   ModalPortal,

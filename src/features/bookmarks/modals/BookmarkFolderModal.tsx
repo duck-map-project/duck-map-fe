@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import closesmallicon from '../../../assets/icons/close-small.svg';
-import closeicon from '../../../assets/icons/close.svg';
+import closesmallicon from '../../../assets/close-small.svg';
+import closeicon from '../../../assets/close.svg';
 import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';

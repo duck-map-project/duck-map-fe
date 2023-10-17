@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import deleteicon from '../../../assets/icons/delete.svg';
-import editicon from '../../../assets/icons/edit.svg';
+import deleteicon from '../../../assets/delete.svg';
+import editicon from '../../../assets/edit.svg';
 import media from '../../../utils/mediaQuery';
 
 export const ReviewItemWrapper = styled.article`

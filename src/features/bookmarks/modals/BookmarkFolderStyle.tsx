@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { ReactComponent as BookmarkFolder } from '../../../assets/icons/bookmark-folder.svg';
-import checkicon from '../../../assets/icons/check.svg';
+import { ReactComponent as BookmarkFolder } from '../../../assets/bookmark-folder.svg';
+import checkicon from '../../../assets/check.svg';
 import media from '../../../utils/mediaQuery';
 
 type EmojiPreviewType = {

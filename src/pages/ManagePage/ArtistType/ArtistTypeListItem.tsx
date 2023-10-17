@@ -1,10 +1,11 @@
 import { useDispatch } from 'react-redux';
 
-import deleteIcon from '../../../assets/icons/delete.svg';
-import editIcon from '../../../assets/icons/edit.svg';
+
 import { useDeleteArtistsTypeMutation } from '../../../features/artists/services/artistsTypeApiSlice';
 import { editArtistTypeInfo } from '../../../features/artists/services/setArtistTypeSlice';
 import { toggleEditArtistType } from '../../../features/modal/manageModalSlice';
+import deleteIcon from '../../../assets/delete.svg';
+import editIcon from '../../../assets/edit.svg';
 
 import * as S from './ArtistTypeListItemStyle';
 

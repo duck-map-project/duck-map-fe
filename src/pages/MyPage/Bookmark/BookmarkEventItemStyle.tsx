@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import bookmarkicon from '../../../assets/icons/bookmark.svg';
+import bookmarkicon from '../../../assets/bookmark.svg';
 import media from '../../../utils/mediaQuery';
 
 import { SettingIconsWrapper } from './BookmarkFolderItemStyle';

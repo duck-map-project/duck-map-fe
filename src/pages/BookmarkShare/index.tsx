@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import logo from '../../assets/icons/logo.svg';
-import staricon from '../../assets/icons/starIcon.svg';
-import { useGetShareBookmarkFolderQuery } from '../../features/bookmarks/services/bookmarkFolderApiSlice';
+import logo from '../../assets/logo.svg';
+import staricon from '../../assets/starIcon.svg';
+import { useGetShareBookmarkFolderQuery } from '../../features/bookmarks/services/bookmarkFolderApiSlice'
 import { useRouter } from '../../hooks/useRouter';
 import { shareFolderEventsType } from '../../types/bookmarkFolderType';
 

@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { css, styled } from 'styled-components';
 
-import ring from '../assets/icons/ring.svg';
+import ring from '../assets/ring.svg';
 import px2vw from '../utils/px2vw';
 
 export const PageWrapper = styled.main`

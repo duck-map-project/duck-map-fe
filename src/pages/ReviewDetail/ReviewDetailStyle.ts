@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 import heartSticker from '../../assets/heart-sticker.svg';
-import tape from '../../assets/icons/tape.svg';
+import tape from '../../assets/tape.svg';
 
 export const LeftSection = styled.section`
   display: flex;

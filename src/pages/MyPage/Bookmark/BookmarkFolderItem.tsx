@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 
-import deleteicon from '../../../assets/icons/crosspink.svg';
-import pencilicon from '../../../assets/icons/editpencilbig.svg';
+import deleteicon from '../../../assets/crosspink.svg';
+import pencilicon from '../../../assets/editpencilbig.svg';
 import { useDeleteBookmarkFolderMutation } from '../../../features/bookmarks/services/bookmarkFolderApiSlice';
 import { editFolderInfo } from '../../../features/bookmarks/services/setBookmarkFolderSlice';
 import { toggleEditBookmarkFolder } from '../../../features/modal/manageModalSlice';

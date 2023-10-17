@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import arrowicon from '../../../assets/icons/arrowright.svg';
-import plusicon from '../../../assets/icons/cross.svg';
-import editicon from '../../../assets/icons/editpencil.svg';
-import starticon from '../../../assets/icons/starIcon.svg';
+import arrowicon from '../../../assets/arrowright.svg';
+import plusicon from '../../../assets/cross.svg';
+import editicon from '../../../assets/editpencil.svg';
+import starticon from '../../../assets/starIcon.svg';
 import { useGetBookmarkEventsQuery } from '../../../features/bookmarks/services/bookmarkEventApiSlice';
 import { BookmarkEventType } from '../../../types/bookmarkEventType';
 

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import plusicon from '../../../assets/icons/cross.svg';
-import editicon from '../../../assets/icons/editpencil.svg';
-import starticon from '../../../assets/icons/starIcon.svg';
+
+import plusicon from '../../../assets/cross.svg';
+import editicon from '../../../assets/editpencil.svg';
+import starticon from '../../../assets/starIcon.svg';
 import { useGetBookmarkFoldersQuery } from '../../../features/bookmarks/services/bookmarkFolderApiSlice';
 import { toggleAddBookmarkFolder } from '../../../features/modal/manageModalSlice';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
