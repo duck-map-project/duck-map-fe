@@ -1,4 +1,4 @@
-import { useGetArtistsTypeQuery } from '../../../features/artists/services/artistsTypeSlice';
+import { useGetArtistsTypeQuery } from '../../../features/artists/services/artistsTypeApiSlice';
 
 import ArtistTypeListItem from './ArtistTypeListItem';
 import { ArtistTypeListSection } from './ArtistTypeListStyle';

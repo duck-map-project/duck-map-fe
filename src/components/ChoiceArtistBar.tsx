@@ -6,13 +6,13 @@ import { styled } from 'styled-components';
 import artistArrow from '../assets/artist-arrow.svg';
 import artistHeart from '../assets/artist-heart.svg';
 import tongs from '../assets/tongs.svg';
-import { useGetArtistOfGroupQuery } from '../features/artists/services/artistsSlice';
+import { useGetArtistOfGroupQuery } from '../features/artists/services/artistsApiSlice';
 import {
   selectEventArtist,
   selectEventGroup,
   setEventArtist,
 } from '../features/events/services/setEventArtistSlice';
-import { toggleEventListArtist } from '../features/manageModalSlice';
+import { toggleEventListArtist } from '../features/modal/manageModalSlice';
 import { Artist } from '../types/eventService';
 
 import { selectedListStyle } from './ArtistListItem';

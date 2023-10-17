@@ -10,15 +10,15 @@ import CommonModal, {
 } from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import { ArtistType } from '../../../types/artistsType';
-import { useAddImageMutation } from '../../images/imageSlice';
-import { toggleArtist, toggleEditArtist } from '../../manageModalSlice';
+import { useAddImageMutation } from '../../images/imageApiSlice';
+import { toggleArtist, toggleEditArtist } from '../../modal/manageModalSlice';
 import {
   useAddArtistsMutation,
   useGetArtistsQuery,
   useEditArtistsMutation,
-} from '../services/artistsSlice';
-import { useGetArtistsTypeQuery } from '../services/artistsTypeSlice';
-import { selectEditArtistSlice } from '../services/editArtistSlice';
+} from '../services/artistsApiSlice';
+import { useGetArtistsTypeQuery } from '../services/artistsTypeApiSlice';
+import { selectEditArtistSlice } from '../services/setArtistSlice';
 
 import {
   ArtistModalTitle,

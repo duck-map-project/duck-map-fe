@@ -5,12 +5,10 @@ import defaultImage from '../../assets/user-profile.svg';
 import { useGetUserInfoQuery } from '../../features/auth/services/authApiSlice';
 
 import Bookmark from './Bookmark/Bookmark';
+import ChangePassword from './ChangePassword/ChangePassword';
+import EditProfile from './EditProfile/EditProfile';
 import Event from './Event/Event';
 import Like from './Like/Like';
-import ChangePassword from './Password/ChangePassword';
-import EditProfile from './Profile/EditProfile';
-import Review from './Review/Review';
-import SideBar from './SideBar/SideBar';
 import {
   Main,
   SideSection,
@@ -19,7 +17,9 @@ import {
   Username,
   ContentSection,
   ContentWrapper,
-} from './style';
+} from './MyPageStyle';
+import Review from './Review/Review';
+import SideBar from './SideBar/SideBar';
 
 const MyPage = () => {
   const { data: userData } = useGetUserInfoQuery();

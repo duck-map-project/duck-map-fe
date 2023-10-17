@@ -1,9 +1,9 @@
 import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 
-import { useGetArtistsQuery } from '../../../features/artists/services/artistsSlice';
+import { useGetArtistsQuery } from '../../../features/artists/services/artistsApiSlice';
 import { ArtistContent } from '../../../types/artistsType';
-import { ArtistListSection } from '../style';
+import { ArtistListSection } from '../ManagePageStyle';
 
 import ArtistListItem from './ArtistListItem';
 

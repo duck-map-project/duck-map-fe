@@ -8,16 +8,19 @@ import CommonModal, {
 import useScroll from '../../../hooks/useScroll';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 import { emojiArray } from '../../../utils/EmojiArray';
-import { toggleAddBookmark, toggleEditBookmark } from '../../manageModalSlice';
 import {
-  selectAddBookmarkInfo,
-  addBookmarkInfo,
-} from '../services/addBookmark';
+  toggleAddBookmark,
+  toggleEditBookmark,
+} from '../../modal/manageModalSlice';
 import {
   useAddBookmarkEventMutation,
   useEditBookmarkEventFolderMutation,
-} from '../services/bookmarkEventSlice';
-import { useGetBookmarkFoldersQuery } from '../services/bookmarkFolderSlice';
+} from '../services/bookmarkEventApiSlice';
+import { useGetBookmarkFoldersQuery } from '../services/bookmarkFolderApiSlice';
+import {
+  selectAddBookmarkInfo,
+  addBookmarkInfo,
+} from '../services/setBookmark';
 
 import { ModalCloseButton } from './BookmarkFolderStyle';
 import * as S from './BookmarkModalStyle';

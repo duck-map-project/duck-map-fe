@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import locationIcon from '../../../assets/location.svg';
 import FixedRating from '../../../components/FixedRating';
-import { useGetMyreviewQuery } from '../../../features/mypageSlice';
+import { useGetMyreviewQuery } from '../../../features/reviews/services/reviewApiSlice';
 import { useDeleteReviewMutation } from '../../../features/reviews/services/reviewApiSlice';
 import { useRouter } from '../../../hooks/useRouter';
 import { myreviewType } from '../../../types/mypageType';

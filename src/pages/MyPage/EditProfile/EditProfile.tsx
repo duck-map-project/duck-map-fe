@@ -9,7 +9,7 @@ import {
   useGetUserInfoQuery,
 } from '../../../features/auth/services/authApiSlice';
 import { useLogoutMutation } from '../../../features/auth/services/authApiSlice';
-import { useAddImageMutation } from '../../../features/images/imageSlice';
+import { useAddImageMutation } from '../../../features/images/imageApiSlice';
 import { useRouter } from '../../../hooks/useRouter';
 
 import {

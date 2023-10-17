@@ -8,13 +8,13 @@ import Loading from '../../../components/Loading';
 import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
-import { useAddImageMutation } from '../../images/imageSlice';
-import { toggleGroup, toggleEditGroup } from '../../manageModalSlice';
+import { useAddImageMutation } from '../../images/imageApiSlice';
+import { toggleGroup, toggleEditGroup } from '../../modal/manageModalSlice';
 import {
   useAddArtistsMutation,
   useEditArtistsMutation,
-} from '../services/artistsSlice';
-import { selectEditArtistSlice } from '../services/editArtistSlice';
+} from '../services/artistsApiSlice';
+import { selectEditArtistSlice } from '../services/setArtistSlice';
 
 import {
   ModalTitle,

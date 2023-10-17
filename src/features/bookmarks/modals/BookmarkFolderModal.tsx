@@ -13,12 +13,12 @@ import { emojiArray } from '../../../utils/EmojiArray';
 import {
   toggleAddBookmarkFolder,
   toggleEditBookmarkFolder,
-} from '../../manageModalSlice';
+} from '../../modal/manageModalSlice';
 import {
   useAddBookmarkFolderMutation,
   useUpdateBookmarkFolderMutation,
-} from '../services/bookmarkFolderSlice';
-import { selectEditBookmarkFolder } from '../services/editBookmarkFolderSlice';
+} from '../services/bookmarkFolderApiSlice';
+import { selectEditBookmarkFolder } from '../services/setBookmarkFolderSlice';
 
 import * as S from './BookmarkFolderStyle';
 

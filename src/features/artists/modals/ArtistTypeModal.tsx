@@ -10,13 +10,16 @@ import {
   CategoryInput,
   TypeWrapper,
 } from '../../categories/modals/CategoryModalStyle';
-import { toggleArtistType, toggleEditArtistType } from '../../manageModalSlice';
+import {
+  toggleArtistType,
+  toggleEditArtistType,
+} from '../../modal/manageModalSlice';
 import {
   useGetArtistsTypeQuery,
   useAddArtistsTypeMutation,
   useEditArtistsTypeMutation,
-} from '../services/artistsTypeSlice';
-import { selectEditArtistType } from '../services/editArtistTypeSlice';
+} from '../services/artistsTypeApiSlice';
+import { selectEditArtistType } from '../services/setArtistTypeSlice';
 
 import {
   ModalTitle,

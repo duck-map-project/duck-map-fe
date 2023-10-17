@@ -4,7 +4,7 @@ import usericon from '../../../assets/mypage.svg';
 import {
   useGetMyeventQuery,
   useDeleteEventMutation,
-} from '../../../features/mypageSlice';
+} from '../../../features/events/services/eventApiSlice';
 import { useRouter } from '../../../hooks/useRouter';
 import { myevetType } from '../../../types/mypageType';
 import {
