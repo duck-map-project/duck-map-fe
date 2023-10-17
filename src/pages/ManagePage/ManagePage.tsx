@@ -15,7 +15,7 @@ import {
   TabWrapper,
   Tab,
   ListTitleText,
-} from './style';
+} from './ManagePageStyle';
 
 const tabArray = [
   {
