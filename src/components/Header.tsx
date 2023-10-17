@@ -25,7 +25,7 @@ import {
   toggleArtistType,
 } from '../features/manageModalSlice';
 import { useRouter } from '../hooks/useRouter';
-import { TextButton } from '../pages/mainPage/MainStyle';
+import { TextButton } from '../pages/Main/MainStyle';
 import media from '../utils/mediaQuery';
 import px2vw from '../utils/px2vw';
 

@@ -7,7 +7,7 @@ import SketchbookLayout from '../../components/SketchbookLayout';
 import { useGetReviewByIdQuery } from '../../features/reviews/services/reviewApiSlice';
 import { useRouter } from '../../hooks/useRouter';
 import { ReviewById } from '../../types/reviewServie';
-import ImageSlider from '../DetailInfoPage/ImageSlider';
+import ImageSlider from '../DetailInfo/ImageSlider';
 
 import * as S from './ReviewDetailStyle';
 

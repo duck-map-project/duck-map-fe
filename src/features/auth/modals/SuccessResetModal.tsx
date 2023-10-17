@@ -9,7 +9,7 @@ import {
   Text,
 } from '../../../components/modal/ModalStyle';
 import { useRouter } from '../../../hooks/useRouter';
-import { SubmitButton } from '../../../pages/SignPage/SignStyle';
+import { SubmitButton } from '../../../pages/Sign/SignStyle';
 
 const SuccessModal = styled(Modal)`
   padding: 43px 0 62px;

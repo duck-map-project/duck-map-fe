@@ -4,19 +4,19 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { selectCurrentUser } from './features/auth/services/authSlice';
 import GeneralLayout from './layout/GeneralLayout';
 import BookmarkShare from './pages/BookmarkShare';
-import DetailInfo from './pages/DetailInfoPage/DetailInfo';
+import DetailInfo from './pages/DetailInfo/DetailInfo';
 import EditEvent from './pages/EditEvent/EditEvent';
-import EditReview from './pages/editReviewPage/EditReview';
-import EventList from './pages/eventListPage/EventList';
-import Main from './pages/mainPage/Main';
+import EditReview from './pages/EditReview/EditReview';
+import EventList from './pages/EventList/EventList';
+import Main from './pages/Main/Main';
 import ManagePage from './pages/ManagePage';
 import MyPage from './pages/MyPage';
-import NotFound from './pages/NotFoundPage/NotFound';
-import ResetPassword from './pages/ResetPasswordPage/ResetPassword';
+import NotFound from './pages/NotFound/NotFound';
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 import ReviewDetail from './pages/ReviewDetail/ReviewDetail';
 import Reviews from './pages/Reviews/Reviews';
-import Signin from './pages/SignPage/Signin';
-import Signup from './pages/SignPage/Signup';
+import Signin from './pages/Sign/Signin';
+import Signup from './pages/Sign/Signup';
 
 interface RouterElement {
   id: number;

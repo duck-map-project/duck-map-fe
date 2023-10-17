@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 import closeIcon from '../../assets/close.svg';
-import { ErrorMessage, SubmitButton } from '../../pages/SignPage/SignStyle';
+import { ErrorMessage, SubmitButton } from '../../pages/Sign/SignStyle';
 
 export const PageWrapper = styled.section`
   display: flex;

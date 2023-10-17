@@ -6,8 +6,8 @@ import AuthInput from '../../components/AuthInput';
 import SuccessResetModal from '../../features/auth/modals/SuccessResetModal';
 import { useResetPasswordMutation } from '../../features/auth/services/authApiSlice';
 import useForm from '../../hooks/useForm';
-import { ErrorMessage } from '../SignPage/SignStyle';
-import { PageTitle, Form, SubmitButton } from '../SignPage/SignStyle';
+import { ErrorMessage } from '../Sign/SignStyle';
+import { PageTitle, Form, SubmitButton } from '../Sign/SignStyle';
 
 const PageWrapper = styled.section`
   width: 100%;
