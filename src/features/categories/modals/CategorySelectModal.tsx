@@ -18,7 +18,7 @@ import { toggleEventCategory } from '../../modal/manageModalSlice';
 import {
   categoryType,
   useGetEventCategoryQuery,
-} from '../services/eventCategorySlice';
+} from '../services/categoryApiSlice';
 
 import {
   CategoryModalTitle,

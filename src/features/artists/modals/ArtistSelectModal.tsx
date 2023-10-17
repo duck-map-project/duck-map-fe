@@ -16,7 +16,7 @@ import {
   selectSelectedArtist,
 } from '../../events/services/setEventElemetsSlice';
 import { toggleEventArtist } from '../../modal/manageModalSlice';
-import { useGetArtistsQuery } from '../services/artistsSlice';
+import { useGetArtistsQuery } from '../services/artistsApiSlice';
 
 import {
   AritstSelectSection,

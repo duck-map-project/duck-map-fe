@@ -21,7 +21,7 @@ import {
   selectSelectedArtist,
   selectSelectedCategory,
 } from '../../features/events/services/setEventElemetsSlice';
-import { useAddImageMutation } from '../../features/images/imageSlice';
+import { useAddImageMutation } from '../../features/images/imageApiSlice';
 import {
   toggleAddressSearch,
   toggleEventArtist,

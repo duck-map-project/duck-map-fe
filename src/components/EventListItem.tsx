@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { selectCurrentUser } from '../features/auth/services/authSlice';
+import { useDeleteBookmarkEventMutation } from '../features/bookmarks/services/bookmarkEventApiSlice';
 import {
   addBookmarkInfo,
   selectAddBookmarkInfo,
-} from '../features/bookmarks/services/addBookmark';
-import { useDeleteBookmarkEventMutation } from '../features/bookmarks/services/bookmarkEventSlice';
+} from '../features/bookmarks/services/setBookmark';
 import { toggleAddBookmark } from '../features/modal/manageModalSlice';
 import { useRouter } from '../hooks/useRouter';
 import { EventListData } from '../types/eventService';

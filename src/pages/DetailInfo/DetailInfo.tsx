@@ -6,11 +6,11 @@ import { useParams } from 'react-router-dom';
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
 import { selectCurrentUser } from '../../features/auth/services/authSlice';
+import { useDeleteBookmarkEventMutation } from '../../features/bookmarks/services/bookmarkEventApiSlice';
 import {
   addBookmarkInfo,
   selectAddBookmarkInfo,
-} from '../../features/bookmarks/services/addBookmark';
-import { useDeleteBookmarkEventMutation } from '../../features/bookmarks/services/bookmarkEventSlice';
+} from '../../features/bookmarks/services/setBookmark';
 import { useGetEventByIdQuery } from '../../features/events/services/eventApiSlice';
 import {
   useAddLikeMutation,

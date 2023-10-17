@@ -13,14 +13,14 @@ import {
   toggleEditBookmark,
 } from '../../modal/manageModalSlice';
 import {
-  selectAddBookmarkInfo,
-  addBookmarkInfo,
-} from '../services/addBookmark';
-import {
   useAddBookmarkEventMutation,
   useEditBookmarkEventFolderMutation,
-} from '../services/bookmarkEventSlice';
-import { useGetBookmarkFoldersQuery } from '../services/bookmarkFolderSlice';
+} from '../services/bookmarkEventApiSlice';
+import { useGetBookmarkFoldersQuery } from '../services/bookmarkFolderApiSlice';
+import {
+  selectAddBookmarkInfo,
+  addBookmarkInfo,
+} from '../services/setBookmark';
 
 import { ModalCloseButton } from './BookmarkFolderStyle';
 import * as S from './BookmarkModalStyle';

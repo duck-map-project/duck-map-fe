@@ -13,8 +13,8 @@ import { Artist } from '../../../types/eventService';
 import scrollToTop from '../../../utils/scrollToTop';
 import { setEventArtist } from '../../events/services/setEventArtistSlice';
 import { toggleEventListArtist } from '../../modal/manageModalSlice';
-import { useGetArtistsQuery } from '../services/artistsSlice';
-import { useGetArtistsTypeQuery } from '../services/artistsTypeSlice';
+import { useGetArtistsQuery } from '../services/artistsApiSlice';
+import { useGetArtistsTypeQuery } from '../services/artistsTypeApiSlice';
 
 import { ModalCloseButton, ArtistSearchInput } from './ArtistSelectModalStyle';
 import * as S from './EventArtistModalStyle';

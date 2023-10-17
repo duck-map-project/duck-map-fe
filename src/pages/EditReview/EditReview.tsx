@@ -6,7 +6,7 @@ import { ImageDeleteButton } from '../../components/Buttons';
 import Loading from '../../components/Loading';
 import Rating from '../../components/Rating';
 import SketchbookLayout from '../../components/SketchbookLayout';
-import { useAddImageMutation } from '../../features/images/imageSlice';
+import { useAddImageMutation } from '../../features/images/imageApiSlice';
 import {
   useAddReviewMutation,
   useEditReviewMutation,

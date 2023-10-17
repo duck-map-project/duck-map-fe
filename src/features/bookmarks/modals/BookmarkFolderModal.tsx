@@ -17,8 +17,8 @@ import {
 import {
   useAddBookmarkFolderMutation,
   useUpdateBookmarkFolderMutation,
-} from '../services/bookmarkFolderSlice';
-import { selectEditBookmarkFolder } from '../services/editBookmarkFolderSlice';
+} from '../services/bookmarkFolderApiSlice';
+import { selectEditBookmarkFolder } from '../services/setBookmarkFolderSlice';
 
 import * as S from './BookmarkFolderStyle';
 

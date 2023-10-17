@@ -6,7 +6,7 @@ import { styled } from 'styled-components';
 import artistArrow from '../assets/artist-arrow.svg';
 import artistHeart from '../assets/artist-heart.svg';
 import tongs from '../assets/tongs.svg';
-import { useGetArtistOfGroupQuery } from '../features/artists/services/artistsSlice';
+import { useGetArtistOfGroupQuery } from '../features/artists/services/artistsApiSlice';
 import {
   selectEventArtist,
   selectEventGroup,

@@ -5,7 +5,7 @@ import arrowicon from '../../../assets/icons/arrowright.svg';
 import plusicon from '../../../assets/icons/cross.svg';
 import editicon from '../../../assets/icons/editpencil.svg';
 import starticon from '../../../assets/icons/starIcon.svg';
-import { useGetBookmarkEventsQuery } from '../../../features/bookmarks/services/bookmarkEventSlice';
+import { useGetBookmarkEventsQuery } from '../../../features/bookmarks/services/bookmarkEventApiSlice';
 import { BookmarkEventType } from '../../../types/bookmarkEventType';
 
 import BookmarkEventItem from './BookmarkEventItem';

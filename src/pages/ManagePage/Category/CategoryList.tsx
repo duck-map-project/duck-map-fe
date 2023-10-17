@@ -1,4 +1,4 @@
-import { useGetEventCategoryQuery } from '../../../features/categories/services/eventCategorySlice';
+import { useGetEventCategoryQuery } from '../../../features/categories/services/categoryApiSlice';
 
 import CategoryListItem from './CategoryListItem';
 import { CategoryListSection } from './CategoryListStyle';

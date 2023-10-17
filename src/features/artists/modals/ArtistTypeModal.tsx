@@ -18,8 +18,8 @@ import {
   useGetArtistsTypeQuery,
   useAddArtistsTypeMutation,
   useEditArtistsTypeMutation,
-} from '../services/artistsTypeSlice';
-import { selectEditArtistType } from '../services/editArtistTypeSlice';
+} from '../services/artistsTypeApiSlice';
+import { selectEditArtistType } from '../services/setArtistTypeSlice';
 
 import {
   ModalTitle,
