@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useEditPasswordMutation } from '../../../features/auth/authApiSlice';
+import { useEditPasswordMutation } from '../../../features/auth/services/authApiSlice';
 
 import {
   ChangePasswordForm,

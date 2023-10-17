@@ -7,18 +7,18 @@ import EventListItem, {
   HandleLikeClickProps,
 } from '../../components/EventListItem';
 import KakaoMap from '../../components/KakaoMap';
-import { selectCurrentUser } from '../../features/auth/authSlice';
+import { selectCurrentUser } from '../../features/auth/services/authSlice';
 import {
   useAddLikeMutation,
   useDeleteLikeMutation,
   useGetEventQuery,
-} from '../../features/eventApiSlice';
-import { setPlace } from '../../features/eventPlaceSlice';
+} from '../../features/events/services/eventApiSlice';
+import { setPlace } from '../../features/events/services/eventPlaceSlice';
 import {
   selectEventArtist,
   selectEventGroup,
-} from '../../features/setEventArtistSlice';
-import { setArtist } from '../../features/setEventElemetsSlice';
+} from '../../features/events/services/setEventArtistSlice';
+import { setArtist } from '../../features/events/services/setEventElemetsSlice';
 import { useRouter } from '../../hooks/useRouter';
 import { EventListData } from '../../types/eventService';
 

@@ -10,10 +10,13 @@ import useInput from '../../../hooks/useInput';
 import useScroll from '../../../hooks/useScroll';
 import { ArtistContent } from '../../../types/artistsType';
 import scrollToTop from '../../../utils/scrollToTop';
+import { setArtist } from '../../events/services/setEventElemetsSlice';
+import {
+  Artist,
+  selectSelectedArtist,
+} from '../../events/services/setEventElemetsSlice';
 import { toggleEventArtist } from '../../manageModalSlice';
-import { setArtist } from '../../setEventElemetsSlice';
-import { Artist, selectSelectedArtist } from '../../setEventElemetsSlice';
-import { useGetArtistsQuery } from '../api/artistsSlice';
+import { useGetArtistsQuery } from '../services/artistsSlice';
 
 import {
   AritstSelectSection,

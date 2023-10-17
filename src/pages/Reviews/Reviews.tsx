@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 
 import { ReactComponent as Checkicon } from '../../assets/icons/checkicon.svg';
 import ChoiceArtistBar from '../../components/ChoiceArtistBar';
-import { useGetAllReviewsQuery } from '../../features/reviewSlice';
 import {
   selectEventArtist,
   selectEventGroup,
-} from '../../features/setEventArtistSlice';
+} from '../../features/events/services/setEventArtistSlice';
+import { useGetAllReviewsQuery } from '../../features/reviews/services/reviewSlice';
 import { reviewType } from '../../types/reviewType';
 
 import ReviewItem from './ReviewItem';

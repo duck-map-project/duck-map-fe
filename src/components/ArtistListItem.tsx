@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 
-import artistDefaultImage from '../../assets/artist-default-image.svg';
-import { Artist } from '../../types/eventService';
+import artistDefaultImage from '../assets/artist-default-image.svg';
+import { Artist } from '../types/eventService';
 
 const ArtistListItemBox = styled.section`
   display: flex;

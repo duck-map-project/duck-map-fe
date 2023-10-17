@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import kakaoIcon from '../../assets/kakao-icon.svg';
 import naverIcon from '../../assets/naver-icon.svg';
 import AuthInput from '../../components/AuthInput';
-import { useSignUpMutation } from '../../features/auth/authApiSlice';
+import { useSignUpMutation } from '../../features/auth/services/authApiSlice';
 import useForm, { Errors } from '../../hooks/useForm';
 import { useRouter } from '../../hooks/useRouter';
 

@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import bookmarkicon from '../../../assets/icons/bookmark.svg';
 import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
-import { addBookmarkInfo } from '../../../features/bookmarks/api/addBookmark';
-import { useDeleteBookmarkEventMutation } from '../../../features/bookmarks/api/bookmarkEventSlice';
+import { addBookmarkInfo } from '../../../features/bookmarks/services/addBookmark';
+import { useDeleteBookmarkEventMutation } from '../../../features/bookmarks/services/bookmarkEventSlice';
 import { toggleEditBookmark } from '../../../features/manageModalSlice';
 import { useRouter } from '../../../hooks/useRouter';
 

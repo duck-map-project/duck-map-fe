@@ -1,23 +1,22 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { useGetArtistsQuery } from '../../features/artists/api/artistsSlice';
-import { useGetArtistsTypeQuery } from '../../features/artists/api/artistsTypeSlice';
-import {
-  ModalCloseButton,
-  ArtistSearchInput,
-} from '../../features/artists/modals/ArtistSelectModalStyle';
-import { toggleEventListArtist } from '../../features/manageModalSlice';
-import { setEventArtist } from '../../features/setEventArtistSlice';
-import useDebounce from '../../hooks/useDebounce';
-import useInput from '../../hooks/useInput';
-import useScroll from '../../hooks/useScroll';
-import { ArtistType } from '../../types/artistsType';
-import { Artist } from '../../types/eventService';
-import scrollToTop from '../../utils/scrollToTop';
-import CommonModal, { ModalPortal } from '../modal/CommonModal';
+import ArtistListItem from '../../../components/ArtistListItem';
+import CommonModal, {
+  ModalPortal,
+} from '../../../components/modal/CommonModal';
+import useDebounce from '../../../hooks/useDebounce';
+import useInput from '../../../hooks/useInput';
+import useScroll from '../../../hooks/useScroll';
+import { ArtistType } from '../../../types/artistsType';
+import { Artist } from '../../../types/eventService';
+import scrollToTop from '../../../utils/scrollToTop';
+import { setEventArtist } from '../../events/services/setEventArtistSlice';
+import { toggleEventListArtist } from '../../manageModalSlice';
+import { useGetArtistsQuery } from '../services/artistsSlice';
+import { useGetArtistsTypeQuery } from '../services/artistsTypeSlice';
 
-import ArtistListItem from './ArtistListItem';
+import { ModalCloseButton, ArtistSearchInput } from './ArtistSelectModalStyle';
 import * as S from './EventArtistModalStyle';
 
 const EventArtistModal = () => {

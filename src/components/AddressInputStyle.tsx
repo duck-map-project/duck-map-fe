@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 
 import disabledMapIcon from '../assets/disabled-map-icon.svg';
 
-import { Place } from './AdressInput';
+import { Place } from './AddressInput';
 
 export const EventInputWrapper = styled.section`
   position: relative;

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { RootState } from '../app/api/store';
+import { RootState } from '../../../app/api/store';
 
 interface EventPlaceState {
   id?: number;

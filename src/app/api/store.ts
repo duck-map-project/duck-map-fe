@@ -2,22 +2,22 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import editArtistReducer from '../../features/artists/api/editArtistSlice';
-import editArtistTypeReducer from '../../features/artists/api/editArtistTypeSlice';
-import authReducer, { AuthState } from '../../features/auth/authSlice';
-import addBookmarkReducer from '../../features/bookmarks/api/addBookmark';
-import editBookmarkFolderReducer from '../../features/bookmarks/api/editBookmarkFolderSlice';
-import editCategoryReducer from '../../features/categories/api/editCategorySlice';
+import editArtistReducer from '../../features/artists/services/editArtistSlice';
+import editArtistTypeReducer from '../../features/artists/services/editArtistTypeSlice';
+import authReducer, { AuthState } from '../../features/auth/services/authSlice';
+import addBookmarkReducer from '../../features/bookmarks/services/addBookmark';
+import editBookmarkFolderReducer from '../../features/bookmarks/services/editBookmarkFolderSlice';
+import editCategoryReducer from '../../features/categories/services/editCategorySlice';
 import eventPlaceReducer, {
   EventPlaceInitialState,
-} from '../../features/eventPlaceSlice';
-import manageModalReducer from '../../features/manageModalSlice';
+} from '../../features/events/services/eventPlaceSlice';
 import setEventArtistReducer, {
   SetEventArtistinitialState,
-} from '../../features/setEventArtistSlice';
+} from '../../features/events/services/setEventArtistSlice';
 import setEventElementReducer, {
   SetEventElementsState,
-} from '../../features/setEventElemetsSlice';
+} from '../../features/events/services/setEventElemetsSlice';
+import manageModalReducer from '../../features/manageModalSlice';
 
 import { apiSlice } from './apiSlice';
 

@@ -4,16 +4,16 @@ import { styled } from 'styled-components';
 import Billboard from '../components/Billboard';
 import Header from '../components/Header';
 import MobileTab from '../components/MobileTab';
-import AddressSearchModal from '../components/modals(to-be-deleted)/AddressSearchModal';
-import EventArtistModal from '../components/modals(to-be-deleted)/EventArtistModal';
 import ArtistModal from '../features/artists/modals/ArtistModal';
 import ArtistSelectModal from '../features/artists/modals/ArtistSelectModal';
 import ArtistTypeModal from '../features/artists/modals/ArtistTypeModal';
+import EventArtistModal from '../features/artists/modals/EventArtistModal';
 import GroupModal from '../features/artists/modals/GroupModal';
 import BookmarkFolderModal from '../features/bookmarks/modals/BookmarkFolderModal';
 import BookmarkModal from '../features/bookmarks/modals/BookmarkModal';
 import CategoryModal from '../features/categories/modals/CategoryModal';
 import CategorySelectModal from '../features/categories/modals/CategorySelectModal';
+import AddressSearchModal from '../features/events/modals/AddressSearchModal';
 import {
   selectCategoryModalState,
   selectEditCategoryModalState,

@@ -9,16 +9,16 @@ import {
   ModalCloseButton,
   DoneButton,
 } from '../../artists/modals/ArtistSelectModalStyle';
-import { toggleEventCategory } from '../../manageModalSlice';
 import {
   Category,
   selectSelectedCategory,
   setCategory,
-} from '../../setEventElemetsSlice';
+} from '../../events/services/setEventElemetsSlice';
+import { toggleEventCategory } from '../../manageModalSlice';
 import {
   categoryType,
   useGetEventCategoryQuery,
-} from '../api/eventCategorySlice';
+} from '../services/eventCategorySlice';
 
 import {
   CategoryModalTitle,

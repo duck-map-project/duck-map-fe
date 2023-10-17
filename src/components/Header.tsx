@@ -12,12 +12,12 @@ import settingIcon from '../assets/icons/setting.svg';
 import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
 import defaultImage from '../assets/user-profile.svg';
-import { useLogoutMutation } from '../features/auth/authApiSlice';
+import { useLogoutMutation } from '../features/auth/services/authApiSlice';
 import {
   logOut,
   selectCurrentUser,
   selectCurrentRole,
-} from '../features/auth/authSlice';
+} from '../features/auth/services/authSlice';
 import {
   toggleGroup,
   toggleArtist,

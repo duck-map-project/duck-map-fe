@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 
-import searchIcon from '../../assets/color-search-icon.svg';
-import leftArrow from '../../assets/left-arrow.svg';
+import searchIcon from '../../../assets/color-search-icon.svg';
+import leftArrow from '../../../assets/left-arrow.svg';
 
 export const Wrapper = styled.section`
   display: flex;

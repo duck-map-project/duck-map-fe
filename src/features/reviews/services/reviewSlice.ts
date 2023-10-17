@@ -1,5 +1,8 @@
-import { apiSlice } from '../app/api/apiSlice';
-import { reviewDataType, transformedReviewDataType } from '../types/reviewType';
+import { apiSlice } from '../../../app/api/apiSlice';
+import {
+  reviewDataType,
+  transformedReviewDataType,
+} from '../../../types/reviewType';
 
 export const reviewSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

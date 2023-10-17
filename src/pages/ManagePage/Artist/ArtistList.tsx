@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 
-import { useGetArtistsQuery } from '../../../features/artists/api/artistsSlice';
+import { useGetArtistsQuery } from '../../../features/artists/services/artistsSlice';
 import { ArtistContent } from '../../../types/artistsType';
 import { ArtistListSection } from '../style';
 

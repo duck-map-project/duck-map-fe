@@ -11,7 +11,7 @@ import {
   useAddReviewMutation,
   useEditReviewMutation,
   useGetReviewByIdQuery,
-} from '../../features/reviewApiSlice';
+} from '../../features/reviews/services/reviewApiSlice';
 import useInput from '../../hooks/useInput';
 import { useRouter } from '../../hooks/useRouter';
 

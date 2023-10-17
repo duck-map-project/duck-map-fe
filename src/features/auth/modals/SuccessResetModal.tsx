@@ -1,15 +1,15 @@
 import { MouseEventHandler } from 'react';
 import { styled } from 'styled-components';
 
-import { useRouter } from '../../hooks/useRouter';
-import { SubmitButton } from '../../pages/SignPage/SignStyle';
 import {
   CloseButton,
   Modal,
   ModalWrapper,
   PageWrapper,
   Text,
-} from '../modal/ModalStyle';
+} from '../../../components/modal/ModalStyle';
+import { useRouter } from '../../../hooks/useRouter';
+import { SubmitButton } from '../../../pages/SignPage/SignStyle';
 
 const SuccessModal = styled(Modal)`
   padding: 43px 0 62px;

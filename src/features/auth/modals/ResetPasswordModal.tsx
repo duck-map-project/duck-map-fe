@@ -1,8 +1,6 @@
 import { MouseEventHandler, useEffect, useState } from 'react';
 
-import { useSendPasswordEmailMutation } from '../../features/auth/authApiSlice';
-import useForm from '../../hooks/useForm';
-import AuthInput from '../AuthInput';
+import AuthInput from '../../../components/AuthInput';
 import {
   CloseButton,
   EmailSubmitButton,
@@ -12,7 +10,9 @@ import {
   ModalWrapper,
   PageWrapper,
   SuccessText,
-} from '../modal/ModalStyle';
+} from '../../../components/modal/ModalStyle';
+import useForm from '../../../hooks/useForm';
+import { useSendPasswordEmailMutation } from '../services/authApiSlice';
 
 interface Props {
   onClickButton: MouseEventHandler<HTMLButtonElement>;

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 import ReviewItem from '../../components/ReviewItem';
-import { useGetReviewsQuery } from '../../features/reviewApiSlice';
+import { useGetReviewsQuery } from '../../features/reviews/services/reviewApiSlice';
 import { Review } from '../../types/eventService';
 import px2vw from '../../utils/px2vw';
 const Wrapper = styled.div`

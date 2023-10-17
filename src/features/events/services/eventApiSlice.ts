@@ -1,4 +1,4 @@
-import { apiSlice } from '../app/api/apiSlice';
+import { apiSlice } from '../../../app/api/apiSlice';
 import {
   EventData,
   EventListData,
@@ -6,7 +6,7 @@ import {
   MainEvent,
   MainEventResponse,
   TodayHashtagsResponse,
-} from '../types/eventService';
+} from '../../../types/eventService';
 
 interface GetMainEventTransformedResponse {
   content: MainEvent[];

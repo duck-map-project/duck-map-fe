@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 
 import sortIcon from '../../assets/sort-book.svg';
 import KakaoMap from '../../components/KakaoMap';
-import { useGetMainEventQuery } from '../../features/eventApiSlice';
-import { setPlace } from '../../features/eventPlaceSlice';
-import { useGetMainReviewQuery } from '../../features/reviewApiSlice';
+import { useGetMainEventQuery } from '../../features/events/services/eventApiSlice';
+import { setPlace } from '../../features/events/services/eventPlaceSlice';
+import { useGetMainReviewQuery } from '../../features/reviews/services/reviewApiSlice';
 import { useRouter } from '../../hooks/useRouter';
 import { MainEvent } from '../../types/eventService';
 import { MainReview } from '../../types/reviewServie';

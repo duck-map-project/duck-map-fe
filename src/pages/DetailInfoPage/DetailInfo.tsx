@@ -5,18 +5,18 @@ import { useParams } from 'react-router-dom';
 
 import FixedRating from '../../components/FixedRating';
 import { TextBox, TextBoxWithTitle } from '../../components/TextBoxs';
-import { selectCurrentUser } from '../../features/auth/authSlice';
+import { selectCurrentUser } from '../../features/auth/services/authSlice';
 import {
   addBookmarkInfo,
   selectAddBookmarkInfo,
-} from '../../features/bookmarks/api/addBookmark';
-import { useDeleteBookmarkEventMutation } from '../../features/bookmarks/api/bookmarkEventSlice';
-import { useGetEventByIdQuery } from '../../features/eventApiSlice';
+} from '../../features/bookmarks/services/addBookmark';
+import { useDeleteBookmarkEventMutation } from '../../features/bookmarks/services/bookmarkEventSlice';
+import { useGetEventByIdQuery } from '../../features/events/services/eventApiSlice';
 import {
   useAddLikeMutation,
   useDeleteLikeMutation,
-} from '../../features/eventApiSlice';
-import { setPlace } from '../../features/eventPlaceSlice';
+} from '../../features/events/services/eventApiSlice';
+import { setPlace } from '../../features/events/services/eventPlaceSlice';
 import { toggleAddBookmark } from '../../features/manageModalSlice';
 import { useRouter } from '../../hooks/useRouter';
 import { EventData } from '../../types/eventService';

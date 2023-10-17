@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import AdressInput, { Place } from '../../../components/AddressInput';
+import KakaoMap from '../../../components/KakaoMap';
+import CommonModal, {
+  ModalPortal,
+} from '../../../components/modal/CommonModal';
 import {
   DoneButton,
   ModalCloseButton,
-} from '../../features/artists/modals/ArtistSelectModalStyle';
-import { setPlace } from '../../features/eventPlaceSlice';
-import { toggleAddressSearch } from '../../features/manageModalSlice';
-import AdressInput, { Place } from '../AdressInput';
-import KakaoMap from '../KakaoMap';
-import CommonModal, { ModalPortal } from '../modal/CommonModal';
+} from '../../artists/modals/ArtistSelectModalStyle';
+import { toggleAddressSearch } from '../../manageModalSlice';
+import { setPlace } from '../services/eventPlaceSlice';
 
 import * as S from './AddressSearchModalStyle';
 

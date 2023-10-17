@@ -8,7 +8,7 @@ import mypage from '../assets/icons/user.svg';
 import {
   selectCurrentRole,
   selectCurrentUser,
-} from '../features/auth/authSlice';
+} from '../features/auth/services/authSlice';
 import { useRouter } from '../hooks/useRouter';
 import media from '../utils/mediaQuery';
 

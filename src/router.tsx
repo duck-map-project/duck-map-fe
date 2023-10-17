@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { selectCurrentUser } from './features/auth/authSlice';
+import { selectCurrentUser } from './features/auth/services/authSlice';
 import GeneralLayout from './layout/GeneralLayout';
 import BookmarkShare from './pages/BookmarkShare';
 import DetailInfo from './pages/DetailInfoPage/DetailInfo';

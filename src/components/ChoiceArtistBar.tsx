@@ -6,16 +6,16 @@ import { styled } from 'styled-components';
 import artistArrow from '../assets/artist-arrow.svg';
 import artistHeart from '../assets/artist-heart.svg';
 import tongs from '../assets/tongs.svg';
-import { useGetArtistOfGroupQuery } from '../features/artists/api/artistsSlice';
-import { toggleEventListArtist } from '../features/manageModalSlice';
+import { useGetArtistOfGroupQuery } from '../features/artists/services/artistsSlice';
 import {
   selectEventArtist,
   selectEventGroup,
   setEventArtist,
-} from '../features/setEventArtistSlice';
+} from '../features/events/services/setEventArtistSlice';
+import { toggleEventListArtist } from '../features/manageModalSlice';
 import { Artist } from '../types/eventService';
 
-import { selectedListStyle } from './modals(to-be-deleted)/ArtistListItem';
+import { selectedListStyle } from './ArtistListItem';
 
 const Bar = styled.section`
   width: 100%;

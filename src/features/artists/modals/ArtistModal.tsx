@@ -16,9 +16,9 @@ import {
   useAddArtistsMutation,
   useGetArtistsQuery,
   useEditArtistsMutation,
-} from '../api/artistsSlice';
-import { useGetArtistsTypeQuery } from '../api/artistsTypeSlice';
-import { selectEditArtistSlice } from '../api/editArtistSlice';
+} from '../services/artistsSlice';
+import { useGetArtistsTypeQuery } from '../services/artistsTypeSlice';
+import { selectEditArtistSlice } from '../services/editArtistSlice';
 
 import {
   ArtistModalTitle,

@@ -10,20 +10,23 @@ import {
   useAddEventMutation,
   useEditEventMutation,
   useGetEventByIdQuery,
-} from '../../features/eventApiSlice';
-import { selectPlaces, setPlace } from '../../features/eventPlaceSlice';
+} from '../../features/events/services/eventApiSlice';
+import {
+  selectPlaces,
+  setPlace,
+} from '../../features/events/services/eventPlaceSlice';
+import {
+  setArtist,
+  setCategory,
+  selectSelectedArtist,
+  selectSelectedCategory,
+} from '../../features/events/services/setEventElemetsSlice';
 import { useAddImageMutation } from '../../features/images/imageSlice';
 import {
   toggleAddressSearch,
   toggleEventArtist,
   toggleEventCategory,
 } from '../../features/manageModalSlice';
-import {
-  setArtist,
-  setCategory,
-  selectSelectedArtist,
-  selectSelectedCategory,
-} from '../../features/setEventElemetsSlice';
 import { useRouter } from '../../hooks/useRouter';
 import formattingHours from '../../utils/formattingHours';
 

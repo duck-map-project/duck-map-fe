@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 
-import { ModalTitle } from '../../features/artists/modals/GroupModalStyle';
+import { ModalTitle } from '../../artists/modals/GroupModalStyle';
 
 export const Title = styled(ModalTitle)`
   padding-left: 98.5px;

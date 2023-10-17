@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { RootState } from '../app/api/store';
-import { Artist } from '../types/eventService';
+import { RootState } from '../../../app/api/store';
+import { Artist } from '../../../types/eventService';
 
 export interface SetEventArtistinitialState {
   artist: Artist | null;

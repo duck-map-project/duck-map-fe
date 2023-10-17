@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ArtistSearchInput } from '../features/artists/modals/ArtistSelectModalStyle';
-import { setPlace } from '../features/eventPlaceSlice';
+import { setPlace } from '../features/events/services/eventPlaceSlice';
 import useDebounce from '../hooks/useDebounce';
 import useInput from '../hooks/useInput';
 
@@ -10,7 +10,7 @@ import {
   AddressItem,
   AddrestList,
   EventInputWrapper,
-} from './AdressInputStyle';
+} from './AddressInputStyle';
 
 export interface Place {
   place_name: string;
@@ -21,7 +21,7 @@ interface AddressInputProps {
   setCurrentPlace: React.Dispatch<React.SetStateAction<Place | null>>;
 }
 
-const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
+const AddressInput = ({ setCurrentPlace }: AddressInputProps) => {
   const search = useInput('');
   const debouncedSearchInput = useDebounce(search.value, 600);
   const [places, setPlaces] = useState<any[]>([]);
@@ -117,4 +117,4 @@ const AdressInput = ({ setCurrentPlace }: AddressInputProps) => {
   );
 };
 
-export default AdressInput;
+export default AddressInput;

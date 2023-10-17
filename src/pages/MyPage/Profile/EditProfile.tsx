@@ -7,8 +7,8 @@ import {
   useEditUserInfoMutation,
   useUnregisterMutation,
   useGetUserInfoQuery,
-} from '../../../features/auth/authApiSlice';
-import { useLogoutMutation } from '../../../features/auth/authApiSlice';
+} from '../../../features/auth/services/authApiSlice';
+import { useLogoutMutation } from '../../../features/auth/services/authApiSlice';
 import { useAddImageMutation } from '../../../features/images/imageSlice';
 import { useRouter } from '../../../hooks/useRouter';
 

@@ -1,10 +1,10 @@
-import { apiSlice } from '../app/api/apiSlice';
-import { Review, ReviewResponse } from '../types/eventService';
+import { apiSlice } from '../../../app/api/apiSlice';
+import { Review, ReviewResponse } from '../../../types/eventService';
 import {
   MainReview,
   MainReviewResponse,
   ReviewById,
-} from '../types/reviewServie';
+} from '../../../types/reviewServie';
 
 interface GetReviewsTransformedResponse {
   isLast: boolean;
