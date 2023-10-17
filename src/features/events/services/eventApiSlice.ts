@@ -7,6 +7,12 @@ import {
   MainEventResponse,
   TodayHashtagsResponse,
 } from '../../../types/eventService';
+import {
+  mylikeEventsType,
+  transformedMylike,
+  myeventsType,
+  transformedMyevents,
+} from '../../../types/mypageType';
 
 interface GetMainEventTransformedResponse {
   content: MainEvent[];
@@ -94,6 +100,31 @@ export const eventApiSlice = apiSlice.injectEndpoints({
       },
       providesTags: ['Event', 'BookmarkEvents', 'Like'],
     }),
+    getMyevent: builder.query<
+      transformedMyevents,
+      {
+        pageNumber?: string;
+        pageSize?: string;
+      }
+    >({
+      query: (params) => {
+        const url = '/events/myevent';
+        const queryString = params
+          ? new URLSearchParams(params).toString()
+          : '';
+
+        return {
+          url: url + '?' + queryString,
+          method: 'GET',
+        };
+      },
+      transformResponse: (response: myeventsType) => {
+        const numberOfElements = response.numberOfElements;
+        const isLast = response.last;
+        const content = response.content;
+        return { numberOfElements, isLast, content };
+      },
+    }),
     editEvent: builder.mutation({
       query: ({ EventData, id }) => ({
         url: `events/${id}`,
@@ -101,6 +132,38 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         body: EventData,
       }),
       invalidatesTags: ['Event'],
+    }),
+    deleteEvent: builder.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `/events/${id}`,
+        method: 'DELETE',
+      }),
+    }),
+    getMylike: builder.query<
+      transformedMylike,
+      {
+        pageNumber?: string;
+        pageSize?: string;
+      }
+    >({
+      query: (params) => {
+        const url = '/events/mylike';
+        const queryString = params
+          ? new URLSearchParams(params).toString()
+          : '';
+
+        return {
+          url: url + '?' + queryString,
+          method: 'GET',
+        };
+      },
+      transformResponse: (response: mylikeEventsType) => {
+        const numberOfElements = response.numberOfElements;
+        const content = response.content;
+        const isLast = response.last;
+        return { numberOfElements, content, isLast };
+      },
+      providesTags: ['Like'],
     }),
     addLike: builder.mutation<{ id: number }, string>({
       query: (id) => ({
@@ -130,6 +193,9 @@ export const {
   useGetEventByIdQuery,
   useGetMainEventQuery,
   useGetEventQuery,
+  useGetMyeventQuery,
+  useDeleteEventMutation,
+  useGetMylikeQuery,
   useAddLikeMutation,
   useEditEventMutation,
   useDeleteLikeMutation,

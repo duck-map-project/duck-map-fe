@@ -5,6 +5,7 @@ import {
   MainReviewResponse,
   ReviewById,
 } from '../../../types/reviewServie';
+import { myreviewsType, transformedMyreview } from '../../../types/mypageType';
 
 interface GetReviewsTransformedResponse {
   isLast: boolean;
@@ -49,6 +50,31 @@ const reviewApiSlice = apiSlice.injectEndpoints({
         return { content, isLast };
       },
       providesTags: ['Review'],
+    }),
+    getMyreview: builder.query<
+      transformedMyreview,
+      {
+        pageNumber?: string;
+        pageSize?: string;
+      }
+    >({
+      query: (params) => {
+        const url = '/reviews/myreview';
+        const queryString = params
+          ? new URLSearchParams(params).toString()
+          : '';
+
+        return {
+          url: url + '?' + queryString,
+          method: 'GET',
+        };
+      },
+      transformResponse: (response: myreviewsType) => {
+        const numberOfElements = response.numberOfElements;
+        const isLast = response.last;
+        const content = response.content;
+        return { numberOfElements, isLast, content };
+      },
     }),
     addReview: builder.mutation({
       query: (requestData: ReviewData) => ({
@@ -99,6 +125,7 @@ const reviewApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetReviewsQuery,
+  useGetMyreviewQuery,
   useAddReviewMutation,
   useGetMainReviewQuery,
   useGetReviewByIdQuery,
