@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import defaultImage from '../../assets/user-profile.svg';
-import { useGetUserInfoQuery } from '../../features/auth/authApiSlice';
+import { useGetUserInfoQuery } from '../../features/auth/services/authApiSlice';
 
 import Bookmark from './Bookmark/Bookmark';
 import Event from './Event/Event';

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { css, styled } from 'styled-components';
 
 import customMarker from '../assets/marker.svg';
-import { selectPlaces } from '../features/eventPlaceSlice';
+import { selectPlaces } from '../features/events/services/eventPlaceSlice';
 import { useRouter } from '../hooks/useRouter';
 
 export const MapSection = styled.section<KakaoMapProps>`

@@ -2,8 +2,8 @@ import { useDispatch } from 'react-redux';
 
 import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
-import { useDeleteBookmarkFolderMutation } from '../../../features/bookmarks/api/bookmarkFolderSlice';
-import { editFolderInfo } from '../../../features/bookmarks/api/editBookmarkFolderSlice';
+import { useDeleteBookmarkFolderMutation } from '../../../features/bookmarks/services/bookmarkFolderSlice';
+import { editFolderInfo } from '../../../features/bookmarks/services/editBookmarkFolderSlice';
 import { toggleEditBookmarkFolder } from '../../../features/manageModalSlice';
 import { emojiArray } from '../../../utils/EmojiArray';
 

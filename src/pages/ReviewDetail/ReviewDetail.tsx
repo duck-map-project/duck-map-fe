@@ -4,10 +4,10 @@ import { useParams } from 'react-router-dom';
 import defaultImage from '../../assets/user-profile.svg';
 import FixedRating from '../../components/FixedRating';
 import SketchbookLayout from '../../components/SketchbookLayout';
-import { useGetReviewByIdQuery } from '../../features/reviewApiSlice';
+import { useGetReviewByIdQuery } from '../../features/reviews/services/reviewApiSlice';
 import { useRouter } from '../../hooks/useRouter';
 import { ReviewById } from '../../types/reviewServie';
-import ImageSlider from '../DetailInfoPage/ImageSlider';
+import ImageSlider from '../DetailInfo/ImageSlider';
 
 import * as S from './ReviewDetailStyle';
 

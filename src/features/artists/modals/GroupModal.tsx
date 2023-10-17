@@ -13,8 +13,8 @@ import { toggleGroup, toggleEditGroup } from '../../manageModalSlice';
 import {
   useAddArtistsMutation,
   useEditArtistsMutation,
-} from '../api/artistsSlice';
-import { selectEditArtistSlice } from '../api/editArtistSlice';
+} from '../services/artistsSlice';
+import { selectEditArtistSlice } from '../services/editArtistSlice';
 
 import {
   ModalTitle,

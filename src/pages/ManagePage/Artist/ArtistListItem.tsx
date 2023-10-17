@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import deleteIcon from '../../../assets/icons/delete.svg';
 import editIcon from '../../../assets/icons/edit.svg';
-import { useDeleteArtistsMutation } from '../../../features/artists/api/artistsSlice';
-import { editArtistInfo } from '../../../features/artists/api/editArtistSlice';
+import { useDeleteArtistsMutation } from '../../../features/artists/services/artistsSlice';
+import { editArtistInfo } from '../../../features/artists/services/editArtistSlice';
 import { toggleEditArtist } from '../../../features/manageModalSlice';
 import { toggleEditGroup } from '../../../features/manageModalSlice';
 import { ArtistContent } from '../../../types/artistsType';

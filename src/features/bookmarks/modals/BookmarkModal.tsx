@@ -9,12 +9,15 @@ import useScroll from '../../../hooks/useScroll';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 import { emojiArray } from '../../../utils/EmojiArray';
 import { toggleAddBookmark, toggleEditBookmark } from '../../manageModalSlice';
-import { selectAddBookmarkInfo, addBookmarkInfo } from '../api/addBookmark';
+import {
+  selectAddBookmarkInfo,
+  addBookmarkInfo,
+} from '../services/addBookmark';
 import {
   useAddBookmarkEventMutation,
   useEditBookmarkEventFolderMutation,
-} from '../api/bookmarkEventSlice';
-import { useGetBookmarkFoldersQuery } from '../api/bookmarkFolderSlice';
+} from '../services/bookmarkEventSlice';
+import { useGetBookmarkFoldersQuery } from '../services/bookmarkFolderSlice';
 
 import { ModalCloseButton } from './BookmarkFolderStyle';
 import * as S from './BookmarkModalStyle';

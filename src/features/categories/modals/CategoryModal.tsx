@@ -7,12 +7,12 @@ import CommonModal, {
 } from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import { toggleCategory, toggleEditCategory } from '../../manageModalSlice';
-import { selectEditCategorySlice } from '../api/editCategorySlice';
+import { selectEditCategorySlice } from '../services/editCategorySlice';
 import {
   useGetEventCategoryQuery,
   useAddEventCategoryMutation,
   useEditEventCategoryMutation,
-} from '../api/eventCategorySlice';
+} from '../services/eventCategorySlice';
 
 import {
   CategoryModalTitle,
