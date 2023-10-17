@@ -12,7 +12,7 @@ import {
   selectEventGroup,
   setEventArtist,
 } from '../features/events/services/setEventArtistSlice';
-import { toggleEventListArtist } from '../features/manageModalSlice';
+import { toggleEventListArtist } from '../features/modal/manageModalSlice';
 import { Artist } from '../types/eventService';
 
 import { selectedListStyle } from './ArtistListItem';

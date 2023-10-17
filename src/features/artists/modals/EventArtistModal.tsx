@@ -12,7 +12,7 @@ import { ArtistType } from '../../../types/artistsType';
 import { Artist } from '../../../types/eventService';
 import scrollToTop from '../../../utils/scrollToTop';
 import { setEventArtist } from '../../events/services/setEventArtistSlice';
-import { toggleEventListArtist } from '../../manageModalSlice';
+import { toggleEventListArtist } from '../../modal/manageModalSlice';
 import { useGetArtistsQuery } from '../services/artistsSlice';
 import { useGetArtistsTypeQuery } from '../services/artistsTypeSlice';
 

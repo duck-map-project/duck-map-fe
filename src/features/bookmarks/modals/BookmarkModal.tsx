@@ -8,7 +8,10 @@ import CommonModal, {
 import useScroll from '../../../hooks/useScroll';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 import { emojiArray } from '../../../utils/EmojiArray';
-import { toggleAddBookmark, toggleEditBookmark } from '../../manageModalSlice';
+import {
+  toggleAddBookmark,
+  toggleEditBookmark,
+} from '../../modal/manageModalSlice';
 import {
   selectAddBookmarkInfo,
   addBookmarkInfo,

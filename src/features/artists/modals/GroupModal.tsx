@@ -9,7 +9,7 @@ import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
 import { useAddImageMutation } from '../../images/imageSlice';
-import { toggleGroup, toggleEditGroup } from '../../manageModalSlice';
+import { toggleGroup, toggleEditGroup } from '../../modal/manageModalSlice';
 import {
   useAddArtistsMutation,
   useEditArtistsMutation,

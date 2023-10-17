@@ -4,7 +4,7 @@ import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { useDeleteBookmarkFolderMutation } from '../../../features/bookmarks/services/bookmarkFolderSlice';
 import { editFolderInfo } from '../../../features/bookmarks/services/editBookmarkFolderSlice';
-import { toggleEditBookmarkFolder } from '../../../features/manageModalSlice';
+import { toggleEditBookmarkFolder } from '../../../features/modal/manageModalSlice';
 import { emojiArray } from '../../../utils/EmojiArray';
 
 import * as S from './BookmarkFolderItemStyle';

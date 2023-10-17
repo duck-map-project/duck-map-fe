@@ -31,7 +31,7 @@ import {
   selectEditGroupModalState,
   selectEventListArtistModalState,
   selectAddressSearchModalState,
-} from '../features/manageModalSlice';
+} from '../features/modal/manageModalSlice';
 import media from '../utils/mediaQuery';
 
 interface GeneralLayoutProps {

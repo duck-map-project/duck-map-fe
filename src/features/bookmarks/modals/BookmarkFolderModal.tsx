@@ -13,7 +13,7 @@ import { emojiArray } from '../../../utils/EmojiArray';
 import {
   toggleAddBookmarkFolder,
   toggleEditBookmarkFolder,
-} from '../../manageModalSlice';
+} from '../../modal/manageModalSlice';
 import {
   useAddBookmarkFolderMutation,
   useUpdateBookmarkFolderMutation,

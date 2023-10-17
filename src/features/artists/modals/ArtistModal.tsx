@@ -11,7 +11,7 @@ import CommonModal, {
 import TypeButton from '../../../components/modal/TypeButton';
 import { ArtistType } from '../../../types/artistsType';
 import { useAddImageMutation } from '../../images/imageSlice';
-import { toggleArtist, toggleEditArtist } from '../../manageModalSlice';
+import { toggleArtist, toggleEditArtist } from '../../modal/manageModalSlice';
 import {
   useAddArtistsMutation,
   useGetArtistsQuery,

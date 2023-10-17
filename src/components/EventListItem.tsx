@@ -7,7 +7,7 @@ import {
   selectAddBookmarkInfo,
 } from '../features/bookmarks/services/addBookmark';
 import { useDeleteBookmarkEventMutation } from '../features/bookmarks/services/bookmarkEventSlice';
-import { toggleAddBookmark } from '../features/manageModalSlice';
+import { toggleAddBookmark } from '../features/modal/manageModalSlice';
 import { useRouter } from '../hooks/useRouter';
 import { EventListData } from '../types/eventService';
 

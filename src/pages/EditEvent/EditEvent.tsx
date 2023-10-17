@@ -26,7 +26,7 @@ import {
   toggleAddressSearch,
   toggleEventArtist,
   toggleEventCategory,
-} from '../../features/manageModalSlice';
+} from '../../features/modal/manageModalSlice';
 import { useRouter } from '../../hooks/useRouter';
 import formattingHours from '../../utils/formattingHours';
 

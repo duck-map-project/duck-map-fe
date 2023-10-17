@@ -10,7 +10,10 @@ import {
   CategoryInput,
   TypeWrapper,
 } from '../../categories/modals/CategoryModalStyle';
-import { toggleArtistType, toggleEditArtistType } from '../../manageModalSlice';
+import {
+  toggleArtistType,
+  toggleEditArtistType,
+} from '../../modal/manageModalSlice';
 import {
   useGetArtistsTypeQuery,
   useAddArtistsTypeMutation,

@@ -6,7 +6,10 @@ import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
-import { toggleCategory, toggleEditCategory } from '../../manageModalSlice';
+import {
+  toggleCategory,
+  toggleEditCategory,
+} from '../../modal/manageModalSlice';
 import { selectEditCategorySlice } from '../services/editCategorySlice';
 import {
   useGetEventCategoryQuery,

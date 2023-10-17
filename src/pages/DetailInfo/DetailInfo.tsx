@@ -17,7 +17,7 @@ import {
   useDeleteLikeMutation,
 } from '../../features/events/services/eventApiSlice';
 import { setPlace } from '../../features/events/services/eventPlaceSlice';
-import { toggleAddBookmark } from '../../features/manageModalSlice';
+import { toggleAddBookmark } from '../../features/modal/manageModalSlice';
 import { useRouter } from '../../hooks/useRouter';
 import { EventData } from '../../types/eventService';
 

@@ -10,7 +10,7 @@ import {
   DoneButton,
   ModalCloseButton,
 } from '../../artists/modals/ArtistSelectModalStyle';
-import { toggleAddressSearch } from '../../manageModalSlice';
+import { toggleAddressSearch } from '../../modal/manageModalSlice';
 import { setPlace } from '../services/eventPlaceSlice';
 
 import * as S from './AddressSearchModalStyle';

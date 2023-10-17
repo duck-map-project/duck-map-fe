@@ -5,7 +5,7 @@ import deleteicon from '../../../assets/icons/crosspink.svg';
 import pencilicon from '../../../assets/icons/editpencilbig.svg';
 import { addBookmarkInfo } from '../../../features/bookmarks/services/addBookmark';
 import { useDeleteBookmarkEventMutation } from '../../../features/bookmarks/services/bookmarkEventSlice';
-import { toggleEditBookmark } from '../../../features/manageModalSlice';
+import { toggleEditBookmark } from '../../../features/modal/manageModalSlice';
 import { useRouter } from '../../../hooks/useRouter';
 
 import {

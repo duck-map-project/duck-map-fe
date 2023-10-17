@@ -17,7 +17,7 @@ import setEventArtistReducer, {
 import setEventElementReducer, {
   SetEventElementsState,
 } from '../../features/events/services/setEventElemetsSlice';
-import manageModalReducer from '../../features/manageModalSlice';
+import manageModalReducer from '../../features/modal/manageModalSlice';
 
 import { apiSlice } from './apiSlice';
 

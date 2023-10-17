@@ -4,7 +4,7 @@ import deleteIcon from '../../../assets/icons/delete.svg';
 import editIcon from '../../../assets/icons/edit.svg';
 import { useDeleteArtistsTypeMutation } from '../../../features/artists/services/artistsTypeSlice';
 import { editArtistTypeInfo } from '../../../features/artists/services/editArtistTypeSlice';
-import { toggleEditArtistType } from '../../../features/manageModalSlice';
+import { toggleEditArtistType } from '../../../features/modal/manageModalSlice';
 
 import * as S from './ArtistTypeListItemStyle';
 
