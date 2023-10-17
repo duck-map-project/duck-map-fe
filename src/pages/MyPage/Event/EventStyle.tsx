@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import deleteicon from '../../../assets/icons/delete.svg';
-import editicon from '../../../assets/icons/edit.svg';
-import usericon from '../../../assets/icons/mypage.svg';
+import deleteicon from '../../../assets/delete.svg';
+import editicon from '../../../assets/edit.svg';
+import usericon from '../../../assets/mypage.svg';
 import media from '../../../utils/mediaQuery';
 import { LikeWrapper } from '../Like/LikeStyle';
 

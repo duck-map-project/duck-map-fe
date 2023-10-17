@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import memobackmobile from '../../assets/icons/memo-back-mobile.svg';
-import memoback from '../../assets/icons/memo-back.svg';
-import memofrontmobile from '../../assets/icons/memo-front-mobile.svg';
-import memofront from '../../assets/icons/memo-front.svg';
+import memobackmobile from '../../assets/memo-back-mobile.svg';
+import memoback from '../../assets/memo-back.svg';
+import memofrontmobile from '../../assets/memo-front-mobile.svg';
+import memofront from '../../assets/memo-front.svg';
 import media from '../../utils/mediaQuery';
 
 // BookmarkEventItem styling

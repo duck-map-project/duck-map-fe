@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
+import arrow from '../assets/arrowright.svg';
+import book from '../assets/book-pink.svg';
 import iconPencil from '../assets/icon-pencil.svg';
 import iconPin from '../assets/icon-pin.svg';
-import arrow from '../assets/icons/arrowright.svg';
-import book from '../assets/icons/book-pink.svg';
-import setting from '../assets/icons/setting.svg';
-import settingIcon from '../assets/icons/setting.svg';
 import iconLogin from '../assets/login-icon.svg';
 import logo from '../assets/logo.svg';
+import setting from '../assets/setting.svg';
+import settingIcon from '../assets/setting.svg';
 import defaultImage from '../assets/user-profile.svg';
 import { useLogoutMutation } from '../features/auth/services/authApiSlice';
 import {

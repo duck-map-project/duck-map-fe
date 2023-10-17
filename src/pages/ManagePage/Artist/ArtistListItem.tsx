@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import deleteIcon from '../../../assets/icons/delete.svg';
-import editIcon from '../../../assets/icons/edit.svg';
+import deleteIcon from '../../../assets/delete.svg';
+import editIcon from '../../../assets/edit.svg';
 import { useDeleteArtistsMutation } from '../../../features/artists/services/artistsSlice';
 import { editArtistInfo } from '../../../features/artists/services/editArtistSlice';
 import { toggleEditArtist } from '../../../features/manageModalSlice';

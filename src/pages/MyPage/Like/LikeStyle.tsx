@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import heartIcon from '../../../assets/icons/heart-big.svg';
+import heartIcon from '../../../assets/heart-big.svg';
 import media from '../../../utils/mediaQuery';
 
 type LikeWrapperProps = {

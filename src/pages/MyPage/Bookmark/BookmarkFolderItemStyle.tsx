@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { ReactComponent as Bookmarkfoldericon } from '../../../assets/icons/bookmark-folder.svg';
+import { ReactComponent as Bookmarkfoldericon } from '../../../assets/bookmark-folder.svg';
 import media from '../../../utils/mediaQuery';
 
 type EmojiPreviewType = {
