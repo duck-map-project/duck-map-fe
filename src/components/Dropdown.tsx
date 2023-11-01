@@ -19,6 +19,7 @@ const StyledDiv = styled.div<dropdowonProps>`
   border: 2px solid #1e232c;
   background-color: var(--yellow);
   z-index: 999;
+  overflow: hidden;
   ${(props) =>
     props.icon
       ? `
@@ -31,6 +32,14 @@ const StyledDiv = styled.div<dropdowonProps>`
     padding: 10px 5px;
     left: 50%;
     transform: translate(-50%,0);
+  `}
+  ${(props) =>
+    props.icon &&
+    media.mobile`
+    min-width: 116px;
+    border: 1.5px solid #1e232c;
+    padding: 4.5px 0;
+    border-radius: 15px;
   `}
 `;
 

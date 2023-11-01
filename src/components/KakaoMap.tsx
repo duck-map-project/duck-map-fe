@@ -5,10 +5,14 @@ import { css, styled } from 'styled-components';
 import customMarker from '../assets/marker.svg';
 import { selectPlaces } from '../features/events/services/eventPlaceSlice';
 import { useRouter } from '../hooks/useRouter';
+import media from '../utils/mediaQuery';
 
 export const MapSection = styled.section<KakaoMapProps>`
   width: 100%;
   ${(props) => (props.size ? sizes[props.size] : '')};
+  ${media.mobile`
+  height: 339px;
+  `}
 `;
 
 const main = css`
