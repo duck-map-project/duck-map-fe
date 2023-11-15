@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 import deleteicon from '../../../assets/crosspink.svg';
 import pencilicon from '../../../assets/editpencilbig.svg';
@@ -31,10 +32,12 @@ const BookmarkFolderItem = ({
   const dispatch = useDispatch();
   const folderEmoji = image.slice(8);
   const [deleteFolder] = useDeleteBookmarkFolderMutation();
+  const [, setParams] = useSearchParams();
 
   const onClickFolder = () => {
     setSelectedFoldername(foldername);
     setSelectedFolderId(folderId);
+    setParams({ id: folderId.toString(), name: foldername });
   };
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();

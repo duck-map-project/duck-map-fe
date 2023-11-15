@@ -29,7 +29,7 @@ const MyPage = () => {
   return (
     <Main>
       <SideSection profile={userProfile} username={username} />
-      <ContentSection/>
+      <ContentSection />
     </Main>
   );
 };

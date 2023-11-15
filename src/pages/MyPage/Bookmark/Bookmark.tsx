@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import BookmarkEvents from './BookmarkEvents';
 import BookmarkFolders from './BookmarkFolders';
@@ -9,6 +10,15 @@ const Bookmark = () => {
     null
   );
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
+  const [params] = useSearchParams();
+
+  useEffect(() => {
+    const name = params.get('name');
+    const id = params.get('id');
+    id ? setSelectedFolderId(parseInt(id)) : setSelectedFolderId(null);
+    name ? setSelectedFoldername(name) : setSelectedFoldername(null);
+  }, [params]);
+
   return (
     <BookmarkWrapper>
       {selectedFoldername && selectedFolderId ? (

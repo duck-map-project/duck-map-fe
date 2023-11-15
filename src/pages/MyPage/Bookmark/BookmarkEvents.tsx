@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useSearchParams } from 'react-router-dom';
 
 import arrowicon from '../../../assets/arrowright.svg';
 import plusicon from '../../../assets/cross.svg';
@@ -33,6 +34,7 @@ const BookmarkEvents = ({
   setSelectedFoldername,
   setSelectedFolderId,
 }: EventsProps) => {
+  const [, setParams] = useSearchParams();
   const originPath = window.location.origin;
   const folderPath = `/bookmark-share/${folderId}`;
   const [isEditmode, setIsEditmode] = useState(false);
@@ -58,6 +60,7 @@ const BookmarkEvents = ({
   const onClickGoBookmarkFolders = () => {
     setSelectedFoldername(null);
     setSelectedFolderId(null);
+    setParams({});
   };
 
   const onClickToggleEditmode = () => {

@@ -78,6 +78,7 @@ const BookmarkFolders = ({
       />
     ));
   }
+
   return (
     <>
       <S.FoldersHeader>
