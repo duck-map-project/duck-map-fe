@@ -30,7 +30,10 @@ const BookmarkFolderItem = ({
   setSelectedFolderId,
 }: FolderItemProps) => {
   const dispatch = useDispatch();
-  const folderEmoji = image.slice(8);
+  const folderEmojiName = image.slice(8);
+  const emojiImage = emojiArray.find(
+    (emoji) => emoji.value === folderEmojiName
+  )?.img;
   const [deleteFolder] = useDeleteBookmarkFolderMutation();
   const [, setParams] = useSearchParams();
 
@@ -71,10 +74,8 @@ const BookmarkFolderItem = ({
   return (
     <S.FolderWrapper onClick={onClickFolder}>
       <S.StyledFolderIcon fill={color} />
-      <S.EmojiPreview img={folderEmoji}>
-        <img
-          src={emojiArray.find((emoji) => emoji.value === folderEmoji)?.img}
-        />
+      <S.EmojiPreview>
+        <img src={emojiImage} />
       </S.EmojiPreview>
       {isEditmode && (
         <S.SettingIconsWrapper>

@@ -3,9 +3,9 @@ import styled, { keyframes } from 'styled-components';
 import { ReactComponent as Bookmarkfoldericon } from '../../../assets/bookmark-folder.svg';
 import media from '../../../utils/mediaQuery';
 
-type EmojiPreviewType = {
-  img: string;
-};
+// type EmojiPreviewType = {
+//   img: string;
+// };
 
 const shaking = keyframes`
   from {
@@ -35,7 +35,7 @@ export const StyledFolderIcon = styled(Bookmarkfoldericon)`
   max-width: 135px;
 `;
 
-export const EmojiPreview = styled.span<EmojiPreviewType>`
+export const EmojiPreview = styled.span`
   position: absolute;
   display: flex;
   justify-content: center;
