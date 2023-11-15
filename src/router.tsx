@@ -94,16 +94,14 @@ const routerData: RouterElement[] = [
     id: 9,
     path: '/managepage',
     element: <ManagePage />,
-    //추후에 true로 변경
-    withAuth: false,
+    withAuth: true,
     wrapWithLayout: true,
   },
   {
     id: 10,
     path: '/mypage/*',
     element: <MyPage />,
-    //추후에 true로 변경
-    withAuth: false,
+    withAuth: true,
     wrapWithLayout: true,
   },
   {
