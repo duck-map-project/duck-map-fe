@@ -23,8 +23,6 @@ const Bookmark = () => {
     <BookmarkWrapper>
       {selectedFoldername && selectedFolderId ? (
         <BookmarkEvents
-          foldername={selectedFoldername}
-          folderId={selectedFolderId}
           setSelectedFoldername={setSelectedFoldername}
           setSelectedFolderId={setSelectedFolderId}
         />

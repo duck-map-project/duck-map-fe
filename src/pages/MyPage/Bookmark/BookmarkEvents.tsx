@@ -22,19 +22,17 @@ import {
 } from './BookmarkFoldersStyle';
 
 type EventsProps = {
-  foldername: string;
-  folderId: number;
   setSelectedFoldername: React.Dispatch<React.SetStateAction<string | null>>;
   setSelectedFolderId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 const BookmarkEvents = ({
-  foldername,
-  folderId,
   setSelectedFoldername,
   setSelectedFolderId,
 }: EventsProps) => {
-  const [, setParams] = useSearchParams();
+  const [params, setParams] = useSearchParams();
+  const folderId = params.get('id');
+  const foldername = params.get('name');
   const originPath = window.location.origin;
   const folderPath = `/bookmark-share/${folderId}`;
   const [isEditmode, setIsEditmode] = useState(false);
@@ -47,7 +45,7 @@ const BookmarkEvents = ({
     isError,
     error,
     isSuccess,
-  } = useGetBookmarkEventsQuery({ folderId });
+  } = useGetBookmarkEventsQuery({ folderId }, { skip: !folderId });
 
   useEffect(() => {
     if (EventsData) {
@@ -95,6 +93,7 @@ const BookmarkEvents = ({
       '북마크 폴더 공유 주소가 복사되었습니다. 원하는 곳에 붙여넣어 보세요.'
     );
   };
+
   return (
     <>
       <S.EventsHeader>
