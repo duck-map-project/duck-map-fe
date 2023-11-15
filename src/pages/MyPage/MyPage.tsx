@@ -9,20 +9,13 @@ import ChangePassword from './ChangePassword/ChangePassword';
 import EditProfile from './EditProfile/EditProfile';
 import Event from './Event/Event';
 import Like from './Like/Like';
-import {
-  Main,
-  SideSection,
-  ProfileWrapper,
-  ProfileImg,
-  Username,
-  ContentSection,
-  ContentWrapper,
-} from './MyPageStyle';
+import { Main, ContentSection, ContentWrapper } from './MyPageStyle';
 import Review from './Review/Review';
-import SideBar from './SideBar/SideBar';
+import SideSection from './SideSection/SideSection';
 
 const MyPage = () => {
   const { data: userData } = useGetUserInfoQuery();
+
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const username = userData?.username;
 
@@ -41,13 +34,7 @@ const MyPage = () => {
 
   return (
     <Main>
-      <SideSection>
-        <ProfileWrapper>
-          <ProfileImg src={userProfile} />
-          <Username>{username}</Username>
-        </ProfileWrapper>
-        <SideBar />
-      </SideSection>
+      <SideSection profile={userProfile} username={username} />
       <ContentSection>
         <ContentWrapper>
           <Routes>
