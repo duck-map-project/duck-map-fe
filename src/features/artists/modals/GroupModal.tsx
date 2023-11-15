@@ -37,8 +37,9 @@ const testImg =
 
 const GroupModal = ({ type }: ModalType) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const [groupImage, setGroupImage] = useState<File>();
-  const [previewImage, setPreviewImage] = useState<string>('');
+  const [groupImage, setGroupImage] = useState<File>(); //File 자체
+  const [previewImage, setPreviewImage] = useState<string>(''); //프리뷰 이미지용 blob
+  const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
   const [groupName, setGroupName] = useState('');
   const [isRequesting, setIsRequesting] = useState(false);
   const [addNewImage] = useAddImageMutation({});
@@ -54,6 +55,7 @@ const GroupModal = ({ type }: ModalType) => {
         setPreviewImage(testImg);
         return;
       }
+      setSavedImagefile(editData.image.slice(8));
       setPreviewImage(baseURL + editData.image);
     }
   }, [editData]);
@@ -124,8 +126,8 @@ const GroupModal = ({ type }: ModalType) => {
       return;
     }
     if (type === 'edit') {
-      if (previewImage) {
-        EditGroupInfo(previewImage.slice(8));
+      if (savedImagefile) {
+        EditGroupInfo(savedImagefile);
         setIsRequesting(false);
       }
     }

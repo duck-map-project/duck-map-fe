@@ -63,6 +63,7 @@ const ArtistModal = ({ type }: ModalProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     undefined
   );
+  const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
   const [artistName, setArtistName] = useState('');
   const [artistTypeArray, setArtistTypeArray] = useState<ArtistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
@@ -91,6 +92,7 @@ const ArtistModal = ({ type }: ModalProps) => {
         setPreviewImage(testImg);
         return;
       }
+      setSavedImagefile(editData.image.slice(8));
       setPreviewImage(baseURL + editData.image);
     }
   }, [editData]);
@@ -187,8 +189,8 @@ const ArtistModal = ({ type }: ModalProps) => {
 
     //파일은 없지만 프리뷰 이미지가 있다면(수정)
     if (type === 'edit') {
-      if (previewImage) {
-        editArtistInfo(previewImage.slice(8));
+      if (savedImagefile) {
+        editArtistInfo(savedImagefile);
         setIsRequesting(false);
       }
     }
