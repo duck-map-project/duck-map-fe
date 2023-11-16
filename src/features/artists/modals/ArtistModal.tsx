@@ -10,6 +10,7 @@ import CommonModal, {
 import TypeButton from '../../../components/modal/TypeButton';
 import useImageProcessing from '../../../hooks/useImageProcessing';
 import { ArtistType } from '../../../types/artistsType';
+import handleErrorResponse from '../../../utils/handleErrorResponse';
 import { toggleArtist, toggleEditArtist } from '../../modal/manageModalSlice';
 import {
   useAddArtistsMutation,
@@ -229,18 +230,6 @@ const ArtistModal = ({ type }: ModalProps) => {
       }
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const handleErrorResponse = (error: any) => {
-    if ('data' in error) {
-      const data = error.data;
-      if (data !== null && typeof data === 'object' && 'message' in data) {
-        const errorMessage = data.message;
-        alert(errorMessage);
-      }
-    } else {
-      alert('잠시 후에 다시 시도해주세요.');
     }
   };
 

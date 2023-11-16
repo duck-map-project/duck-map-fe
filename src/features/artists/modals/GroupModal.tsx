@@ -1,4 +1,3 @@
-// import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,8 +7,8 @@ import Loading from '../../../components/Loading';
 import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
-// import { useAddImageMutation } from '../../images/imageApiSlice';
 import useImageProcessing from '../../../hooks/useImageProcessing';
+import handleErrorResponse from '../../../utils/handleErrorResponse';
 import { toggleGroup, toggleEditGroup } from '../../modal/manageModalSlice';
 import {
   useAddArtistsMutation,
@@ -170,18 +169,6 @@ const GroupModal = ({ type }: ModalType) => {
       }
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const handleErrorResponse = (error: any) => {
-    if ('data' in error) {
-      const data = error.data;
-      if (data !== null && typeof data === 'object' && 'message' in data) {
-        const errorMessage = data.message;
-        alert(errorMessage);
-      }
-    } else {
-      alert('잠시 후에 다시 시도해주세요.');
     }
   };
 
