@@ -1,4 +1,3 @@
-import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
 
 import defaultImage from '../../../assets/user-profile.svg';
@@ -9,7 +8,7 @@ import {
   useGetUserInfoQuery,
 } from '../../../features/auth/services/authApiSlice';
 import { useLogoutMutation } from '../../../features/auth/services/authApiSlice';
-import { useAddImageMutation } from '../../../features/images/imageApiSlice';
+import useImageProcessing from '../../../hooks/useImageProcessing';
 import { useRouter } from '../../../hooks/useRouter';
 
 import {
@@ -28,29 +27,32 @@ import {
 const EditProfile = () => {
   const { routeTo } = useRouter();
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const [userImage, setUserImage] = useState<File>(); //File 자체
-  const [previewImage, setPreviewImage] = useState<string>(''); //프리뷰 이미지용 blob
-  const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
+  const [userImage, setUserImage] = useState<File | undefined>(undefined); //File 자체
+  const [previewImage, setPreviewImage] = useState<string | undefined>(
+    undefined
+  ); //프리뷰 이미지용 blob
+  const [savedImagefile, setSavedImagefile] = useState<string | undefined>(
+    undefined
+  ); // 저장된 이미지의 filename
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [isRequesting, setIsRequesting] = useState(false);
   const { data: userData } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
-  const [addNewImage] = useAddImageMutation();
   const [unregister] = useUnregisterMutation();
   const [logout] = useLogoutMutation();
+  const { uploadImageToServer } = useImageProcessing();
 
   useEffect(() => {
     if (userData) {
       setUsername(userData.username);
       setEmail(userData.email);
-      setSavedImagefile(userData.userProfile.slice(8)); //image filename string 값 저장
+      setSavedImagefile(userData.userProfile.slice(8));
       if (userData.userProfile === '/images/null') {
         setPreviewImage(defaultImage);
         return;
       }
-      const url = baseUrl + userData.userProfile;
-      setPreviewImage(url);
+      setPreviewImage(baseUrl + userData.userProfile);
     }
   }, [userData]);
 
@@ -66,74 +68,67 @@ const EditProfile = () => {
     setUsername(e.target.value);
   };
 
-  const onClickSubmitBtn = async () => {
-    setIsRequesting(true);
-    //추가된 이미지가 있을 경우
-    let compressedFile;
-    if (userImage) {
-      try {
-        compressedFile = await imageCompression(userImage, {
-          maxSizeMB: 0.2,
-          maxIteration: 30,
-        });
-      } catch (error) {
-        console.error(error);
+  const onClickSaveBtnHandler = async () => {
+    try {
+      setIsRequesting(true);
+      if (username === undefined) {
         setIsRequesting(false);
-        return;
+        alert('닉네임을 입력해주세요.');
+        throw new Error('Invalid username');
       }
 
-      const formData = new FormData();
-      compressedFile && formData.append('file', compressedFile);
-      try {
-        const response = await addNewImage({
-          imageFile: formData,
-        });
-        if ('error' in response) {
-          alert('잠시 후 다시 시도해주세요.');
-          return;
-        }
-        const filename = response.data.filename;
-        sendEditUser(filename);
-      } catch (error) {
-        console.error(error);
+      if (userImage === undefined && savedImagefile === undefined) {
+        alert('프로필 사진을 입력해주세요.');
+        setIsRequesting(false);
+        throw new Error('Invalid profile picture');
       }
-      setIsRequesting(false);
-      return;
-    }
-    //기존 이미지 그대로 저장
-    if (savedImagefile) {
-      sendEditUser(savedImagefile);
-      setIsRequesting(false);
+
+      const filename = await processImage();
+
+      filename && onSaveUserInfoHandler(filename);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const sendEditUser = async (filename: string) => {
-    if (username === undefined) {
-      alert('닉네임은 필수값입니다.');
-      return;
+  const processImage = async () => {
+    if (userImage) {
+      const uploadedImage = await uploadImageToServer(userImage);
+      return uploadedImage;
+    } else if (savedImagefile) {
+      return savedImagefile;
     }
+  };
+
+  const onSaveUserInfoHandler = async (filename: string) => {
     const userInfo = {
       username,
       image: filename,
     };
+
     try {
       const res = await editUserInfo(userInfo);
+      setIsRequesting(false);
+
       if ('data' in res) {
         alert('정상적으로 수정되었습니다');
       } else if ('error' in res) {
-        const error = res.error;
-        if ('data' in error) {
-          const data = error.data;
-          if (data !== null && typeof data === 'object' && 'message' in data) {
-            const errorMessage = data.message;
-            alert(errorMessage);
-            return;
-          }
-        }
-        alert('잠시 후에 다시 시도해주세요.');
+        handleErrorResponse(res.error);
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleErrorResponse = (error: any) => {
+    if ('data' in error) {
+      const data = error.data;
+      if (data !== null && typeof data === 'object' && 'message' in data) {
+        const errorMessage = data.message;
+        alert(errorMessage);
+      }
+    } else {
+      alert('잠시 후에 다시 시도해주세요.');
     }
   };
 
@@ -141,9 +136,10 @@ const EditProfile = () => {
     if (!window.confirm('작성하신 글은 자동으로 삭제되지 않습니다.')) {
       return;
     }
-    const proptValue = window.prompt('비밀번호를 입력해주세요');
-    if (proptValue) {
-      const password = { password: proptValue };
+
+    const promptValue = window.prompt('비밀번호를 입력해주세요');
+    if (promptValue) {
+      const password = { password: promptValue };
       const res = await unregister(password);
       if ('data' in res) {
         alert('탈퇴되었습니다.');
@@ -195,7 +191,7 @@ const EditProfile = () => {
         <UnregisterBtn type="button" onClick={onClickUnregisterBtn}>
           회원탈퇴
         </UnregisterBtn>
-        <EditSubmitBtn type="button" onClick={onClickSubmitBtn}>
+        <EditSubmitBtn type="button" onClick={onClickSaveBtnHandler}>
           완료
         </EditSubmitBtn>
       </BtnWrapper>
