@@ -1,4 +1,4 @@
-import imageCompression from 'browser-image-compression';
+// import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,7 +8,8 @@ import Loading from '../../../components/Loading';
 import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
-import { useAddImageMutation } from '../../images/imageApiSlice';
+// import { useAddImageMutation } from '../../images/imageApiSlice';
+import useImageProcessing from '../../../hooks/useImageProcessing';
 import { toggleGroup, toggleEditGroup } from '../../modal/manageModalSlice';
 import {
   useAddArtistsMutation,
@@ -40,11 +41,12 @@ const GroupModal = ({ type }: ModalType) => {
   const [groupImage, setGroupImage] = useState<File>(); //File 자체
   const [previewImage, setPreviewImage] = useState<string>(''); //프리뷰 이미지용 blob
   const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
-  const [groupName, setGroupName] = useState('');
+  const [groupName, setGroupName] = useState<string | undefined>(undefined);
   const [isRequesting, setIsRequesting] = useState(false);
-  const [addNewImage] = useAddImageMutation({});
-  const [addNewGroup] = useAddArtistsMutation();
+  // const [addNewImage] = useAddImageMutation({});
+  const [addGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
+  const { uploadImageToServer } = useImageProcessing();
   const editData = useSelector(selectEditArtistSlice);
   const dispatch = useDispatch();
 
@@ -80,86 +82,106 @@ const GroupModal = ({ type }: ModalType) => {
     }
   };
 
-  //** 리팩토링 필수 */
-  const onClickAddGroupBtn = async () => {
-    if (groupImage === undefined) {
-      if (previewImage === undefined) {
-        alert('사진은 필수입니다.');
-        return;
+  const onClickSaveBtnHandler = async () => {
+    try {
+      setIsRequesting(true);
+
+      if (!groupName) {
+        setIsRequesting(false);
+        alert('그룹아티스트의 이름을 입력해주세요.');
+        throw new Error('Invalid Group-Artist name');
       }
+
+      if (!groupImage && !savedImagefile) {
+        setIsRequesting(false);
+        alert('그룹아티스트의 사진을 업로드 해주세요.');
+        throw new Error('Invalid Group-Artist Picture');
+      }
+      const filename = await processImage();
+
+      if (type === 'add') {
+        filename && onSaveGroupInfoHandler(filename);
+      } else if (type === 'edit') {
+        filename && onEditGroupInfoHandler(filename);
+      }
+    } catch (error) {
+      console.error(error);
     }
-    setIsRequesting(true);
+  };
+
+  const processImage = async () => {
     if (groupImage) {
-      //image-compressing
-      let compressedFile;
+      const uploadImage = await uploadImageToServer(groupImage);
+      return uploadImage;
+    } else if (savedImagefile) {
+      return savedImagefile;
+    }
+  };
 
-      try {
-        compressedFile = await imageCompression(groupImage, {
-          maxSizeMB: 0.2,
-          maxIteration: 30,
-        });
-      } catch (error) {
-        console.error(error);
-        setIsRequesting(false);
-        return;
+  const onSaveGroupInfoHandler = async (filename: string) => {
+    try {
+      if (!groupName) {
+        throw new Error('Invalid name');
       }
 
-      const formData = new FormData();
-      formData.append('file', compressedFile);
-      try {
-        const response = await addNewImage({
-          imageFile: formData,
-        });
-        if ('error' in response) {
-          return;
-        }
-        if (type === 'add') {
-          sendGroupInfo(response.data.filename);
-          return;
-        } else if (type === 'edit') {
-          EditGroupInfo(response.data.filename);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      const groupData = {
+        artistTypeId: 1,
+        name: groupName,
+        image: filename,
+      };
+
+      const res = await addGroup(groupData);
       setIsRequesting(false);
-      return;
-    }
-    if (type === 'edit') {
-      if (savedImagefile) {
-        EditGroupInfo(savedImagefile);
-        setIsRequesting(false);
+
+      if ('data' in res) {
+        alert('그룹아티스트의 정보가 정상적으로 추가되었습니다');
+        onHideModal();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
       }
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const sendGroupInfo = async (imageData: string) => {
-    const groupData = {
-      artistTypeId: 1,
-      name: groupName,
-      image: imageData,
-    };
+  const onEditGroupInfoHandler = async (filename: string) => {
     try {
-      await addNewGroup(groupData);
-      onHideModal();
+      if (!groupName) {
+        throw new Error('Invalid artist name');
+      }
+
+      const groupData = {
+        artistTypeId: 1,
+        name: groupName,
+        image: filename,
+      };
+
+      const res = await editGroup({
+        artistId: editData.id,
+        artistValue: groupData,
+      });
+      setIsRequesting(false);
+
+      if ('data' in res) {
+        alert('그룹아티스트의 정보가 정상적으로 수정되었습니다');
+        onHideModal();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
+      }
     } catch (error) {
       console.error(error);
-      alert('앗, 제대로 저장되지 않았어요. 다시 시도해주세요');
     }
   };
 
-  const EditGroupInfo = async (imageData: string) => {
-    const groupData = {
-      artistTypeId: 1,
-      name: groupName,
-      image: imageData,
-    };
-    try {
-      await editGroup({ artistId: editData.id, artistValue: groupData });
-      onHideModal();
-    } catch (error) {
-      console.error(error);
-      alert('앗, 제대로 저장되지 않았어요. 다시 시도해주세요.');
+  const handleErrorResponse = (error: any) => {
+    if ('data' in error) {
+      const data = error.data;
+      if (data !== null && typeof data === 'object' && 'message' in data) {
+        const errorMessage = data.message;
+        alert(errorMessage);
+      }
+    } else {
+      alert('잠시 후에 다시 시도해주세요.');
     }
   };
 
@@ -194,7 +216,7 @@ const GroupModal = ({ type }: ModalType) => {
             />
           </NameWrapper>
         </ImageNameWrapper>
-        <SubmitButton type="button" onClick={onClickAddGroupBtn}>
+        <SubmitButton type="button" onClick={onClickSaveBtnHandler}>
           완료
         </SubmitButton>
       </CommonModal>
