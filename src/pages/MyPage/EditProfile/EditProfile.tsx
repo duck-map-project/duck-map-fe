@@ -78,7 +78,7 @@ const EditProfile = () => {
       }
 
       if (userImage === undefined && savedImagefile === undefined) {
-        alert('프로필 사진을 입력해주세요.');
+        alert('프로필 사진을 업로드 해주세요.');
         setIsRequesting(false);
         throw new Error('Invalid profile picture');
       }
