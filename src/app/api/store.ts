@@ -17,13 +17,11 @@ import setEventArtistReducer, {
 import setEventElementReducer, {
   SetEventElementsState,
 } from '../../features/events/services/setEventElemetsSlice';
-import manageModalReducer from '../../features/modal/manageModalSlice';
 import modalsReducer from '../../features/modal/modalsSlice';
 
 import { apiSlice } from './apiSlice';
 
 const reducers = combineReducers({
-  manageModal: manageModalReducer,
   modals: modalsReducer,
   editArtist: editArtistReducer,
   editArtistType: editArtistTypeReducer,

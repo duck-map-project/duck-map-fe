@@ -17,7 +17,8 @@ import {
   useDeleteLikeMutation,
 } from '../../features/events/services/eventApiSlice';
 import { setPlace } from '../../features/events/services/eventPlaceSlice';
-import { toggleAddBookmark } from '../../features/modal/manageModalSlice';
+import { modals } from '../../features/modal/ReduxModalRoot';
+import useModal from '../../hooks/useModal';
 import { useRouter } from '../../hooks/useRouter';
 import { EventData } from '../../types/eventService';
 
@@ -69,6 +70,7 @@ const DetailInfo = () => {
   const dispatch = useDispatch();
   const { routeTo } = useRouter();
   const user = useSelector(selectCurrentUser);
+  const { openModal } = useModal();
 
   useEffect(() => {
     if (eventInfoData && id) {
@@ -147,7 +149,7 @@ const DetailInfo = () => {
         return;
       }
       dispatch(addBookmarkInfo({ eventId: id }));
-      dispatch(toggleAddBookmark());
+      openModal({ Component: modals.bookmarkModal, props: { type: 'add' } });
     } else {
       alert('로그인이 필요합니다!');
     }
