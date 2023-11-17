@@ -5,13 +5,11 @@ import Billboard from '../components/Billboard';
 import Header from '../components/Header';
 import MobileTab from '../components/MobileTab';
 import ArtistSelectModal from '../features/artists/modals/ArtistSelectModal';
-import EventArtistModal from '../features/artists/modals/EventArtistModal';
 import CategorySelectModal from '../features/categories/modals/CategorySelectModal';
 import AddressSearchModal from '../features/events/modals/AddressSearchModal';
 import {
   selectEventArtistModalState,
   selectEventCategoryModalState,
-  selectEventListArtistModalState,
   selectAddressSearchModalState,
 } from '../features/modal/manageModalSlice';
 import media from '../utils/mediaQuery';
@@ -32,7 +30,6 @@ const PageWrapper = styled.section`
 const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
-  const eventListArtistModal = useSelector(selectEventListArtistModalState);
   const addressSearchModal = useSelector(selectAddressSearchModalState);
 
   return (
@@ -40,7 +37,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       <Billboard />
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
-      {eventListArtistModal && <EventArtistModal />}
       {addressSearchModal && <AddressSearchModal />}
       <Header />
       {children}

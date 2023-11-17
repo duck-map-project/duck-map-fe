@@ -12,14 +12,14 @@ import { ArtistType } from '../../../types/artistsType';
 import { Artist } from '../../../types/eventService';
 import scrollToTop from '../../../utils/scrollToTop';
 import { setEventArtist } from '../../events/services/setEventArtistSlice';
-import { toggleEventListArtist } from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import { useGetArtistsQuery } from '../services/artistsApiSlice';
 import { useGetArtistsTypeQuery } from '../services/artistsTypeApiSlice';
 
 import { ModalCloseButton, ArtistSearchInput } from './ArtistSelectModalStyle';
 import * as S from './EventArtistModalStyle';
 
-const EventArtistModal = () => {
+const EventArtistModal = ({ onClose }: ModalProps) => {
   const dispatch = useDispatch();
   const [artists, setArtists] = useState<Artist[]>([]);
   const [types, setTypes] = useState<ArtistType[]>([]);
@@ -84,10 +84,6 @@ const EventArtistModal = () => {
     content = <div>아티스트가 없습니다</div>;
   }
 
-  const handleCloseButton = () => {
-    dispatch(toggleEventListArtist());
-  };
-
   const handleTypeButton = (type: number | null) => {
     search.setValue('');
     setCurrentType(type);
@@ -105,7 +101,7 @@ const EventArtistModal = () => {
           })
         );
       }
-      dispatch(toggleEventListArtist());
+      onClose();
     }
   };
 
@@ -136,8 +132,8 @@ const EventArtistModal = () => {
 
   return (
     <ModalPortal>
-      <CommonModal width="1156">
-        <ModalCloseButton type="button" onClick={handleCloseButton} />
+      <CommonModal width="1156" onClick={onClose}>
+        <ModalCloseButton type="button" onClick={onClose} />
         <S.Wrapper>
           <S.LeftSection>
             <S.CurrentArtist src={currentImage} />
