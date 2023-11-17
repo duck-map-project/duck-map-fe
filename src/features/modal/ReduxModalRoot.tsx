@@ -12,6 +12,8 @@ import CategoryModal from '../categories/modals/CategoryModal';
 import CategorySelectModal from '../categories/modals/CategorySelectModal';
 import AddressSearchModal from '../events/modals/AddressSearchModal';
 
+import { selectModalsSlice } from './modalsSlice';
+
 export const modals = {
   artistModal: ArtistModal,
   artistTypeModal: ArtistTypeModal,
@@ -24,8 +26,6 @@ export const modals = {
   categorySelectModal: CategorySelectModal,
   addressSearchModal: AddressSearchModal,
 };
-
-import { selectModalsSlice } from './modalsSlice';
 
 const ReduxModalRoot = () => {
   const modals = useSelector(selectModalsSlice);
