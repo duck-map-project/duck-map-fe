@@ -28,6 +28,7 @@ import {
   SubmitButton,
   NaverIcon,
   KakaoIcon,
+  CircleButtonWrapper,
 } from './SignStyle';
 
 const FormWithMargin = styled(Form)<{ $emailError: string | undefined }>`
@@ -112,7 +113,7 @@ const Signin = () => {
         <SubmitButton>로그인하기</SubmitButton>
       </FormWithMargin>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      <div>
+      <CircleButtonWrapper>
         <CircleButton
           onClick={() => {
             routeTo('/signup');
@@ -123,7 +124,7 @@ const Signin = () => {
         <CircleButton onClick={() => setPasswordModal(true)}>
           비밀번호 찾기
         </CircleButton>
-      </div>
+      </CircleButtonWrapper>
       <NaverLoginButton>
         <NaverIcon src={naverIcon} />
         네이버로 간편로그인

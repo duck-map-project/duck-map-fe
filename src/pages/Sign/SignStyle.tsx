@@ -1,10 +1,15 @@
 import { styled } from 'styled-components';
 
+import media from '../../utils/mediaQuery';
+
 export const PageWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-bottom: 100px;
+  ${media.mobile`
+    padding: 0 27px;
+  `}
 `;
 
 export const PageTitle = styled.h1`
@@ -17,6 +22,9 @@ export const PageTitle = styled.h1`
   border-radius: 50px;
   background-color: #fcf9a4;
   padding: 7px 38px;
+  ${media.mobile`
+    display: none;
+  `}
 `;
 
 export const Form = styled.form`
@@ -34,6 +42,11 @@ export const Form = styled.form`
   & > button {
     margin-top: 50px;
   }
+  ${media.mobile`
+    padding: 20px 22px 59px;
+    margin-top: 61px;
+    margin-bottom: 45px;
+  `}
   &::after {
     content: '';
     display: block;
@@ -47,6 +60,10 @@ export const Form = styled.form`
     top: 6px;
     left: 8px;
     z-index: -9;
+    ${media.mobile`
+      top: 16px;
+      left: 10px;
+    `}
   }
 `;
 
@@ -64,10 +81,29 @@ export const SubmitButton = styled.button`
   bottom: -24px;
   left: 50%;
   transform: translateX(-50%);
+  ${media.mobile`
+    width: 187px;
+    height: 49px;
+    font-size: 2rem;
+    box-shadow: 4px 4px 0px 0px #00000040;
+  `}
+`;
+
+export const CircleButtonWrapper = styled.section`
+  display: flex;
+  width: 100%;
+  max-width: 568px;
+  flex-wrap: nowrap;
+  margin-bottom: 18px;
+  gap: 20px;
+  ${media.mobile`
+    margin-bottom: 52px;
+    gap: 12px;
+  `}
 `;
 
 export const CircleButton = styled.button`
-  width: 274px;
+  width: 100%;
   height: 50px;
   background-color: #f8f8fa;
   font-size: 2.4rem;
@@ -76,10 +112,11 @@ export const CircleButton = styled.button`
   border: 2px solid #1e232c;
   border-radius: 50px;
   box-shadow: 3px 3px 0px 0px #00000040;
-  margin-bottom: 18px;
-  &:first-child {
-    margin-right: 20px;
-  }
+  ${media.mobile`
+    height: 45px;
+    font-size: 2rem;
+    line-height: 1.248;
+  `}
 `;
 
 export const SNSButtonWrapper = styled.section``;
@@ -97,6 +134,10 @@ const SNSLoginButton = styled.button`
   border: 2px solid #000000;
   border-radius: 50px;
   position: relative;
+  ${media.mobile`
+    height: 54px;
+    font-size: 2rem;
+  `}
   &::after {
     content: '';
     box-sizing: border-box;
@@ -109,6 +150,11 @@ const SNSLoginButton = styled.button`
     top: 4px;
     left: 7px;
     z-index: -9;
+    ${media.mobile`
+      height: 54px;
+      top: 3px;
+      left: 5px;
+    `}
   }
 `;
 
@@ -116,6 +162,9 @@ export const NaverLoginButton = styled(SNSLoginButton)`
   background-color: #03cf5d;
   background-image: url();
   margin-bottom: 18px;
+  ${media.mobile`
+    margin-bottom: 10px;
+  `}
   &::after {
     background-color: #65a0c3;
   }

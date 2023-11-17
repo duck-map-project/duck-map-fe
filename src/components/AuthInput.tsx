@@ -1,10 +1,16 @@
 import { css, styled } from 'styled-components';
 
+import media from '../utils/mediaQuery';
+
 const Title = styled.label`
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 1.247777777777778;
   padding-left: 10px;
+  ${media.mobile`
+    font-size: 1.6rem;
+    line-height: 1.248125;
+  `}
 `;
 
 export const Input = styled.input<{
@@ -21,6 +27,10 @@ export const Input = styled.input<{
   border-radius: 20px;
   box-shadow: 3px 3px 0px 0px #00000040;
   margin-top: 6px;
+  ${media.mobile`
+    font-size: 1.4rem;
+    box-shadow: 4px 4px 0px 0px #00000040;
+  `}
 `;
 
 const primary = css`

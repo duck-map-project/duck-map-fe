@@ -120,12 +120,17 @@ const MenuButtonText = styled.span`
   `}
 `;
 
-export const RightSection = styled.section`
+export const RightSection = styled.section<{ currentPath: string }>`
   display: flex;
   align-items: center;
   gap: 12px;
   ${media.mobile`
     margin-left: auto;
+  `}
+  ${(props) =>
+    (props.currentPath === '/signin' || props.currentPath === '/signup') &&
+    media.mobile`
+    display: none;
   `}
 `;
 
@@ -337,10 +342,16 @@ const Header: React.FC = ({}) => {
           }}
         >
           <img src={arrow} />
-          <span>홈으로</span>
+          <span>
+            {currentPath === '/signin'
+              ? '로그인'
+              : currentPath === '/signup'
+              ? '회원가입'
+              : '홈으로'}
+          </span>
         </MobileLogo>
       )}
-      <RightSection>
+      <RightSection currentPath={currentPath}>
         {content}
         {currentPath === '/managepage' || (
           <MenuButton onClick={handleAuthButton}>
