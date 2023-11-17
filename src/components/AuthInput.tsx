@@ -30,6 +30,7 @@ export const Input = styled.input<{
   ${media.mobile`
     font-size: 1.4rem;
     box-shadow: 4px 4px 0px 0px #00000040;
+    margin-top: 8px;
   `}
 `;
 

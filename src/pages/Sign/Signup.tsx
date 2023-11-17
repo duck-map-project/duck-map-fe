@@ -7,6 +7,7 @@ import AuthInput from '../../components/AuthInput';
 import { useSignUpMutation } from '../../features/auth/services/authApiSlice';
 import useForm, { Errors } from '../../hooks/useForm';
 import { useRouter } from '../../hooks/useRouter';
+import media from '../../utils/mediaQuery';
 
 import {
   PageWrapper,
@@ -22,11 +23,17 @@ import {
 } from './SignStyle';
 
 const SignupForm = styled(Form)<{ errors: Errors }>`
-  height: 490px;
+  height: fit-content;
   margin-bottom: 60px;
   padding-bottom: 60px;
   &::after {
-    height: 490px;
+    height: 100%;
+    top: 8px;
+    left: 8px;
+    ${media.mobile`
+      top: 10px;
+      left: 9px;
+    `}
   }
   & > input {
     &[name='email'] {
@@ -42,6 +49,11 @@ const SignupForm = styled(Form)<{ errors: Errors }>`
       margin-bottom: 0;
     }
   }
+  ${media.mobile`
+    margin-top: 28px;
+    margin-bottom: 55px;
+    padding: 34px 22px 55px;
+  `}
 `;
 
 const Signup = () => {
@@ -93,7 +105,7 @@ const Signup = () => {
         <PageTitle>회원가입</PageTitle>
         <AuthInput
           name="email"
-          title="이메일"
+          title="이메일을 입력해 주세요."
           type="email"
           value={inputs.email}
           onChange={handleChange}
@@ -104,7 +116,7 @@ const Signup = () => {
         {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
         <AuthInput
           name="password"
-          title="비밀번호"
+          title="비밀번호를 입력해 주세요."
           type="password"
           value={inputs.password}
           onChange={handleChange}
@@ -116,7 +128,7 @@ const Signup = () => {
 
         <AuthInput
           name="passwordCheck"
-          title="비밀번호 확인"
+          title="비밀번호를 다시 한번 입력해 주세요."
           type="password"
           value={inputs.passwordCheck}
           onChange={handleChange}
@@ -129,7 +141,7 @@ const Signup = () => {
         )}
         <AuthInput
           name="username"
-          title="닉네임"
+          title="닉네임을 입력해 주세요."
           type="text"
           value={inputs.username}
           onChange={handleChange}

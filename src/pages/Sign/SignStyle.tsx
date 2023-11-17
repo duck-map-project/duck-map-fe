@@ -163,7 +163,7 @@ export const NaverLoginButton = styled(SNSLoginButton)`
   background-image: url();
   margin-bottom: 18px;
   ${media.mobile`
-    margin-bottom: 10px;
+    margin-bottom: 14px;
   `}
   &::after {
     background-color: #65a0c3;
@@ -190,8 +190,7 @@ export const KakaoIcon = styled.img`
 export const ErrorMessage = styled.p`
   font-size: 12px;
   color: var(--red);
-  margin-top: 1px;
-  margin-bottom: 1px;
+  margin: 4px 0;
 `;
 
 export const CenterErrorMessage = styled(ErrorMessage)`
