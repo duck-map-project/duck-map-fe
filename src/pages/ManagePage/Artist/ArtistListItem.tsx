@@ -5,7 +5,6 @@ import deleteIcon from '../../../assets/delete.svg';
 import editIcon from '../../../assets/edit.svg';
 import { useDeleteArtistsMutation } from '../../../features/artists/services/artistsApiSlice';
 import { editArtistInfo } from '../../../features/artists/services/setArtistSlice';
-import { toggleEditArtist } from '../../../features/modal/manageModalSlice';
 import { modals } from '../../../features/modal/ReduxModalRoot';
 import useModal from '../../../hooks/useModal';
 import { ArtistContent } from '../../../types/artistsType';
@@ -47,7 +46,7 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
       openModal({ Component: modals.groupModal, props: { type: 'edit' } });
       return;
     }
-    dispatch(toggleEditArtist());
+    openModal({ Component: modals.artistModal, props: { type: 'edit' } });
   };
 
   const onClickDeleteBtn = async () => {

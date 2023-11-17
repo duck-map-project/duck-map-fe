@@ -19,7 +19,6 @@ import {
   selectCurrentRole,
 } from '../features/auth/services/authSlice';
 import {
-  toggleArtist,
   toggleCategory,
   toggleArtistType,
 } from '../features/modal/manageModalSlice';
@@ -201,7 +200,7 @@ const Header: React.FC = ({}) => {
     openModal({ Component: modals.groupModal, props: { type: 'add' } });
   };
   const handleArtistClick = () => {
-    dispatch(toggleArtist());
+    openModal({ Component: modals.artistModal, props: { type: 'add' } });
   };
   const handleArtistTypeClick = () => {
     dispatch(toggleArtistType());

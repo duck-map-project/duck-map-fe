@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 import Billboard from '../components/Billboard';
 import Header from '../components/Header';
 import MobileTab from '../components/MobileTab';
-import ArtistModal from '../features/artists/modals/ArtistModal';
 import ArtistSelectModal from '../features/artists/modals/ArtistSelectModal';
 import ArtistTypeModal from '../features/artists/modals/ArtistTypeModal';
 import EventArtistModal from '../features/artists/modals/EventArtistModal';
@@ -16,8 +15,6 @@ import {
   selectEditCategoryModalState,
   selectArtistTypeModalState,
   selectEditArtistTypeModalState,
-  selectArtistModalState,
-  selectEditArtistModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
   selectEventListArtistModalState,
@@ -39,8 +36,6 @@ const PageWrapper = styled.section`
 `;
 
 const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
-  const artistModalState = useSelector(selectArtistModalState);
-  const artistEditModalState = useSelector(selectEditArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
   const artistTypeEditModalState = useSelector(selectEditArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
@@ -53,8 +48,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   return (
     <PageWrapper>
       <Billboard />
-      {artistModalState && <ArtistModal type="add" />}
-      {artistEditModalState && <ArtistModal type="edit" />}
       {artistTypeModalState && <ArtistTypeModal type="add" />}
       {artistTypeEditModalState && <ArtistTypeModal type="edit" />}
       {categoryModalState && <CategoryModal type="add" />}

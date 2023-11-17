@@ -1,6 +1,6 @@
 import imageCompression from 'browser-image-compression';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
 import photoIcon from '../../../assets/photo.svg';
@@ -11,7 +11,7 @@ import CommonModal, {
 import TypeButton from '../../../components/modal/TypeButton';
 import { ArtistType } from '../../../types/artistsType';
 import { useAddImageMutation } from '../../images/imageApiSlice';
-import { toggleArtist, toggleEditArtist } from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddArtistsMutation,
   useGetArtistsQuery,
@@ -41,15 +41,11 @@ export type sortOptionsType = {
   handler?: () => void;
 };
 
-type ModalProps = {
-  type: 'add' | 'edit';
-};
 const testImg =
   'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
 
-const ArtistModal = ({ type }: ModalProps) => {
+const ArtistModal = ({ type, onClose }: ModalProps) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const dispatch = useDispatch();
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   //그룹드롭다운
   const [dropdownText, setDropdownText] = useState<string | null>('그룹');
@@ -111,14 +107,6 @@ const ArtistModal = ({ type }: ModalProps) => {
       : [];
     setArtistTypeArray(filteredTypeData);
   }, [artistTypeData]);
-
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleArtist());
-      return;
-    }
-    dispatch(toggleEditArtist());
-  };
 
   const onClickArtistType = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArtistType(parseInt(e.target.value));
@@ -203,7 +191,7 @@ const ArtistModal = ({ type }: ModalProps) => {
     };
     try {
       await addNewArtist(artistData);
-      onHideModal();
+      onClose();
     } catch (error) {
       console.error(error);
       alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
@@ -222,7 +210,7 @@ const ArtistModal = ({ type }: ModalProps) => {
         artistId: editData.id,
         artistValue: data,
       });
-      onHideModal();
+      onClose();
     } catch (error) {
       console.error(error);
       alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
@@ -245,12 +233,12 @@ const ArtistModal = ({ type }: ModalProps) => {
 
   return (
     <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onHideModal}>
+      <CommonModal className="addGroupModal" onClick={onClose}>
         {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
         <ArtistModalTitle>
           아티스트 {type === 'add' ? '등록' : '수정'}하기
         </ArtistModalTitle>
-        <ArtistModalCloseButton type="button" onClick={onHideModal}>
+        <ArtistModalCloseButton type="button" onClick={onClose}>
           <img src={closeIcon} />
         </ArtistModalCloseButton>
         <TypeTitle>아티스트 타입을 선택해주세요.</TypeTitle>
