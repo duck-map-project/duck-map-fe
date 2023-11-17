@@ -5,6 +5,7 @@ import { RootState } from '../../app/api/store';
 
 export type ModalProps = {
   onClose: () => void;
+  type?: 'add' | 'edit';
 };
 
 export type Modals = {

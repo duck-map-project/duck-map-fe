@@ -9,7 +9,6 @@ import ArtistSelectModal from '../features/artists/modals/ArtistSelectModal';
 import ArtistTypeModal from '../features/artists/modals/ArtistTypeModal';
 import EventArtistModal from '../features/artists/modals/EventArtistModal';
 import GroupModal from '../features/artists/modals/GroupModal';
-import BookmarkFolderModal from '../features/bookmarks/modals/BookmarkFolderModal';
 import BookmarkModal from '../features/bookmarks/modals/BookmarkModal';
 import CategoryModal from '../features/categories/modals/CategoryModal';
 import CategorySelectModal from '../features/categories/modals/CategorySelectModal';
@@ -24,8 +23,6 @@ import {
   selectEditArtistModalState,
   selectAddBookmarkModalState,
   selectEditBookmarkModalState,
-  selectAddBookmarkFolderModalState,
-  selectEditBookmarkFolderModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
   selectEditGroupModalState,
@@ -58,12 +55,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const categroyEditModalState = useSelector(selectEditCategoryModalState);
   const bookmarkModalState = useSelector(selectAddBookmarkModalState);
   const bookmarkEditModalState = useSelector(selectEditBookmarkModalState);
-  const bookmarkAddFolderModalState = useSelector(
-    selectAddBookmarkFolderModalState
-  );
-  const bookmarkEditFolderModalState = useSelector(
-    selectEditBookmarkFolderModalState
-  );
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
   const eventListArtistModal = useSelector(selectEventListArtistModalState);
@@ -82,8 +73,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {categroyEditModalState && <CategoryModal type="edit" />}
       {bookmarkModalState && <BookmarkModal type="add" />}
       {bookmarkEditModalState && <BookmarkModal type="edit" />}
-      {bookmarkAddFolderModalState && <BookmarkFolderModal type="add" />}
-      {bookmarkEditFolderModalState && <BookmarkFolderModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
       {eventListArtistModal && <EventArtistModal />}
