@@ -2,7 +2,6 @@ import { hsvaToHex, hexToHsva } from '@uiw/color-convert';
 import Wheel from '@uiw/react-color-wheel';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 
 import closesmallicon from '../../../assets/close-small.svg';
 import closeicon from '../../../assets/close.svg';
@@ -10,10 +9,7 @@ import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
 import { emojiArray } from '../../../utils/EmojiArray';
-import {
-  toggleAddBookmarkFolder,
-  toggleEditBookmarkFolder,
-} from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddBookmarkFolderMutation,
   useUpdateBookmarkFolderMutation,
@@ -28,10 +24,6 @@ type EmojiType = {
   name: string;
   isSelected: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-type FolderModalType = {
-  type: 'add' | 'edit';
 };
 
 const Emoji = ({ value, img, name, isSelected, onChange }: EmojiType) => {
@@ -52,7 +44,7 @@ const Emoji = ({ value, img, name, isSelected, onChange }: EmojiType) => {
   );
 };
 
-const BookmarkFolderModal = ({ type }: FolderModalType) => {
+const BookmarkFolderModal = ({ type, onClose }: ModalProps) => {
   const [folderId, setFolderId] = useState<number>(0);
   const [foldername, setFoldername] = useState('');
   const [selectEmoji, setSelectEmoji] = useState('heartred');
@@ -61,7 +53,6 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
   const [hsva, setHsva] = useState({ h: 214, s: 43, v: 90, a: 1 });
   const [selectColor, setSelectColor] = useState('');
 
-  const dispatch = useDispatch();
   const editData = useSelector(selectEditBookmarkFolder);
 
   useEffect(() => {
@@ -79,14 +70,6 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
   useEffect(() => {
     setSelectColor(hsvaToHex(hsva));
   }, [hsva]);
-
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleAddBookmarkFolder());
-    } else if (type === 'edit') {
-      dispatch(toggleEditBookmarkFolder());
-    }
-  };
 
   const onChangeFoldername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFoldername(e.target.value);
@@ -111,7 +94,7 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
       image: selectEmoji,
       color: selectColor,
     });
-    onHideModal();
+    onClose();
   };
 
   const onClickEditFolder = async (event: React.MouseEvent) => {
@@ -126,17 +109,17 @@ const BookmarkFolderModal = ({ type }: FolderModalType) => {
       color: selectColor,
     };
     await editBookmarkFolder({ folderId, folderValue: data });
-    onHideModal();
+    onClose();
   };
 
   return (
     <ModalPortal>
-      <CommonModal onClick={onHideModal} width="860">
+      <CommonModal onClick={onClose} width="860">
         <S.ModalContent>
           <S.ModalTitle>
             북마크 폴더 {type === 'add' ? '추가' : '수정'}하기
           </S.ModalTitle>
-          <S.ModalCloseButton type="button" onClick={onHideModal}>
+          <S.ModalCloseButton type="button" onClick={onClose}>
             <img src={closeicon} />
           </S.ModalCloseButton>
           <S.FoldernameSection>

@@ -5,7 +5,8 @@ import deleteicon from '../../../assets/crosspink.svg';
 import pencilicon from '../../../assets/editpencilbig.svg';
 import { useDeleteBookmarkFolderMutation } from '../../../features/bookmarks/services/bookmarkFolderApiSlice';
 import { editFolderInfo } from '../../../features/bookmarks/services/setBookmarkFolderSlice';
-import { toggleEditBookmarkFolder } from '../../../features/modal/manageModalSlice';
+import { modals } from '../../../features/modal/ReduxModalRoot';
+import useModal from '../../../hooks/useModal';
 import { emojiArray } from '../../../utils/EmojiArray';
 
 import * as S from './BookmarkFolderItemStyle';
@@ -35,6 +36,7 @@ const BookmarkFolderItem = ({
     (emoji) => emoji.value === folderEmojiName
   )?.img;
   const [deleteFolder] = useDeleteBookmarkFolderMutation();
+  const { openModal } = useModal();
   const [, setParams] = useSearchParams();
 
   const onClickFolder = () => {
@@ -45,7 +47,10 @@ const BookmarkFolderItem = ({
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(editFolderInfo({ folderId, name: foldername, image, color }));
-    dispatch(toggleEditBookmarkFolder());
+    openModal({
+      Component: modals.bookmarkFolderModal,
+      props: { type: 'edit' },
+    });
   };
 
   const onClickDeleteBtn = async (e: React.MouseEvent) => {

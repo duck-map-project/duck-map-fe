@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
 import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
-import {
-  toggleCategory,
-  toggleEditCategory,
-} from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useGetEventCategoryQuery,
   useAddEventCategoryMutation,
@@ -31,13 +28,9 @@ type categoryType = {
   category: string;
 };
 
-type categoryProps = {
-  type: 'add' | 'edit';
-};
-const CategoryModal = ({ type }: categoryProps) => {
+const CategoryModal = ({ type, onClose }: ModalProps) => {
   const [categoryName, setCategoryName] = useState('');
   const [categoryContents, setCategoryContents] = useState<categoryType[]>([]);
-  const dispatch = useDispatch();
   const { data: eventCategories } = useGetEventCategoryQuery();
   const [addNewCategory] = useAddEventCategoryMutation();
   const [editCategory] = useEditEventCategoryMutation();
@@ -49,14 +42,6 @@ const CategoryModal = ({ type }: categoryProps) => {
     }
   }, [editData]);
 
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleCategory());
-      return;
-    }
-    dispatch(toggleEditCategory());
-  };
-
   const onChangeCategoryName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryName(e.target.value);
   };
@@ -64,7 +49,7 @@ const CategoryModal = ({ type }: categoryProps) => {
   const onClickAddCategoryBtn = async () => {
     try {
       await addNewCategory(categoryName);
-      onHideModal();
+      onClose();
     } catch (error) {
       console.error(error);
       alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
@@ -79,7 +64,7 @@ const CategoryModal = ({ type }: categoryProps) => {
       });
       if ('data' in res) {
         alert('성공적으로 수정되었습니다.');
-        onHideModal();
+        onClose();
       } else {
         alert('다시 시도해주세요.');
       }
@@ -106,11 +91,11 @@ const CategoryModal = ({ type }: categoryProps) => {
 
   return (
     <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onHideModal}>
+      <CommonModal className="addGroupModal" onClick={onClose}>
         <CategoryModalTitle>
           카테고리 {type === 'add' ? '등록' : '수정'}하기
         </CategoryModalTitle>
-        <CategoryModalCloseButton type="button" onClick={onHideModal}>
+        <CategoryModalCloseButton type="button" onClick={onClose}>
           <img src={closeIcon} />
         </CategoryModalCloseButton>
         <CategoryNameLabel htmlFor="artistName">

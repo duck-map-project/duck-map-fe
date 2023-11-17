@@ -18,12 +18,8 @@ import {
   selectCurrentUser,
   selectCurrentRole,
 } from '../features/auth/services/authSlice';
-import {
-  toggleGroup,
-  toggleArtist,
-  toggleCategory,
-  toggleArtistType,
-} from '../features/modal/manageModalSlice';
+import { modals } from '../features/modal/ReduxModalRoot';
+import useModal from '../hooks/useModal';
 import { useRouter } from '../hooks/useRouter';
 import { TextButton } from '../pages/Main/MainStyle';
 import media from '../utils/mediaQuery';
@@ -154,6 +150,7 @@ const Header: React.FC = ({}) => {
   const [manageSort, setManageSort] = useState(false);
   const [manageSettingSort, setManageSettingSort] = useState(false);
   const [, setSortId] = useState<number | null>(null);
+  const { openModal } = useModal();
 
   useEffect(() => {
     if (user && user.userProfile !== '/images/null') {
@@ -196,16 +193,16 @@ const Header: React.FC = ({}) => {
     routeTo('/review');
   };
   const handleGroupClick = () => {
-    dispatch(toggleGroup());
+    openModal({ Component: modals.groupModal, props: { type: 'add' } });
   };
   const handleArtistClick = () => {
-    dispatch(toggleArtist());
+    openModal({ Component: modals.artistModal, props: { type: 'add' } });
   };
   const handleArtistTypeClick = () => {
-    dispatch(toggleArtistType());
+    openModal({ Component: modals.artistTypeModal, props: { type: 'add' } });
   };
   const handleCategoryClick = () => {
-    dispatch(toggleCategory());
+    openModal({ Component: modals.categoryModal, props: { type: 'add' } });
   };
 
   const publicMenu = [
