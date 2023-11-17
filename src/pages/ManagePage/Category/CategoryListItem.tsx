@@ -4,7 +4,8 @@ import deleteIcon from '../../../assets/delete.svg';
 import editIcon from '../../../assets/edit.svg';
 import { useDeleteEventCategoryMutation } from '../../../features/categories/services/categoryApiSlice';
 import { editCategoryInfo } from '../../../features/categories/services/setCategorySlice';
-import { toggleEditCategory } from '../../../features/modal/manageModalSlice';
+import { modals } from '../../../features/modal/ReduxModalRoot';
+import useModal from '../../../hooks/useModal';
 
 import * as S from './CategoryListItemStyle';
 
@@ -16,10 +17,11 @@ type listItemProps = {
 const CategoryListItem = ({ id, text }: listItemProps) => {
   const dispatch = useDispatch();
   const [deleteCategory] = useDeleteEventCategoryMutation();
+  const { openModal } = useModal();
 
   const onClickEditBtn = () => {
     dispatch(editCategoryInfo({ id, category: text }));
-    dispatch(toggleEditCategory());
+    openModal({ Component: modals.categoryModal, props: { type: 'edit' } });
   };
 
   const onClickDeleteBtn = async () => {

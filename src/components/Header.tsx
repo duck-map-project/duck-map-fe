@@ -18,10 +18,6 @@ import {
   selectCurrentUser,
   selectCurrentRole,
 } from '../features/auth/services/authSlice';
-import {
-  toggleCategory,
-  toggleArtistType,
-} from '../features/modal/manageModalSlice';
 import { modals } from '../features/modal/ReduxModalRoot';
 import useModal from '../hooks/useModal';
 import { useRouter } from '../hooks/useRouter';
@@ -203,10 +199,10 @@ const Header: React.FC = ({}) => {
     openModal({ Component: modals.artistModal, props: { type: 'add' } });
   };
   const handleArtistTypeClick = () => {
-    dispatch(toggleArtistType());
+    openModal({ Component: modals.artistTypeModal, props: { type: 'add' } });
   };
   const handleCategoryClick = () => {
-    dispatch(toggleCategory());
+    openModal({ Component: modals.categoryModal, props: { type: 'add' } });
   };
 
   const publicMenu = [

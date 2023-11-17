@@ -5,16 +5,10 @@ import Billboard from '../components/Billboard';
 import Header from '../components/Header';
 import MobileTab from '../components/MobileTab';
 import ArtistSelectModal from '../features/artists/modals/ArtistSelectModal';
-import ArtistTypeModal from '../features/artists/modals/ArtistTypeModal';
 import EventArtistModal from '../features/artists/modals/EventArtistModal';
-import CategoryModal from '../features/categories/modals/CategoryModal';
 import CategorySelectModal from '../features/categories/modals/CategorySelectModal';
 import AddressSearchModal from '../features/events/modals/AddressSearchModal';
 import {
-  selectCategoryModalState,
-  selectEditCategoryModalState,
-  selectArtistTypeModalState,
-  selectEditArtistTypeModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
   selectEventListArtistModalState,
@@ -36,10 +30,6 @@ const PageWrapper = styled.section`
 `;
 
 const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
-  const artistTypeModalState = useSelector(selectArtistTypeModalState);
-  const artistTypeEditModalState = useSelector(selectEditArtistTypeModalState);
-  const categoryModalState = useSelector(selectCategoryModalState);
-  const categroyEditModalState = useSelector(selectEditCategoryModalState);
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
   const eventListArtistModal = useSelector(selectEventListArtistModalState);
@@ -48,10 +38,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   return (
     <PageWrapper>
       <Billboard />
-      {artistTypeModalState && <ArtistTypeModal type="add" />}
-      {artistTypeEditModalState && <ArtistTypeModal type="edit" />}
-      {categoryModalState && <CategoryModal type="add" />}
-      {categroyEditModalState && <CategoryModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
       {eventListArtistModal && <EventArtistModal />}

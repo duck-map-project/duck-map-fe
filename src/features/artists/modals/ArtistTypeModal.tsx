@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
 import CommonModal, {
@@ -10,10 +10,7 @@ import {
   CategoryInput,
   TypeWrapper,
 } from '../../categories/modals/CategoryModalStyle';
-import {
-  toggleArtistType,
-  toggleEditArtistType,
-} from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useGetArtistsTypeQuery,
   useAddArtistsTypeMutation,
@@ -33,15 +30,11 @@ type artistType = {
   type: string;
 };
 
-type modalProps = {
-  type: 'add' | 'edit';
-};
-const ArtistTypeModal = ({ type }: modalProps) => {
+const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
   const [typeName, setTypeName] = useState('');
   const [artistTypeContents, setArtistTypeContents] = useState<artistType[]>(
     []
   );
-  const dispatch = useDispatch();
   const { data: artistTypes } = useGetArtistsTypeQuery();
   const [addNewArtistType] = useAddArtistsTypeMutation();
   const [editArtistType] = useEditArtistsTypeMutation();
@@ -53,14 +46,6 @@ const ArtistTypeModal = ({ type }: modalProps) => {
     }
   }, [editData]);
 
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleArtistType());
-      return;
-    }
-    dispatch(toggleEditArtistType());
-  };
-
   const onChangeTypeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTypeName(e.target.value);
   };
@@ -68,7 +53,7 @@ const ArtistTypeModal = ({ type }: modalProps) => {
   const onClickAddTypeBtn = async () => {
     try {
       await addNewArtistType(typeName);
-      onHideModal();
+      onClose();
     } catch (error) {
       console.error(error);
       alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
@@ -84,7 +69,7 @@ const ArtistTypeModal = ({ type }: modalProps) => {
       const res = await editArtistType(data);
       if ('data' in res) {
         alert('성공적으로 수정되었습니다.');
-        onHideModal();
+        onClose();
       } else {
         alert('잠시 후 다시 시도해주세요. ');
       }
@@ -111,11 +96,11 @@ const ArtistTypeModal = ({ type }: modalProps) => {
 
   return (
     <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onHideModal}>
+      <CommonModal className="addGroupModal" onClick={onClose}>
         <ModalTitle>
           아티스트 타입 {type === 'add' ? '등록' : '수정'}하기
         </ModalTitle>
-        <ModalCloseButton type="button" onClick={onHideModal}>
+        <ModalCloseButton type="button" onClick={onClose}>
           <img src={closeIcon} />
         </ModalCloseButton>
         <NameLabel htmlFor="artistName">
