@@ -8,21 +8,18 @@ import ArtistModal from '../features/artists/modals/ArtistModal';
 import ArtistSelectModal from '../features/artists/modals/ArtistSelectModal';
 import ArtistTypeModal from '../features/artists/modals/ArtistTypeModal';
 import EventArtistModal from '../features/artists/modals/EventArtistModal';
-import GroupModal from '../features/artists/modals/GroupModal';
 import CategoryModal from '../features/categories/modals/CategoryModal';
 import CategorySelectModal from '../features/categories/modals/CategorySelectModal';
 import AddressSearchModal from '../features/events/modals/AddressSearchModal';
 import {
   selectCategoryModalState,
   selectEditCategoryModalState,
-  selectGroupModalState,
   selectArtistTypeModalState,
   selectEditArtistTypeModalState,
   selectArtistModalState,
   selectEditArtistModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
-  selectEditGroupModalState,
   selectEventListArtistModalState,
   selectAddressSearchModalState,
 } from '../features/modal/manageModalSlice';
@@ -42,8 +39,6 @@ const PageWrapper = styled.section`
 `;
 
 const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
-  const groupModalState = useSelector(selectGroupModalState);
-  const groupEditModalState = useSelector(selectEditGroupModalState);
   const artistModalState = useSelector(selectArtistModalState);
   const artistEditModalState = useSelector(selectEditArtistModalState);
   const artistTypeModalState = useSelector(selectArtistTypeModalState);
@@ -58,8 +53,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   return (
     <PageWrapper>
       <Billboard />
-      {groupModalState && <GroupModal type="add" />}
-      {groupEditModalState && <GroupModal type="edit" />}
       {artistModalState && <ArtistModal type="add" />}
       {artistEditModalState && <ArtistModal type="edit" />}
       {artistTypeModalState && <ArtistTypeModal type="add" />}

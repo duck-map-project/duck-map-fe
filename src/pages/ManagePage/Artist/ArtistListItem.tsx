@@ -5,10 +5,9 @@ import deleteIcon from '../../../assets/delete.svg';
 import editIcon from '../../../assets/edit.svg';
 import { useDeleteArtistsMutation } from '../../../features/artists/services/artistsApiSlice';
 import { editArtistInfo } from '../../../features/artists/services/setArtistSlice';
-import {
-  toggleEditArtist,
-  toggleEditGroup,
-} from '../../../features/modal/manageModalSlice';
+import { toggleEditArtist } from '../../../features/modal/manageModalSlice';
+import { modals } from '../../../features/modal/ReduxModalRoot';
+import useModal from '../../../hooks/useModal';
 import { ArtistContent } from '../../../types/artistsType';
 
 import {
@@ -28,6 +27,7 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
   const [deleteArtist] = useDeleteArtistsMutation();
+  const { openModal } = useModal();
   const artistImage =
     data.image !== '/images/null' ? baseURL + data.image : testImg;
 
@@ -42,8 +42,9 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
       artistTypeId: data.artistType.id,
     };
     dispatch(editArtistInfo(artistData));
+
     if (data.artistType.type === '그룹' && data.groupName === null) {
-      dispatch(toggleEditGroup());
+      openModal({ Component: modals.groupModal, props: { type: 'edit' } });
       return;
     }
     dispatch(toggleEditArtist());

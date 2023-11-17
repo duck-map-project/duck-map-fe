@@ -1,6 +1,6 @@
 import imageCompression from 'browser-image-compression';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
 import photoIcon from '../../../assets/photo.svg';
@@ -9,7 +9,7 @@ import CommonModal, {
   ModalPortal,
 } from '../../../components/modal/CommonModal';
 import { useAddImageMutation } from '../../images/imageApiSlice';
-import { toggleGroup, toggleEditGroup } from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddArtistsMutation,
   useEditArtistsMutation,
@@ -28,14 +28,10 @@ import {
   SubmitButton,
 } from './GroupModalStyle';
 
-type ModalType = {
-  type: 'add' | 'edit';
-};
-
 const testImg =
   'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
 
-const GroupModal = ({ type }: ModalType) => {
+const GroupModal = ({ type, onClose }: ModalProps) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const [groupImage, setGroupImage] = useState<File>();
   const [previewImage, setPreviewImage] = useState<string>('');
@@ -45,7 +41,6 @@ const GroupModal = ({ type }: ModalType) => {
   const [addNewGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
   const editData = useSelector(selectEditArtistSlice);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (type === 'edit') {
@@ -57,14 +52,6 @@ const GroupModal = ({ type }: ModalType) => {
       setPreviewImage(baseURL + editData.image);
     }
   }, [editData]);
-
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleGroup());
-      return;
-    }
-    dispatch(toggleEditGroup());
-  };
 
   const onChangeGroupName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGroupName(e.target.value);
@@ -139,7 +126,7 @@ const GroupModal = ({ type }: ModalType) => {
     };
     try {
       await addNewGroup(groupData);
-      onHideModal();
+      onClose();
     } catch (error) {
       console.error(error);
       alert('앗, 제대로 저장되지 않았어요. 다시 시도해주세요');
@@ -154,7 +141,7 @@ const GroupModal = ({ type }: ModalType) => {
     };
     try {
       await editGroup({ artistId: editData.id, artistValue: groupData });
-      onHideModal();
+      onClose();
     } catch (error) {
       console.error(error);
       alert('앗, 제대로 저장되지 않았어요. 다시 시도해주세요.');
@@ -163,10 +150,10 @@ const GroupModal = ({ type }: ModalType) => {
 
   return (
     <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onHideModal}>
+      <CommonModal className="addGroupModal" onClick={onClose}>
         {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
         <ModalTitle>그룹 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
-        <ModalCloseButton type="button" onClick={onHideModal}>
+        <ModalCloseButton type="button" onClick={onClose}>
           <img src={closeIcon} />
         </ModalCloseButton>
         <ImageNameWrapper>
