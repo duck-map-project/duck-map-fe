@@ -5,7 +5,7 @@ import {
 } from '../../../types/bookmarkEventType';
 
 type folderIdType = {
-  folderId: number;
+  folderId: string | null;
 };
 export const bookmarkEventApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

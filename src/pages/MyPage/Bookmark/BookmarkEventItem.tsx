@@ -21,7 +21,7 @@ type EventItemProps = {
   storeName: string;
   eventId: number;
   isEditmode: boolean;
-  folderId: number;
+  folderId: string | null;
 };
 const BookmarkEventItem = ({
   image,

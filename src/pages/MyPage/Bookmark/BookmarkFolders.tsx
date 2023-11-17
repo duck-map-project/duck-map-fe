@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-
 import plusicon from '../../../assets/cross.svg';
 import editicon from '../../../assets/editpencil.svg';
 import starticon from '../../../assets/starIcon.svg';
@@ -79,6 +78,7 @@ const BookmarkFolders = ({
       />
     ));
   }
+
   return (
     <>
       <S.FoldersHeader>

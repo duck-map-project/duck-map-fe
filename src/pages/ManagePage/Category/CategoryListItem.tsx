@@ -2,8 +2,8 @@ import { useDispatch } from 'react-redux';
 
 import deleteIcon from '../../../assets/delete.svg';
 import editIcon from '../../../assets/edit.svg';
-import { editCategoryInfo } from '../../../features/categories/services/setCategorySlice';
 import { useDeleteEventCategoryMutation } from '../../../features/categories/services/categoryApiSlice';
+import { editCategoryInfo } from '../../../features/categories/services/setCategorySlice';
 import { toggleEditCategory } from '../../../features/modal/manageModalSlice';
 
 import * as S from './CategoryListItemStyle';

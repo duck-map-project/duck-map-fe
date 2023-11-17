@@ -1,28 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
 
 import defaultImage from '../../assets/user-profile.svg';
 import { useGetUserInfoQuery } from '../../features/auth/services/authApiSlice';
 
-import Bookmark from './Bookmark/Bookmark';
-import ChangePassword from './ChangePassword/ChangePassword';
-import EditProfile from './EditProfile/EditProfile';
-import Event from './Event/Event';
-import Like from './Like/Like';
-import {
-  Main,
-  SideSection,
-  ProfileWrapper,
-  ProfileImg,
-  Username,
-  ContentSection,
-  ContentWrapper,
-} from './MyPageStyle';
-import Review from './Review/Review';
-import SideBar from './SideBar/SideBar';
+import ContentSection from './ContentSection/ContentSection';
+import { Main } from './MyPageStyle';
+import SideSection from './SideSection/SideSection';
 
 const MyPage = () => {
   const { data: userData } = useGetUserInfoQuery();
+
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const username = userData?.username;
 
@@ -41,26 +28,8 @@ const MyPage = () => {
 
   return (
     <Main>
-      <SideSection>
-        <ProfileWrapper>
-          <ProfileImg src={userProfile} />
-          <Username>{username}</Username>
-        </ProfileWrapper>
-        <SideBar />
-      </SideSection>
-      <ContentSection>
-        <ContentWrapper>
-          <Routes>
-            <Route path="/" element={<Bookmark />} />
-            <Route path="bookmark" element={<Bookmark />} />
-            <Route path="like" element={<Like />} />
-            <Route path="myreview" element={<Review />} />
-            <Route path="myevent" element={<Event />} />
-            <Route path="edit_profile" element={<EditProfile />} />
-            <Route path="change_password" element={<ChangePassword />} />
-          </Routes>
-        </ContentWrapper>
-      </ContentSection>
+      <SideSection profile={userProfile} username={username} />
+      <ContentSection />
     </Main>
   );
 };
