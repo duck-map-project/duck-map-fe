@@ -93,7 +93,7 @@ const Signin = () => {
         <PageTitle>로그인</PageTitle>
         <AuthInput
           name="email"
-          title="이메일"
+          title="이메일을 입력해 주세요."
           type="email"
           value={email.value}
           onChange={email.onChange}
@@ -103,7 +103,7 @@ const Signin = () => {
 
         <AuthInput
           name="password"
-          title="비밀번호"
+          title="비밀번호를 입력해 주세요."
           type="password"
           value={password.value}
           onChange={password.onChange}
