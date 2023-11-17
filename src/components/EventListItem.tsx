@@ -7,7 +7,8 @@ import {
   addBookmarkInfo,
   selectAddBookmarkInfo,
 } from '../features/bookmarks/services/setBookmark';
-import { toggleAddBookmark } from '../features/modal/manageModalSlice';
+import { modals } from '../features/modal/ReduxModalRoot';
+import useModal from '../hooks/useModal';
 import { useRouter } from '../hooks/useRouter';
 import { EventListData } from '../types/eventService';
 
@@ -36,6 +37,7 @@ const EventListItem = ({
   const bookmarkInfoState = useSelector(selectAddBookmarkInfo);
   const [deleteBookmark] = useDeleteBookmarkEventMutation();
   const user = useSelector(selectCurrentUser);
+  const { openModal } = useModal();
 
   const handleEventClick = () => {
     if (onEventListClick) {
@@ -78,7 +80,7 @@ const EventListItem = ({
       }
 
       dispatch(addBookmarkInfo({ eventId: event.id }));
-      dispatch(toggleAddBookmark());
+      openModal({ Component: modals.bookmarkModal, props: { type: 'add' } });
     } else {
       alert('로그인이 필요합니다!');
     }

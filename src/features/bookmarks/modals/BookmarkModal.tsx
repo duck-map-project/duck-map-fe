@@ -8,10 +8,7 @@ import CommonModal, {
 import useScroll from '../../../hooks/useScroll';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 import { emojiArray } from '../../../utils/EmojiArray';
-import {
-  toggleAddBookmark,
-  toggleEditBookmark,
-} from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddBookmarkEventMutation,
   useEditBookmarkEventFolderMutation,
@@ -31,10 +28,6 @@ type BookmarkFolderProps = {
   image: string;
   selectedFolder: number | null;
   setSelectFolder: React.Dispatch<React.SetStateAction<number | null>>;
-};
-
-type BookmarkModalType = {
-  type: 'add' | 'edit';
 };
 
 const BookmarkFolderItem = ({
@@ -70,7 +63,7 @@ const BookmarkFolderItem = ({
   );
 };
 
-const BookmarkModal = ({ type }: BookmarkModalType) => {
+const BookmarkModal = ({ type, onClose }: ModalProps) => {
   const dispatch = useDispatch();
   const targetRef = useRef<HTMLDivElement>(null);
   const bookmarkEventInfo = useSelector(selectAddBookmarkInfo);
@@ -134,14 +127,6 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
     setPage: setBookmarkFoldersPage,
   });
 
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleAddBookmark());
-    } else if (type === 'edit') {
-      dispatch(toggleEditBookmark());
-    }
-  };
-
   const onClickSubmit = async () => {
     if (selectedFolder === null) {
       alert('북마크 폴더를 선택해주세요.');
@@ -151,7 +136,7 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
 
     if ('data' in res) {
       dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
-      onHideModal();
+      onClose();
     } else if ('error' in res) {
       const error = res.error;
       if ('data' in error) {
@@ -178,7 +163,7 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
 
     if ('data' in res) {
       dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
-      onHideModal();
+      onClose();
     } else if ('error' in res) {
       const error = res.error;
       if ('data' in error) {
@@ -195,11 +180,11 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
 
   return (
     <ModalPortal>
-      <CommonModal width="490" onClick={onHideModal}>
+      <CommonModal width="490" onClick={onClose}>
         <S.ModalTitle>
           {type === 'add' ? '북마크 추가하기' : '북마크 폴더 변경하기'}
         </S.ModalTitle>
-        <ModalCloseButton type="button" onClick={onHideModal}>
+        <ModalCloseButton type="button" onClick={onClose}>
           <img src={closeIcon} />
         </ModalCloseButton>
         <S.FoldersContainer>

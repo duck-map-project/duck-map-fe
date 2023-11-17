@@ -9,7 +9,6 @@ import ArtistSelectModal from '../features/artists/modals/ArtistSelectModal';
 import ArtistTypeModal from '../features/artists/modals/ArtistTypeModal';
 import EventArtistModal from '../features/artists/modals/EventArtistModal';
 import GroupModal from '../features/artists/modals/GroupModal';
-import BookmarkModal from '../features/bookmarks/modals/BookmarkModal';
 import CategoryModal from '../features/categories/modals/CategoryModal';
 import CategorySelectModal from '../features/categories/modals/CategorySelectModal';
 import AddressSearchModal from '../features/events/modals/AddressSearchModal';
@@ -21,8 +20,6 @@ import {
   selectEditArtistTypeModalState,
   selectArtistModalState,
   selectEditArtistModalState,
-  selectAddBookmarkModalState,
-  selectEditBookmarkModalState,
   selectEventArtistModalState,
   selectEventCategoryModalState,
   selectEditGroupModalState,
@@ -53,8 +50,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
   const artistTypeEditModalState = useSelector(selectEditArtistTypeModalState);
   const categoryModalState = useSelector(selectCategoryModalState);
   const categroyEditModalState = useSelector(selectEditCategoryModalState);
-  const bookmarkModalState = useSelector(selectAddBookmarkModalState);
-  const bookmarkEditModalState = useSelector(selectEditBookmarkModalState);
   const eventArtistModalState = useSelector(selectEventArtistModalState);
   const eventCategoryModalState = useSelector(selectEventCategoryModalState);
   const eventListArtistModal = useSelector(selectEventListArtistModalState);
@@ -71,8 +66,6 @@ const GeneralLayout: React.FC<GeneralLayoutProps> = ({ children }) => {
       {artistTypeEditModalState && <ArtistTypeModal type="edit" />}
       {categoryModalState && <CategoryModal type="add" />}
       {categroyEditModalState && <CategoryModal type="edit" />}
-      {bookmarkModalState && <BookmarkModal type="add" />}
-      {bookmarkEditModalState && <BookmarkModal type="edit" />}
       {eventArtistModalState && <ArtistSelectModal />}
       {eventCategoryModalState && <CategorySelectModal />}
       {eventListArtistModal && <EventArtistModal />}

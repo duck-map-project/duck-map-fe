@@ -5,7 +5,8 @@ import deleteicon from '../../../assets/crosspink.svg';
 import pencilicon from '../../../assets/editpencilbig.svg';
 import { useDeleteBookmarkEventMutation } from '../../../features/bookmarks/services/bookmarkEventApiSlice';
 import { addBookmarkInfo } from '../../../features/bookmarks/services/setBookmark';
-import { toggleEditBookmark } from '../../../features/modal/manageModalSlice';
+import { modals } from '../../../features/modal/ReduxModalRoot';
+import useModal from '../../../hooks/useModal';
 import { useRouter } from '../../../hooks/useRouter';
 
 import {
@@ -35,6 +36,7 @@ const BookmarkEventItem = ({
   const imgURL = baseUrl + image;
   const { routeTo } = useRouter();
   const [deleteEventFromFolder] = useDeleteBookmarkEventMutation();
+  const { openModal } = useModal();
 
   const onClickEvent = () => {
     routeTo(`/event/${eventId}`);
@@ -43,7 +45,7 @@ const BookmarkEventItem = ({
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(addBookmarkInfo({ eventId, folderId }));
-    dispatch(toggleEditBookmark());
+    openModal({ Component: modals.bookmarkModal, props: { type: 'edit' } });
   };
 
   const onClickDeleteBtn = async (e: React.MouseEvent) => {
