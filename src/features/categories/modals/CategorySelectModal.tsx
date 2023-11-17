@@ -14,7 +14,7 @@ import {
   selectSelectedCategory,
   setCategory,
 } from '../../events/services/setEventElemetsSlice';
-import { toggleEventCategory } from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   categoryType,
   useGetEventCategoryQuery,
@@ -27,11 +27,8 @@ import {
   CategorySelectSection,
 } from './CategorySelectModalStyle';
 
-const CategorySelectModal = () => {
+const CategorySelectModal = ({ onClose }: ModalProps) => {
   const dispatch = useDispatch();
-  const onHideModal = () => {
-    dispatch(toggleEventCategory());
-  };
   const [categories, setCategories] = useState<categoryType[]>([]);
   const selectedCategories = useSelector(selectSelectedCategory);
   const [categoriesIds, setCategoriesIds] =
@@ -56,7 +53,7 @@ const CategorySelectModal = () => {
   const handleSaveCategoryIds = () => {
     if (categoriesIds.length !== 0) {
       dispatch(setCategory(categoriesIds));
-      onHideModal();
+      onClose();
     }
   };
 
@@ -68,8 +65,8 @@ const CategorySelectModal = () => {
 
   return (
     <ModalPortal>
-      <CommonModal width="1046px" onClick={onHideModal}>
-        <ModalCloseButton onClick={onHideModal} />
+      <CommonModal width="1046px" onClick={onClose}>
+        <ModalCloseButton onClick={onClose} />
         <CategoryModalTitle>카테고리 선택하기</CategoryModalTitle>
         <CategorySelectSection>
           <CategoryListSection>

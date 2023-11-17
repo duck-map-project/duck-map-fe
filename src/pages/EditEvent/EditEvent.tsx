@@ -22,10 +22,6 @@ import {
   selectSelectedCategory,
 } from '../../features/events/services/setEventElemetsSlice';
 import { useAddImageMutation } from '../../features/images/imageApiSlice';
-import {
-  toggleAddressSearch,
-  toggleEventCategory,
-} from '../../features/modal/manageModalSlice';
 import { modals } from '../../features/modal/ReduxModalRoot';
 import useModal from '../../hooks/useModal';
 import { useRouter } from '../../hooks/useRouter';
@@ -166,11 +162,11 @@ const EditEvent = ({ type }: EditEventType) => {
   };
 
   const handleSelectCategoryButton = () => {
-    dispatch(toggleEventCategory());
+    openModal({ Component: modals.categorySelectModal });
   };
 
   const handleAddressButton = () => {
-    dispatch(toggleAddressSearch());
+    openModal({ Component: modals.addressSearchModal });
   };
 
   const handleHashtagChange = (index: number, value: string) => {
