@@ -24,9 +24,10 @@ import {
 import { useAddImageMutation } from '../../features/images/imageApiSlice';
 import {
   toggleAddressSearch,
-  toggleEventArtist,
   toggleEventCategory,
 } from '../../features/modal/manageModalSlice';
+import { modals } from '../../features/modal/ReduxModalRoot';
+import useModal from '../../hooks/useModal';
 import { useRouter } from '../../hooks/useRouter';
 import formattingHours from '../../utils/formattingHours';
 
@@ -80,6 +81,7 @@ const EditEvent = ({ type }: EditEventType) => {
   const [addEvent] = useAddEventMutation();
   const [addNewImage] = useAddImageMutation();
   const [editEvent] = useEditEventMutation();
+  const { openModal } = useModal();
 
   useEffect(() => {
     if (id) {
@@ -160,7 +162,7 @@ const EditEvent = ({ type }: EditEventType) => {
   }, [EventByIdData]);
 
   const handleSelectArtistButton = () => {
-    dispatch(toggleEventArtist());
+    openModal({ Component: modals.artistSelectModal });
   };
 
   const handleSelectCategoryButton = () => {

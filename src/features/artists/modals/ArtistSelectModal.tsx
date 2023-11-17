@@ -15,7 +15,7 @@ import {
   Artist,
   selectSelectedArtist,
 } from '../../events/services/setEventElemetsSlice';
-import { toggleEventArtist } from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import { useGetArtistsQuery } from '../services/artistsApiSlice';
 
 import {
@@ -28,7 +28,7 @@ import {
 } from './ArtistSelectModalStyle';
 import { ModalTitle } from './GroupModalStyle';
 
-const ArtistSelectModal = () => {
+const ArtistSelectModal = ({ onClose }: ModalProps) => {
   const dispatch = useDispatch();
   const [artists, setArtists] = useState<ArtistContent[]>([]);
   const [page, setPage] = useState(0);
@@ -66,7 +66,7 @@ const ArtistSelectModal = () => {
   const SaveArtistIds = () => {
     if (artistIds.length !== 0) {
       dispatch(setArtist(artistIds));
-      onHideModal();
+      onClose();
     }
   };
 
@@ -117,10 +117,6 @@ const ArtistSelectModal = () => {
     setPage,
   });
 
-  const onHideModal = () => {
-    dispatch(toggleEventArtist());
-  };
-
   const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     search.onChange(e);
     setPage(0);
@@ -133,8 +129,8 @@ const ArtistSelectModal = () => {
 
   return (
     <ModalPortal>
-      <CommonModal width="1046" onClick={onHideModal}>
-        <ModalCloseButton onClick={onHideModal} />
+      <CommonModal width="1046" onClick={onClose}>
+        <ModalCloseButton onClick={onClose} />
         <ModalTitle>아티스트 선택하기</ModalTitle>
         <AritstSelectSection>
           <ArtistSearchInput
