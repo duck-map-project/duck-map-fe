@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
+import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
+import handleErrorResponse from '../../../utils/handleErrorResponse';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
   useGetEventCategoryQuery,
@@ -29,6 +31,7 @@ type categoryType = {
 const CategoryModal = ({ type, onClose }: ModalProps) => {
   const [categoryName, setCategoryName] = useState('');
   const [categoryContents, setCategoryContents] = useState<categoryType[]>([]);
+  const [isRequesting, setIsRequesting] = useState(false);
   const { data: eventCategories } = useGetEventCategoryQuery();
   const [addNewCategory] = useAddEventCategoryMutation();
   const [editCategory] = useEditEventCategoryMutation();
@@ -44,27 +47,55 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
     setCategoryName(e.target.value);
   };
 
-  const onClickAddCategoryBtn = async () => {
+  const onClickSaveBtn = async () => {
     try {
-      await addNewCategory(categoryName);
-      onClose();
+      setIsRequesting(true);
+
+      if (!categoryName) {
+        alert('카테고리를 입력해주세요.');
+        throw new Error('Invalid Category');
+      }
+
+      if ((type = 'add')) {
+        await onSaveCategoryHandler();
+      } else if ((type = 'edit')) {
+        await onEditCategoryHandler();
+      }
     } catch (error) {
       console.error(error);
-      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
+    } finally {
+      setIsRequesting(false);
     }
   };
 
-  const onClickEditCategoryBtn = async () => {
+  const onSaveCategoryHandler = async () => {
     try {
-      const res = await editCategory({
+      const res = await addNewCategory(categoryName);
+      if ('data' in res) {
+        alert('카테고리가 정상적으로 추가되었습니다.');
+        onClose();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onEditCategoryHandler = async () => {
+    try {
+      const data = {
         id: editData.id,
         category: categoryName,
-      });
+      };
+
+      const res = await editCategory(data);
+
       if ('data' in res) {
-        alert('성공적으로 수정되었습니다.');
+        alert('카테고리가 정상적으로 수정되었습니다.');
         onClose();
-      } else {
-        alert('다시 시도해주세요.');
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
       }
     } catch (error) {
       console.error(error);
@@ -89,6 +120,7 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
 
   return (
     <CommonModal className="addGroupModal" onClick={onClose}>
+      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
       <CategoryModalTitle>
         카테고리 {type === 'add' ? '등록' : '수정'}하기
       </CategoryModalTitle>
@@ -116,12 +148,7 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
         onChange={onChangeCategoryName}
         placeholder="직접 입력"
       />
-      <CategorySubmitButton
-        type="button"
-        onClick={
-          type === 'add' ? onClickAddCategoryBtn : onClickEditCategoryBtn
-        }
-      >
+      <CategorySubmitButton type="button" onClick={onClickSaveBtn}>
         완료
       </CategorySubmitButton>
     </CommonModal>

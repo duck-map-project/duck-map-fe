@@ -51,7 +51,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
     setTypeName(e.target.value);
   };
 
-  const onClickTypeBtn = async () => {
+  const onClickSaveBtn = async () => {
     try {
       setIsRequesting(true);
 
@@ -153,7 +153,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
         onChange={onChangeTypeName}
         placeholder="직접 입력"
       />
-      <SubmitButton type="button" onClick={onClickTypeBtn}>
+      <SubmitButton type="button" onClick={onClickSaveBtn}>
         완료
       </SubmitButton>
     </CommonModal>
