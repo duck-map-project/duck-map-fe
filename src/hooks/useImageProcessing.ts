@@ -2,8 +2,13 @@ import imageCompression from 'browser-image-compression';
 
 import { useAddImageMutation } from '../features/images/imageApiSlice';
 
+interface processImageProps {
+  newImage: File | undefined;
+  savedImage: string | undefined;
+}
+
 const useImageProcessing = (): {
-  uploadImageToServer: (image: File) => Promise<string | undefined>;
+  ImageProcessing: (props: processImageProps) => Promise<string | undefined>;
 } => {
   const [addNewImage] = useAddImageMutation();
 
@@ -37,7 +42,19 @@ const useImageProcessing = (): {
     return filename;
   };
 
-  return { uploadImageToServer: compressAndUploadImage };
+  const ImageProcessing = async ({
+    newImage,
+    savedImage,
+  }: processImageProps) => {
+    if (newImage) {
+      const uploadImage = await compressAndUploadImage(newImage);
+      return uploadImage;
+    } else if (savedImage) {
+      return savedImage;
+    }
+  };
+
+  return { ImageProcessing };
 };
 
 export default useImageProcessing;
