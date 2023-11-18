@@ -5,8 +5,10 @@ import { useSelector } from 'react-redux';
 
 import closesmallicon from '../../../assets/close-small.svg';
 import closeicon from '../../../assets/close.svg';
+import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import { emojiArray } from '../../../utils/EmojiArray';
+import handleErrorResponse from '../../../utils/handleErrorResponse';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddBookmarkFolderMutation,
@@ -46,6 +48,7 @@ const BookmarkFolderModal = ({ type, onClose }: ModalProps) => {
   const [folderId, setFolderId] = useState<number>(0);
   const [foldername, setFoldername] = useState('');
   const [selectEmoji, setSelectEmoji] = useState('heartred');
+  const [isRequesting, setIsRequesting] = useState(false);
 
   //color-picker
   const [hsva, setHsva] = useState({ h: 214, s: 43, v: 90, a: 1 });
@@ -81,37 +84,71 @@ const BookmarkFolderModal = ({ type, onClose }: ModalProps) => {
     setSelectEmoji(e.target.value);
   };
 
-  const onClickAddNewFolder = async (event: React.MouseEvent) => {
+  const onClickSaveBtn = async (event: React.MouseEvent) => {
     event.stopPropagation();
-    if (foldername === '') {
-      alert('폴더 이름을 작성해주세요.');
-      return;
+    try {
+      setIsRequesting(true);
+
+      if (!foldername) {
+        alert('폴더 이름을 작성해주세요.');
+        throw new Error('Invalid Folder Name');
+      }
+      if (type === 'add') {
+        await onSaveBookmarkFolder();
+      } else if (type === 'edit') {
+        await onEditBookmarkFolder();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
-    await addNewBookmarkFolder({
-      name: foldername,
-      image: selectEmoji,
-      color: selectColor,
-    });
-    onClose();
+  };
+  const onSaveBookmarkFolder = async () => {
+    try {
+      const data = {
+        name: foldername,
+        image: selectEmoji,
+        color: selectColor,
+      };
+      setTimeout(() => {
+        console.log(2);
+      }, 5000);
+      const res = await addNewBookmarkFolder(data);
+
+      if ('data' in res) {
+        onClose();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const onClickEditFolder = async (event: React.MouseEvent) => {
-    event.stopPropagation();
-    if (foldername === '') {
-      alert('폴더 이름을 작성해주세요.');
-      return;
+  const onEditBookmarkFolder = async () => {
+    try {
+      const data = {
+        name: foldername,
+        image: selectEmoji,
+        color: selectColor,
+      };
+
+      const res = await editBookmarkFolder({ folderId, folderValue: data });
+
+      if ('data' in res) {
+        onClose();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
+      }
+    } catch (error) {
+      console.error(error);
     }
-    const data = {
-      name: foldername,
-      image: selectEmoji,
-      color: selectColor,
-    };
-    await editBookmarkFolder({ folderId, folderValue: data });
-    onClose();
   };
 
   return (
     <CommonModal onClick={onClose} width="860">
+      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
       <S.ModalContent>
         <S.ModalTitle>
           북마크 폴더 {type === 'add' ? '추가' : '수정'}하기
@@ -180,10 +217,7 @@ const BookmarkFolderModal = ({ type, onClose }: ModalProps) => {
             </S.ColorPreviewFolderWrapper>
           </S.ColorSelectSection>
         </S.FolderColorSection>
-        <S.AddNewFolderBtn
-          type="button"
-          onClick={type === 'add' ? onClickAddNewFolder : onClickEditFolder}
-        >
+        <S.AddNewFolderBtn type="button" onClick={onClickSaveBtn}>
           완료
         </S.AddNewFolderBtn>
       </S.ModalContent>
