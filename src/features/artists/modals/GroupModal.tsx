@@ -71,13 +71,11 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
       setIsRequesting(true);
 
       if (!groupName) {
-        setIsRequesting(false);
         alert('그룹아티스트의 이름을 입력해주세요.');
         throw new Error('Invalid Group-Artist name');
       }
 
       if (!groupImage && !savedImagefile) {
-        setIsRequesting(false);
         alert('그룹아티스트의 사진을 업로드 해주세요.');
         throw new Error('Invalid Group-Artist Picture');
       }
@@ -90,6 +88,8 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -115,7 +115,6 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
       };
 
       const res = await addGroup(groupData);
-      setIsRequesting(false);
 
       if ('data' in res) {
         alert('그룹아티스트의 정보가 정상적으로 추가되었습니다');
@@ -144,7 +143,6 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
         artistId: editData.id,
         artistValue: groupData,
       });
-      setIsRequesting(false);
 
       if ('data' in res) {
         alert('그룹아티스트의 정보가 정상적으로 수정되었습니다');
