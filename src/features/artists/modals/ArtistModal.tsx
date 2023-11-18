@@ -133,13 +133,11 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
       setIsRequesting(true);
 
       if (!artistName) {
-        setIsRequesting(false);
         alert('아티스트 이름을 입력해주세요.');
         throw new Error('Invalid Artist name');
       }
 
       if (!artistImage && !savedImagefile) {
-        setIsRequesting(false);
         alert('아티스트 사진을 업로드 해주세요.');
         throw new Error('Invalid Artist Picture');
       }
@@ -152,6 +150,8 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -178,7 +178,6 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
       };
 
       const res = await addArtist(artistData);
-      setIsRequesting(false);
 
       if ('data' in res) {
         alert('아티스트의 정보가 정상적으로 추가되었습니다');
