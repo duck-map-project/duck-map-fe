@@ -3,7 +3,13 @@ import styled from 'styled-components';
 import timer from '../assets/timer.svg';
 import media from '../utils/mediaQuery';
 
-const Loading = ({ text }: { text: string }) => {
+interface LoadingProps {
+  text?: string;
+}
+
+const Loading = (props: LoadingProps) => {
+  const defaultText = '저장중입니다. 잠시만 기다려주세요.';
+  const { text = defaultText } = props;
   const texts = text.split('.');
   const content = texts.map(
     (text, idx) =>
