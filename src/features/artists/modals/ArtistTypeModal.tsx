@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
+import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
+import handleErrorResponse from '../../../utils/handleErrorResponse';
 import {
   CategoryInput,
   TypeWrapper,
@@ -33,6 +35,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
   const [artistTypeContents, setArtistTypeContents] = useState<artistType[]>(
     []
   );
+  const [isRequesting, setIsRequesting] = useState(false);
   const { data: artistTypes } = useGetArtistsTypeQuery();
   const [addNewArtistType] = useAddArtistsTypeMutation();
   const [editArtistType] = useEditArtistsTypeMutation();
@@ -48,28 +51,56 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
     setTypeName(e.target.value);
   };
 
-  const onClickAddTypeBtn = async () => {
+  const onClickTypeBtn = async () => {
     try {
-      await addNewArtistType(typeName);
-      onClose();
+      setIsRequesting(true);
+
+      if (!typeName) {
+        alert('타입을 입력해주세요.');
+        throw new Error('Invalid Type');
+      }
+
+      if (type === 'add') {
+        await onSaveTypeHandler();
+      } else if (type === 'edit') {
+        await onEditTypeHandler();
+      }
     } catch (error) {
       console.error(error);
-      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
+    } finally {
+      setIsRequesting(false);
     }
   };
 
-  const onClickEditBtn = async () => {
-    const data = {
-      id: editData.id,
-      type: typeName,
-    };
+  const onSaveTypeHandler = async () => {
     try {
-      const res = await editArtistType(data);
+      const res = await addNewArtistType(typeName);
+
       if ('data' in res) {
-        alert('성공적으로 수정되었습니다.');
+        alert('아티스트 타입이 정상적으로 추가되었습니다.');
         onClose();
-      } else {
-        alert('잠시 후 다시 시도해주세요. ');
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onEditTypeHandler = async () => {
+    try {
+      const data = {
+        id: editData.id,
+        type: typeName,
+      };
+
+      const res = await editArtistType(data);
+
+      if ('data' in res) {
+        alert('아티스트 타입이 정상적으로 수정되었습니다.');
+        onClose();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
       }
     } catch (error) {
       console.error(error);
@@ -94,6 +125,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
 
   return (
     <CommonModal className="addGroupModal" onClick={onClose}>
+      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
       <ModalTitle>
         아티스트 타입 {type === 'add' ? '등록' : '수정'}하기
       </ModalTitle>
@@ -121,10 +153,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
         onChange={onChangeTypeName}
         placeholder="직접 입력"
       />
-      <SubmitButton
-        type="button"
-        onClick={type === 'add' ? onClickAddTypeBtn : onClickEditBtn}
-      >
+      <SubmitButton type="button" onClick={onClickTypeBtn}>
         완료
       </SubmitButton>
     </CommonModal>
