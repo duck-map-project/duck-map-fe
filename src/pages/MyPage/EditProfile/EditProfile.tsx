@@ -42,7 +42,7 @@ const EditProfile = () => {
   const [editUserInfo] = useEditUserInfoMutation();
   const [unregister] = useUnregisterMutation();
   const [logout] = useLogoutMutation();
-  const { uploadImageToServer } = useImageProcessing();
+  const { ImageProcessing } = useImageProcessing();
 
   useEffect(() => {
     if (userData) {
@@ -94,7 +94,10 @@ const EditProfile = () => {
 
   const processImage = async () => {
     if (userImage) {
-      const uploadedImage = await uploadImageToServer(userImage);
+      const uploadedImage = await ImageProcessing({
+        newImage: userImage,
+        savedImage: savedImagefile,
+      });
       return uploadedImage;
     } else if (savedImagefile) {
       return savedImagefile;

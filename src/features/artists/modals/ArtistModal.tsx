@@ -64,7 +64,6 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
   const [savedImagefile, setSavedImagefile] = useState<string | undefined>(
     undefined
   ); // 저장된 이미지의 filename
-  const { uploadImageToServer } = useImageProcessing();
   const [artistName, setArtistName] = useState<string | undefined>(undefined);
   const [artistTypeArray, setArtistTypeArray] = useState<ArtistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
@@ -81,7 +80,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
   const [addArtist] = useAddArtistsMutation();
   const [editArtist] = useEditArtistsMutation();
   const editData = useSelector(selectEditArtistSlice);
-
+  const { ImageProcessing } = useImageProcessing();
   useEffect(() => {
     if (type === 'edit') {
       setArtistType(editData.artistTypeId);
@@ -146,7 +145,10 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
         throw new Error('Invalid Artist Picture');
       }
 
-      const filename = await processImage();
+      const filename = await ImageProcessing({
+        newImage: artistImage,
+        savedImage: savedImagefile,
+      });
 
       if (type === 'add' && filename) {
         const data = {
@@ -185,15 +187,6 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
       console.error(error);
     } finally {
       setIsRequesting(false);
-    }
-  };
-
-  const processImage = async () => {
-    if (artistImage) {
-      const uploadImage = await uploadImageToServer(artistImage);
-      return uploadImage;
-    } else if (savedImagefile) {
-      return savedImagefile;
     }
   };
 

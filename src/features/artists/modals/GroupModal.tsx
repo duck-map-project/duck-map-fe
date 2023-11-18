@@ -39,7 +39,7 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
   // const [addNewImage] = useAddImageMutation({});
   const [addGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
-  const { uploadImageToServer } = useImageProcessing();
+  const { ImageProcessing } = useImageProcessing();
   const editData = useSelector(selectEditArtistSlice);
 
   useEffect(() => {
@@ -79,7 +79,11 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
         alert('그룹아티스트의 사진을 업로드 해주세요.');
         throw new Error('Invalid Group-Artist Picture');
       }
-      const filename = await processImage();
+
+      const filename = await ImageProcessing({
+        newImage: groupImage,
+        savedImage: savedImagefile,
+      });
 
       if (type === 'add') {
         filename && onSaveGroupInfoHandler(filename);
@@ -90,15 +94,6 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
       console.error(error);
     } finally {
       setIsRequesting(false);
-    }
-  };
-
-  const processImage = async () => {
-    if (groupImage) {
-      const uploadImage = await uploadImageToServer(groupImage);
-      return uploadImage;
-    } else if (savedImagefile) {
-      return savedImagefile;
     }
   };
 
