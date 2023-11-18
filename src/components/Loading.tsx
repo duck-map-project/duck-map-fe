@@ -4,13 +4,16 @@ import timer from '../assets/timer.svg';
 import media from '../utils/mediaQuery';
 
 const Loading = ({ text }: { text: string }) => {
-  const texts = text.split('. ');
-  const content = texts.map((text) => (
-    <>
-      <span key={Math.random()}>{text}</span>
-      <br />
-    </>
-  ));
+  const texts = text.split('.');
+  const content = texts.map(
+    (text, idx) =>
+      text && (
+        <p key={idx}>
+          <span key={Math.random()}>{text}</span>
+          <br />
+        </p>
+      )
+  );
 
   return <LoadingWrapper>{content}</LoadingWrapper>;
 };
@@ -28,6 +31,7 @@ export const LoadingWrapper = styled.article`
   text-align: center;
   font-size: 20px;
   font-weight: 700;
+  top: 30%;
   &::before {
     position: absolute;
     top: 0;
