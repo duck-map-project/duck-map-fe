@@ -10,7 +10,9 @@ const sizes: MediaQueryProps = {
   header: 940,
 };
 
-type BackQuoteArgs = string[];
+type PropsType = (props: any) => string;
+
+type BackQuoteArgs = (string | PropsType)[];
 
 const media = {
   mobile: (literals: TemplateStringsArray, ...args: BackQuoteArgs): CSSProp =>
