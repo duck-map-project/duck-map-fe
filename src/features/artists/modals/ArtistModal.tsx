@@ -7,8 +7,12 @@ import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import useImageProcessing from '../../../hooks/useImageProcessing';
-import { ArtistType } from '../../../types/artistsType';
-import handleErrorResponse from '../../../utils/handleErrorResponse';
+import {
+  ArtistType,
+  EditArtistDataType,
+  ArtistDataType,
+} from '../../../types/artistsType';
+import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddArtistsMutation,
@@ -60,6 +64,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
   const [savedImagefile, setSavedImagefile] = useState<string | undefined>(
     undefined
   ); // 저장된 이미지의 filename
+  const { uploadImageToServer } = useImageProcessing();
   const [artistName, setArtistName] = useState<string | undefined>(undefined);
   const [artistTypeArray, setArtistTypeArray] = useState<ArtistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
@@ -76,7 +81,6 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
   const [addArtist] = useAddArtistsMutation();
   const [editArtist] = useEditArtistsMutation();
   const editData = useSelector(selectEditArtistSlice);
-  const { uploadImageToServer } = useImageProcessing();
 
   useEffect(() => {
     if (type === 'edit') {
@@ -141,12 +145,41 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
         alert('아티스트 사진을 업로드 해주세요.');
         throw new Error('Invalid Artist Picture');
       }
+
       const filename = await processImage();
 
-      if (type === 'add') {
-        filename && onSaveArtistInfoHandler(filename);
-      } else if (type === 'edit') {
-        filename && onEditArtistInfoHandler(filename);
+      if (type === 'add' && filename) {
+        const data = {
+          artistTypeId: artistType,
+          groupId,
+          name: artistName,
+          image: filename,
+        };
+
+        const successMessage = `아티스트의 정보가 정상적으로 추가되었습니다`;
+
+        await performApiAction<ArtistDataType>(
+          data,
+          addArtist,
+          onClose,
+          successMessage
+        );
+      } else if (type === 'edit' && filename) {
+        const data = {
+          artistTypeId: artistType,
+          groupId,
+          name: artistName,
+          image: filename,
+        };
+
+        const successMessage = `아티스트의 정보가 정상적으로 수정되었습니다`;
+
+        await performApiAction<EditArtistDataType>(
+          { artistId: editData.id, artistValue: data },
+          editArtist,
+          onClose,
+          successMessage
+        );
       }
     } catch (error) {
       console.error(error);
@@ -161,60 +194,6 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
       return uploadImage;
     } else if (savedImagefile) {
       return savedImagefile;
-    }
-  };
-
-  const onSaveArtistInfoHandler = async (filename: string) => {
-    try {
-      if (!artistName) {
-        throw new Error('Invalid name');
-      }
-
-      const artistData = {
-        artistTypeId: artistType,
-        groupId,
-        name: artistName,
-        image: filename,
-      };
-
-      const res = await addArtist(artistData);
-
-      if ('data' in res) {
-        alert('아티스트의 정보가 정상적으로 추가되었습니다');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onEditArtistInfoHandler = async (filename: string) => {
-    try {
-      if (!artistName) {
-        throw new Error('Invalid artist name');
-      }
-      const data = {
-        artistTypeId: artistType,
-        groupId,
-        name: artistName,
-        image: filename,
-      };
-
-      const res = await editArtist({
-        artistId: editData.id,
-        artistValue: data,
-      });
-
-      if ('data' in res) {
-        alert('아티스트의 정보가 정상적으로 수정되었습니다');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
     }
   };
 
