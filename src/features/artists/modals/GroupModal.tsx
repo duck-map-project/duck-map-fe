@@ -6,7 +6,8 @@ import photoIcon from '../../../assets/photo.svg';
 import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import useImageProcessing from '../../../hooks/useImageProcessing';
-import handleErrorResponse from '../../../utils/handleErrorResponse';
+import { ArtistDataType, EditArtistDataType } from '../../../types/artistsType';
+import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddArtistsMutation,
@@ -36,7 +37,6 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
   const [savedImagefile, setSavedImagefile] = useState<string>(''); // 저장된 이미지의 filename
   const [groupName, setGroupName] = useState<string | undefined>(undefined);
   const [isRequesting, setIsRequesting] = useState(false);
-  // const [addNewImage] = useAddImageMutation({});
   const [addGroup] = useAddArtistsMutation();
   const [editGroup] = useEditArtistsMutation();
   const { ImageProcessing } = useImageProcessing();
@@ -85,68 +85,42 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
         savedImage: savedImagefile,
       });
 
-      if (type === 'add') {
-        filename && onSaveGroupInfoHandler(filename);
-      } else if (type === 'edit') {
-        filename && onEditGroupInfoHandler(filename);
+      if (type === 'add' && filename) {
+        const data = {
+          artistTypeId: 1,
+          name: groupName,
+          image: filename,
+        };
+        const successMessage =
+          '그룹 아티스트의 정보가 정상적으로 추가되었습니다.';
+        performApiAction<ArtistDataType>(
+          data,
+          addGroup,
+          onClose,
+          successMessage
+        );
+      } else if (type === 'edit' && filename) {
+        const data = {
+          artistTypeId: 1,
+          name: groupName,
+          image: filename,
+        };
+        const successMessage =
+          '그룹 아티스트의 정보가 정상적으로 수정되었습니다.';
+        performApiAction<EditArtistDataType>(
+          {
+            artistId: editData.id,
+            artistValue: data,
+          },
+          editGroup,
+          onClose,
+          successMessage
+        );
       }
     } catch (error) {
       console.error(error);
     } finally {
       setIsRequesting(false);
-    }
-  };
-
-  const onSaveGroupInfoHandler = async (filename: string) => {
-    try {
-      if (!groupName) {
-        throw new Error('Invalid name');
-      }
-
-      const groupData = {
-        artistTypeId: 1,
-        name: groupName,
-        image: filename,
-      };
-
-      const res = await addGroup(groupData);
-
-      if ('data' in res) {
-        alert('그룹아티스트의 정보가 정상적으로 추가되었습니다');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onEditGroupInfoHandler = async (filename: string) => {
-    try {
-      if (!groupName) {
-        throw new Error('Invalid artist name');
-      }
-
-      const groupData = {
-        artistTypeId: 1,
-        name: groupName,
-        image: filename,
-      };
-
-      const res = await editGroup({
-        artistId: editData.id,
-        artistValue: groupData,
-      });
-
-      if ('data' in res) {
-        alert('그룹아티스트의 정보가 정상적으로 수정되었습니다');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
     }
   };
 
