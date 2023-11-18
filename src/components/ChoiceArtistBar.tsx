@@ -14,6 +14,7 @@ import {
 } from '../features/events/services/setEventArtistSlice';
 import { toggleEventListArtist } from '../features/modal/manageModalSlice';
 import { Artist } from '../types/eventService';
+import media from '../utils/mediaQuery';
 
 import { selectedListStyle } from './ArtistListItem';
 
@@ -28,6 +29,10 @@ const Bar = styled.section`
   box-shadow: 6px 6px 0px 0px #00000040;
   padding-left: 22px;
   position: relative;
+  ${media.mobile`
+    height: 84px;
+    box-shadow: 4px 4px 0px 0px #00000040;
+  `}
   &::after {
     content: '';
     width: 50px;
@@ -36,6 +41,9 @@ const Bar = styled.section`
     position: absolute;
     top: -26px;
     left: 48.44%;
+    ${media.mobile`
+      display: none;
+    `}
   }
 `;
 
@@ -53,6 +61,12 @@ const OpenModalButton = styled.button<{ image: string | null }>`
   position: relative;
   margin-right: 25px;
   flex-shrink: 0;
+  ${media.mobile`
+    width: 60px;
+    height: 60px;
+    background-size: ${(props) => (props.image ? 'cover' : '26px 24px')};
+    margin-right: 12px;
+  `}
 `;
 
 const StarList = styled.ul`
@@ -65,6 +79,10 @@ const StarList = styled.ul`
   position: relative;
   padding: 0 35px;
   gap: 12px;
+  ${media.mobile`
+    padding: 0 12px;
+    gap: 8px;
+  `}
   &::before {
     content: '';
     display: block;
@@ -76,6 +94,10 @@ const StarList = styled.ul`
     left: 0;
     top: 50%;
     transform: translateY(-50%);
+    ${media.mobile`
+      width: 6px;
+      border: 1.4px solid #1E232C;
+    `}
   }
 `;
 
@@ -94,6 +116,10 @@ const StarItem = styled.li<{
   background-size: cover;
   ${(props) =>
     props.selectedId === props.currentId ? selectedListStyle : null}
+  ${media.mobile`
+    width: 50px;
+    height: 50px;
+  `}
 `;
 
 const NextSection = styled.section`
@@ -102,6 +128,10 @@ const NextSection = styled.section`
   flex-shrink: 0;
   border-left: 2px solid #1e232c;
   position: relative;
+  ${media.mobile`
+    width: 45px;
+    border-left: 1.4px solid #1E232C
+  `}
 `;
 
 const NextButton = styled.button`
@@ -112,6 +142,12 @@ const NextButton = styled.button`
   top: 50%;
   left: 26px;
   transform: translateY(-50%);
+  ${media.mobile`
+    width: 10px;
+    height: 18px;
+    background-size: cover;
+    left: 23px
+  `}
 `;
 
 const ChoiceArtistBar = () => {
