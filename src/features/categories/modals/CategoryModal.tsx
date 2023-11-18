@@ -120,7 +120,7 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
 
   return (
     <CommonModal className="addGroupModal" onClick={onClose}>
-      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
+      {isRequesting && <Loading />}
       <CategoryModalTitle>
         카테고리 {type === 'add' ? '등록' : '수정'}하기
       </CategoryModalTitle>

@@ -157,7 +157,7 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
 
   return (
     <CommonModal className="addGroupModal" onClick={onClose}>
-      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
+      {isRequesting && <Loading />}
       <ModalTitle>그룹 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
       <ModalCloseButton type="button" onClick={onClose}>
         <img src={closeIcon} />

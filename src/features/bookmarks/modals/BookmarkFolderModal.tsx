@@ -148,7 +148,7 @@ const BookmarkFolderModal = ({ type, onClose }: ModalProps) => {
 
   return (
     <CommonModal onClick={onClose} width="860">
-      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
+      {isRequesting && <Loading />}
       <S.ModalContent>
         <S.ModalTitle>
           북마크 폴더 {type === 'add' ? '추가' : '수정'}하기

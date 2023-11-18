@@ -234,7 +234,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
 
   return (
     <CommonModal className="addGroupModal" onClick={onClose}>
-      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
+      {isRequesting && <Loading />}
       <ArtistModalTitle>
         아티스트 {type === 'add' ? '등록' : '수정'}하기
       </ArtistModalTitle>
