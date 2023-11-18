@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
@@ -90,45 +88,43 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
   }
 
   return (
-    <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onClose}>
-        <CategoryModalTitle>
-          카테고리 {type === 'add' ? '등록' : '수정'}하기
-        </CategoryModalTitle>
-        <CategoryModalCloseButton type="button" onClick={onClose}>
-          <img src={closeIcon} />
-        </CategoryModalCloseButton>
-        <CategoryNameLabel htmlFor="artistName">
-          카테고리를 {type === 'add' ? '입력' : '수정'}해 주세요.
-        </CategoryNameLabel>
-        <TypeWrapper>
-          {type === 'add' ? (
-            typeContents
-          ) : (
-            <TypeButton
-              data={{ id: editData.id }}
-              text={editData.category}
-              selected={true}
-            />
-          )}
-        </TypeWrapper>
-        <CategoryInput
-          type="text"
-          id="artistName"
-          value={categoryName}
-          onChange={onChangeCategoryName}
-          placeholder="직접 입력"
-        />
-        <CategorySubmitButton
-          type="button"
-          onClick={
-            type === 'add' ? onClickAddCategoryBtn : onClickEditCategoryBtn
-          }
-        >
-          완료
-        </CategorySubmitButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal className="addGroupModal" onClick={onClose}>
+      <CategoryModalTitle>
+        카테고리 {type === 'add' ? '등록' : '수정'}하기
+      </CategoryModalTitle>
+      <CategoryModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </CategoryModalCloseButton>
+      <CategoryNameLabel htmlFor="artistName">
+        카테고리를 {type === 'add' ? '입력' : '수정'}해 주세요.
+      </CategoryNameLabel>
+      <TypeWrapper>
+        {type === 'add' ? (
+          typeContents
+        ) : (
+          <TypeButton
+            data={{ id: editData.id }}
+            text={editData.category}
+            selected={true}
+          />
+        )}
+      </TypeWrapper>
+      <CategoryInput
+        type="text"
+        id="artistName"
+        value={categoryName}
+        onChange={onChangeCategoryName}
+        placeholder="직접 입력"
+      />
+      <CategorySubmitButton
+        type="button"
+        onClick={
+          type === 'add' ? onClickAddCategoryBtn : onClickEditCategoryBtn
+        }
+      >
+        완료
+      </CategorySubmitButton>
+    </CommonModal>
   );
 };
 

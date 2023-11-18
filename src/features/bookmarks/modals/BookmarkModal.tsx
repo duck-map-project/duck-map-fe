@@ -2,9 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import useScroll from '../../../hooks/useScroll';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 import { emojiArray } from '../../../utils/EmojiArray';
@@ -179,31 +177,29 @@ const BookmarkModal = ({ type, onClose }: ModalProps) => {
   };
 
   return (
-    <ModalPortal>
-      <CommonModal width="490" onClick={onClose}>
-        <S.ModalTitle>
-          {type === 'add' ? '북마크 추가하기' : '북마크 폴더 변경하기'}
-        </S.ModalTitle>
-        <ModalCloseButton type="button" onClick={onClose}>
-          <img src={closeIcon} />
-        </ModalCloseButton>
-        <S.FoldersContainer>
-          <S.FoldersLists ref={targetRef}>
-            {numberOfFolders ? (
-              foldersContent
-            ) : (
-              <div>북마크 폴더가 없습니다.</div>
-            )}
-          </S.FoldersLists>
-        </S.FoldersContainer>
-        <S.SubmitButton
-          type="button"
-          onClick={type === 'add' ? onClickSubmit : onClickEdit}
-        >
-          완료
-        </S.SubmitButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal width="490" onClick={onClose}>
+      <S.ModalTitle>
+        {type === 'add' ? '북마크 추가하기' : '북마크 폴더 변경하기'}
+      </S.ModalTitle>
+      <ModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </ModalCloseButton>
+      <S.FoldersContainer>
+        <S.FoldersLists ref={targetRef}>
+          {numberOfFolders ? (
+            foldersContent
+          ) : (
+            <div>북마크 폴더가 없습니다.</div>
+          )}
+        </S.FoldersLists>
+      </S.FoldersContainer>
+      <S.SubmitButton
+        type="button"
+        onClick={type === 'add' ? onClickSubmit : onClickEdit}
+      >
+        완료
+      </S.SubmitButton>
+    </CommonModal>
   );
 };
 

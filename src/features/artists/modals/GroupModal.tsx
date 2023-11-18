@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux';
 import closeIcon from '../../../assets/close.svg';
 import photoIcon from '../../../assets/photo.svg';
 import Loading from '../../../components/Loading';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import useImageProcessing from '../../../hooks/useImageProcessing';
 import handleErrorResponse from '../../../utils/handleErrorResponse';
 import { ModalProps } from '../../modal/modalsSlice';
@@ -160,41 +158,39 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
   };
 
   return (
-    <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onClose}>
-        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
-        <ModalTitle>그룹 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
-        <ModalCloseButton type="button" onClick={onClose}>
-          <img src={closeIcon} />
-        </ModalCloseButton>
-        <ImageNameWrapper>
-          <ImagePreview htmlFor="artistImage" previewimage={previewImage}>
-            <img src={photoIcon} alt="그룹 이미지 선택" />
-          </ImagePreview>
-          <StyledInput
-            type="file"
-            id="artistImage"
-            accept="image/png, image/jpeg"
-            onChange={onChangeGroupImage}
+    <CommonModal className="addGroupModal" onClick={onClose}>
+      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요." />}
+      <ModalTitle>그룹 {type === 'add' ? '등록' : '수정'}하기</ModalTitle>
+      <ModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </ModalCloseButton>
+      <ImageNameWrapper>
+        <ImagePreview htmlFor="artistImage" previewimage={previewImage}>
+          <img src={photoIcon} alt="그룹 이미지 선택" />
+        </ImagePreview>
+        <StyledInput
+          type="file"
+          id="artistImage"
+          accept="image/png, image/jpeg"
+          onChange={onChangeGroupImage}
+        />
+        <NameWrapper>
+          <NameLabel htmlFor="artistName">
+            그룹 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
+          </NameLabel>
+          <NameInput
+            type="text"
+            id="artistName"
+            value={groupName}
+            onChange={onChangeGroupName}
+            placeholder="그룹 이름"
           />
-          <NameWrapper>
-            <NameLabel htmlFor="artistName">
-              그룹 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
-            </NameLabel>
-            <NameInput
-              type="text"
-              id="artistName"
-              value={groupName}
-              onChange={onChangeGroupName}
-              placeholder="그룹 이름"
-            />
-          </NameWrapper>
-        </ImageNameWrapper>
-        <SubmitButton type="button" onClick={onClickSaveBtnHandler}>
-          완료
-        </SubmitButton>
-      </CommonModal>
-    </ModalPortal>
+        </NameWrapper>
+      </ImageNameWrapper>
+      <SubmitButton type="button" onClick={onClickSaveBtnHandler}>
+        완료
+      </SubmitButton>
+    </CommonModal>
   );
 };
 

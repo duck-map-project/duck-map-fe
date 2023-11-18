@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import {
   CategoryInput,
@@ -95,43 +93,41 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
   }
 
   return (
-    <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onClose}>
-        <ModalTitle>
-          아티스트 타입 {type === 'add' ? '등록' : '수정'}하기
-        </ModalTitle>
-        <ModalCloseButton type="button" onClick={onClose}>
-          <img src={closeIcon} />
-        </ModalCloseButton>
-        <NameLabel htmlFor="artistName">
-          아티스트 타입을 {type === 'add' ? '입력' : '수정'}해 주세요.
-        </NameLabel>
-        <TypeWrapper>
-          {type === 'add' ? (
-            typeContents
-          ) : (
-            <TypeButton
-              data={{ id: editData.id }}
-              text={typeName}
-              selected={true}
-            />
-          )}
-        </TypeWrapper>
-        <CategoryInput
-          type="text"
-          id="artistName"
-          value={typeName}
-          onChange={onChangeTypeName}
-          placeholder="직접 입력"
-        />
-        <SubmitButton
-          type="button"
-          onClick={type === 'add' ? onClickAddTypeBtn : onClickEditBtn}
-        >
-          완료
-        </SubmitButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal className="addGroupModal" onClick={onClose}>
+      <ModalTitle>
+        아티스트 타입 {type === 'add' ? '등록' : '수정'}하기
+      </ModalTitle>
+      <ModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </ModalCloseButton>
+      <NameLabel htmlFor="artistName">
+        아티스트 타입을 {type === 'add' ? '입력' : '수정'}해 주세요.
+      </NameLabel>
+      <TypeWrapper>
+        {type === 'add' ? (
+          typeContents
+        ) : (
+          <TypeButton
+            data={{ id: editData.id }}
+            text={typeName}
+            selected={true}
+          />
+        )}
+      </TypeWrapper>
+      <CategoryInput
+        type="text"
+        id="artistName"
+        value={typeName}
+        onChange={onChangeTypeName}
+        placeholder="직접 입력"
+      />
+      <SubmitButton
+        type="button"
+        onClick={type === 'add' ? onClickAddTypeBtn : onClickEditBtn}
+      >
+        완료
+      </SubmitButton>
+    </CommonModal>
   );
 };
 

@@ -5,9 +5,7 @@ import { useSelector } from 'react-redux';
 
 import closesmallicon from '../../../assets/close-small.svg';
 import closeicon from '../../../assets/close.svg';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import { emojiArray } from '../../../utils/EmojiArray';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
@@ -113,90 +111,83 @@ const BookmarkFolderModal = ({ type, onClose }: ModalProps) => {
   };
 
   return (
-    <ModalPortal>
-      <CommonModal onClick={onClose} width="860">
-        <S.ModalContent>
-          <S.ModalTitle>
-            북마크 폴더 {type === 'add' ? '추가' : '수정'}하기
-          </S.ModalTitle>
-          <S.ModalCloseButton type="button" onClick={onClose}>
-            <img src={closeicon} />
-          </S.ModalCloseButton>
-          <S.FoldernameSection>
-            <S.FoldernameLabel>
-              북마크 폴더 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
-            </S.FoldernameLabel>
-            <S.FoldernameInput
-              type="text"
-              placeholder={
-                type === 'add' ? '북마크 폴더 이름' : '선택한 북마크 폴더 이름'
-              }
-              value={foldername}
-              onChange={onChangeFoldername}
-            />
-            <S.FoldernameDeleteBtn onClick={onDeleteCurrentFoldername}>
-              <img src={closesmallicon} />
-            </S.FoldernameDeleteBtn>
-          </S.FoldernameSection>
-          <S.FoldericonSection>
-            <S.IconSectionTitle>
-              폴더 아이콘을 선택해 주세요.
-            </S.IconSectionTitle>
-            <S.IconSelectSection>
-              <S.EmojiBox>
-                <S.EmojiLists>
-                  {emojiArray.map((emoji) => (
-                    <Emoji
-                      key={emoji.id}
-                      name={emoji.name}
-                      value={emoji.value}
-                      img={emoji.img}
-                      onChange={onSelectEmoji}
-                      isSelected={emoji.value === selectEmoji}
-                    />
-                  ))}
-                </S.EmojiLists>
-              </S.EmojiBox>
-              <S.EmojiPreviewFolderWrapper>
-                <S.StyledBookmarkFolder fill="#DEFCF9" />
-                <S.EmojiPreview img={selectEmoji}>
-                  <img
-                    src={
-                      emojiArray.find((emoji) => emoji.value === selectEmoji)
-                        ?.img
-                    }
+    <CommonModal onClick={onClose} width="860">
+      <S.ModalContent>
+        <S.ModalTitle>
+          북마크 폴더 {type === 'add' ? '추가' : '수정'}하기
+        </S.ModalTitle>
+        <S.ModalCloseButton type="button" onClick={onClose}>
+          <img src={closeicon} />
+        </S.ModalCloseButton>
+        <S.FoldernameSection>
+          <S.FoldernameLabel>
+            북마크 폴더 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
+          </S.FoldernameLabel>
+          <S.FoldernameInput
+            type="text"
+            placeholder={
+              type === 'add' ? '북마크 폴더 이름' : '선택한 북마크 폴더 이름'
+            }
+            value={foldername}
+            onChange={onChangeFoldername}
+          />
+          <S.FoldernameDeleteBtn onClick={onDeleteCurrentFoldername}>
+            <img src={closesmallicon} />
+          </S.FoldernameDeleteBtn>
+        </S.FoldernameSection>
+        <S.FoldericonSection>
+          <S.IconSectionTitle>폴더 아이콘을 선택해 주세요.</S.IconSectionTitle>
+          <S.IconSelectSection>
+            <S.EmojiBox>
+              <S.EmojiLists>
+                {emojiArray.map((emoji) => (
+                  <Emoji
+                    key={emoji.id}
+                    name={emoji.name}
+                    value={emoji.value}
+                    img={emoji.img}
+                    onChange={onSelectEmoji}
+                    isSelected={emoji.value === selectEmoji}
                   />
-                </S.EmojiPreview>
-                <S.Previewtext>미리보기</S.Previewtext>
-              </S.EmojiPreviewFolderWrapper>
-            </S.IconSelectSection>
-          </S.FoldericonSection>
-          <S.FolderColorSection>
-            <S.ColorSectionTitle>
-              폴더 컬러를 선택해 주세요.
-            </S.ColorSectionTitle>
-            <S.ColorSelectSection>
-              <S.ColorBox>
-                <Wheel
-                  color={hsva}
-                  onChange={(color) => setHsva({ ...hsva, ...color.hsva })}
+                ))}
+              </S.EmojiLists>
+            </S.EmojiBox>
+            <S.EmojiPreviewFolderWrapper>
+              <S.StyledBookmarkFolder fill="#DEFCF9" />
+              <S.EmojiPreview img={selectEmoji}>
+                <img
+                  src={
+                    emojiArray.find((emoji) => emoji.value === selectEmoji)?.img
+                  }
                 />
-              </S.ColorBox>
-              <S.ColorPreviewFolderWrapper>
-                <S.StyledBookmarkFolder fill={selectColor} />
-                <S.Previewtext>미리보기</S.Previewtext>
-              </S.ColorPreviewFolderWrapper>
-            </S.ColorSelectSection>
-          </S.FolderColorSection>
-          <S.AddNewFolderBtn
-            type="button"
-            onClick={type === 'add' ? onClickAddNewFolder : onClickEditFolder}
-          >
-            완료
-          </S.AddNewFolderBtn>
-        </S.ModalContent>
-      </CommonModal>
-    </ModalPortal>
+              </S.EmojiPreview>
+              <S.Previewtext>미리보기</S.Previewtext>
+            </S.EmojiPreviewFolderWrapper>
+          </S.IconSelectSection>
+        </S.FoldericonSection>
+        <S.FolderColorSection>
+          <S.ColorSectionTitle>폴더 컬러를 선택해 주세요.</S.ColorSectionTitle>
+          <S.ColorSelectSection>
+            <S.ColorBox>
+              <Wheel
+                color={hsva}
+                onChange={(color) => setHsva({ ...hsva, ...color.hsva })}
+              />
+            </S.ColorBox>
+            <S.ColorPreviewFolderWrapper>
+              <S.StyledBookmarkFolder fill={selectColor} />
+              <S.Previewtext>미리보기</S.Previewtext>
+            </S.ColorPreviewFolderWrapper>
+          </S.ColorSelectSection>
+        </S.FolderColorSection>
+        <S.AddNewFolderBtn
+          type="button"
+          onClick={type === 'add' ? onClickAddNewFolder : onClickEditFolder}
+        >
+          완료
+        </S.AddNewFolderBtn>
+      </S.ModalContent>
+    </CommonModal>
   );
 };
 

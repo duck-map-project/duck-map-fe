@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux';
 import closeIcon from '../../../assets/close.svg';
 import photoIcon from '../../../assets/photo.svg';
 import Loading from '../../../components/Loading';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import useImageProcessing from '../../../hooks/useImageProcessing';
 import { ArtistType } from '../../../types/artistsType';
@@ -209,7 +207,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
         artistId: editData.id,
         artistValue: data,
       });
-      
+
       if ('data' in res) {
         alert('아티스트의 정보가 정상적으로 수정되었습니다');
         onClose();
@@ -236,55 +234,53 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
   }
 
   return (
-    <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onClose}>
-        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
-        <ArtistModalTitle>
-          아티스트 {type === 'add' ? '등록' : '수정'}하기
-        </ArtistModalTitle>
-        <ArtistModalCloseButton type="button" onClick={onClose}>
-          <img src={closeIcon} />
-        </ArtistModalCloseButton>
-        <TypeTitle>아티스트 타입을 선택해주세요.</TypeTitle>
-        <TypeWrapper>{content}</TypeWrapper>
-        <ArtistImageNameWrapper>
-          <ArtistImagePreview htmlFor="artistImage" previewimage={previewImage}>
-            <img src={photoIcon} alt="아티스트 이미지 선택" />
-          </ArtistImagePreview>
-          <StyledInput
-            type="file"
-            id="artistImage"
-            accept="image/png, image/jpeg"
-            onChange={onChangeArtistImage}
+    <CommonModal className="addGroupModal" onClick={onClose}>
+      {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
+      <ArtistModalTitle>
+        아티스트 {type === 'add' ? '등록' : '수정'}하기
+      </ArtistModalTitle>
+      <ArtistModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </ArtistModalCloseButton>
+      <TypeTitle>아티스트 타입을 선택해주세요.</TypeTitle>
+      <TypeWrapper>{content}</TypeWrapper>
+      <ArtistImageNameWrapper>
+        <ArtistImagePreview htmlFor="artistImage" previewimage={previewImage}>
+          <img src={photoIcon} alt="아티스트 이미지 선택" />
+        </ArtistImagePreview>
+        <StyledInput
+          type="file"
+          id="artistImage"
+          accept="image/png, image/jpeg"
+          onChange={onChangeArtistImage}
+        />
+        <ArtistInfoWrapper>
+          <GroupSortDropdown
+            className="groupSortdrop"
+            sortButtonRef={sortButtonRef}
+            clicked={SortModal}
+            setClicked={setSortModal}
+            sortOptions={sortOption}
+            selectedText={dropdownText}
+            setSelectedText={setDropdownText}
+            setId={setGroupId}
           />
-          <ArtistInfoWrapper>
-            <GroupSortDropdown
-              className="groupSortdrop"
-              sortButtonRef={sortButtonRef}
-              clicked={SortModal}
-              setClicked={setSortModal}
-              sortOptions={sortOption}
-              selectedText={dropdownText}
-              setSelectedText={setDropdownText}
-              setId={setGroupId}
-            />
-            <NameLabel htmlFor="artistName">
-              아티스트 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
-            </NameLabel>
-            <ArtistNameInput
-              type="text"
-              id="artistName"
-              value={artistName}
-              onChange={onChangeArtistName}
-              placeholder="아티스트 이름"
-            />
-          </ArtistInfoWrapper>
-        </ArtistImageNameWrapper>
-        <ArtistSubmitButton type="button" onClick={onClickSaveBtnHandler}>
-          완료
-        </ArtistSubmitButton>
-      </CommonModal>
-    </ModalPortal>
+          <NameLabel htmlFor="artistName">
+            아티스트 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
+          </NameLabel>
+          <ArtistNameInput
+            type="text"
+            id="artistName"
+            value={artistName}
+            onChange={onChangeArtistName}
+            placeholder="아티스트 이름"
+          />
+        </ArtistInfoWrapper>
+      </ArtistImageNameWrapper>
+      <ArtistSubmitButton type="button" onClick={onClickSaveBtnHandler}>
+        완료
+      </ArtistSubmitButton>
+    </CommonModal>
   );
 };
 
