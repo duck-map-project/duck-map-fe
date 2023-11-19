@@ -196,7 +196,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
     content = artistTypeArray.map((data) => (
       <TypeButton
         key={data.id}
-        data={data}
+        id={data.id}
         text={data.type}
         onChange={onClickArtistType}
         selected={data.id === artistType}

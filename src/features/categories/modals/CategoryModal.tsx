@@ -111,7 +111,7 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
     typeContents = categoryContents.map((content) => (
       <TypeButton
         key={content.id}
-        data={content}
+        id={content.id}
         text={content.category}
         selected={true}
       />
@@ -135,7 +135,7 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
           typeContents
         ) : (
           <TypeButton
-            data={{ id: editData.id }}
+            id={editData.id}
             text={editData.category}
             selected={true}
           />
