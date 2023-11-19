@@ -5,7 +5,11 @@ import closeIcon from '../../../assets/close.svg';
 import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
-import handleErrorResponse from '../../../utils/handleErrorResponse';
+import {
+  ArtisttypeType,
+  AritsttypeAddType,
+} from '../../../types/artisttypeType';
+import { performApiAction } from '../../../utils/apiHelpers';
 import {
   CategoryInput,
   TypeWrapper,
@@ -25,19 +29,14 @@ import {
   SubmitButton,
 } from './GroupModalStyle';
 
-type artistType = {
-  id: number;
-  type: string;
-};
-
 const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
   const [typeName, setTypeName] = useState('');
-  const [artistTypeContents, setArtistTypeContents] = useState<artistType[]>(
-    []
-  );
+  const [artistTypeContents, setArtistTypeContents] = useState<
+    ArtisttypeType[]
+  >([]);
   const [isRequesting, setIsRequesting] = useState(false);
   const { data: artistTypes } = useGetArtistsTypeQuery();
-  const [addNewArtistType] = useAddArtistsTypeMutation();
+  const [addArtistType] = useAddArtistsTypeMutation();
   const [editArtistType] = useEditArtistsTypeMutation();
   const editData = useSelector(selectEditArtistType);
 
@@ -61,49 +60,33 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
       }
 
       if (type === 'add') {
-        await onSaveTypeHandler();
+        const data = {
+          type: typeName,
+        };
+        const successMessage = '아티스트 타입이 정상적으로 추가되었습니다.';
+        await performApiAction<AritsttypeAddType>(
+          data,
+          addArtistType,
+          onClose,
+          successMessage
+        );
       } else if (type === 'edit') {
-        await onEditTypeHandler();
+        const data = {
+          id: editData.id,
+          type: typeName,
+        };
+        const successMessage = '아티스트 타입이 정상적으로 수정되었습니다.';
+        await performApiAction<ArtisttypeType>(
+          data,
+          editArtistType,
+          onClose,
+          successMessage
+        );
       }
     } catch (error) {
       console.error(error);
     } finally {
       setIsRequesting(false);
-    }
-  };
-
-  const onSaveTypeHandler = async () => {
-    try {
-      const res = await addNewArtistType(typeName);
-
-      if ('data' in res) {
-        alert('아티스트 타입이 정상적으로 추가되었습니다.');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onEditTypeHandler = async () => {
-    try {
-      const data = {
-        id: editData.id,
-        type: typeName,
-      };
-
-      const res = await editArtistType(data);
-
-      if ('data' in res) {
-        alert('아티스트 타입이 정상적으로 수정되었습니다.');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -116,7 +99,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
     typeContents = artistTypeContents.map((content) => (
       <TypeButton
         key={content.id}
-        data={content}
+        id={content.id}
         text={content.type}
         selected={true}
       />
@@ -139,11 +122,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
         {type === 'add' ? (
           typeContents
         ) : (
-          <TypeButton
-            data={{ id: editData.id }}
-            text={typeName}
-            selected={true}
-          />
+          <TypeButton id={editData.id} text={typeName} selected={true} />
         )}
       </TypeWrapper>
       <CategoryInput
