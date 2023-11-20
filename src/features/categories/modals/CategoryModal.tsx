@@ -5,7 +5,7 @@ import closeIcon from '../../../assets/close.svg';
 import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
-import handleErrorResponse from '../../../utils/handleErrorResponse';
+import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
   useGetEventCategoryQuery,
@@ -43,6 +43,10 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
     }
   }, [editData]);
 
+  useEffect(() => {
+    if (eventCategories) setCategoryContents(eventCategories);
+  }, [eventCategories]);
+
   const onChangeCategoryName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryName(e.target.value);
   };
@@ -56,10 +60,23 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
         throw new Error('Invalid Category');
       }
 
-      if ((type = 'add')) {
-        await onSaveCategoryHandler();
-      } else if ((type = 'edit')) {
-        await onEditCategoryHandler();
+      if (type === 'add') {
+        const successMessage = '카테고리가 정상적으로 추가되었습니다.';
+
+        await performApiAction(
+          categoryName,
+          addNewCategory,
+          onClose,
+          successMessage
+        );
+      } else if (type === 'edit') {
+        const data = {
+          id: editData.id,
+          category: categoryName,
+        };
+        const successMessage = '카테고리가 정상적으로 수정되었습니다.';
+
+        await performApiAction(data, editCategory, onClose, successMessage);
       }
     } catch (error) {
       console.error(error);
@@ -67,44 +84,6 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
       setIsRequesting(false);
     }
   };
-
-  const onSaveCategoryHandler = async () => {
-    try {
-      const res = await addNewCategory(categoryName);
-      if ('data' in res) {
-        alert('카테고리가 정상적으로 추가되었습니다.');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onEditCategoryHandler = async () => {
-    try {
-      const data = {
-        id: editData.id,
-        category: categoryName,
-      };
-
-      const res = await editCategory(data);
-
-      if ('data' in res) {
-        alert('카테고리가 정상적으로 수정되었습니다.');
-        onClose();
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (eventCategories) setCategoryContents(eventCategories);
-  }, [eventCategories]);
 
   let typeContents;
   if (categoryContents.length > 0) {

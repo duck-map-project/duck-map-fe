@@ -1,15 +1,11 @@
 import { apiSlice } from '../../../app/api/apiSlice';
-
-export type categoryType = {
-  id: number;
-  category: string;
-};
+import { CategoryType } from '../../../types/categoryType';
 
 const accessToken = window.localStorage.getItem('admin');
 
 export const eventCategoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getEventCategory: builder.query<categoryType[], void>({
+    getEventCategory: builder.query<CategoryType[], void>({
       query: () => 'events/categories',
       providesTags: ['EventCategory'],
     }),

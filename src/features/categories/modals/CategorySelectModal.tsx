@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
 import CommonModal from '../../../components/modal/CommonModal';
+import { CategoryType } from '../../../types/categoryType';
 import {
   ModalCloseButton,
   DoneButton,
@@ -13,10 +14,7 @@ import {
   setCategory,
 } from '../../events/services/setEventElemetsSlice';
 import { ModalProps } from '../../modal/modalsSlice';
-import {
-  categoryType,
-  useGetEventCategoryQuery,
-} from '../services/categoryApiSlice';
+import { useGetEventCategoryQuery } from '../services/categoryApiSlice';
 
 import {
   CategoryModalTitle,
@@ -27,7 +25,7 @@ import {
 
 const CategorySelectModal = ({ onClose }: ModalProps) => {
   const dispatch = useDispatch();
-  const [categories, setCategories] = useState<categoryType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const selectedCategories = useSelector(selectSelectedCategory);
   const [categoriesIds, setCategoriesIds] =
     useState<Category[]>(selectedCategories);

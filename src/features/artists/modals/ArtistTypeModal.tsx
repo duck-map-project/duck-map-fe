@@ -5,9 +5,7 @@ import closeIcon from '../../../assets/close.svg';
 import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
-import {
-  ArtisttypeType,
-} from '../../../types/artisttypeType';
+import { ArtisttypeType } from '../../../types/artisttypeType';
 import { performApiAction } from '../../../utils/apiHelpers';
 import {
   CategoryInput,
