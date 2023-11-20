@@ -7,7 +7,6 @@ import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import {
   ArtisttypeType,
-  AritsttypeAddType,
 } from '../../../types/artisttypeType';
 import { performApiAction } from '../../../utils/apiHelpers';
 import {
@@ -64,24 +63,14 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
           type: typeName,
         };
         const successMessage = '아티스트 타입이 정상적으로 추가되었습니다.';
-        await performApiAction<AritsttypeAddType>(
-          data,
-          addArtistType,
-          onClose,
-          successMessage
-        );
+        await performApiAction(data, addArtistType, onClose, successMessage);
       } else if (type === 'edit') {
         const data = {
           id: editData.id,
           type: typeName,
         };
         const successMessage = '아티스트 타입이 정상적으로 수정되었습니다.';
-        await performApiAction<ArtisttypeType>(
-          data,
-          editArtistType,
-          onClose,
-          successMessage
-        );
+        await performApiAction(data, editArtistType, onClose, successMessage);
       }
     } catch (error) {
       console.error(error);

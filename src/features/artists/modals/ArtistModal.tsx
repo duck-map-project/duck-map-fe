@@ -7,11 +7,7 @@ import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import useImageProcessing from '../../../hooks/useImageProcessing';
-import {
-  ArtistType,
-  EditArtistDataType,
-  ArtistDataType,
-} from '../../../types/artistsType';
+import { ArtistType } from '../../../types/artistsType';
 import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
@@ -160,12 +156,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
 
         const successMessage = `아티스트의 정보가 정상적으로 추가되었습니다`;
 
-        await performApiAction<ArtistDataType>(
-          data,
-          addArtist,
-          onClose,
-          successMessage
-        );
+        await performApiAction(data, addArtist, onClose, successMessage);
       } else if (type === 'edit' && filename) {
         const data = {
           artistTypeId: artistType,
@@ -176,7 +167,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
 
         const successMessage = `아티스트의 정보가 정상적으로 수정되었습니다`;
 
-        await performApiAction<EditArtistDataType>(
+        await performApiAction(
           { artistId: editData.id, artistValue: data },
           editArtist,
           onClose,

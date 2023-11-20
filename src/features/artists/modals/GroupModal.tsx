@@ -6,7 +6,6 @@ import photoIcon from '../../../assets/photo.svg';
 import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import useImageProcessing from '../../../hooks/useImageProcessing';
-import { ArtistDataType, EditArtistDataType } from '../../../types/artistsType';
 import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
@@ -93,12 +92,7 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
         };
         const successMessage =
           '그룹 아티스트의 정보가 정상적으로 추가되었습니다.';
-        performApiAction<ArtistDataType>(
-          data,
-          addGroup,
-          onClose,
-          successMessage
-        );
+        performApiAction(data, addGroup, onClose, successMessage);
       } else if (type === 'edit' && filename) {
         const data = {
           artistTypeId: 1,
@@ -107,7 +101,7 @@ const GroupModal = ({ type, onClose }: ModalProps) => {
         };
         const successMessage =
           '그룹 아티스트의 정보가 정상적으로 수정되었습니다.';
-        performApiAction<EditArtistDataType>(
+        performApiAction(
           {
             artistId: editData.id,
             artistValue: data,

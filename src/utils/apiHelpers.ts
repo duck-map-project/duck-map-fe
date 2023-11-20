@@ -10,18 +10,9 @@ import {
 } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { MutationTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks';
 
-import { ArtistDataType, EditArtistDataType } from '../types/artistsType';
-import { ArtisttypeType, AritsttypeAddType } from '../types/artisttypeType';
-
 import handleErrorResponse from './handleErrorResponse';
 
-type Data =
-  | ArtistDataType
-  | EditArtistDataType
-  | AritsttypeAddType
-  | ArtisttypeType;
-
-export type ApiFunction<T extends Data> = MutationTrigger<
+export type ApiFunction<T> = MutationTrigger<
   MutationDefinition<
     T,
     (
@@ -36,7 +27,7 @@ export type ApiFunction<T extends Data> = MutationTrigger<
   >
 >;
 
-export const performApiAction = async <T extends Data>(
+export const performApiAction = async <T>(
   data: T,
   apiFunction: ApiFunction<T>,
   extraFunction?: () => void,
