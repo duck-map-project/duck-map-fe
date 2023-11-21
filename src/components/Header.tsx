@@ -126,6 +126,7 @@ export const RightSection = styled.section<{ currentPath: string }>`
   gap: 12px;
   ${media.mobile`
     margin-left: auto;
+    gap: 0;
   `}
   ${(props) =>
     (props.currentPath === '/signin' || props.currentPath === '/signup') &&
