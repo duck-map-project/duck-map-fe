@@ -3,11 +3,16 @@ import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
 import photoIcon from '../../../assets/photo.svg';
+import defaultImage from '../../../assets/user-profile.svg';
 import Loading from '../../../components/Loading';
 import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import useImageProcessing from '../../../hooks/useImageProcessing';
-import { ArtistType } from '../../../types/artistsType';
+import {
+  ArtistType,
+  ArtistDataType,
+  EditArtistDataType,
+} from '../../../types/artistsType';
 import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
@@ -38,9 +43,6 @@ export type sortOptionsType = {
   id: number;
   handler?: () => void;
 };
-
-const testImg =
-  'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
 
 const ArtistModal = ({ type, onClose }: ModalProps) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -84,7 +86,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
       setArtistName(editData.name);
       editData.groupName && setDropdownText(editData.groupName);
       if (editData.image === '/images/null') {
-        setPreviewImage(testImg);
+        setPreviewImage(defaultImage);
         return;
       }
       setSavedImagefile(editData.image.slice(8));
@@ -156,7 +158,12 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
 
         const successMessage = `아티스트의 정보가 정상적으로 추가되었습니다`;
 
-        await performApiAction(data, addArtist, onClose, successMessage);
+        await performApiAction<ArtistDataType>(
+          data,
+          addArtist,
+          onClose,
+          successMessage
+        );
       } else if (type === 'edit' && filename) {
         const data = {
           artistTypeId: artistType,
@@ -167,7 +174,7 @@ const ArtistModal = ({ type, onClose }: ModalProps) => {
 
         const successMessage = `아티스트의 정보가 정상적으로 수정되었습니다`;
 
-        await performApiAction(
+        await performApiAction<EditArtistDataType>(
           { artistId: editData.id, artistValue: data },
           editArtist,
           onClose,
