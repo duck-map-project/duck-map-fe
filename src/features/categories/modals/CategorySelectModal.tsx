@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
+import { CategoryType } from '../../../types/categoryType';
 import {
   ModalCloseButton,
   DoneButton,
@@ -14,11 +13,8 @@ import {
   selectSelectedCategory,
   setCategory,
 } from '../../events/services/setEventElemetsSlice';
-import { toggleEventCategory } from '../../modal/manageModalSlice';
-import {
-  categoryType,
-  useGetEventCategoryQuery,
-} from '../services/categoryApiSlice';
+import { ModalProps } from '../../modal/modalsSlice';
+import { useGetEventCategoryQuery } from '../services/categoryApiSlice';
 
 import {
   CategoryModalTitle,
@@ -27,12 +23,9 @@ import {
   CategorySelectSection,
 } from './CategorySelectModalStyle';
 
-const CategorySelectModal = () => {
+const CategorySelectModal = ({ onClose }: ModalProps) => {
   const dispatch = useDispatch();
-  const onHideModal = () => {
-    dispatch(toggleEventCategory());
-  };
-  const [categories, setCategories] = useState<categoryType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
   const selectedCategories = useSelector(selectSelectedCategory);
   const [categoriesIds, setCategoriesIds] =
     useState<Category[]>(selectedCategories);
@@ -56,7 +49,7 @@ const CategorySelectModal = () => {
   const handleSaveCategoryIds = () => {
     if (categoriesIds.length !== 0) {
       dispatch(setCategory(categoriesIds));
-      onHideModal();
+      onClose();
     }
   };
 
@@ -67,32 +60,30 @@ const CategorySelectModal = () => {
   }, [categoryData]);
 
   return (
-    <ModalPortal>
-      <CommonModal width="1046px" onClick={onHideModal}>
-        <ModalCloseButton onClick={onHideModal} />
-        <CategoryModalTitle>카테고리 선택하기</CategoryModalTitle>
-        <CategorySelectSection>
-          <CategoryListSection>
-            {categories &&
-              categories.map((category) => (
-                <CategoryItem
-                  key={category.id}
-                  onClick={() => {
-                    onCategoryClick(category.id, category.category);
-                  }}
-                  currentId={category.id}
-                  selectedIds={categoriesIds.map((category) => category.id)}
-                >
-                  {category.category}
-                </CategoryItem>
-              ))}
-          </CategoryListSection>
-        </CategorySelectSection>
-        <DoneButton type="button" onClick={handleSaveCategoryIds}>
-          완료
-        </DoneButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal width="1046px" onClick={onClose}>
+      <ModalCloseButton onClick={onClose} />
+      <CategoryModalTitle>카테고리 선택하기</CategoryModalTitle>
+      <CategorySelectSection>
+        <CategoryListSection>
+          {categories &&
+            categories.map((category) => (
+              <CategoryItem
+                key={category.id}
+                onClick={() => {
+                  onCategoryClick(category.id, category.category);
+                }}
+                currentId={category.id}
+                selectedIds={categoriesIds.map((category) => category.id)}
+              >
+                {category.category}
+              </CategoryItem>
+            ))}
+        </CategoryListSection>
+      </CategorySelectSection>
+      <DoneButton type="button" onClick={handleSaveCategoryIds}>
+        완료
+      </DoneButton>
+    </CommonModal>
   );
 };
 

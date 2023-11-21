@@ -2,16 +2,13 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import Loading from '../../../components/Loading';
+import CommonModal from '../../../components/modal/CommonModal';
 import useScroll from '../../../hooks/useScroll';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 import { emojiArray } from '../../../utils/EmojiArray';
-import {
-  toggleAddBookmark,
-  toggleEditBookmark,
-} from '../../modal/manageModalSlice';
+import handleErrorResponse from '../../../utils/handleErrorResponse';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddBookmarkEventMutation,
   useEditBookmarkEventFolderMutation,
@@ -31,10 +28,6 @@ type BookmarkFolderProps = {
   image: string;
   selectedFolder: number | null;
   setSelectFolder: React.Dispatch<React.SetStateAction<number | null>>;
-};
-
-type BookmarkModalType = {
-  type: 'add' | 'edit';
 };
 
 const BookmarkFolderItem = ({
@@ -70,7 +63,7 @@ const BookmarkFolderItem = ({
   );
 };
 
-const BookmarkModal = ({ type }: BookmarkModalType) => {
+const BookmarkModal = ({ type, onClose }: ModalProps) => {
   const dispatch = useDispatch();
   const targetRef = useRef<HTMLDivElement>(null);
   const bookmarkEventInfo = useSelector(selectAddBookmarkInfo);
@@ -80,6 +73,7 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
   const [bookmarkFolders, setBookmarkFolders] = useState<BookmarkFolderType[]>(
     []
   );
+  const [isRequesting, setIsRequesting] = useState(false);
   const [addBookmark] = useAddBookmarkEventMutation();
   const [editBookmarkFolder] = useEditBookmarkEventFolderMutation();
 
@@ -134,91 +128,82 @@ const BookmarkModal = ({ type }: BookmarkModalType) => {
     setPage: setBookmarkFoldersPage,
   });
 
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleAddBookmark());
-    } else if (type === 'edit') {
-      dispatch(toggleEditBookmark());
-    }
-  };
+  const onClickSaveBtn = async () => {
+    try {
+      setIsRequesting(true);
 
-  const onClickSubmit = async () => {
-    if (selectedFolder === null) {
-      alert('북마크 폴더를 선택해주세요.');
-      return;
-    }
-    const res = await addBookmark({ id: eventId, folderId: selectedFolder });
-
-    if ('data' in res) {
-      dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
-      onHideModal();
-    } else if ('error' in res) {
-      const error = res.error;
-      if ('data' in error) {
-        const data = error.data;
-        if (data !== null && typeof data === 'object' && 'message' in data) {
-          const errorMessage = data.message;
-          alert(errorMessage);
-          return;
-        }
+      if (!selectedFolder) {
+        alert('북마크 폴더를 선택해주세요.');
+        throw new Error('Invalid Bookmark Folder');
       }
-      alert('잠시 후에 다시 시도해주세요.');
+      if (type === 'add') {
+        await onSaveBookmarkHandler();
+      } else if (type === 'edit') {
+        await onEditBookmarkHandler();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
   };
 
-  const onClickEdit = async () => {
-    if (selectedFolder === null) {
-      alert('북마크 폴더를 선택해주세요.');
-      return;
+  const onSaveBookmarkHandler = async () => {
+    try {
+      const data = { id: eventId, folderId: selectedFolder };
+      const res = await addBookmark(data);
+
+      if ('data' in res) {
+        dispatch(addBookmarkInfo({ eventId, isBookmark: true })); //북마크 정보 즉각 업뎃하기 위해서
+        onClose();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
+      }
+    } catch (error) {
+      console.error(error);
     }
-    const res = await editBookmarkFolder({
+  };
+
+  const onEditBookmarkHandler = async () => {
+    const data = {
       id: eventId,
       folderId: selectedFolder,
-    });
-
-    if ('data' in res) {
-      dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
-      onHideModal();
-    } else if ('error' in res) {
-      const error = res.error;
-      if ('data' in error) {
-        const data = error.data;
-        if (data !== null && typeof data === 'object' && 'message' in data) {
-          const errorMessage = data.message;
-          alert(errorMessage);
-          return;
-        }
+    };
+    try {
+      const res = await editBookmarkFolder(data);
+      if ('data' in res) {
+        dispatch(addBookmarkInfo({ eventId, isBookmark: true }));
+        onClose();
+      } else if ('error' in res) {
+        handleErrorResponse(res.error);
       }
-      alert('잠시 후에 다시 시도해주세요.');
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
-    <ModalPortal>
-      <CommonModal width="490" onClick={onHideModal}>
-        <S.ModalTitle>
-          {type === 'add' ? '북마크 추가하기' : '북마크 폴더 변경하기'}
-        </S.ModalTitle>
-        <ModalCloseButton type="button" onClick={onHideModal}>
-          <img src={closeIcon} />
-        </ModalCloseButton>
-        <S.FoldersContainer>
-          <S.FoldersLists ref={targetRef}>
-            {numberOfFolders ? (
-              foldersContent
-            ) : (
-              <div>북마크 폴더가 없습니다.</div>
-            )}
-          </S.FoldersLists>
-        </S.FoldersContainer>
-        <S.SubmitButton
-          type="button"
-          onClick={type === 'add' ? onClickSubmit : onClickEdit}
-        >
-          완료
-        </S.SubmitButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal width="490" onClick={onClose}>
+      {isRequesting && <Loading />}
+      <S.ModalTitle>
+        {type === 'add' ? '북마크 추가하기' : '북마크 폴더 변경하기'}
+      </S.ModalTitle>
+      <ModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </ModalCloseButton>
+      <S.FoldersContainer>
+        <S.FoldersLists ref={targetRef}>
+          {numberOfFolders ? (
+            foldersContent
+          ) : (
+            <div>북마크 폴더가 없습니다.</div>
+          )}
+        </S.FoldersLists>
+      </S.FoldersContainer>
+      <S.SubmitButton type="button" onClick={onClickSaveBtn}>
+        완료
+      </S.SubmitButton>
+    </CommonModal>
   );
 };
 

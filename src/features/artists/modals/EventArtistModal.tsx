@@ -2,9 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import ArtistListItem from '../../../components/ArtistListItem';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import useDebounce from '../../../hooks/useDebounce';
 import useInput from '../../../hooks/useInput';
 import useScroll from '../../../hooks/useScroll';
@@ -12,14 +10,14 @@ import { ArtistType } from '../../../types/artistsType';
 import { Artist } from '../../../types/eventService';
 import scrollToTop from '../../../utils/scrollToTop';
 import { setEventArtist } from '../../events/services/setEventArtistSlice';
-import { toggleEventListArtist } from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import { useGetArtistsQuery } from '../services/artistsApiSlice';
 import { useGetArtistsTypeQuery } from '../services/artistsTypeApiSlice';
 
 import { ModalCloseButton, ArtistSearchInput } from './ArtistSelectModalStyle';
 import * as S from './EventArtistModalStyle';
 
-const EventArtistModal = () => {
+const EventArtistModal = ({ onClose }: ModalProps) => {
   const dispatch = useDispatch();
   const [artists, setArtists] = useState<Artist[]>([]);
   const [types, setTypes] = useState<ArtistType[]>([]);
@@ -84,10 +82,6 @@ const EventArtistModal = () => {
     content = <div>아티스트가 없습니다</div>;
   }
 
-  const handleCloseButton = () => {
-    dispatch(toggleEventListArtist());
-  };
-
   const handleTypeButton = (type: number | null) => {
     search.setValue('');
     setCurrentType(type);
@@ -105,7 +99,7 @@ const EventArtistModal = () => {
           })
         );
       }
-      dispatch(toggleEventListArtist());
+      onClose();
     }
   };
 
@@ -135,56 +129,54 @@ const EventArtistModal = () => {
   };
 
   return (
-    <ModalPortal>
-      <CommonModal width="1156">
-        <ModalCloseButton type="button" onClick={handleCloseButton} />
-        <S.Wrapper>
-          <S.LeftSection>
-            <S.CurrentArtist src={currentImage} />
-            <S.TextBox>검색된 최애 아티스트명</S.TextBox>
-            <S.ArtistNameText>
-              {currentArtist && currentArtist.name}
-            </S.ArtistNameText>
-            <S.ArtistTypeWrapper>
-              {types &&
-                types.map((type) => (
-                  <S.ArtistTypeButton
-                    type="button"
-                    key={type.id}
-                    onClick={() => handleTypeButton(type.id)}
-                  >
-                    {type.type}
-                  </S.ArtistTypeButton>
-                ))}
-              <S.ArtistTypeButton
-                type="button"
-                onClick={() => handleTypeButton(null)}
-              >
-                reset
-              </S.ArtistTypeButton>
-            </S.ArtistTypeWrapper>
-            <S.ButtonWrapper>
-              <S.SubmitButton type="button" onClick={handleOkButton}>
-                확인
-              </S.SubmitButton>
-            </S.ButtonWrapper>
-          </S.LeftSection>
-          <S.RightSection>
-            <S.Title>아티스트 검색하기</S.Title>
-            <S.GroupSelectSection>
-              <ArtistSearchInput
-                value={search.value}
-                onChange={onSearchInputChange}
-                onReset={onSearchInputReset}
-              />
-              <S.ArtistListWrapper ref={targetRef}>
-                <S.ArtistListSection>{content}</S.ArtistListSection>
-              </S.ArtistListWrapper>
-            </S.GroupSelectSection>
-          </S.RightSection>
-        </S.Wrapper>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal width="1156" onClick={onClose}>
+      <ModalCloseButton type="button" onClick={onClose} />
+      <S.Wrapper>
+        <S.LeftSection>
+          <S.CurrentArtist src={currentImage} />
+          <S.TextBox>검색된 최애 아티스트명</S.TextBox>
+          <S.ArtistNameText>
+            {currentArtist && currentArtist.name}
+          </S.ArtistNameText>
+          <S.ArtistTypeWrapper>
+            {types &&
+              types.map((type) => (
+                <S.ArtistTypeButton
+                  type="button"
+                  key={type.id}
+                  onClick={() => handleTypeButton(type.id)}
+                >
+                  {type.type}
+                </S.ArtistTypeButton>
+              ))}
+            <S.ArtistTypeButton
+              type="button"
+              onClick={() => handleTypeButton(null)}
+            >
+              reset
+            </S.ArtistTypeButton>
+          </S.ArtistTypeWrapper>
+          <S.ButtonWrapper>
+            <S.SubmitButton type="button" onClick={handleOkButton}>
+              확인
+            </S.SubmitButton>
+          </S.ButtonWrapper>
+        </S.LeftSection>
+        <S.RightSection>
+          <S.Title>아티스트 검색하기</S.Title>
+          <S.GroupSelectSection>
+            <ArtistSearchInput
+              value={search.value}
+              onChange={onSearchInputChange}
+              onReset={onSearchInputReset}
+            />
+            <S.ArtistListWrapper ref={targetRef}>
+              <S.ArtistListSection>{content}</S.ArtistListSection>
+            </S.ArtistListWrapper>
+          </S.GroupSelectSection>
+        </S.RightSection>
+      </S.Wrapper>
+    </CommonModal>
   );
 };
 

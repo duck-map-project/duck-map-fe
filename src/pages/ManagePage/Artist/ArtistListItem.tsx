@@ -3,12 +3,11 @@ import { useDispatch } from 'react-redux';
 
 import deleteIcon from '../../../assets/delete.svg';
 import editIcon from '../../../assets/edit.svg';
+import defaultImage from '../../../assets/user-profile.svg';
 import { useDeleteArtistsMutation } from '../../../features/artists/services/artistsApiSlice';
 import { editArtistInfo } from '../../../features/artists/services/setArtistSlice';
-import {
-  toggleEditArtist,
-  toggleEditGroup,
-} from '../../../features/modal/manageModalSlice';
+import { modals } from '../../../features/modal/ReduxModalRoot';
+import useModal from '../../../hooks/useModal';
 import { ArtistContent } from '../../../types/artistsType';
 
 import {
@@ -21,15 +20,13 @@ import {
   ArtistName,
 } from './ArtistListItemStyle';
 
-const testImg =
-  'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
-
 const ArtistListItem = ({ data }: { data: ArtistContent }) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
   const [deleteArtist] = useDeleteArtistsMutation();
+  const { openModal } = useModal();
   const artistImage =
-    data.image !== '/images/null' ? baseURL + data.image : testImg;
+    data.image !== '/images/null' ? baseURL + data.image : defaultImage;
 
   const onClickEditBtn = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -42,11 +39,12 @@ const ArtistListItem = ({ data }: { data: ArtistContent }) => {
       artistTypeId: data.artistType.id,
     };
     dispatch(editArtistInfo(artistData));
+
     if (data.artistType.type === '그룹' && data.groupName === null) {
-      dispatch(toggleEditGroup());
+      openModal({ Component: modals.groupModal, props: { type: 'edit' } });
       return;
     }
-    dispatch(toggleEditArtist());
+    openModal({ Component: modals.artistModal, props: { type: 'edit' } });
   };
 
   const onClickDeleteBtn = async () => {

@@ -1,5 +1,5 @@
 import { apiSlice } from '../../../app/api/apiSlice';
-import { ArtistValue, ArtistsData } from '../../../types/artistsType';
+import { ArtistDataType, ArtistsRawDataType } from '../../../types/artistsType';
 import { Artist } from '../../../types/eventService';
 
 const accessToken = window.localStorage.getItem('admin');
@@ -43,7 +43,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
           method: 'GET',
         };
       },
-      transformResponse: (response: ArtistsData) => {
+      transformResponse: (response: ArtistsRawDataType) => {
         const content = response.content;
         const isLast = response.last;
         return { content, isLast };
@@ -63,7 +63,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Artists'],
     }),
     addArtists: builder.mutation({
-      query: (artistValue: ArtistValue) => ({
+      query: (artistValue: ArtistDataType) => ({
         url: '/artists',
         method: 'POST',
         headers: {
@@ -79,7 +79,7 @@ export const artistsApiSlice = apiSlice.injectEndpoints({
         artistValue,
       }: {
         artistId: number;
-        artistValue: ArtistValue;
+        artistValue: ArtistDataType;
       }) => ({
         url: `/artists/${artistId}`,
         method: 'PUT',

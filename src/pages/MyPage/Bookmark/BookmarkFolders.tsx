@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 import plusicon from '../../../assets/cross.svg';
 import editicon from '../../../assets/editpencil.svg';
 import starticon from '../../../assets/starIcon.svg';
 import { useGetBookmarkFoldersQuery } from '../../../features/bookmarks/services/bookmarkFolderApiSlice';
-import { toggleAddBookmarkFolder } from '../../../features/modal/manageModalSlice';
+import { modals } from '../../../features/modal/ReduxModalRoot';
+import useModal from '../../../hooks/useModal';
 import { BookmarkFolderType } from '../../../types/bookmarkFolderType';
 
 import BookmarkFolderItem from './BookmarkFolderItem';
@@ -20,7 +20,6 @@ const BookmarkFolders = ({
   setSelectedFoldername,
   setSelectedFolderId,
 }: FolderProps) => {
-  const dispatch = useDispatch();
   const [numberOfFolders, setNumberOfFolders] = useState(0);
   const [isLast, setIsLast] = useState(true);
   const [isEditmode, setIsEditmode] = useState(false);
@@ -36,6 +35,8 @@ const BookmarkFolders = ({
     error,
   } = useGetBookmarkFoldersQuery({});
 
+  const { openModal } = useModal();
+
   //무한스크롤 상태
   isLast;
 
@@ -48,7 +49,10 @@ const BookmarkFolders = ({
   }, [bookmarkFoldersData]);
 
   const onClickAddNewFolder = () => {
-    dispatch(toggleAddBookmarkFolder());
+    openModal({
+      Component: modals.bookmarkFolderModal,
+      props: { type: 'add' },
+    });
   };
 
   const onClickToggleEditmode = () => {
@@ -78,6 +82,7 @@ const BookmarkFolders = ({
       />
     ));
   }
+
   return (
     <>
       <S.FoldersHeader>

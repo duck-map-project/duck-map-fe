@@ -12,7 +12,8 @@ import {
   selectEventGroup,
   setEventArtist,
 } from '../features/events/services/setEventArtistSlice';
-import { toggleEventListArtist } from '../features/modal/manageModalSlice';
+import { modals } from '../features/modal/ReduxModalRoot';
+import useModal from '../hooks/useModal';
 import { Artist } from '../types/eventService';
 import media from '../utils/mediaQuery';
 
@@ -159,6 +160,7 @@ const ChoiceArtistBar = () => {
   const [currentArtist, setCurrentArtist] = useState<Artist | null>(
     selectedArtist
   );
+  const { openModal } = useModal();
 
   useEffect(() => {
     if (selectedGroup && selectedGroup.id) {
@@ -185,7 +187,7 @@ const ChoiceArtistBar = () => {
   const artistImage = selectedArtist && baseUrl + selectedArtist.image;
 
   const handleArtistBarButton = () => {
-    dispatch(toggleEventListArtist());
+    openModal({ Component: modals.eventArtistModal });
   };
 
   const onClickStarItem = (artist: Artist) => {

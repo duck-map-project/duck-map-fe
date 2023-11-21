@@ -4,7 +4,8 @@ import deleteIcon from '../../../assets/delete.svg';
 import editIcon from '../../../assets/edit.svg';
 import { useDeleteArtistsTypeMutation } from '../../../features/artists/services/artistsTypeApiSlice';
 import { editArtistTypeInfo } from '../../../features/artists/services/setArtistTypeSlice';
-import { toggleEditArtistType } from '../../../features/modal/manageModalSlice';
+import { modals } from '../../../features/modal/ReduxModalRoot';
+import useModal from '../../../hooks/useModal';
 
 import * as S from './ArtistTypeListItemStyle';
 
@@ -15,10 +16,11 @@ type listItemProps = {
 const ArtistTypeListItem = ({ id, text }: listItemProps) => {
   const dispatch = useDispatch();
   const [deleteArtistType] = useDeleteArtistsTypeMutation();
+  const { openModal } = useModal();
 
   const onClickEditBtn = () => {
     dispatch(editArtistTypeInfo({ id, type: text }));
-    dispatch(toggleEditArtistType());
+    openModal({ Component: modals.artistTypeModal, props: { type: 'edit' } });
   };
   const onClickDeleteBtn = async () => {
     if (window.confirm(`아티스트 타입 "${text}"(을)를 삭제하시겠습니까?`)) {

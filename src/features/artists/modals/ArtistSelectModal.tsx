@@ -2,9 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import useDebounce from '../../../hooks/useDebounce';
 import useInput from '../../../hooks/useInput';
 import useScroll from '../../../hooks/useScroll';
@@ -15,7 +13,7 @@ import {
   Artist,
   selectSelectedArtist,
 } from '../../events/services/setEventElemetsSlice';
-import { toggleEventArtist } from '../../modal/manageModalSlice';
+import { ModalProps } from '../../modal/modalsSlice';
 import { useGetArtistsQuery } from '../services/artistsApiSlice';
 
 import {
@@ -28,7 +26,7 @@ import {
 } from './ArtistSelectModalStyle';
 import { ModalTitle } from './GroupModalStyle';
 
-const ArtistSelectModal = () => {
+const ArtistSelectModal = ({ onClose }: ModalProps) => {
   const dispatch = useDispatch();
   const [artists, setArtists] = useState<ArtistContent[]>([]);
   const [page, setPage] = useState(0);
@@ -66,7 +64,7 @@ const ArtistSelectModal = () => {
   const SaveArtistIds = () => {
     if (artistIds.length !== 0) {
       dispatch(setArtist(artistIds));
-      onHideModal();
+      onClose();
     }
   };
 
@@ -117,10 +115,6 @@ const ArtistSelectModal = () => {
     setPage,
   });
 
-  const onHideModal = () => {
-    dispatch(toggleEventArtist());
-  };
-
   const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     search.onChange(e);
     setPage(0);
@@ -132,23 +126,21 @@ const ArtistSelectModal = () => {
   };
 
   return (
-    <ModalPortal>
-      <CommonModal width="1046" onClick={onHideModal}>
-        <ModalCloseButton onClick={onHideModal} />
-        <ModalTitle>아티스트 선택하기</ModalTitle>
-        <AritstSelectSection>
-          <ArtistSearchInput
-            onChange={onSearchInputChange}
-            value={search.value}
-            onReset={onSearchInputReset}
-          />
-          <ArtistListSection ref={ulRef}>{content}</ArtistListSection>
-        </AritstSelectSection>
-        <DoneButton type="button" onClick={SaveArtistIds}>
-          완료
-        </DoneButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal width="1046" onClick={onClose}>
+      <ModalCloseButton onClick={onClose} />
+      <ModalTitle>아티스트 선택하기</ModalTitle>
+      <AritstSelectSection>
+        <ArtistSearchInput
+          onChange={onSearchInputChange}
+          value={search.value}
+          onReset={onSearchInputReset}
+        />
+        <ArtistListSection ref={ulRef}>{content}</ArtistListSection>
+      </AritstSelectSection>
+      <DoneButton type="button" onClick={SaveArtistIds}>
+        완료
+      </DoneButton>
+    </CommonModal>
   );
 };
 

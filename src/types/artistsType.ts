@@ -1,16 +1,21 @@
-export interface ArtistValue {
+export type ArtistType = {
+  id: number;
+  type: string;
+};
+
+export interface ArtistDataType {
   artistTypeId: number;
   groupId?: number | null;
   name: string;
   image: string;
 }
 
-export type ArtistType = {
-  id: number;
-  type: string;
+export type EditArtistDataType = {
+  artistId: number;
+  artistValue: ArtistDataType;
 };
 
-export interface ArtistsData {
+export interface ArtistsRawDataType {
   totalElements: number;
   totalPages: number;
   sort: {
@@ -52,6 +57,6 @@ export interface ArtistsData {
 }
 
 export type ArtistContent = Pick<
-  ArtistsData['content'][0],
+  ArtistsRawDataType['content'][0],
   'id' | 'groupId' | 'groupName' | 'name' | 'image' | 'artistType'
 >;

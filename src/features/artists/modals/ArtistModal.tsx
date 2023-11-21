@@ -1,17 +1,20 @@
-import imageCompression from 'browser-image-compression';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
 import photoIcon from '../../../assets/photo.svg';
+import defaultImage from '../../../assets/user-profile.svg';
 import Loading from '../../../components/Loading';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
-import { ArtistType } from '../../../types/artistsType';
-import { useAddImageMutation } from '../../images/imageApiSlice';
-import { toggleArtist, toggleEditArtist } from '../../modal/manageModalSlice';
+import useImageProcessing from '../../../hooks/useImageProcessing';
+import {
+  ArtistType,
+  ArtistDataType,
+  EditArtistDataType,
+} from '../../../types/artistsType';
+import { performApiAction } from '../../../utils/apiHelpers';
+import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddArtistsMutation,
   useGetArtistsQuery,
@@ -41,15 +44,8 @@ export type sortOptionsType = {
   handler?: () => void;
 };
 
-type ModalProps = {
-  type: 'add' | 'edit';
-};
-const testImg =
-  'https://images.unsplash.com/photo-1567880905822-56f8e06fe630?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80';
-
-const ArtistModal = ({ type }: ModalProps) => {
+const ArtistModal = ({ type, onClose }: ModalProps) => {
   const baseURL = process.env.REACT_APP_BASE_URL;
-  const dispatch = useDispatch();
   const sortButtonRef = useRef<HTMLButtonElement>(null);
   //그룹드롭다운
   const [dropdownText, setDropdownText] = useState<string | null>('그룹');
@@ -63,24 +59,26 @@ const ArtistModal = ({ type }: ModalProps) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     undefined
   );
-  const [artistName, setArtistName] = useState('');
+  const [savedImagefile, setSavedImagefile] = useState<string | undefined>(
+    undefined
+  ); // 저장된 이미지의 filename
+  const [artistName, setArtistName] = useState<string | undefined>(undefined);
   const [artistTypeArray, setArtistTypeArray] = useState<ArtistType[] | []>([]);
   const [SortModal, setSortModal] = useState(false);
   const [groupPageNumber, _] = useState(0);
   const [isRequesting, setIsRequesting] = useState(false);
   const [sortOption, setSortOption] = useState<sortOptionsType[]>([]);
   const pageSize = '20';
-  const [addNewImage] = useAddImageMutation({});
   const { data: artistTypeData } = useGetArtistsTypeQuery();
   const { data: groupArtist } = useGetArtistsQuery({
     artistTypeId: '1',
     pageNumber: groupPageNumber.toString(),
     pageSize,
   });
-  const [addNewArtist] = useAddArtistsMutation();
+  const [addArtist] = useAddArtistsMutation();
   const [editArtist] = useEditArtistsMutation();
   const editData = useSelector(selectEditArtistSlice);
-
+  const { ImageProcessing } = useImageProcessing();
   useEffect(() => {
     if (type === 'edit') {
       setArtistType(editData.artistTypeId);
@@ -88,9 +86,10 @@ const ArtistModal = ({ type }: ModalProps) => {
       setArtistName(editData.name);
       editData.groupName && setDropdownText(editData.groupName);
       if (editData.image === '/images/null') {
-        setPreviewImage(testImg);
+        setPreviewImage(defaultImage);
         return;
       }
+      setSavedImagefile(editData.image.slice(8));
       setPreviewImage(baseURL + editData.image);
     }
   }, [editData]);
@@ -112,14 +111,6 @@ const ArtistModal = ({ type }: ModalProps) => {
     setArtistTypeArray(filteredTypeData);
   }, [artistTypeData]);
 
-  const onHideModal = () => {
-    if (type === 'add') {
-      dispatch(toggleArtist());
-      return;
-    }
-    dispatch(toggleEditArtist());
-  };
-
   const onClickArtistType = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArtistType(parseInt(e.target.value));
   };
@@ -138,94 +129,62 @@ const ArtistModal = ({ type }: ModalProps) => {
     }
   };
 
-  // TODO: 리팩토링
-  const onClickAddArtistBtn = async () => {
-    // 파일도, 프리뷰이미지도(string) 없으면 사진 입력
-    if (artistImage === undefined) {
-      if (previewImage === undefined) {
-        alert('사진은 필수값입니다.');
-        return;
-      }
-    }
-    setIsRequesting(true);
-    // 파일이 있다면 사진 저장
-    if (artistImage) {
-      let compressedFile;
-      try {
-        compressedFile = await imageCompression(artistImage, {
-          maxSizeMB: 0.2,
-          maxIteration: 30,
-        });
-      } catch (error) {
-        console.error(error);
-        setIsRequesting(false);
-        return;
-      }
-
-      const formData = new FormData();
-      compressedFile && formData.append('file', compressedFile);
-
-      try {
-        const response = await addNewImage({
-          imageFile: formData,
-        });
-
-        if ('error' in response) {
-          return;
-        }
-        if (type === 'add') {
-          sendArtistInfo(response.data.filename);
-        } else if (type === 'edit') {
-          editArtistInfo(response.data.filename);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      setIsRequesting(false);
-      return;
-    }
-
-    //파일은 없지만 프리뷰 이미지가 있다면(수정)
-    if (type === 'edit') {
-      if (previewImage) {
-        editArtistInfo(previewImage.slice(8));
-        setIsRequesting(false);
-      }
-    }
-  };
-
-  const sendArtistInfo = async (imageData: string) => {
-    const artistData = {
-      artistTypeId: artistType,
-      groupId,
-      name: artistName,
-      image: imageData,
-    };
+  const onClickSaveBtnHandler = async () => {
     try {
-      await addNewArtist(artistData);
-      onHideModal();
-    } catch (error) {
-      console.error(error);
-      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
-    }
-  };
+      setIsRequesting(true);
 
-  const editArtistInfo = async (imageData: string) => {
-    const data = {
-      artistTypeId: artistType,
-      groupId,
-      name: artistName,
-      image: imageData,
-    };
-    try {
-      await editArtist({
-        artistId: editData.id,
-        artistValue: data,
+      if (!artistName) {
+        alert('아티스트 이름을 입력해주세요.');
+        throw new Error('Invalid Artist name');
+      }
+
+      if (!artistImage && !savedImagefile) {
+        alert('아티스트 사진을 업로드 해주세요.');
+        throw new Error('Invalid Artist Picture');
+      }
+
+      const filename = await ImageProcessing({
+        newImage: artistImage,
+        savedImage: savedImagefile,
       });
-      onHideModal();
+
+      if (type === 'add' && filename) {
+        const data = {
+          artistTypeId: artistType,
+          groupId,
+          name: artistName,
+          image: filename,
+        };
+
+        const successMessage = `아티스트의 정보가 정상적으로 추가되었습니다`;
+
+        await performApiAction<ArtistDataType>(
+          data,
+          addArtist,
+          onClose,
+          successMessage
+        );
+      } else if (type === 'edit' && filename) {
+        const data = {
+          artistTypeId: artistType,
+          groupId,
+          name: artistName,
+          image: filename,
+        };
+
+        const successMessage = `아티스트의 정보가 정상적으로 수정되었습니다`;
+
+        await performApiAction<EditArtistDataType>(
+          { artistId: editData.id, artistValue: data },
+          editArtist,
+          onClose,
+          successMessage
+        );
+      }
     } catch (error) {
       console.error(error);
-      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -235,7 +194,7 @@ const ArtistModal = ({ type }: ModalProps) => {
     content = artistTypeArray.map((data) => (
       <TypeButton
         key={data.id}
-        data={data}
+        id={data.id}
         text={data.type}
         onChange={onClickArtistType}
         selected={data.id === artistType}
@@ -244,55 +203,53 @@ const ArtistModal = ({ type }: ModalProps) => {
   }
 
   return (
-    <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onHideModal}>
-        {isRequesting && <Loading text="저장중입니다. 잠시만 기다려주세요!" />}
-        <ArtistModalTitle>
-          아티스트 {type === 'add' ? '등록' : '수정'}하기
-        </ArtistModalTitle>
-        <ArtistModalCloseButton type="button" onClick={onHideModal}>
-          <img src={closeIcon} />
-        </ArtistModalCloseButton>
-        <TypeTitle>아티스트 타입을 선택해주세요.</TypeTitle>
-        <TypeWrapper>{content}</TypeWrapper>
-        <ArtistImageNameWrapper>
-          <ArtistImagePreview htmlFor="artistImage" previewimage={previewImage}>
-            <img src={photoIcon} alt="아티스트 이미지 선택" />
-          </ArtistImagePreview>
-          <StyledInput
-            type="file"
-            id="artistImage"
-            accept="image/png, image/jpeg"
-            onChange={onChangeArtistImage}
+    <CommonModal className="addGroupModal" onClick={onClose}>
+      {isRequesting && <Loading />}
+      <ArtistModalTitle>
+        아티스트 {type === 'add' ? '등록' : '수정'}하기
+      </ArtistModalTitle>
+      <ArtistModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </ArtistModalCloseButton>
+      <TypeTitle>아티스트 타입을 선택해주세요.</TypeTitle>
+      <TypeWrapper>{content}</TypeWrapper>
+      <ArtistImageNameWrapper>
+        <ArtistImagePreview htmlFor="artistImage" previewimage={previewImage}>
+          <img src={photoIcon} alt="아티스트 이미지 선택" />
+        </ArtistImagePreview>
+        <StyledInput
+          type="file"
+          id="artistImage"
+          accept="image/png, image/jpeg"
+          onChange={onChangeArtistImage}
+        />
+        <ArtistInfoWrapper>
+          <GroupSortDropdown
+            className="groupSortdrop"
+            sortButtonRef={sortButtonRef}
+            clicked={SortModal}
+            setClicked={setSortModal}
+            sortOptions={sortOption}
+            selectedText={dropdownText}
+            setSelectedText={setDropdownText}
+            setId={setGroupId}
           />
-          <ArtistInfoWrapper>
-            <GroupSortDropdown
-              className="groupSortdrop"
-              sortButtonRef={sortButtonRef}
-              clicked={SortModal}
-              setClicked={setSortModal}
-              sortOptions={sortOption}
-              selectedText={dropdownText}
-              setSelectedText={setDropdownText}
-              setId={setGroupId}
-            />
-            <NameLabel htmlFor="artistName">
-              아티스트 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
-            </NameLabel>
-            <ArtistNameInput
-              type="text"
-              id="artistName"
-              value={artistName}
-              onChange={onChangeArtistName}
-              placeholder="아티스트 이름"
-            />
-          </ArtistInfoWrapper>
-        </ArtistImageNameWrapper>
-        <ArtistSubmitButton type="button" onClick={onClickAddArtistBtn}>
-          완료
-        </ArtistSubmitButton>
-      </CommonModal>
-    </ModalPortal>
+          <NameLabel htmlFor="artistName">
+            아티스트 이름을 {type === 'add' ? '입력' : '수정'}해 주세요.
+          </NameLabel>
+          <ArtistNameInput
+            type="text"
+            id="artistName"
+            value={artistName}
+            onChange={onChangeArtistName}
+            placeholder="아티스트 이름"
+          />
+        </ArtistInfoWrapper>
+      </ArtistImageNameWrapper>
+      <ArtistSubmitButton type="button" onClick={onClickSaveBtnHandler}>
+        완료
+      </ArtistSubmitButton>
+    </CommonModal>
   );
 };
 
