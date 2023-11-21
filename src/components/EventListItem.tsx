@@ -104,7 +104,7 @@ const EventListItem = ({
             <S.GroupName>{event.artists[0].groupName}</S.GroupName>
             <S.RegularTxt>{event.artists[0].name}</S.RegularTxt>
           </S.NameSection>
-          <Tag categories={event.categories} marginB="16px" />
+          <Tag categories={event.categories} />
           <S.StoreName>{event.storeName}</S.StoreName>
           <S.StrongTxt> {event.address} </S.StrongTxt>
         </S.EventTextSection>

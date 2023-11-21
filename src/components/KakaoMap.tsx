@@ -10,18 +10,21 @@ import media from '../utils/mediaQuery';
 export const MapSection = styled.section<KakaoMapProps>`
   width: 100%;
   ${(props) => (props.size ? sizes[props.size] : '')};
-  ${media.mobile`
-  height: 339px;
-  `}
 `;
 
 const main = css`
   height: 460px;
+  ${media.mobile`
+    height: 339px;
+  `}
 `;
 
 const eventList = css`
   height: 204px;
   border-radius: 20px;
+  ${media.mobile`
+    height: 264px;
+  `}
 `;
 
 const detail = css`

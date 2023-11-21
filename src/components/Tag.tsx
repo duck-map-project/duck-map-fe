@@ -1,19 +1,23 @@
 import { css, styled } from 'styled-components';
 
+import media from '../utils/mediaQuery';
+
 interface Categories {
   id: number;
   category: string;
 }
 interface PropsType {
-  marginB?: string;
   categories: Categories[];
   type?: 'primary' | 'detail';
 }
 
-const TagWrapper = styled.ul<{ $marginB?: string }>`
+const TagWrapper = styled.ul`
   display: flex;
-  margin-bottom: ${(props) => (props.$marginB ? props.$marginB : '')};
+  margin-bottom: 13px;
   gap: 10px;
+  ${media.mobile`
+    margin-bottom: 26.5px;
+  `}
 `;
 
 const TagItem = styled.li<{ type?: 'primary' | 'detail' }>`
@@ -26,12 +30,20 @@ const TagItem = styled.li<{ type?: 'primary' | 'detail' }>`
   &:last-child {
     margin-right: 0;
   }
+  ${media.mobile`
+    border: 1.2px solid #92CBDB;
+  `}
 `;
 
 const primary = css`
   padding: 5.5px 20px;
   font-size: 1.4rem;
   line-height: 1.247857142857143;
+  ${media.mobile`
+    padding: 3px 11.5px;
+    font-size: 1rem;
+    font-weight: 700;
+  `}
 `;
 
 const detail = css`
@@ -40,9 +52,9 @@ const detail = css`
   line-height: 1.248;
 `;
 
-const Tag: React.FC<PropsType> = ({ marginB, categories, type }) => {
+const Tag: React.FC<PropsType> = ({ categories, type }) => {
   return (
-    <TagWrapper $marginB={marginB}>
+    <TagWrapper>
       {categories.map((category) => (
         <TagItem key={category.id} type={type}>
           {category.category}
