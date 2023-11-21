@@ -23,11 +23,7 @@ interface EventListItemProps {
   handleLikeClick: ({ eventId, likeId }: HandleLikeClickProps) => Promise<void>;
 }
 
-const EventListItem = ({
-  event,
-  onEventListClick,
-  handleLikeClick,
-}: EventListItemProps) => {
+const EventListItem = ({ event, handleLikeClick }: EventListItemProps) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
   const { routeTo } = useRouter();
@@ -38,8 +34,10 @@ const EventListItem = ({
   const user = useSelector(selectCurrentUser);
 
   const handleEventClick = () => {
-    if (onEventListClick) {
-      onEventListClick(event.id);
+    const isMobile = window.innerWidth <= 430;
+
+    if (isMobile) {
+      routeTo(`/event/${event.id}`);
     }
   };
 
