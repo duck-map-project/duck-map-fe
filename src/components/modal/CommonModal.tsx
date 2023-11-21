@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import media from '../../utils/mediaQuery';
 
-type ModalProps = {
+type commonModalProps = {
   className?: string;
   onClick?: () => void;
   children: ReactNode;
@@ -15,7 +15,12 @@ type ModalWidth = {
   width: string | undefined;
 };
 
-const CommonModal = ({ className, onClick, children, width }: ModalProps) => {
+const CommonModal = ({
+  className,
+  onClick,
+  children,
+  width,
+}: commonModalProps) => {
   const preventBubbling = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
@@ -25,20 +30,22 @@ const CommonModal = ({ className, onClick, children, width }: ModalProps) => {
   };
 
   return (
-    <Backdrop className={className} onClick={onClick}>
-      <ModalOverlay
-        onClick={preventBubbling}
-        onSubmit={preventSubmit}
-        width={width}
-      >
-        <ModalContent>{children}</ModalContent>
-      </ModalOverlay>
-    </Backdrop>
+    <ModalPortal>
+      <Backdrop className={className} onClick={onClick}>
+        <ModalOverlay
+          onClick={preventBubbling}
+          onSubmit={preventSubmit}
+          width={width}
+        >
+          <ModalContent>{children}</ModalContent>
+        </ModalOverlay>
+      </Backdrop>
+    </ModalPortal>
   );
 };
 export default CommonModal;
 
-export const ModalPortal = ({ children }: ModalProps) => {
+const ModalPortal = ({ children }: commonModalProps) => {
   const portalElement = document.getElementById('modal')!;
   return ReactDom.createPortal(children, portalElement);
 };

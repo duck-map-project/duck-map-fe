@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import Loading from '../../../components/Loading';
+import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
+import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
   useGetEventCategoryQuery,
@@ -31,6 +31,7 @@ type categoryType = {
 const CategoryModal = ({ type, onClose }: ModalProps) => {
   const [categoryName, setCategoryName] = useState('');
   const [categoryContents, setCategoryContents] = useState<categoryType[]>([]);
+  const [isRequesting, setIsRequesting] = useState(false);
   const { data: eventCategories } = useGetEventCategoryQuery();
   const [addNewCategory] = useAddEventCategoryMutation();
   const [editCategory] = useEditEventCategoryMutation();
@@ -42,47 +43,54 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
     }
   }, [editData]);
 
+  useEffect(() => {
+    if (eventCategories) setCategoryContents(eventCategories);
+  }, [eventCategories]);
+
   const onChangeCategoryName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryName(e.target.value);
   };
 
-  const onClickAddCategoryBtn = async () => {
+  const onClickSaveBtn = async () => {
     try {
-      await addNewCategory(categoryName);
-      onClose();
-    } catch (error) {
-      console.error(error);
-      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
-    }
-  };
+      setIsRequesting(true);
 
-  const onClickEditCategoryBtn = async () => {
-    try {
-      const res = await editCategory({
-        id: editData.id,
-        category: categoryName,
-      });
-      if ('data' in res) {
-        alert('성공적으로 수정되었습니다.');
-        onClose();
-      } else {
-        alert('다시 시도해주세요.');
+      if (!categoryName) {
+        alert('카테고리를 입력해주세요.');
+        throw new Error('Invalid Category');
+      }
+
+      if (type === 'add') {
+        const successMessage = '카테고리가 정상적으로 추가되었습니다.';
+
+        await performApiAction(
+          categoryName,
+          addNewCategory,
+          onClose,
+          successMessage
+        );
+      } else if (type === 'edit') {
+        const data = {
+          id: editData.id,
+          category: categoryName,
+        };
+        const successMessage = '카테고리가 정상적으로 수정되었습니다.';
+
+        await performApiAction(data, editCategory, onClose, successMessage);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
   };
-
-  useEffect(() => {
-    if (eventCategories) setCategoryContents(eventCategories);
-  }, [eventCategories]);
 
   let typeContents;
   if (categoryContents.length > 0) {
     typeContents = categoryContents.map((content) => (
       <TypeButton
         key={content.id}
-        data={content}
+        id={content.id}
         text={content.category}
         selected={true}
       />
@@ -90,45 +98,39 @@ const CategoryModal = ({ type, onClose }: ModalProps) => {
   }
 
   return (
-    <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onClose}>
-        <CategoryModalTitle>
-          카테고리 {type === 'add' ? '등록' : '수정'}하기
-        </CategoryModalTitle>
-        <CategoryModalCloseButton type="button" onClick={onClose}>
-          <img src={closeIcon} />
-        </CategoryModalCloseButton>
-        <CategoryNameLabel htmlFor="artistName">
-          카테고리를 {type === 'add' ? '입력' : '수정'}해 주세요.
-        </CategoryNameLabel>
-        <TypeWrapper>
-          {type === 'add' ? (
-            typeContents
-          ) : (
-            <TypeButton
-              data={{ id: editData.id }}
-              text={editData.category}
-              selected={true}
-            />
-          )}
-        </TypeWrapper>
-        <CategoryInput
-          type="text"
-          id="artistName"
-          value={categoryName}
-          onChange={onChangeCategoryName}
-          placeholder="직접 입력"
-        />
-        <CategorySubmitButton
-          type="button"
-          onClick={
-            type === 'add' ? onClickAddCategoryBtn : onClickEditCategoryBtn
-          }
-        >
-          완료
-        </CategorySubmitButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal className="addGroupModal" onClick={onClose}>
+      {isRequesting && <Loading />}
+      <CategoryModalTitle>
+        카테고리 {type === 'add' ? '등록' : '수정'}하기
+      </CategoryModalTitle>
+      <CategoryModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </CategoryModalCloseButton>
+      <CategoryNameLabel htmlFor="artistName">
+        카테고리를 {type === 'add' ? '입력' : '수정'}해 주세요.
+      </CategoryNameLabel>
+      <TypeWrapper>
+        {type === 'add' ? (
+          typeContents
+        ) : (
+          <TypeButton
+            id={editData.id}
+            text={editData.category}
+            selected={true}
+          />
+        )}
+      </TypeWrapper>
+      <CategoryInput
+        type="text"
+        id="artistName"
+        value={categoryName}
+        onChange={onChangeCategoryName}
+        placeholder="직접 입력"
+      />
+      <CategorySubmitButton type="button" onClick={onClickSaveBtn}>
+        완료
+      </CategorySubmitButton>
+    </CommonModal>
   );
 };
 

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import closeIcon from '../../../assets/close.svg';
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import Loading from '../../../components/Loading';
+import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
+import { ArtisttypeType } from '../../../types/artisttypeType';
+import { performApiAction } from '../../../utils/apiHelpers';
 import {
   CategoryInput,
   TypeWrapper,
@@ -25,18 +26,14 @@ import {
   SubmitButton,
 } from './GroupModalStyle';
 
-type artistType = {
-  id: number;
-  type: string;
-};
-
 const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
   const [typeName, setTypeName] = useState('');
-  const [artistTypeContents, setArtistTypeContents] = useState<artistType[]>(
-    []
-  );
+  const [artistTypeContents, setArtistTypeContents] = useState<
+    ArtisttypeType[]
+  >([]);
+  const [isRequesting, setIsRequesting] = useState(false);
   const { data: artistTypes } = useGetArtistsTypeQuery();
-  const [addNewArtistType] = useAddArtistsTypeMutation();
+  const [addArtistType] = useAddArtistsTypeMutation();
   const [editArtistType] = useEditArtistsTypeMutation();
   const editData = useSelector(selectEditArtistType);
 
@@ -50,31 +47,33 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
     setTypeName(e.target.value);
   };
 
-  const onClickAddTypeBtn = async () => {
+  const onClickSaveBtn = async () => {
     try {
-      await addNewArtistType(typeName);
-      onClose();
-    } catch (error) {
-      console.error(error);
-      alert('앗, 제대로 저장되지 않았어요 다시 시도해주세요');
-    }
-  };
+      setIsRequesting(true);
 
-  const onClickEditBtn = async () => {
-    const data = {
-      id: editData.id,
-      type: typeName,
-    };
-    try {
-      const res = await editArtistType(data);
-      if ('data' in res) {
-        alert('성공적으로 수정되었습니다.');
-        onClose();
-      } else {
-        alert('잠시 후 다시 시도해주세요. ');
+      if (!typeName) {
+        alert('타입을 입력해주세요.');
+        throw new Error('Invalid Type');
+      }
+
+      if (type === 'add') {
+        const data = {
+          type: typeName,
+        };
+        const successMessage = '아티스트 타입이 정상적으로 추가되었습니다.';
+        await performApiAction(data, addArtistType, onClose, successMessage);
+      } else if (type === 'edit') {
+        const data = {
+          id: editData.id,
+          type: typeName,
+        };
+        const successMessage = '아티스트 타입이 정상적으로 수정되었습니다.';
+        await performApiAction(data, editArtistType, onClose, successMessage);
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -87,7 +86,7 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
     typeContents = artistTypeContents.map((content) => (
       <TypeButton
         key={content.id}
-        data={content}
+        id={content.id}
         text={content.type}
         selected={true}
       />
@@ -95,43 +94,35 @@ const ArtistTypeModal = ({ type, onClose }: ModalProps) => {
   }
 
   return (
-    <ModalPortal>
-      <CommonModal className="addGroupModal" onClick={onClose}>
-        <ModalTitle>
-          아티스트 타입 {type === 'add' ? '등록' : '수정'}하기
-        </ModalTitle>
-        <ModalCloseButton type="button" onClick={onClose}>
-          <img src={closeIcon} />
-        </ModalCloseButton>
-        <NameLabel htmlFor="artistName">
-          아티스트 타입을 {type === 'add' ? '입력' : '수정'}해 주세요.
-        </NameLabel>
-        <TypeWrapper>
-          {type === 'add' ? (
-            typeContents
-          ) : (
-            <TypeButton
-              data={{ id: editData.id }}
-              text={typeName}
-              selected={true}
-            />
-          )}
-        </TypeWrapper>
-        <CategoryInput
-          type="text"
-          id="artistName"
-          value={typeName}
-          onChange={onChangeTypeName}
-          placeholder="직접 입력"
-        />
-        <SubmitButton
-          type="button"
-          onClick={type === 'add' ? onClickAddTypeBtn : onClickEditBtn}
-        >
-          완료
-        </SubmitButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal className="addGroupModal" onClick={onClose}>
+      {isRequesting && <Loading />}
+      <ModalTitle>
+        아티스트 타입 {type === 'add' ? '등록' : '수정'}하기
+      </ModalTitle>
+      <ModalCloseButton type="button" onClick={onClose}>
+        <img src={closeIcon} />
+      </ModalCloseButton>
+      <NameLabel htmlFor="artistName">
+        아티스트 타입을 {type === 'add' ? '입력' : '수정'}해 주세요.
+      </NameLabel>
+      <TypeWrapper>
+        {type === 'add' ? (
+          typeContents
+        ) : (
+          <TypeButton id={editData.id} text={typeName} selected={true} />
+        )}
+      </TypeWrapper>
+      <CategoryInput
+        type="text"
+        id="artistName"
+        value={typeName}
+        onChange={onChangeTypeName}
+        placeholder="직접 입력"
+      />
+      <SubmitButton type="button" onClick={onClickSaveBtn}>
+        완료
+      </SubmitButton>
+    </CommonModal>
   );
 };
 

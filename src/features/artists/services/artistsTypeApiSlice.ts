@@ -1,14 +1,17 @@
 import { apiSlice } from '../../../app/api/apiSlice';
-import { ArtistType } from '../../../types/artistsType';
+import {
+  ArtisttypeType,
+  AritsttypeAddType,
+} from '../../../types/artisttypeType';
 
 export const artistsTypeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getArtistsType: builder.query<ArtistType[], void>({
+    getArtistsType: builder.query<ArtisttypeType[], void>({
       query: () => '/artists/types',
       providesTags: ['ArtistType'],
     }),
-    addArtistsType: builder.mutation({
-      query: (type: string) => ({
+    addArtistsType: builder.mutation<any, AritsttypeAddType>({
+      query: ({ type }) => ({
         url: '/artists/types',
         method: 'POST',
         body: { type },

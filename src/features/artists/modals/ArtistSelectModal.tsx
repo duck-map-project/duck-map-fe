@@ -2,9 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import CommonModal, {
-  ModalPortal,
-} from '../../../components/modal/CommonModal';
+import CommonModal from '../../../components/modal/CommonModal';
 import useDebounce from '../../../hooks/useDebounce';
 import useInput from '../../../hooks/useInput';
 import useScroll from '../../../hooks/useScroll';
@@ -128,23 +126,21 @@ const ArtistSelectModal = ({ onClose }: ModalProps) => {
   };
 
   return (
-    <ModalPortal>
-      <CommonModal width="1046" onClick={onClose}>
-        <ModalCloseButton onClick={onClose} />
-        <ModalTitle>아티스트 선택하기</ModalTitle>
-        <AritstSelectSection>
-          <ArtistSearchInput
-            onChange={onSearchInputChange}
-            value={search.value}
-            onReset={onSearchInputReset}
-          />
-          <ArtistListSection ref={ulRef}>{content}</ArtistListSection>
-        </AritstSelectSection>
-        <DoneButton type="button" onClick={SaveArtistIds}>
-          완료
-        </DoneButton>
-      </CommonModal>
-    </ModalPortal>
+    <CommonModal width="1046" onClick={onClose}>
+      <ModalCloseButton onClick={onClose} />
+      <ModalTitle>아티스트 선택하기</ModalTitle>
+      <AritstSelectSection>
+        <ArtistSearchInput
+          onChange={onSearchInputChange}
+          value={search.value}
+          onReset={onSearchInputReset}
+        />
+        <ArtistListSection ref={ulRef}>{content}</ArtistListSection>
+      </AritstSelectSection>
+      <DoneButton type="button" onClick={SaveArtistIds}>
+        완료
+      </DoneButton>
+    </CommonModal>
   );
 };
 

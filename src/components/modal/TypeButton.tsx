@@ -3,32 +3,27 @@ import styled from 'styled-components';
 import media from '../../utils/mediaQuery';
 
 type propsType = {
-  data: { id: number; type?: string; category?: string };
+  id: number;
   text: string;
   selected: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 type groupType = {
-  type?: string;
   selected: boolean;
 };
 
-const TypeButton = ({ data, text, onChange, selected }: propsType) => {
+const TypeButton = ({ id, text, onChange, selected }: propsType) => {
   return (
     <>
-      <TypeLabel
-        htmlFor={data.id.toString()}
-        type={data.type}
-        selected={selected}
-      >
+      <TypeLabel htmlFor={id.toString()} selected={selected}>
         {text}
       </TypeLabel>
       <StyledInput
         type="radio"
-        id={data.id.toString()}
+        id={id.toString()}
         name="artistType"
-        value={data.id.toString()}
+        value={id.toString()}
         onChange={onChange}
       />
     </>
