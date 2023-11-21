@@ -5,6 +5,7 @@ import { css, styled } from 'styled-components';
 import customMarker from '../assets/marker.svg';
 import { selectPlaces } from '../features/events/services/eventPlaceSlice';
 import { useRouter } from '../hooks/useRouter';
+import media from '../utils/mediaQuery';
 
 export const MapSection = styled.section<KakaoMapProps>`
   width: 100%;
@@ -13,11 +14,17 @@ export const MapSection = styled.section<KakaoMapProps>`
 
 const main = css`
   height: 460px;
+  ${media.mobile`
+    height: 339px;
+  `}
 `;
 
 const eventList = css`
   height: 204px;
   border-radius: 20px;
+  ${media.mobile`
+    height: 264px;
+  `}
 `;
 
 const detail = css`

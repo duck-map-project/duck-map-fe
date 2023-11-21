@@ -24,11 +24,7 @@ interface EventListItemProps {
   handleLikeClick: ({ eventId, likeId }: HandleLikeClickProps) => Promise<void>;
 }
 
-const EventListItem = ({
-  event,
-  onEventListClick,
-  handleLikeClick,
-}: EventListItemProps) => {
+const EventListItem = ({ event, handleLikeClick }: EventListItemProps) => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const dispatch = useDispatch();
   const { routeTo } = useRouter();
@@ -40,8 +36,10 @@ const EventListItem = ({
   const { openModal } = useModal();
 
   const handleEventClick = () => {
-    if (onEventListClick) {
-      onEventListClick(event.id);
+    const isMobile = window.innerWidth <= 430;
+
+    if (isMobile) {
+      routeTo(`/event/${event.id}`);
     }
   };
 
@@ -106,7 +104,7 @@ const EventListItem = ({
             <S.GroupName>{event.artists[0].groupName}</S.GroupName>
             <S.RegularTxt>{event.artists[0].name}</S.RegularTxt>
           </S.NameSection>
-          <Tag categories={event.categories} marginB="16px" />
+          <Tag categories={event.categories} />
           <S.StoreName>{event.storeName}</S.StoreName>
           <S.StrongTxt> {event.address} </S.StrongTxt>
         </S.EventTextSection>

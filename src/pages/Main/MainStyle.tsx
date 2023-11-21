@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import ReviewPreviewIcon from '../../assets/review-preview-icon.svg';
 import SortDropdown from '../../components/SortButton';
 import { SortDropdownProps } from '../../components/SortButton';
+import media from '../../utils/mediaQuery';
 import px2vw from '../../utils/px2vw';
 
 export const TextButton = styled.button`
@@ -29,13 +30,22 @@ export const MainSection = styled.main`
   align-items: flex-end;
   padding: 0 ${px2vw(142)};
   position: relative;
+  ${media.mobile`
+    padding: 0 27px;
+    margin-top: 28px;
+    gap: 17px;
+  `}
 `;
 
 export const MapSortDrop = styled(SortDropdown)<SortDropdownProps>`
   position: absolute;
-  right: 40px;
-  top: 40px;
+  right: 39px;
+  top: 42px;
   z-index: 9;
+  ${media.mobile`
+    right: 22px;
+    top: 37px;
+  `}
 `;
 
 export const MapFrame = styled.section`
@@ -47,10 +57,13 @@ export const MapFrame = styled.section`
   background: linear-gradient(0deg, #ffd0ec, #ffd0ec),
     linear-gradient(0deg, #000000, #000000);
   position: relative;
+  ${media.mobile`
+    padding: 24px 12px 12px;
+  `}
   &::after {
     content: '';
     width: 100%;
-    height: 502px;
+    height: 100%;
     border: 2px solid #000000;
     border-radius: 20px;
     background-color: #ffc0e6;
@@ -59,6 +72,13 @@ export const MapFrame = styled.section`
     left: 3px;
     z-index: -10;
     transform: rotate(1.3deg);
+    ${media.mobile`
+    width: 97.91666666666666%;
+    height: 98.13333333333333%;
+    transform: rotate(1.59deg);
+    top: 1.5px;
+    left: 10px;
+    `}
   }
 `;
 
@@ -74,6 +94,9 @@ export const MapTitle = styled.h2`
   top: -17px;
   left: 50%;
   transform: translateX(-50%);
+  ${media.mobile`
+    padding: 5px 21px;
+  `}
 `;
 
 export const MapSection = styled.section`
@@ -85,7 +108,7 @@ export const MapSection = styled.section`
 export const ViewReviews = styled.section`
   overflow: hidden;
   width: 100%;
-  height: 292px;
+  /* height: 292px; */
   position: relative;
   background-color: #99edcb;
   padding-top: 11.5px;
@@ -95,6 +118,13 @@ export const ViewReviews = styled.section`
   background-repeat: no-repeat;
   background-position: 25px 14px;
   background-size: 20px;
+  ${media.mobile`
+  background-size: 18px;
+  background-position: 12px 6px;
+  padding-top: 6.5px;
+  border-radius: 5.81px;
+  border: 1.4px solid #1e232c;
+  `}
 `;
 
 export const ViewReviewsTitle = styled.h2`
@@ -102,6 +132,10 @@ export const ViewReviewsTitle = styled.h2`
   font-weight: 700;
   line-height: 1.248;
   padding: 0 0 12.5px 51px;
+  ${media.mobile`
+  font-size: 1.4rem;
+  padding: 0 0 6.5px 31.74px;
+  `}
 `;
 
 export const MoreButton = styled(TextButton)`
@@ -112,19 +146,31 @@ export const MoreButton = styled(TextButton)`
   height: 28px;
   border-radius: 20px;
   border: 2px solid #000000;
-  box-shadow: 3px 3px 0px 0px #00000040;
   position: absolute;
   top: 10px;
   right: 19px;
+  ${media.mobile`
+    width: 46px;
+    height: 18px;
+    font-size: 1.2rem;
+    border: 1.4px solid #000000;
+    top: 6px;
+    right: 12px;
+    box-shadow: 0.8719722628593445px 0.8719722628593445px 0px 0px #00000040;
+  `}
 `;
 
 export const Reviews = styled.ul`
   display: flex;
-  height: 241px;
+  /* height: 241px; */
   align-items: center;
   gap: 19px;
   background-color: #fffbe3;
   border-top: 2px solid #1e232c;
-  padding: 0 20px;
+  padding: 15px 20px 20px;
   position: relative;
+  ${media.mobile`
+    padding: 12px 6px 16px;
+    border-top: 1.4px solid #1e232c;
+  `}
 `;

@@ -35,7 +35,6 @@ export const HeaderStyle = styled.header`
   padding: ${px2vw(22)} ${px2vw(142)} ${px2vw(22)};
   ${media.mobile`
     padding: 7px 27px;
-    
   `}
 `;
 
@@ -44,6 +43,9 @@ export const Logo = styled.img`
   cursor: pointer;
   ${media.mobile`
   display: none;
+  `}
+  ${media.header`
+    width: ${px2vw(450)};
   `}
 `;
 
@@ -101,20 +103,32 @@ const MenuButtonIcon = styled.img`
     height: 14px;
     margin-right:0;
   `}
+  ${media.header`
+    margin-right:0;
+  `}
 `;
 
 const MenuButtonText = styled.span`
   font-weight: 700;
   font-size: 18px;
-  ${media.mobile`
+  ${media.header`
     display: none;
   `}
 `;
 
-export const RightSection = styled.section`
+export const RightSection = styled.section<{ currentPath: string }>`
   display: flex;
   align-items: center;
   gap: 12px;
+  ${media.mobile`
+    margin-left: auto;
+    gap: 0;
+  `}
+  ${(props) =>
+    (props.currentPath === '/signin' || props.currentPath === '/signup') &&
+    media.mobile`
+    display: none;
+  `}
 `;
 
 export const ProfileDropdown = styled.div`
@@ -326,10 +340,16 @@ const Header: React.FC = ({}) => {
           }}
         >
           <img src={arrow} />
-          <span>홈으로</span>
+          <span>
+            {currentPath === '/signin'
+              ? '로그인'
+              : currentPath === '/signup'
+              ? '회원가입'
+              : '홈으로'}
+          </span>
         </MobileLogo>
       )}
-      <RightSection>
+      <RightSection currentPath={currentPath}>
         {content}
         {currentPath === '/managepage' || (
           <MenuButton onClick={handleAuthButton}>

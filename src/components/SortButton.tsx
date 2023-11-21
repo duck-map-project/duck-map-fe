@@ -48,10 +48,17 @@ const Select = styled.button<{
     top: 0;
     right: 13.5px;
     transform: scaleY(${(props) => (props.$clicked ? -1 : 1)});
+    ${media.mobile`
+      width: 6px;
+      background-size: 6px;
+      right: 9px;
+    `};
   }
   ${media.mobile`
-  min-width: 111px;
+    min-width: 111px;
     font-size: 14px;
+    min-width: 116px;
+    border: 1.5px solid #1e232c;
   `}
   ${(props) =>
     props.icon &&
@@ -67,7 +74,18 @@ const Select = styled.button<{
     box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.25);
     &::after{
       background-image: none;
+      
     }
+  `}
+  ${(props) =>
+    props.icon &&
+    media.mobile`
+      min-width: 116px;
+      padding: 4.16px 19.75px 4.16px 28.75px;
+      background-image: url(${props.icon});
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-position: 11.5px 6.78px;
   `}
 `;
 

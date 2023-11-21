@@ -156,7 +156,7 @@ const EventList = () => {
           <MapSectionTitle>지도</MapSectionTitle>
           {user && (
             <EventAddButton type="button" onClick={handleAddEventButton}>
-              이벤트 추가
+              <span>이벤트 추가</span>
             </EventAddButton>
           )}
           <KakaoMap size="eventList" />
