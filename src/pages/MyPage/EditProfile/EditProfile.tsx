@@ -10,7 +10,7 @@ import {
 import { useLogoutMutation } from '../../../features/auth/services/authApiSlice';
 import useImageProcessing from '../../../hooks/useImageProcessing';
 import { useRouter } from '../../../hooks/useRouter';
-import handleErrorResponse from '../../../utils/handleErrorResponse';
+import { performApiAction } from '../../../utils/apiHelpers';
 
 import {
   UserProfileEditForm,
@@ -89,9 +89,11 @@ const EditProfile = () => {
         savedImage: savedImagefile,
       });
 
-      filename && onSaveUserInfoHandler(filename);
+      filename && (await onSaveUserInfoHandler(filename));
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -100,16 +102,8 @@ const EditProfile = () => {
       username,
       image: filename,
     };
-
     try {
-      const res = await editUserInfo(userInfo);
-      setIsRequesting(false);
-
-      if ('data' in res) {
-        alert('정상적으로 수정되었습니다');
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
+      await performApiAction(userInfo, editUserInfo);
     } catch (error) {
       console.error(error);
     }
