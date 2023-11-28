@@ -6,6 +6,7 @@ import { useGetMyreviewQuery } from '../../../features/reviews/services/reviewAp
 import { useDeleteReviewMutation } from '../../../features/reviews/services/reviewApiSlice';
 import { useRouter } from '../../../hooks/useRouter';
 import { myreviewType } from '../../../types/mypageType';
+import { performApiAction } from '../../../utils/apiHelpers';
 
 import {
   ReviewItemWrapper,
@@ -53,8 +54,20 @@ const ReviewItem = ({
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.stopPropagation();
-    await deleteReview(id);
-    refetch();
+    try {
+      const data = {
+        id,
+      };
+      await performApiAction(
+        data,
+        deleteReview,
+        undefined,
+        '해당 리뷰가 삭제되었습니다.'
+      );
+      refetch();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
