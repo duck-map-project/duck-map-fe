@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useEditPasswordMutation } from '../../../features/auth/services/authApiSlice';
+import { performApiAction } from '../../../utils/apiHelpers';
 
 import {
   ChangePasswordForm,
@@ -25,24 +26,22 @@ const ChangePassword = () => {
   };
 
   const onClickSubmitBtn = async () => {
-    const data = {
+    const passwordData = {
       currentPassword: currentPw,
       newPassword: newPw,
     };
     try {
-      const res = await editPassword(data);
-      if ('data' in res) {
-        alert('정상적으로 변경되었습니다.');
-      }
-      if ('error' in res) {
-        alert('잠시 후 다시 시도해주세요.');
-      }
+      await performApiAction(
+        passwordData,
+        editPassword,
+        undefined,
+        '정상적으로 변경되었습니다.'
+      );
+      setCurrentPw('');
+      setNewPw('');
     } catch (error) {
       console.error(error);
     }
-
-    setCurrentPw('');
-    setNewPw('');
   };
   return (
     <ChangePasswordForm>

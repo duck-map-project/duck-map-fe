@@ -38,7 +38,7 @@ export const performApiAction = async <T>(
 
     if ('data' in res) {
       successMessage && alert(successMessage);
-      extraFunction && extraFunction();
+      extraFunction && (await extraFunction());
     } else if ('error' in res) {
       handleErrorResponse(res.error);
     }

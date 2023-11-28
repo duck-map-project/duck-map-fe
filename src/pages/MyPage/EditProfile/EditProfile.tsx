@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import defaultImage from '../../../assets/user-profile.svg';
 import Loading from '../../../components/Loading';
@@ -7,10 +8,9 @@ import {
   useUnregisterMutation,
   useGetUserInfoQuery,
 } from '../../../features/auth/services/authApiSlice';
-import { useLogoutMutation } from '../../../features/auth/services/authApiSlice';
+import { logOut } from '../../../features/auth/services/authSlice';
 import useImageProcessing from '../../../hooks/useImageProcessing';
-import { useRouter } from '../../../hooks/useRouter';
-import handleErrorResponse from '../../../utils/handleErrorResponse';
+import { performApiAction } from '../../../utils/apiHelpers';
 
 import {
   UserProfileEditForm,
@@ -26,7 +26,7 @@ import {
 } from './EditProfileStyle';
 
 const EditProfile = () => {
-  const { routeTo } = useRouter();
+  const dispatch = useDispatch();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [userImage, setUserImage] = useState<File | undefined>(undefined); //File 자체
   const [previewImage, setPreviewImage] = useState<string | undefined>(
@@ -41,7 +41,7 @@ const EditProfile = () => {
   const { data: userData } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [unregister] = useUnregisterMutation();
-  const [logout] = useLogoutMutation();
+  // const [logout] = useLogoutMutation();
   const { ImageProcessing } = useImageProcessing();
 
   useEffect(() => {
@@ -84,23 +84,16 @@ const EditProfile = () => {
         throw new Error('Invalid profile picture');
       }
 
-      const filename = await processImage();
-
-      filename && onSaveUserInfoHandler(filename);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const processImage = async () => {
-    if (userImage) {
-      const uploadedImage = await ImageProcessing({
+      const filename = await ImageProcessing({
         newImage: userImage,
         savedImage: savedImagefile,
       });
-      return uploadedImage;
-    } else if (savedImagefile) {
-      return savedImagefile;
+
+      filename && (await onSaveUserInfoHandler(filename));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsRequesting(false);
     }
   };
 
@@ -109,16 +102,8 @@ const EditProfile = () => {
       username,
       image: filename,
     };
-
     try {
-      const res = await editUserInfo(userInfo);
-      setIsRequesting(false);
-
-      if ('data' in res) {
-        alert('정상적으로 수정되었습니다');
-      } else if ('error' in res) {
-        handleErrorResponse(res.error);
-      }
+      await performApiAction(userInfo, editUserInfo);
     } catch (error) {
       console.error(error);
     }
@@ -130,16 +115,22 @@ const EditProfile = () => {
     }
 
     const promptValue = window.prompt('비밀번호를 입력해주세요');
-    if (promptValue) {
-      const password = { password: promptValue };
-      const res = await unregister(password);
-      if ('data' in res) {
-        alert('탈퇴되었습니다.');
-        await logout({});
-        routeTo('/');
-      } else if ('error' in res) {
-        alert('잠시 후 다시 시도해주세요.');
+
+    try {
+      if (promptValue) {
+        const password = { password: promptValue };
+        const onResolved = () => {
+          dispatch(logOut({}));
+        };
+        await performApiAction(
+          password,
+          unregister,
+          onResolved,
+          '탈퇴되었습니다.'
+        );
       }
+    } catch (error) {
+      console.error(error);
     }
   };
 
