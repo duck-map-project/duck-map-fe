@@ -84,23 +84,14 @@ const EditProfile = () => {
         throw new Error('Invalid profile picture');
       }
 
-      const filename = await processImage();
+      const filename = await ImageProcessing({
+        newImage: userImage,
+        savedImage: savedImagefile,
+      });
 
       filename && onSaveUserInfoHandler(filename);
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const processImage = async () => {
-    if (userImage) {
-      const uploadedImage = await ImageProcessing({
-        newImage: userImage,
-        savedImage: savedImagefile,
-      });
-      return uploadedImage;
-    } else if (savedImagefile) {
-      return savedImagefile;
     }
   };
 
