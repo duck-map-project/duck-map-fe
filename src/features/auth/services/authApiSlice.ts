@@ -69,7 +69,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     unregister: builder.mutation<any, { password: string }>({
       query: (password) => ({
-        url: '/memners/me',
+        url: '/members/me',
         method: 'DELETE',
         body: password,
       }),
