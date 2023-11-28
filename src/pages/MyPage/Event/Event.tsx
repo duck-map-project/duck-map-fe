@@ -7,6 +7,7 @@ import {
 } from '../../../features/events/services/eventApiSlice';
 import { useRouter } from '../../../hooks/useRouter';
 import { myevetType } from '../../../types/mypageType';
+import { performApiAction } from '../../../utils/apiHelpers';
 import {
   InfoSection,
   ArtistInfo,
@@ -82,12 +83,15 @@ const EventItem = ({
     event.stopPropagation();
     if (window.confirm('해당 이벤트를 삭제하시겠습니까?')) {
       try {
-        const res = await deleteEvent({ id: eventId });
-        if ('error' in res) {
-          alert('잠시 후 다시 시도해주세요.');
-          return;
-        }
-        alert('삭제되었습니다.');
+        const data = {
+          id: eventId,
+        };
+        await performApiAction(
+          data,
+          deleteEvent,
+          undefined,
+          '해당 이벤트가 삭제 되었습니다.'
+        );
       } catch (error) {
         console.error(error);
       }
