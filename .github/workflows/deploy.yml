@@ -1,8 +1,11 @@
 name: S3 deploy with cloud front
+
 on:
   push:
     branches:
       - develop
+  repository_dispatch:
+    types: [secrets_updated]
 
 jobs:
   run:
