@@ -60,7 +60,7 @@ const DetailInfo = () => {
 
   const { id } = useParams<{ id: string }>();
   const { data: eventInfoData, refetch } = useGetEventByIdQuery(id as string);
-  const [isLike, setIsLike] = useState(eventInfoData?.likeId ? true : false);
+  const [isLike, setIsLike] = useState(!!eventInfoData?.likeId);
   const [isBookmark, setIsBookmark] = useState(false);
   const [eventInfo, setEventInfo] = useState<EventData | null>(null);
   const bookmarkInfoState = useSelector(selectAddBookmarkInfo);
@@ -75,11 +75,15 @@ const DetailInfo = () => {
   useEffect(() => {
     if (eventInfoData && id) {
       setEventInfo(eventInfoData);
-      if (eventInfoData.likeId) {
+      if (!!eventInfoData.likeId) {
         setIsLike(true);
+      } else {
+        setIsLike(false);
       }
       if (eventInfoData.bookmarkId) {
         setIsBookmark(true);
+      } else {
+        setIsBookmark(false);
       }
     }
   }, [eventInfoData]);
