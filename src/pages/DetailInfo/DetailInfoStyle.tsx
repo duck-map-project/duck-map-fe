@@ -325,9 +325,6 @@ export const DetailContents = styled.section`
     top: 11px;
     left: 10px;
     z-index: -9;
-    ${media.mobile`
-      display: none;
-    `}
   }
 `;
 

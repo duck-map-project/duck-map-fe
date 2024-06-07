@@ -297,7 +297,7 @@ const DetailInfo = () => {
           리뷰 작성
         </AddReviewButton>
       )}
-      <DetailContents>
+      <DetailContents $currentTab={currentTab}>
         {currentTab === 'info' && eventInfo?.twitterUrl ? (
           <TwitterInfoSection twitterUrl={eventInfo?.twitterUrl} />
         ) : currentTab === 'map' ? (
