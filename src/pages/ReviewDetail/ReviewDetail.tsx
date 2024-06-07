@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import defaultImage from '../../assets/user-profile.svg';
 import FixedRating from '../../components/FixedRating';
 import SketchbookLayout from '../../components/SketchbookLayout';
 import { useGetReviewByIdQuery } from '../../features/reviews/services/reviewApiSlice';
+import useCalcItemWidth from '../../hooks/useCalcItemWidth';
 import { useRouter } from '../../hooks/useRouter';
 import { ReviewById } from '../../types/reviewServie';
 import ImageSlider from '../DetailInfo/ImageSlider';
@@ -19,6 +20,7 @@ function ReviewDetail() {
   const baseUrl = process.env.REACT_APP_BASE_URL || '';
   const hashTags = review?.hashtag.split(' ');
   const images = review?.photos.map((photo) => baseUrl + photo);
+  const primaryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (reviewData) {
@@ -26,12 +28,19 @@ function ReviewDetail() {
     }
   }, [reviewData]);
 
+  const itemWidth = useCalcItemWidth(primaryRef);
+
   if (review && images && hashTags) {
     return (
       <SketchbookLayout flex="row">
         <S.LeftSection>
           <S.ImageSection>
-            <ImageSlider images={images} type="review" />
+            <ImageSlider
+              images={images}
+              type="review"
+              itemWidth={itemWidth}
+              primaryRef={primaryRef}
+            />
             <FixedRating score={review.score} className="reveiw-detail" />
             <S.LeftHeart />
             <S.RightHeart />

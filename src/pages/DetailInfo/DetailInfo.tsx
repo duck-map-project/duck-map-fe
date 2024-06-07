@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -18,6 +18,7 @@ import {
 } from '../../features/events/services/eventApiSlice';
 import { setPlace } from '../../features/events/services/eventPlaceSlice';
 import { modals } from '../../features/modal/ReduxModalRoot';
+import useCalcItemWidth from '../../hooks/useCalcItemWidth';
 import useModal from '../../hooks/useModal';
 import { useRouter } from '../../hooks/useRouter';
 import { EventData } from '../../types/eventService';
@@ -42,6 +43,7 @@ import {
   ReviewButton,
   DetailContents,
   AddReviewButton,
+  StoreAndRatingWrapper,
 } from './DetailInfoStyle';
 import ImageSlider from './ImageSlider';
 import MapSection from './MapSection';
@@ -71,6 +73,8 @@ const DetailInfo = () => {
   const { routeTo } = useRouter();
   const user = useSelector(selectCurrentUser);
   const { openModal } = useModal();
+  const primaryRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (eventInfoData && id) {
@@ -166,12 +170,36 @@ const DetailInfo = () => {
     }
   }, [bookmarkInfoState]);
 
+  const itemWidth = useCalcItemWidth(primaryRef);
+  const containerWidth = useCalcItemWidth(containerRef);
+
   return (
-    <PageWrapper>
+    <PageWrapper ref={containerRef}>
       <TopSectionWrapper>
         <TopSection>
+          {containerWidth <= 430 && (
+            <StoreAndRatingWrapper>
+              <TextBox>{eventInfo?.storeName}</TextBox>
+              <div>
+                <HeartContour>
+                  <SmallHeart />
+                  <SmallHeart />
+                  <SmallHeart />
+                </HeartContour>
+              </div>
+              <FixedRating
+                score={eventInfo?.score as number}
+                marginB="10px"
+                className="detailinfo"
+              />
+            </StoreAndRatingWrapper>
+          )}
           <ImgSection>
-            <ImageSlider images={images as string[]} />
+            <ImageSlider
+              images={images as string[]}
+              itemWidth={itemWidth}
+              primaryRef={primaryRef}
+            />
             <HeartButtonWrapper>
               <HeartButton checked={isLike} onClick={handleLikeButton} />
               <LikeNum>{eventInfo?.likeCount}</LikeNum>
@@ -182,19 +210,24 @@ const DetailInfo = () => {
             />
           </ImgSection>
           <InfoSection>
-            <TextBox>{eventInfo?.storeName}</TextBox>
-            <div>
-              <HeartContour>
-                <SmallHeart />
-                <SmallHeart />
-                <SmallHeart />
-              </HeartContour>
-            </div>
-            <FixedRating
-              score={eventInfo?.score as number}
-              marginB="10px"
-              className="detailinfo"
-            />
+            {containerWidth > 430 && (
+              <StoreAndRatingWrapper>
+                <TextBox>{eventInfo?.storeName}</TextBox>
+                <div>
+                  <HeartContour>
+                    <SmallHeart />
+                    <SmallHeart />
+                    <SmallHeart />
+                  </HeartContour>
+                </div>
+                <FixedRating
+                  score={eventInfo?.score as number}
+                  marginB="10px"
+                  className="detailinfo"
+                />
+              </StoreAndRatingWrapper>
+            )}
+
             <TextBoxWithTitle title="이벤트 기간">
               {eventInfo?.fromDate} ~ {eventInfo?.toDate}
             </TextBoxWithTitle>
@@ -209,7 +242,7 @@ const DetailInfo = () => {
                 text={eventInfo?.hashtag as string}
                 onCopy={() => alert('클립보드에 복사되었습니다!')}
               >
-                <CopyButton>복사하기</CopyButton>
+                <CopyButton>복사</CopyButton>
               </CopyToClipboard>
             </CopyTextBoxWrapper>
             <CopyTextBoxWrapper>
@@ -220,7 +253,7 @@ const DetailInfo = () => {
                 text={eventInfo?.address as string}
                 onCopy={() => alert('클립보드에 복사되었습니다!')}
               >
-                <CopyButton>복사하기</CopyButton>
+                <CopyButton>복사</CopyButton>
               </CopyToClipboard>
             </CopyTextBoxWrapper>
           </InfoSection>
