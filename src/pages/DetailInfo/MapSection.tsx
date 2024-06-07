@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 import KakaoMap from '../../components/KakaoMap';
+import media from '../../utils/mediaQuery';
 
 const PageWrapper = styled.section`
   width: 100%;
@@ -8,6 +9,10 @@ const PageWrapper = styled.section`
   background-color: #fcfefe;
   border-radius: 20px;
   border: 2px dashed #1e232c33;
+  ${media.mobile`
+    padding: 0;
+    border: none;
+  `}
 `;
 
 const MapSection = () => {

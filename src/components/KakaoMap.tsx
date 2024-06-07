@@ -29,6 +29,9 @@ const eventList = css`
 
 const detail = css`
   height: 450px;
+  ${media.mobile`
+    height: 290px;
+  `}
 `;
 
 const address = css`

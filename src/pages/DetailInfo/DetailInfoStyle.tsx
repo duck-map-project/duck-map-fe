@@ -29,6 +29,7 @@ export const TopSectionWrapper = styled.section`
   margin-bottom: 65px;
   ${media.mobile`
     padding: 20px 16px;
+    margin-bottom: 44px;
   `}
   &::after {
     content: '';
@@ -307,6 +308,9 @@ export const DetailContents = styled.section`
   border-radius: 20px;
   padding: 30px 26px 31px 26px;
   position: relative;
+  ${media.mobile`
+    padding: 20px 16px;
+  `}
 
   &::after {
     display: block;
@@ -321,6 +325,9 @@ export const DetailContents = styled.section`
     top: 11px;
     left: 10px;
     z-index: -9;
+    ${media.mobile`
+      display: none;
+    `}
   }
 `;
 

@@ -173,6 +173,7 @@ const DetailInfo = () => {
   const itemWidth = useCalcItemWidth(primaryRef);
   const containerWidth = useCalcItemWidth(containerRef);
 
+  // TODO: 컴포넌트 분리 좀 해야할 것 같아요
   return (
     <PageWrapper ref={containerRef}>
       <TopSectionWrapper>
