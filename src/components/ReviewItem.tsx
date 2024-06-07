@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 
 import { useRouter } from '../hooks/useRouter';
 import { Review } from '../types/eventService';
+import media from '../utils/mediaQuery';
 
 import FixedRating from './FixedRating';
 
@@ -14,6 +15,9 @@ const ReviewWrapper = styled.li`
   background-color: #e6f8fe;
   padding: 22px 20px 18px 20px;
   cursor: pointer;
+  ${media.mobile`
+    padding: 14px 16px;
+  `}
 `;
 const ProfileImg = styled.img`
   width: 50px;
@@ -22,6 +26,11 @@ const ProfileImg = styled.img`
   border-radius: 50%;
   margin-right: 14px;
   flex-shrink: 0;
+  ${media.mobile`
+    width: 36px;
+    height: 36px;
+    margin: 0;
+  `}
 `;
 
 const TopSection = styled.section`
@@ -30,12 +39,23 @@ const TopSection = styled.section`
   margin-bottom: 8px;
   & > :last-child {
     margin-left: auto;
+    ${media.mobile`
+      margin: 0;
+      margin-right: auto;
+    `}
   }
+  ${media.mobile`
+    flex-direction: column;
+  `}
 `;
 
 const MiddleSection = styled.section`
   display: flex;
   gap: 13px;
+  ${media.mobile`
+    flex-direction: column-reverse;
+    gap: 6px;
+  `}
 `;
 
 const ReviewInfoText = styled.span`
@@ -46,6 +66,10 @@ const ReviewInfoText = styled.span`
   border: 1.4px solid #1e232c;
   border-radius: 20px;
   background-color: var(--bg2);
+  ${media.mobile`
+    font-size: 1.6rem;
+    padding: 8px 18.5px;
+  `}
 `;
 
 const ReviewContentSection = styled.section`
@@ -57,6 +81,10 @@ const ReviewContentSection = styled.section`
   border-radius: 20px;
   background-color: #fafdf6;
   padding: 41.5px 13px;
+  ${media.mobile`
+    font-size: 1.4rem;
+    padding: 12px 14px;
+  `}
 `;
 
 const ReviewContext = styled.p`
@@ -74,6 +102,23 @@ const ReviewPhoto = styled.img`
   height: 292px;
   border: 1.4px solid #1e232c;
   border-radius: 20px;
+  ${media.mobile`    
+    width: 100%;
+    height: 100%;
+    max-width: 232px;
+    max-height: 167px;
+    aspect-ratio: 232 / 167;
+  `}
+`;
+
+const UserInfoSection = styled.section`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  ${media.mobile`
+    gap: 8px;
+    margin-bottom: 6px;
+  `}
 `;
 interface ReviewItemProps {
   review: Review;
@@ -85,8 +130,10 @@ const ReviewItem = ({ review }: ReviewItemProps) => {
   return (
     <ReviewWrapper onClick={() => routeTo(`/review/${review.id}`)}>
       <TopSection>
-        <ProfileImg alt="사용자 프로필" src={baseUrl + review.userProfile} />
-        <ReviewInfoText>{review.username}</ReviewInfoText>
+        <UserInfoSection>
+          <ProfileImg alt="사용자 프로필" src={baseUrl + review.userProfile} />
+          <ReviewInfoText>{review.username}</ReviewInfoText>
+        </UserInfoSection>
         <FixedRating
           score={review.score}
           size="reviewItem"

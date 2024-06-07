@@ -5,14 +5,23 @@ import leftTriangle from '../../assets/left-triangle.svg';
 import rightTriangle from '../../assets/right-triangle.svg';
 import whiteLeftArrow from '../../assets/white-left-arrow.svg';
 import whiteRightArrow from '../../assets/white-right-arrow.svg';
+import media from '../../utils/mediaQuery';
 
 const SliderSection = styled.section`
   position: relative;
 `;
 
 const primarySize = css`
-  width: 400px;
-  height: 357px;
+  max-width: 400px;
+  max-height: 357px;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 400 / 357;
+  ${media.mobile`
+    max-width: 244px;
+    max-height: 180px;
+    aspect-ratio: 244/ 180;
+  `}
 `;
 
 const reviewSize = css`
@@ -27,20 +36,16 @@ const SliderContainer = styled.div<{ type: 'review' | 'primary' }>`
   overflow: hidden;
   position: relative;
   border-radius: ${(props) => (props.type === 'review' ? '20px' : '')};
-  position: ${(props) => (props.type === 'review' ? 'relative' : '')};
 `;
 
 const SliderTrack = styled.div<{
   transform: number;
-  type: 'review' | 'primary';
+  itemWidth: number;
 }>`
   display: flex;
   position: relative;
   transition: transform 0.3s ease;
-  transform: ${(props) =>
-    props.type === 'review'
-      ? `translateX(-${props.transform * 438}px)`
-      : `translateX(-${props.transform * 400}px)`};
+  transform: translateX(-${(props) => props.transform * props.itemWidth}px);
 `;
 
 const Slide = styled.img<{ type: 'review' | 'primary' }>`
@@ -99,6 +104,7 @@ const DotContainer = styled.div<{ type: 'review' | 'primary' }>`
   left: 50%;
   transform: translateX(-50%);
 `;
+
 const primary = css`
   width: 8px;
   height: 8px;
@@ -119,11 +125,15 @@ const Dot = styled.div<{ $active: boolean; type: 'review' | 'primary' }>`
 interface ImageSliderProps {
   images: string[];
   type?: 'review' | 'primary';
+  itemWidth: number;
+  primaryRef: React.RefObject<HTMLDivElement>;
 }
 
 const ImageSlider: React.FC<ImageSliderProps> = ({
   images,
   type = 'primary',
+  itemWidth,
+  primaryRef,
 }) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
@@ -145,8 +155,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
 
   return (
     <SliderSection>
-      <SliderContainer type={type}>
-        <SliderTrack transform={currentSlide} type={type}>
+      <SliderContainer ref={type === 'primary' ? primaryRef : null} type={type}>
+        <SliderTrack transform={currentSlide} itemWidth={itemWidth}>
           {images.map((image, index) => (
             <Slide
               key={index}
@@ -177,7 +187,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           ))}
         </DotContainer>
       ) : null}
-      {type === 'primary' ? (
+      {type === 'primary' && itemWidth >= 220 ? (
         <>
           <LeftSlideButton type="button" onClick={prevSlide} />
           <RightSlideButton type="button" onClick={nextSlide} />
