@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 
+import media from '../utils/mediaQuery';
+
 export const TextBox = styled.p`
   width: 100%;
   padding: 10px 0;
@@ -10,6 +12,10 @@ export const TextBox = styled.p`
   border: 2px solid #1e232c;
   border-radius: 30px;
   text-align: center;
+  ${media.mobile`
+    font-size: 2rem;
+    padding: 7.5px 0;
+  `}
 `;
 
 const TextBoxWrapper = styled.section`
@@ -24,9 +30,12 @@ const TextBoxWrapper = styled.section`
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.248;
+  ${media.mobile`
+    font-size : 1.4rem
+  `}
 `;
 
-const Title = styled.p`
+const Title = styled.p<{ title: string }>`
   width: 158px;
   height: 100%;
   background-color: #ece4ff;
@@ -34,6 +43,12 @@ const Title = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${media.mobile`
+  width: 90px;
+  flex-shrink: 0;
+  ${(props) => (props.title === '해시태그' ? 'display: none' : '')}
+`}
 `;
 
 const Content = styled.span`
@@ -51,7 +66,7 @@ export const TextBoxWithTitle = ({
 }: TextBoxWithTitleProps) => {
   return (
     <TextBoxWrapper>
-      <Title>{title}</Title>
+      <Title title={title}>{title}</Title>
       <Content>{children}</Content>
     </TextBoxWrapper>
   );

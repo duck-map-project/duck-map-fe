@@ -5,6 +5,7 @@ import { styled } from 'styled-components';
 import ReviewItem from '../../components/ReviewItem';
 import { useGetReviewsQuery } from '../../features/reviews/services/reviewApiSlice';
 import { Review } from '../../types/eventService';
+import media from '../../utils/mediaQuery';
 import px2vw from '../../utils/px2vw';
 const Wrapper = styled.div`
   width: 100%;
@@ -36,6 +37,9 @@ const TabWrapper = styled.section`
   & > button {
     margin-right: ${px2vw(48)};
   }
+  ${media.mobile`
+    padding: 18px 20px;
+  `}
 `;
 
 const ReviewWrapper = styled.ul`
