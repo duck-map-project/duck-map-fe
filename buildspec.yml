@@ -1,24 +1,15 @@
 version: 0.2
 
 phases:
-  pre_build:
+  install:
+    runtime-versions:
+      nodejs: latest
     commands:
-      - echo Installing dependencies ...
-      - npm ci
+      - node -v
+      - npm i
+
   build:
     commands:
-      - echo Build Started on `date`
       - npm run build
-  post_build:
-    commands:
-      - echo Uploading build artifacts to S3...
-      - aws s3 cp --recursive ./build s3://$BUCKET_NAME/
-      - echo Uploading index.html with cache control...
-      - aws s3 cp --cache-control="max-age=0, no-cache, no-store, must-revalidate" ./build/index.html s3://$BUCKET_NAME/
-      - echo Creating CloudFront invalidation...
-      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths /index.html
-
-artifacts:
-  files:
-    - '**/*'
-  base-directory: 'build'
+      - aws s3 sync build/ s3://$BUCKET_NAME
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths /*
