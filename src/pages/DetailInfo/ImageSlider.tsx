@@ -20,13 +20,21 @@ const primarySize = css`
   ${media.mobile`
     max-width: 244px;
     max-height: 180px;
-    aspect-ratio: 244/ 180;
+    aspect-ratio: 244 / 180;
   `}
 `;
 
 const reviewSize = css`
-  width: 438px;
-  height: 410px;
+  max-width: 438px;
+  max-height: 410px;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 438/410;
+  ${media.mobile`
+    max-width: 272px;
+    max-height: 236px;
+    aspect-ratio: 272 / 236;
+  `}
 `;
 
 const SliderContainer = styled.div<{ type: 'review' | 'primary' }>`
@@ -82,6 +90,9 @@ const ReviewSlideButton = styled.button`
   background-position: center;
   position: absolute;
   bottom: 11px;
+  ${media.mobile`
+    display: none;
+  `}
 `;
 
 const ReviewRightButton = styled(ReviewSlideButton)`
@@ -103,6 +114,9 @@ const DotContainer = styled.div<{ type: 'review' | 'primary' }>`
   bottom: ${(props) => (props.type === 'primary' ? '13px' : '-31.39px')};
   left: 50%;
   transform: translateX(-50%);
+  ${media.mobile`
+    bottom: ${(props) => (props.type === 'primary' ? '13px' : '-18px')};
+  `}
 `;
 
 const primary = css`
@@ -114,6 +128,11 @@ const reviewDot = css`
   width: 14px;
   height: 14px;
   border: 2px solid #1e232c;
+  ${media.mobile`
+    width: 8px;
+    height: 8px;
+    background-color: #9EA9F0;
+  `}
 `;
 
 const Dot = styled.div<{ $active: boolean; type: 'review' | 'primary' }>`

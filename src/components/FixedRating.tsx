@@ -20,6 +20,9 @@ const primaryWrapper = css`
   background-color: #ffebf4;
   border: 2px solid #1e232c;
   border-radius: 30px;
+  ${media.mobile`
+    padding: 2px 12px;
+  `}
 `;
 
 const reviewItemWrapper = css`
@@ -38,12 +41,17 @@ const primaryRatingStyle = css`
   width: 125px;
   height: 23px;
   background-size: 25px 23px;
+  ${media.mobile`
+    width: 80px;
+    height: 16px;
+    background-size: 16px;
+  `}
 `;
 
 const reviewItemRatingStyle = css`
   width: 110px;
   height: 22px;
-  background-size: 22px 22px;
+  background-size: 22px 2px;
   ${media.mobile`
   background-size: 14.5px 20px;
   `}

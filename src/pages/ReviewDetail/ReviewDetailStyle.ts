@@ -1,16 +1,16 @@
 import { styled } from 'styled-components';
 
 import heartSticker from '../../assets/heart-sticker.svg';
+import buttonIcon from '../../assets/icon-button-arrow.svg';
 import tape from '../../assets/tape.svg';
+import media from '../../utils/mediaQuery';
 
 export const LeftSection = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   width: 100%;
   max-width: 490px;
-  margin-right: 42px;
 `;
 
 export const ImageSection = styled.section`
@@ -18,7 +18,6 @@ export const ImageSection = styled.section`
   flex-direction: column;
   gap: 55px;
   width: 100%;
-  height: 546px;
   align-items: center;
   background-color: #f8f8fa;
   border: 2px solid #1e232c;
@@ -26,6 +25,11 @@ export const ImageSection = styled.section`
   padding: 26px 0 19px;
   position: relative;
   margin-bottom: 11.36px;
+  ${media.mobile`
+    margin-bottom: 0;
+    padding: 16px 0 17px;
+    gap: 29px;
+  `}
   &::after {
     content: '';
     display: block;
@@ -39,6 +43,13 @@ export const ImageSection = styled.section`
     top: -21.46px;
     left: 50%;
     transform: translateX(-50%) rotate(6deg);
+    ${media.mobile`
+      width: 51.45px;
+      height: 22.64px;
+      background-size: 50.08px 18.46px;
+      transform: translateX(-50%) rotate(4.87deg);
+      top: -10px;
+    `}
   }
 `;
 const HeartSticker = styled.div`
@@ -46,6 +57,9 @@ const HeartSticker = styled.div`
   height: 37.73px;
   background-image: url(${heartSticker});
   position: absolute;
+  ${media.mobile`
+    display: none;
+  `}
 `;
 
 export const LeftHeart = styled(HeartSticker)`
@@ -67,6 +81,9 @@ export const CircleSticker = styled.div`
   position: absolute;
   bottom: 85.61px;
   right: -11px;
+  ${media.mobile`
+    display: none;
+  `}
 `;
 
 export const GoToEventButton = styled.button.attrs({ type: 'button' })`
@@ -79,6 +96,13 @@ export const GoToEventButton = styled.button.attrs({ type: 'button' })`
   font-size: 2.4rem;
   font-weight: 700;
   line-height: 1.247916666666667;
+  ${media.mobile`
+    width: 85.53%;
+    height: 58px;
+    flex-shrink: 0;
+    font-size: 2rem;
+    margin : 0 auto;
+  `}
 `;
 
 export const ButtonContent = styled.div`
@@ -92,57 +116,87 @@ export const ButtonContent = styled.div`
   border: 2px solid #1e232c;
   border-radius: 50px;
   margin: 0 auto;
+  background-image: url(${buttonIcon});
+  background-repeat: no-repeat;
+  background-position: right 14.04% center;
+  ${media.mobile`
+    
+  `}
 `;
 
 export const RightSection = styled.section`
-  width: 46.27%;
-  min-width: 534px;
+  width: 100%;
+  max-width: 534px;
   display: flex;
   flex-direction: column;
 `;
 
 export const InfoSection = styled.section`
+  width: 100%;
   display: flex;
   gap: 10px;
   margin-bottom: 8px;
+  ${media.mobile`
+    gap: 8px;
+  `}
 `;
 
 export const UserProfile = styled.img`
   width: 66px;
-  height: 66px;
+  aspect-ratio: 1/1;
   border: 1.4px solid #1e232c;
   border-radius: 50%;
+  ${media.mobile`
+    width: 36px;
+    height: 36px;
+  `}
 `;
 
 const TextBox = styled.p`
+  width: 100%;
   height: 48px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 2px solid #1e232c;
   border-radius: 50px;
+  ${media.mobile`
+    height: 36px;
+  `}
 `;
 
 export const UserText = styled(TextBox)`
-  width: 164px;
+  max-width: 164px;
   background-color: #f8f8fa;
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.248;
+  ${media.mobile`
+    font-size: 1.6rem;
+  `}
 `;
 
 export const StoreName = styled(TextBox)`
-  width: 284px;
+  max-width: 284px;
   background-color: #ffebf4;
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 1.247777777777778;
+  ${media.mobile`
+    font-size: 1.4rem;
+  `}
 `;
 
 export const HashTagSection = styled.section`
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 25px;
+  ${media.mobile`
+    font-size: 1.2rem;
+    gap: 6px;
+    margin-bottom: 17px;
+  `}
 `;
 
 export const HashTag = styled.p`
@@ -154,9 +208,13 @@ export const HashTag = styled.p`
   padding: 9.5px 17px;
   border: 2px solid #1e232cb2;
   border-radius: 30px;
+  word-break: break-all;
+  ${media.mobile`
+    padding: 6.5px 12px;
+  `}
 `;
 
-export const ReviewText = styled.p`
+export const ReviewSection = styled.section`
   width: 100%;
   height: 100%;
   border: 2px solid #1e232c;
@@ -165,6 +223,12 @@ export const ReviewText = styled.p`
   background-color: #f8f8fa;
   padding: 26px 16px;
   position: relative;
+  ${media.mobile`
+    height: 184px;
+    font-size: 1.4rem;
+    margin-bottom: 7px;
+    padding: 14px 12px;
+  `}
   &::after {
     content: '';
     display: block;
@@ -178,5 +242,36 @@ export const ReviewText = styled.p`
     top: -15px;
     left: 50%;
     transform: translateX(-50%) rotate(-1.23deg);
+    ${media.mobile`
+      width: 42px;
+      height: 18px;
+      background-size: contain;
+      transform: translateX(-50%) rotate(1.23deg);
+      top: -8.55px;
+    `}
   }
+`;
+
+export const ReviewText = styled.p`
+  height: 100%;
+  word-break: break-all;
+  ${media.mobile`
+    overflow-y: scroll;
+    width: 100%; 
+    &::-webkit-scrollbar-thumb {
+      position: relative;
+      background-color: #8f9ef2;
+      border: 2px solid var(--line-black);
+      border-radius: 17.7px;
+  }
+    &::-webkit-scrollbar {
+      width: 8px;
+  }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+      background-color: rgba(176, 180, 204, 0.5);
+  }
+  `}
 `;

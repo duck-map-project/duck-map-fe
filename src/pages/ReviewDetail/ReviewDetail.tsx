@@ -10,7 +10,9 @@ import { useRouter } from '../../hooks/useRouter';
 import { ReviewById } from '../../types/reviewServie';
 import ImageSlider from '../DetailInfo/ImageSlider';
 
+import HashTagLIst from './HashTagLIst';
 import * as S from './ReviewDetailStyle';
+import WriterInfo from './WriterInfo';
 
 function ReviewDetail() {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +23,7 @@ function ReviewDetail() {
   const hashTags = review?.hashtag.split(' ');
   const images = review?.photos.map((photo) => baseUrl + photo);
   const primaryRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (reviewData) {
@@ -29,11 +32,22 @@ function ReviewDetail() {
   }, [reviewData]);
 
   const itemWidth = useCalcItemWidth(primaryRef);
+  const pageWidth = useCalcItemWidth(containerRef);
 
   if (review && images && hashTags) {
     return (
-      <SketchbookLayout flex="row">
+      <SketchbookLayout flex="row" containerRef={containerRef}>
         <S.LeftSection>
+          {pageWidth <= 430 && (
+            <>
+              <WriterInfo
+                src={baseUrl + review.userProfile || defaultImage}
+                userName={review.username}
+                eventStoreName={review.eventStoreName}
+              />
+              <HashTagLIst hashTags={hashTags} />
+            </>
+          )}
           <S.ImageSection>
             <ImageSlider
               images={images}
@@ -41,36 +55,49 @@ function ReviewDetail() {
               itemWidth={itemWidth}
               primaryRef={primaryRef}
             />
+            {/* ?? 클래스 네임 왜 있는거임? */}
             <FixedRating score={review.score} className="reveiw-detail" />
             <S.LeftHeart />
             <S.RightHeart />
             <S.CircleSticker />
           </S.ImageSection>
-          <S.GoToEventButton
-            type="button"
-            onClick={() => routeTo(`/event/${review?.eventId}`)}
-          >
-            <S.ButtonContent>이벤트 바로가기</S.ButtonContent>
-          </S.GoToEventButton>
+          {pageWidth > 430 && (
+            <S.GoToEventButton
+              type="button"
+              onClick={() => routeTo(`/event/${review?.eventId}`)}
+            >
+              <S.ButtonContent>이벤트 바로가기</S.ButtonContent>
+            </S.GoToEventButton>
+          )}
         </S.LeftSection>
         <S.RightSection>
-          <S.InfoSection>
-            <S.UserProfile src={baseUrl + review.userProfile || defaultImage} />
-            <S.UserText>{review.username}</S.UserText>
-            <S.StoreName>{review.eventStoreName}</S.StoreName>
-          </S.InfoSection>
-          <S.HashTagSection>
-            {hashTags.map((hasTag, i) => (
-              <S.HashTag key={i}>{hasTag}</S.HashTag>
-            ))}
-          </S.HashTagSection>
-          <S.ReviewText>{review.content}</S.ReviewText>
+          {pageWidth > 430 && (
+            <>
+              <WriterInfo
+                src={baseUrl + review.userProfile || defaultImage}
+                userName={review.username}
+                eventStoreName={review.eventStoreName}
+              />
+              <HashTagLIst hashTags={hashTags} />
+            </>
+          )}
+          <S.ReviewSection>
+            <S.ReviewText>{review.content}</S.ReviewText>
+          </S.ReviewSection>
+          {pageWidth <= 430 && (
+            <S.GoToEventButton
+              type="button"
+              onClick={() => routeTo(`/event/${review?.eventId}`)}
+            >
+              <S.ButtonContent>이벤트 바로가기</S.ButtonContent>
+            </S.GoToEventButton>
+          )}
         </S.RightSection>
       </SketchbookLayout>
     );
   } else {
     return (
-      <SketchbookLayout flex="row">
+      <SketchbookLayout flex="row" containerRef={containerRef}>
         <div> 이런! 리뷰를 불러오는데 실패했습니다...</div>
       </SketchbookLayout>
     );
