@@ -115,12 +115,11 @@ export const ButtonContent = styled.div`
   color: #1e232c;
   border: 2px solid #1e232c;
   border-radius: 50px;
-  margin: 0 auto;
-  background-image: url(${buttonIcon});
-  background-repeat: no-repeat;
-  background-position: right 14.04% center;
   ${media.mobile`
-    
+    margin: 0 auto;
+    background-image: url(${buttonIcon});
+    background-repeat: no-repeat;
+    background-position: right 14.04% center;
   `}
 `;
 
