@@ -116,7 +116,7 @@ const MenuButtonText = styled.span`
   `}
 `;
 
-export const RightSection = styled.section<{ currentPath: string }>`
+export const RightSection = styled.section<{ $currentPath: string }>`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -125,7 +125,7 @@ export const RightSection = styled.section<{ currentPath: string }>`
     gap: 0;
   `}
   ${(props) =>
-    (props.currentPath === '/signin' || props.currentPath === '/signup') &&
+    (props.$currentPath === '/signin' || props.$currentPath === '/signup') &&
     media.mobile`
     display: none;
   `}
@@ -349,7 +349,7 @@ const Header: React.FC = ({}) => {
           </span>
         </MobileLogo>
       )}
-      <RightSection currentPath={currentPath}>
+      <RightSection $currentPath={currentPath}>
         {content}
         {currentPath === '/managepage' || (
           <MenuButton onClick={handleAuthButton}>

@@ -48,12 +48,12 @@ const SliderContainer = styled.div<{ type: 'review' | 'primary' }>`
 
 const SliderTrack = styled.div<{
   transform: number;
-  itemWidth: number;
+  $itemWidth: number;
 }>`
   display: flex;
   position: relative;
   transition: transform 0.3s ease;
-  transform: translateX(-${(props) => props.transform * props.itemWidth}px);
+  transform: translateX(-${(props) => props.transform * props.$itemWidth}px);
 `;
 
 const Slide = styled.img<{ type: 'review' | 'primary' }>`
@@ -175,7 +175,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
   return (
     <SliderSection>
       <SliderContainer ref={type === 'primary' ? primaryRef : null} type={type}>
-        <SliderTrack transform={currentSlide} itemWidth={itemWidth}>
+        <SliderTrack transform={currentSlide} $itemWidth={itemWidth}>
           {images.map((image, index) => (
             <Slide
               key={index}
