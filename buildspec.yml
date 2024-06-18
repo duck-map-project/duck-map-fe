@@ -5,11 +5,19 @@ phases:
     runtime-versions:
       nodejs: latest
     commands:
+      - echo Installing dependencies...
       - node -v
       - npm i
 
+  pre_build:
+    commands:
+      - echo Fetching secrets from AWS Secrets Manager...
+      - export REACT_APP_BASE_URL=$(aws secretsmanager get-secret-value --secret-id REACT_APP_BASE_URL)
+      - export REACT_APP_MAP_KEY=$(aws secretsmanager get-secret-value --secret-id REACT_APP_MAP_KEY)
+      - export REACT_APP_REST_API_KEY=$(aws secretsmanager get-secret-value --secret-id REACT_APP_REST_API_KEY)
   build:
     commands:
+      - echo Building the project...
       - npm run build
       - aws s3 sync build/ s3://$BUCKET_NAME
       - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths /*
