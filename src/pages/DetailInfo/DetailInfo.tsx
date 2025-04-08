@@ -24,26 +24,26 @@ import { useRouter } from '../../hooks/useRouter';
 import { EventData } from '../../types/eventService';
 
 import {
-  ImgSection,
-  PageWrapper,
-  TopSectionWrapper,
-  TopSection,
-  InfoSection,
-  HeartButtonWrapper,
-  HeartButton,
-  LikeNum,
+  AddReviewButton,
   BookmarkButton,
-  TabSection,
-  HeartContour,
-  SmallHeart,
   CopyButton,
   CopyTextBoxWrapper,
-  InfoButton,
-  MapButton,
-  ReviewButton,
   DetailContents,
-  AddReviewButton,
+  HeartButton,
+  HeartButtonWrapper,
+  HeartContour,
+  ImgSection,
+  InfoButton,
+  InfoSection,
+  LikeNum,
+  MapButton,
+  PageWrapper,
+  ReviewButton,
+  SmallHeart,
   StoreAndRatingWrapper,
+  TabSection,
+  TopSection,
+  TopSectionWrapper,
 } from './DetailInfoStyle';
 import ImageSlider from './ImageSlider';
 import MapSection from './MapSection';
@@ -301,7 +301,7 @@ const DetailInfo = () => {
           리뷰 작성
         </AddReviewButton>
       )}
-      <DetailContents $currentTab={currentTab}>
+      <DetailContents>
         {currentTab === 'info' && eventInfo?.twitterUrl ? (
           <TwitterInfoSection twitterUrl={eventInfo?.twitterUrl} />
         ) : currentTab === 'map' ? (

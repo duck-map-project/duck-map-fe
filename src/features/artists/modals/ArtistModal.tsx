@@ -9,33 +9,33 @@ import CommonModal from '../../../components/modal/CommonModal';
 import TypeButton from '../../../components/modal/TypeButton';
 import useImageProcessing from '../../../hooks/useImageProcessing';
 import {
-  ArtistType,
   ArtistDataType,
+  ArtistType,
   EditArtistDataType,
 } from '../../../types/artistsType';
 import { performApiAction } from '../../../utils/apiHelpers';
 import { ModalProps } from '../../modal/modalsSlice';
 import {
   useAddArtistsMutation,
-  useGetArtistsQuery,
   useEditArtistsMutation,
+  useGetArtistsQuery,
 } from '../services/artistsApiSlice';
 import { useGetArtistsTypeQuery } from '../services/artistsTypeApiSlice';
 import { selectEditArtistSlice } from '../services/setArtistSlice';
 
 import {
-  ArtistModalTitle,
+  ArtistImageNameWrapper,
+  ArtistImagePreview,
+  ArtistInfoWrapper,
   ArtistModalCloseButton,
+  ArtistModalTitle,
+  ArtistNameInput,
+  ArtistSubmitButton,
+  GroupSortDropdown,
+  NameLabel,
+  StyledInput,
   TypeTitle,
   TypeWrapper,
-  ArtistImageNameWrapper,
-  ArtistInfoWrapper,
-  ArtistImagePreview,
-  ArtistNameInput,
-  NameLabel,
-  ArtistSubmitButton,
-  StyledInput,
-  GroupSortDropdown,
 } from './ArtistModalStyle';
 
 export type sortOptionsType = {

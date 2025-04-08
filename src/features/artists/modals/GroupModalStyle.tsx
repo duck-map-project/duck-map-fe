@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import media from '../../../utils/mediaQuery';
 
 type imageType = {
-  previewimage: string;
+  previewimage?: string;
 };
 
 export const ModalTitle = styled.h4`
