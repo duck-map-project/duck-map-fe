@@ -1,11 +1,11 @@
-import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import {
   validateAll,
   validateEmail,
   validatePassword,
-  validateUsername,
   validatePasswordMatch,
+  validateUsername,
 } from '../utils/validates';
 
 interface Inputs {

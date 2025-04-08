@@ -1,12 +1,12 @@
 import {
-  MutationDefinition,
+  FetchArgs,
   FetchBaseQueryError,
   FetchBaseQueryMeta,
-  FetchArgs,
+  MutationDefinition,
 } from '@reduxjs/toolkit/dist/query';
 import {
-  QueryReturnValue,
   BaseQueryApi,
+  QueryReturnValue,
 } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { MutationTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks';
 

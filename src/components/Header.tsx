@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -15,8 +15,8 @@ import defaultImage from '../assets/user-profile.svg';
 import { useLogoutMutation } from '../features/auth/services/authApiSlice';
 import {
   logOut,
-  selectCurrentUser,
   selectCurrentRole,
+  selectCurrentUser,
 } from '../features/auth/services/authSlice';
 import { modals } from '../features/modal/ReduxModalRoot';
 import useModal from '../hooks/useModal';

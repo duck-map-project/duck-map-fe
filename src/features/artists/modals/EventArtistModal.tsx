@@ -30,8 +30,8 @@ const EventArtistModal = ({ onClose }: ModalProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
   const search = useInput('');
   const debouncedSearchInput = useDebounce(search.value, 600);
-  const [isGroupMode, setIsGroupMode] = useState(false); // 그룹 모드 여부
-  const [groupId, setGroupId] = useState<number | null>(null); // 그룹 ID 저장
+  const [isGroupMode, setIsGroupMode] = useState(false);
+  const [groupId, setGroupId] = useState<number | null>(null);
 
   const {
     data: artistData,
@@ -157,8 +157,6 @@ const EventArtistModal = ({ onClose }: ModalProps) => {
     search.setValue('');
     setPage(0);
   };
-
-  console.log(groupId);
 
   return (
     <CommonModal width="1156" onClick={onClose}>

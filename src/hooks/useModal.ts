@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 
-import { Modals, open, close } from '../features/modal/modalsSlice';
+import { Modals, close, open } from '../features/modal/modalsSlice';
 
 const useModal = () => {
   const dispatch = useDispatch();

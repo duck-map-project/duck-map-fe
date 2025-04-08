@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 const useInput = (initialValue: string) => {
   const [value, setValue] = useState<string>(initialValue);
