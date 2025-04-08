@@ -7,6 +7,7 @@ import useDebounce from '../../../hooks/useDebounce';
 import useInput from '../../../hooks/useInput';
 import useScroll from '../../../hooks/useScroll';
 import { ArtistContent } from '../../../types/artistsType';
+import { Artist as EventArtist } from '../../../types/eventService';
 import scrollToTop from '../../../utils/scrollToTop';
 import { setArtist } from '../../events/services/setEventElemetsSlice';
 import {
@@ -14,10 +15,14 @@ import {
   selectSelectedArtist,
 } from '../../events/services/setEventElemetsSlice';
 import { ModalProps } from '../../modal/modalsSlice';
-import { useGetArtistsQuery } from '../services/artistsApiSlice';
+import {
+  useGetArtistOfGroupQuery,
+  useGetArtistsQuery,
+} from '../services/artistsApiSlice';
 
 import {
   AritstSelectSection,
+  ArtistLabel,
   ArtistListItem,
   ArtistListSection,
   ArtistSearchInput,
@@ -35,6 +40,8 @@ const ArtistSelectModal = ({ onClose }: ModalProps) => {
   const search = useInput('');
   const debouncedSearchInput = useDebounce(search.value, 600);
   const ulRef = useRef<HTMLUListElement>(null);
+  const [isGroupMode, setIsGroupMode] = useState(false);
+  const [groupId, setGroupId] = useState<number | null>(null);
 
   const {
     data: artistsData,
@@ -47,6 +54,10 @@ const ArtistSelectModal = ({ onClose }: ModalProps) => {
     pageSize: '18',
     ...(debouncedSearchInput && { artistName: debouncedSearchInput }),
   });
+  const { data: groupArtists = [], isLoading: isGroupLoading } =
+    useGetArtistOfGroupQuery(groupId!, {
+      skip: groupId === null,
+    });
 
   const onArtistClick = (artistId: number, name: string) => {
     const existingArtist = artistIds.find((artist) => artist.id === artistId);
@@ -79,13 +90,43 @@ const ArtistSelectModal = ({ onClose }: ModalProps) => {
     }
   }, [artistsData, debouncedSearchInput]);
 
+  const handleArtistClick = (artist: EventArtist) => {
+    onArtistClick(artist.id, artist.name);
+
+    if (!artist.groupId) {
+      setIsGroupMode(true);
+      setGroupId(artist.id);
+    }
+  };
+
   const isLast = artistsData?.isLast ?? true;
 
   let content;
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
-
-  if (artists) {
+  if (isGroupMode && groupArtists.length > 0) {
+    content = (
+      <>
+        {groupArtists.map((artist) => (
+          <ArtistListItem
+            key={artist.id}
+            image={
+              artist.image === '/images/null'
+                ? artist.image
+                : baseUrl + artist.image
+            }
+            selectedIds={artistIds.map((artist) => artist.id)}
+            currentId={artist.id}
+            onClick={() => {
+              handleArtistClick(artist);
+            }}
+          >
+            <ArtistLabel>{artist.name}</ArtistLabel>
+          </ArtistListItem>
+        ))}
+      </>
+    );
+  } else if (artists) {
     content = artists.map((artist) => (
       <ArtistListItem
         key={artist.id}
@@ -97,11 +138,13 @@ const ArtistSelectModal = ({ onClose }: ModalProps) => {
         selectedIds={artistIds.map((artist) => artist.id)}
         currentId={artist.id}
         onClick={() => {
-          onArtistClick(artist.id, artist.name);
+          handleArtistClick(artist);
         }}
-      />
+      >
+        <ArtistLabel>{artist.name}</ArtistLabel>
+      </ArtistListItem>
     ));
-  } else if (isLoading) {
+  } else if (isLoading || isGroupLoading) {
     content = <div>아티스트 목록을 불러오는 중입니다</div>;
   } else if (isError) {
     content = <div>{error.toString()}</div>;
@@ -135,7 +178,27 @@ const ArtistSelectModal = ({ onClose }: ModalProps) => {
           value={search.value}
           onReset={onSearchInputReset}
         />
-        <ArtistListSection ref={ulRef}>{content}</ArtistListSection>
+        <ArtistListSection ref={ulRef}>
+          {content}
+          {isGroupMode && groupArtists.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setIsGroupMode(false);
+                setGroupId(null);
+                setPage(0);
+                if (groupId !== null) {
+                  const groupLeader = artists.find((a) => a.id === groupId);
+                  if (groupLeader) {
+                    onArtistClick(groupLeader.id, groupLeader.name);
+                  }
+                }
+              }}
+            >
+              ← 뒤로가기
+            </button>
+          )}
+        </ArtistListSection>
       </AritstSelectSection>
       <DoneButton type="button" onClick={SaveArtistIds}>
         완료

@@ -120,6 +120,7 @@ export const ArtistListItem = styled.li<{
   background-color: #f8f8fa;
   background-repeat: no-repeat;
   cursor: pointer;
+  position: relative;
   ${(props) =>
     props.image === '/images/null' ? primaryBackground : isImageBackground}
   border-radius: 50%;
@@ -148,4 +149,14 @@ export const ModalCloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 20px;
+`;
+
+export const ArtistLabel = styled.p`
+  width: 100%;
+  font-size: 14px;
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translate(-50%);
+  text-align: center;
 `;
