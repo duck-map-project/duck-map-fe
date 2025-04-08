@@ -5,14 +5,13 @@
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "overrides": [],
+  "plugins": ["@typescript-eslint", "import"],
   "parserOptions": {
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
     }
   },
-  "plugins": ["@typescript-eslint", "import"],
   "rules": {
     "import/order": [
       "error",
@@ -32,6 +31,15 @@
           "order": "asc",
           "caseInsensitive": true
         }
+      }
+    ],
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
       }
     ],
     "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
