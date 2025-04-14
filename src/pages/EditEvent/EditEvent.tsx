@@ -1,5 +1,5 @@
 import imageCompression from 'browser-image-compression';
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -16,10 +16,10 @@ import {
   setPlace,
 } from '../../features/events/services/eventPlaceSlice';
 import {
-  setArtist,
-  setCategory,
   selectSelectedArtist,
   selectSelectedCategory,
+  setArtist,
+  setCategory,
 } from '../../features/events/services/setEventElemetsSlice';
 import { useAddImageMutation } from '../../features/images/imageApiSlice';
 import { modals } from '../../features/modal/ReduxModalRoot';

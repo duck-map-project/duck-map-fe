@@ -35,6 +35,7 @@ export const CategoryItem = styled.li<{
   background-color: #eff2f3;
   border: 1.4px solid #1e232c;
   border-radius: 30px;
+  height: fit-content;
   ${(props) =>
     props.selectedIds.includes(props.currentId) ? selectedListStyle : null}
 `;
