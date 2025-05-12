@@ -50,6 +50,8 @@ const SliderTrack = styled.div<{
 
 const Slide = styled.img<{ type: 'review' | 'primary' }>`
   flex-shrink: 0;
+  object-fit: cover;
+  object-position: center;
   ${(props) => (props.type === 'review' ? reviewSize : primarySize)}
 `;
 

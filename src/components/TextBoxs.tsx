@@ -22,7 +22,6 @@ const TextBoxWrapper = styled.section`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 46px;
   border: 2px solid #1e232c;
   border-radius: 30px;
   background-color: #ffebf4;
@@ -37,15 +36,18 @@ const TextBoxWrapper = styled.section`
 
 const Title = styled.p<{ title: string }>`
   width: 158px;
+  min-width: 103px;
   height: 100%;
+  padding: 10px 0;
   background-color: #ece4ff;
   border-right: 2px solid #1e232c;
   display: flex;
   justify-content: center;
   align-items: center;
-
+  word-break: keep-all;
   ${media.mobile`
   width: 90px;
+  min-width: unset;
   flex-shrink: 0;
   ${(props) => (props.title === '해시태그' ? 'display: none' : '')}
 `}
@@ -54,6 +56,8 @@ const Title = styled.p<{ title: string }>`
 const Content = styled.span`
   width: 100%;
   text-align: center;
+  word-break: break-all;
+  padding: 0 10px;
 `;
 
 interface TextBoxWithTitleProps extends React.HTMLAttributes<HTMLDivElement> {

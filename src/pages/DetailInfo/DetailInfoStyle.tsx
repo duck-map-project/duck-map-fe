@@ -154,17 +154,6 @@ export const InfoSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  section {
-    &:nth-child(4),
-    &:nth-child(5),
-    &:nth-child(6) {
-      margin-bottom: 12px;
-      ${media.mobile`
-        margin-bottom: 0;
-      `}
-    }
-  }
-
   ${media.mobile`
     gap: 6px;
     section {
@@ -347,4 +336,11 @@ export const StoreAndRatingWrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+export const TextBoxWrapper = styled.section`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 12px;
 `;

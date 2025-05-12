@@ -42,6 +42,7 @@ import {
   SmallHeart,
   StoreAndRatingWrapper,
   TabSection,
+  TextBoxWrapper,
   TopSection,
   TopSectionWrapper,
 } from './DetailInfoStyle';
@@ -174,15 +175,23 @@ const DetailInfo = () => {
     }
   }, [bookmarkInfoState]);
 
+  const [currItemWidth, setCurrItemWidth] = useState(0);
+  const [currContainerWidth, setCurrContainerWidth] = useState(0);
+
   const itemWidth = useCalcItemWidth(primaryRef);
   const containerWidth = useCalcItemWidth(containerRef);
+
+  useEffect(() => {
+    setCurrItemWidth(itemWidth);
+    setCurrContainerWidth(containerWidth);
+  }, [itemWidth, containerWidth]);
 
   // TODO: 컴포넌트 분리 좀 해야할 것 같아요
   return (
     <PageWrapper ref={containerRef}>
       <TopSectionWrapper>
         <TopSection>
-          {containerWidth <= 430 && (
+          {currContainerWidth <= 430 && (
             <StoreAndRatingWrapper>
               <TextBox>{eventInfo?.storeName}</TextBox>
               <div>
@@ -202,7 +211,7 @@ const DetailInfo = () => {
           <ImgSection>
             <ImageSlider
               images={images as string[]}
-              itemWidth={itemWidth}
+              itemWidth={currItemWidth}
               primaryRef={primaryRef}
             />
             <HeartButtonWrapper>
@@ -215,7 +224,7 @@ const DetailInfo = () => {
             />
           </ImgSection>
           <InfoSection>
-            {containerWidth > 430 && (
+            {currContainerWidth > 430 && (
               <StoreAndRatingWrapper>
                 <TextBox>{eventInfo?.storeName}</TextBox>
                 <div>
@@ -232,35 +241,36 @@ const DetailInfo = () => {
                 />
               </StoreAndRatingWrapper>
             )}
-
-            <TextBoxWithTitle title="이벤트 기간">
-              {eventInfo?.fromDate} ~ {eventInfo?.toDate}
-            </TextBoxWithTitle>
-            <TextBoxWithTitle title="영업 시간">
-              {eventInfo?.businessHour}
-            </TextBoxWithTitle>
-            <CopyTextBoxWrapper>
-              <TextBoxWithTitle title="해시태그">
-                {eventInfo?.hashtag}
+            <TextBoxWrapper>
+              <TextBoxWithTitle title="이벤트 기간">
+                {eventInfo?.fromDate} ~ {eventInfo?.toDate}
               </TextBoxWithTitle>
-              <CopyToClipboard
-                text={eventInfo?.hashtag as string}
-                onCopy={() => alert('클립보드에 복사되었습니다!')}
-              >
-                <CopyButton>복사</CopyButton>
-              </CopyToClipboard>
-            </CopyTextBoxWrapper>
-            <CopyTextBoxWrapper>
-              <TextBoxWithTitle title="주소">
-                {eventInfo?.address}
+              <TextBoxWithTitle title="영업 시간">
+                {eventInfo?.businessHour}
               </TextBoxWithTitle>
-              <CopyToClipboard
-                text={eventInfo?.address as string}
-                onCopy={() => alert('클립보드에 복사되었습니다!')}
-              >
-                <CopyButton>복사</CopyButton>
-              </CopyToClipboard>
-            </CopyTextBoxWrapper>
+              <CopyTextBoxWrapper>
+                <TextBoxWithTitle title="해시태그">
+                  {eventInfo?.hashtag}
+                </TextBoxWithTitle>
+                <CopyToClipboard
+                  text={eventInfo?.hashtag as string}
+                  onCopy={() => alert('클립보드에 복사되었습니다!')}
+                >
+                  <CopyButton>복사</CopyButton>
+                </CopyToClipboard>
+              </CopyTextBoxWrapper>
+              <CopyTextBoxWrapper>
+                <TextBoxWithTitle title="주소">
+                  {eventInfo?.address}
+                </TextBoxWithTitle>
+                <CopyToClipboard
+                  text={eventInfo?.address as string}
+                  onCopy={() => alert('클립보드에 복사되었습니다!')}
+                >
+                  <CopyButton>복사</CopyButton>
+                </CopyToClipboard>
+              </CopyTextBoxWrapper>
+            </TextBoxWrapper>
           </InfoSection>
           <TabSection>
             <InfoButton
