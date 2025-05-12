@@ -5,24 +5,24 @@ import defaultImage from '../../../assets/user-profile.svg';
 import Loading from '../../../components/Loading';
 import {
   useEditUserInfoMutation,
-  useUnregisterMutation,
   useGetUserInfoQuery,
+  useUnregisterMutation,
 } from '../../../features/auth/services/authApiSlice';
-import { logOut } from '../../../features/auth/services/authSlice';
+import { logOut, setUser } from '../../../features/auth/services/authSlice';
 import useImageProcessing from '../../../hooks/useImageProcessing';
 import { performApiAction } from '../../../utils/apiHelpers';
 
 import {
-  UserProfileEditForm,
-  ImagePreview,
-  HiddenInput,
-  UserInfoWrapper,
-  StyledLabel,
-  EmailInput,
-  UsernameInput,
   BtnWrapper,
-  UnregisterBtn,
   EditSubmitBtn,
+  EmailInput,
+  HiddenInput,
+  ImagePreview,
+  StyledLabel,
+  UnregisterBtn,
+  UserInfoWrapper,
+  UserProfileEditForm,
+  UsernameInput,
 } from './EditProfileStyle';
 
 const EditProfile = () => {
@@ -41,11 +41,11 @@ const EditProfile = () => {
   const { data: userData } = useGetUserInfoQuery();
   const [editUserInfo] = useEditUserInfoMutation();
   const [unregister] = useUnregisterMutation();
-  // const [logout] = useLogoutMutation();
   const { ImageProcessing } = useImageProcessing();
 
   useEffect(() => {
     if (userData) {
+      dispatch(setUser(userData));
       setUsername(userData.username);
       setEmail(userData.email);
       setSavedImagefile(userData.userProfile.slice(8));
@@ -53,6 +53,7 @@ const EditProfile = () => {
         setPreviewImage(defaultImage);
         return;
       }
+
       setPreviewImage(baseUrl + userData.userProfile);
     }
   }, [userData]);

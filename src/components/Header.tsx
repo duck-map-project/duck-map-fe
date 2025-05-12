@@ -170,6 +170,7 @@ const Header: React.FC = ({}) => {
     if (user && user.userProfile !== '/images/null') {
       const url = baseUrl + user.userProfile;
       setUserProfile(url);
+
       return;
     } else {
       setUserProfile(null);
